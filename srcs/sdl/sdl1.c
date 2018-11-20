@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/01 20:17:00 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/20 16:31:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static int		sdl_init2(t_sdl *sdl, int width, int height)
 {
-	if ((sdl->window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED,
+	if ((sdl->window = SDL_CreateWindow(WINDOW_NAME, SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED, width, height,
 		SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI)) == NULL)
 	{
@@ -63,17 +63,21 @@ int				sdl_destroy(t_sdl *sdl)
 	return (SUCCESS);
 }
 
+/*
+*	SDL_SetRenderDrawColor(sdl->renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+*	SDL_RenderFillRect(sdl->renderer, NULL);
+*/
+
 int				sdl_clear(t_sdl *sdl)
 {
-	SDL_SetRenderDrawColor(sdl->renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(sdl->renderer, NULL);
+	ft_memset((void *)sdl->image, sdl->size_buffer, 255);
 	return (SUCCESS);
 }
 
 int				sdl_render(t_sdl *sdl)
 {
-	//SDL_UpdateTexture(sdl->texture, NULL, (void *)sdl->image, sdl->size_line);
-	//SDL_RenderCopy(sdl->renderer, sdl->texture, NULL, NULL);
+	SDL_UpdateTexture(sdl->texture, NULL, (void *)sdl->image, sdl->size_line);
+	SDL_RenderCopy(sdl->renderer, sdl->texture, NULL, NULL);
 	SDL_RenderPresent(sdl->renderer);
 	return (SUCCESS);
 }
