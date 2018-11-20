@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/02 18:42:58 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/20 16:40:55 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,42 @@ int worldMap[WIDTH][HEIGHT] =
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
+t_float	fclamp(t_float f, t_float min, t_float max)
+{
+	if (f < min)
+		return (min);
+	else if (f > max)
+		return (max);
+	return (f);
+}
+
+t_vec	vec_clamp(t_vec clamp, t_vec min, t_vec max)
+{
+	t_vec	ret;
+
+	ret.x = fclamp(clamp.x, min.x, max.x);
+	ret.y = fclamp(clamp.y, min.y, max.y);
+	return (ret);
+}
+
 t_vec	move_forward(t_vec from, t_vec to, t_float speed)
 {
-	return (from + to * speed);
+	t_vec	ret;
+
+	ret = from + to * speed;
+	ret = vec_clamp(ret, 0, \
+				VEC_INIT((t_float)WIDTH - 0.0001, (t_float) HEIGHT - 0.0001));
+	if (worldMap[(int)from.x][(int)ret.y] != 0)
+		ret.y = from.y;
+	if (worldMap[(int)ret.x][(int)from.y] != 0)
+		ret.x = from.x;
+	return (ret);
 }
 
 t_vec	straf(t_vec from, t_vec to, t_float speed)
 {
 	to = VEC_INIT(to.y, -to.x);
-	return (from + to * speed);
+	return (move_forward(from, to, speed));
 }
 
 void	draw_line(t_sdl *sdl, int x, int y_min, int y_max, t_color color)
