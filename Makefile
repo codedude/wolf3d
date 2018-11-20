@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/20 16:26:39 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/20 19:23:43 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC			=	clang
 SRCD		=	srcs
 INCD		=	includes
 LIBFTD		=	libft
-LTPOOLD		=	libtpool
+LIBTPOOLD	=	libtpool
 SDLD		=	sdl
 
 UNAME_S := $(shell uname -s)
@@ -28,15 +28,19 @@ else
 	SDLINCD		=	/usr/include/SDL2
 endif
 
-FILES		=	main.c
+FILES		=	main.c env.c raycast.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
-CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(INCD)
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result #-O2 #-flto
-LDLIBS		+=	-L$(LIBFTD) -lft -L$(SDLLIBD) -lSDL2 -lSDL2_image -lm
+CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
+				-I$(INCD)
+LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g -O2
+LDLIBS		+=	-L$(LIBFTD) -lft -L$(LIBTPOOLD) -ltpool -L$(SDLLIBD) -lSDL2 \
+				-lSDL2_image -lm
+
+HEADER		= 	$(INCD)/env.h
 
 .PHONY: clean fclean re rer
 
@@ -44,19 +48,22 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	make -C $(LIBFTD)
+	make -C $(LIBTPOOLD)
 	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $(NAME)
 	@echo "$(NAME) - compiled"
 
-%.o: %.c
+%.o: %.c $(HEADER)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $<
 
 clean:
 	make -C $(LIBFTD) clean
+	make -C $(LIBTPOOLD) clean
 	@rm -f $(OBJS)
 	@echo "$(NAME) - cleaned"
 
 fclean: clean
 	make -C $(LIBFTD) __fclean
+	make -C $(LIBTPOOLD) __fclean
 	@rm -f $(NAME)
 	@echo "$(NAME) - lib cleaned"
 

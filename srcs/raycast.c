@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/20 16:40:55 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/20 19:09:15 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,75 +15,30 @@
 #include "libft.h"
 #include "sdl_m.h"
 #include "SDL.h"
+#include "env.h"
 #include "raycast.h"
 
-#define MAP_WIDTH 24
-#define MAP_HEIGHT 24
 
-int worldMap[WIDTH][HEIGHT] =
+
+t_vec2	move_forward(t_map *map, t_vec2 from, t_vec2 to, t_float speed)
 {
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
-
-t_float	fclamp(t_float f, t_float min, t_float max)
-{
-	if (f < min)
-		return (min);
-	else if (f > max)
-		return (max);
-	return (f);
-}
-
-t_vec	vec_clamp(t_vec clamp, t_vec min, t_vec max)
-{
-	t_vec	ret;
-
-	ret.x = fclamp(clamp.x, min.x, max.x);
-	ret.y = fclamp(clamp.y, min.y, max.y);
-	return (ret);
-}
-
-t_vec	move_forward(t_vec from, t_vec to, t_float speed)
-{
-	t_vec	ret;
+	t_vec2	ret;
 
 	ret = from + to * speed;
-	ret = vec_clamp(ret, 0, \
-				VEC_INIT((t_float)WIDTH - 0.0001, (t_float) HEIGHT - 0.0001));
-	if (worldMap[(int)from.x][(int)ret.y] != 0)
+	ret = clamp_vec2(ret, 0, \
+				VEC2_INIT((t_float)map->width - 0.0001,
+					(t_float)map->height - 0.0001));
+	if (map->data[(int)from.x][(int)ret.y] != 0)
 		ret.y = from.y;
-	if (worldMap[(int)ret.x][(int)from.y] != 0)
+	if (map->data[(int)ret.x][(int)from.y] != 0)
 		ret.x = from.x;
 	return (ret);
 }
 
-t_vec	straf(t_vec from, t_vec to, t_float speed)
+t_vec2	straf(t_map *map, t_vec2 from, t_vec2 to, t_float speed)
 {
-	to = VEC_INIT(to.y, -to.x);
-	return (move_forward(from, to, speed));
+	to = VEC2_INIT(to.y, -to.x);
+	return (move_forward(map, from, to, speed));
 }
 
 void	draw_line(t_sdl *sdl, int x, int y_min, int y_max, t_color color)
@@ -121,29 +76,29 @@ Uint32 getpixel(SDL_Surface *surface, int x, int y)
     }
 }
 
-void	raycast(t_sdl *sdl, t_player *player)
+void	raycast(t_sdl *sdl, t_cam *cam, t_map *map, t_ivec2 range)
 {
 	t_ray	ray;
 	int		x;
 	t_float	x_projected;
-	t_vec	map_pos;
-	t_vec	side_dist;
-	t_vec	delta_dist;
-	t_vec	step;
+	t_vec2	map_pos;
+	t_vec2	side_dist;
+	t_vec2	delta_dist;
+	t_vec2	step;
 	int		hit;
 	int		side;
 	int		y;
 	t_float	wall_z;
 
-	ray.pos = player->pos;
-	ray.dir = VEC_ZERO;
-	x = 0;
-	while (x < WIDTH)
+	ray.pos = cam->pos;
+	ray.dir = VEC2_ZERO;
+	x = range.x;
+	while (x < range.y)
 	{
-		map_pos = VEC_INIT(floor(player->pos.x), floor(player->pos.y));
+		map_pos = VEC2_INIT(floor(cam->pos.x), floor(cam->pos.y));
 		x_projected = 2 * x / (t_float)WIDTH - 1.0;
-		ray.dir = player->dir + player->plane * x_projected;
-		delta_dist = VEC_INIT(fabs(1.0 / ray.dir.x), fabs(1.0 / ray.dir.y));
+		ray.dir = cam->dir + cam->plane * x_projected;
+		delta_dist = VEC2_INIT(fabs(1.0 / ray.dir.x), fabs(1.0 / ray.dir.y));
 
 		if (ray.dir.x < 0.0)
 		{
@@ -181,7 +136,7 @@ void	raycast(t_sdl *sdl, t_player *player)
 				map_pos.y += step.y;
 				side = 1;
 			}
-			if (worldMap[(int)map_pos.x][(int)map_pos.y] > 0)
+			if (map->data[(int)map_pos.x][(int)map_pos.y] > 0)
 				hit = 1;
 		}
 
@@ -218,7 +173,7 @@ void	raycast(t_sdl *sdl, t_player *player)
 		}
 		draw_line(sdl, x, drawStart, drawEnd, color);
 		*/
-		int text_id = worldMap[(int)map_pos.x][(int)map_pos.y] - 1;
+		int text_id = map->data[(int)map_pos.x][(int)map_pos.y] - 1;
 		SDL_Surface *text = sdl_get_texture(text_id);
 
 		double wallX; //where exactly the wall was hit
@@ -228,7 +183,6 @@ void	raycast(t_sdl *sdl, t_player *player)
 			wallX = ray.pos.x + wall_z * ray.dir.x;
 		wallX -= floor(wallX);
 
-		unsigned char	c[4];
 		Uint32 			color;
 		//x coordinate on the texture
 		int texX = (int)(wallX * (double)text->w);
@@ -247,13 +201,7 @@ void	raycast(t_sdl *sdl, t_player *player)
 			//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 			if(side == 1)
 				color = (color >> 1) & 8355711;
-
-			*(Uint32*)c = color;
-			//printf("%d\n", color);
-			SDL_SetRenderDrawColor(sdl->renderer,
-				c[0], c[1], c[2],
-				SDL_ALPHA_OPAQUE);
-			SDL_RenderDrawPoint(sdl->renderer, x, y);
+			sdl->image[x + y * sdl->width] = (int)color;
 		}
 
 		//FLOOR CASTING
@@ -306,20 +254,26 @@ void	raycast(t_sdl *sdl, t_player *player)
 			//floor
 			color = (getpixel(sdl_get_texture(3), floorTexX, floorTexY) >> 1)
 				& 8355711;
-			*(Uint32*)c = color;
-			SDL_SetRenderDrawColor(sdl->renderer, c[0], c[1], c[2],
-				SDL_ALPHA_OPAQUE);
-			SDL_RenderDrawPoint(sdl->renderer, x, y);
+			sdl->image[x + y * sdl->width] = (int)color;
 
 			color = (getpixel(sdl_get_texture(5), floorTexX, floorTexY) >> 1)
 				& 8355711;
-			*(Uint32*)c = color;
-			SDL_SetRenderDrawColor(sdl->renderer, c[0], c[1], c[2],
-				SDL_ALPHA_OPAQUE);
-			SDL_RenderDrawPoint(sdl->renderer, x, HEIGHT - y);
+			sdl->image[x + (sdl->height - y) * sdl->width] = (int)color;
 		}
 
 		//draw the pixels of the stripe as a vertical line
 		x++;
 	}
+}
+
+int			compute_raycast(void *data)
+{
+	t_algo		*algo;
+	t_env		*env;
+
+	algo = (t_algo *)data;
+	env = algo->env;
+	raycast(&env->sdl, &env->cam, &env->map,
+		IVEC2_INIT((int)algo->start, (int)algo->end));
+	return (SUCCESS);
 }

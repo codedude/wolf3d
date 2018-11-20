@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/20 16:32:49 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/20 18:36:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 # include "SDL.h"
 # include "libft.h"
 # include "ft_type.h"
-
-# define WINDOW_NAME	"DAT Wolf3D"
 
 # define KEY_ESCAPE		SDLK_ESCAPE
 # define KEY_FPS		SDLK_1
@@ -50,7 +48,8 @@ typedef struct		s_sdl {
 ** sdl1.c
 */
 
-int					sdl_init(t_sdl *sdl, int width, int height);
+int					sdl_init(t_sdl *sdl, const char *title, int width,
+						int height);
 int					sdl_reset(t_sdl *sdl);
 int					sdl_destroy(t_sdl *sdl);
 int					sdl_render(t_sdl *sdl);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/20 16:31:24 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/20 18:36:47 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 #include "libft.h"
 #include "sdl_m.h"
 
-static int		sdl_init2(t_sdl *sdl, int width, int height)
+static int		sdl_init2(t_sdl *sdl, const char *title, int width,
+					int height)
 {
-	if ((sdl->window = SDL_CreateWindow(WINDOW_NAME, SDL_WINDOWPOS_UNDEFINED,
+	if ((sdl->window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED, width, height,
 		SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI)) == NULL)
 	{
@@ -30,7 +31,8 @@ static int		sdl_init2(t_sdl *sdl, int width, int height)
 	return (SUCCESS);
 }
 
-int				sdl_init(t_sdl *sdl, int width, int height)
+int				sdl_init(t_sdl *sdl, const char *title, int width,
+					int height)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
 	{
@@ -38,7 +40,7 @@ int				sdl_init(t_sdl *sdl, int width, int height)
 		ft_putendl(SDL_GetError());
 		return (ERROR);
 	}
-	if (sdl_init2(sdl, width, height) == ERROR)
+	if (sdl_init2(sdl, title, width, height) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
 }

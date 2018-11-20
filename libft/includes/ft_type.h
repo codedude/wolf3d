@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_type.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 19:08:37 by valentin          #+#    #+#             */
-/*   Updated: 2018/04/09 17:45:01 by valentin         ###   ########.fr       */
+/*   Updated: 2018/11/20 17:17:25 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,33 @@ typedef enum				e_bool
 	False, True
 }							t_bool;
 
+typedef double					t_float;
+typedef int						t_int;
+typedef t_int					t_ivec2 __attribute__((ext_vector_type(2)));
+typedef t_float					t_vec2 __attribute__((ext_vector_type(2)));
+typedef t_float					t_vec3 __attribute__((ext_vector_type(3)));
+typedef t_float					t_vec4 __attribute__((ext_vector_type(4)));
+typedef t_float					t_color __attribute__((ext_vector_type(4)));
+
+# define IVEC2_ZERO				(t_ivec2){0.0, 0.0}
+# define VEC2_ZERO				(t_vec2){0.0, 0.0}
+# define VEC3_ZERO				(t_vec3){0.0, 0.0, 0.0}
+# define VEC4_ZERO				(t_vec4){0.0, 0.0, 0.0, 0.0}
+# define IVEC2_INIT(a, b)		(t_ivec2){(a), (b)}
+# define VEC2_INIT(a, b)		(t_vec2){(a), (b)}
+# define VEC3_INIT(a, b, c)		(t_vec3){(a), (b), (c)}
+# define VEC4_INIT(a, b, c, d)	(t_vec4){(a), (b), (c), (d)}
+# define COLOR_ZERO				(t_color){0.0, 0.0, 0.0, 0.0}
+# define COLOR_INIT(a, b, c, d)	(t_color){(a), (b), (c), (d)}
+
+t_float						clamp_float(t_float clamp, t_float min,
+								t_float max);
+t_vec2						clamp_vec2(t_vec2 clamp, t_vec2 min, t_vec2 max);
+
 t_f32						clamp_f32(t_f32 f, t_f32 lmin, t_f32 lmax);
 t_f64						clamp_f64(t_f64 f, t_f64 lmin, t_f64 lmax);
 t_i32						clamp_i32(t_i32 f, t_i32 lmin, t_i32 lmax);
 t_i64						clamp_i64(t_i64 f, t_i64 lmin, t_i64 lmax);
+
 
 #endif

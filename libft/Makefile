@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/02 18:25:54 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/20 19:11:18 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ LIBFT_SRCS	+= $(MATHD)/ft_sqrt.c $(MATHD)/ft_find_next_prime.c \
 			$(MATHD)/ft_power.c $(MATHD)/ft_factorial.c
 LIBFT_SRCS	+= $(CONVERTD)/ft_atoi_base.c $(CONVERTD)/ft_atoi_s.c \
 			$(CONVERTD)/ft_itoa.c $(CONVERTD)/ft_atoi.c $(CONVERTD)/ft_clamp.c \
-			$(CONVERTD)/ft_atof_s.c
+			$(CONVERTD)/ft_atof_s.c $(CONVERTD)/ft_clamp_vec.c
 LIBFT_SRCS	+= $(ASCIID)/ft_toupper.c $(ASCIID)/ft_islower.c \
 			$(ASCIID)/ft_isgraph.c $(ASCIID)/ft_isupper.c \
 			$(ASCIID)/ft_isspace.c $(ASCIID)/ft_isdigit.c \
@@ -80,7 +80,7 @@ LIBFT_SRCS	+= $(INPUTD)/ft_gnl.c
 
 OBJS		= $(patsubst %.c, %.o, $(LIBFT_SRCS))
 LDFLAGS		+= -Werror -Wall -Wextra -Wno-unused-result
-CFLAGS		+= -I$(INCD) -O2 #-flto
+CFLAGS		+= -I$(INCD) -O3 -flto -g
 
 .PHONY: clean fclean re showlib
 

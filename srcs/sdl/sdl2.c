@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/20 16:32:39 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/20 19:24:30 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			sdl_create_renderer(t_sdl *sdl)
 
 int			sdl_create_texture(t_sdl *sdl)
 {
-	if ((sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_BGRA32,
+	if ((sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_RGBA32,
 		SDL_TEXTUREACCESS_STATIC, sdl->width, sdl->height)) == NULL)
 	{
 		ft_putstr("Texture could not be created ! SDL_Error : ");

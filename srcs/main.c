@@ -6,19 +6,40 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/01 21:59:02 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/20 19:08:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
+#include "env.h"
 #include "sdl_m.h"
-#include "sprite.h"
 #include "raycast.h"
 
+void		get_fps(int show_fps, int refresh)
+{
+	static struct timeval	last = {0, 0};
+	double					fps;
+	struct timeval			new;
 
-t_vec		vec_rotate(t_vec dir, t_float speed)
+	if (show_fps == 0)
+		return ;
+	gettimeofday(&new, NULL);
+	if (refresh == 1)
+	{
+		fps = (new.tv_sec - last.tv_sec) * 1000 + (new.tv_usec - last.tv_usec)
+			/ 1000.;
+		ft_putchar('\r');
+		ft_putstr("FPS : ");
+		ft_putnbr((int)(1000. / fps));
+	}
+	last.tv_usec = new.tv_usec;
+	last.tv_sec = new.tv_sec;
+}
+
+t_vec2		vec_rotate(t_vec2 dir, t_float speed)
 {
     t_float old_x;
 
@@ -28,23 +49,27 @@ t_vec		vec_rotate(t_vec dir, t_float speed)
 	return (dir);
 }
 
-void	manage_down(const Uint8	*state, t_player *player)
+void	manage_down(const Uint8	*state, t_cam *player, t_map *map)
 {
 	if (state[SDL_SCANCODE_W])
 	{
-		player->pos = move_forward(player->pos, player->dir, player->mov_speed);
+		player->pos = move_forward(map, player->pos, player->dir,
+			player->mov_speed);
 	}
 	if (state[SDL_SCANCODE_A])
 	{
-		player->pos = straf(player->pos, player->dir, -player->mov_speed);
+		player->pos = straf(map, player->pos, player->dir,
+			-player->mov_speed);
 	}
 	if (state[SDL_SCANCODE_S])
 	{
-		player->pos = move_forward(player->pos, player->dir, -player->mov_speed);
+		player->pos = move_forward(map, player->pos, player->dir,
+			-player->mov_speed);
 	}
 	if (state[SDL_SCANCODE_D])
 	{
-		player->pos = straf(player->pos, player->dir, player->mov_speed);
+		player->pos = straf(map, player->pos, player->dir,
+			player->mov_speed);
 	}
 	if (state[SDL_SCANCODE_Q])
 	{
@@ -73,51 +98,36 @@ int		manage_binds(SDL_Event *event)
 	return (r);
 }
 
-void	frame_update(t_sprite_anim	*anim)
+void	compute(t_env *env)
 {
-	static int	counter = 0;
+	t_algo		pack[TASKS];
+	int			n_div;
+	int			n_mod;
+	int			i;
+	int			tasks;
 
-	if (counter == anim->speed)
+	i = 0;
+	tasks = TASKS;
+	n_div = env->sdl.width / tasks;
+	n_mod = env->sdl.width % tasks;
+	while (i < tasks)
 	{
-		anim->frame = (anim->frame + 1) % anim->n_frame;
-		counter = 0;
+		pack[i].env = env;
+		pack[i].start = i * n_div;
+		pack[i].end = i < tasks - 1 ? n_div : n_div + n_mod;
+		pack[i].end += pack[i].start;
+		tp_add_task(env->tpool, &compute_raycast, &pack[i]);
+		i++;
 	}
-	else
-		counter++;
+	tp_wait_for_queue(env->tpool);
 }
 
-void	frame_render(t_sdl *sdl, t_sprite_anim *anim)
-{
-	SDL_Rect dest = {200, 200, anim->width, anim->height};
-	SDL_Rect src = {
-		(anim->frame % anim->x_frame) * anim->width,
-		(anim->frame / anim->x_frame) * anim->height,
-		anim->width, anim->height
-	};
-	SDL_RenderCopy(sdl->renderer, anim->texture, &src, &dest);
-}
-
-t_player	new_player(void)
-{
-	t_player	player;
-
-	ft_bzero(&player, sizeof(player));
-	player.pos = VEC_INIT(15.0, 12.0);
-	player.dir = VEC_INIT(-1., 0.0);
-	player.plane = VEC_INIT(0.0, 0.66);
-	player.mov_speed = .1;
-	player.rot_speed = .033;
-	return (player);
-}
-
-void	loop(t_sdl *sdl, t_sprite_anim	*anim)
+void	loop(t_env *env)
 {
 	int			loop;
 	SDL_Event	event;
 	const Uint8	*state;
-	t_player	player;
 
-	player = new_player();
 	loop = 1;
 	while (loop == 1)
 	{
@@ -125,36 +135,30 @@ void	loop(t_sdl *sdl, t_sprite_anim	*anim)
 		state = SDL_GetKeyboardState(NULL);
 		while (SDL_PollEvent(&event))
 			loop = manage_binds(&event);
-		manage_down(state, &player);
+		manage_down(state, &env->cam, &env->map);
 		if (loop != 1)
 		{
-			sdl_destroy(sdl);
 			break ;
 		}
 
-		sdl_clear(sdl);
-		raycast(sdl, &player);
-		//frame_update(anim);
-		//frame_render(sdl, anim);
-		sdl_render(sdl);
+		sdl_clear(&env->sdl);
+		compute(env);
+		sdl_render(&env->sdl);
+		get_fps(1, 1);
 	}
 }
 
 int		main(void)
 {
-	t_sdl			sdl;
-	t_sprite_anim	*anim;
+	t_env	env;
 
-	if (sdl_init(&sdl, WIDTH, HEIGHT) == ERROR || sdl_init_textures() == ERROR)
+	if (env_init(&env) == ERROR)
 	{
-		printf("SDL can't start\n");
 		exit(1);
 	}
-	anim = new_sprite_anim(&sdl, "bomb.png", 100, 100);
 
-	loop(&sdl, anim);
+	loop(&env);
 
-	sdl_destroy_textures();
-	free_sprite_anim(anim);
+	env_destroy(&env);
 	return (0);
 }
