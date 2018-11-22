@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/20 19:23:43 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/22 18:11:33 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,15 +28,15 @@ else
 	SDLINCD		=	/usr/include/SDL2
 endif
 
-FILES		=	main.c env.c raycast.c
-FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c
+FILES		=	main.c env.c raycast.c raycast_2.c
+FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD)
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g -O2
+LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g #-O2 -flto
 LDLIBS		+=	-L$(LIBFTD) -lft -L$(LIBTPOOLD) -ltpool -L$(SDLLIBD) -lSDL2 \
 				-lSDL2_image -lm
 

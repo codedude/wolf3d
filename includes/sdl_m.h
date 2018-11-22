@@ -6,16 +6,14 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/20 18:36:01 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/22 17:27:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SDL_M_H
 # define SDL_M_H
 
-# include <stdlib.h>
 # include "SDL.h"
-# include "libft.h"
 # include "ft_type.h"
 
 # define KEY_ESCAPE		SDLK_ESCAPE
@@ -34,7 +32,7 @@ typedef struct		s_textures {
 }					t_textures;
 
 typedef struct		s_sdl {
-	t_u32			*image;
+	t_color			*image;
 	SDL_Texture		*texture;
 	SDL_Renderer	*renderer;
 	size_t			width;
@@ -72,5 +70,11 @@ int					sdl_resize(t_sdl *sdl, int width, int height);
 int					sdl_init_textures(void);
 void				sdl_destroy_textures(void);
 SDL_Surface			*sdl_get_texture(int id);
+
+/*
+** sdl4.c
+*/
+
+t_color				sdl_get_pixel(SDL_Surface *surface, int x, int y);
 
 #endif

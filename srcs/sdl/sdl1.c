@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/20 18:36:47 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/22 17:00:11 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,6 @@ int				sdl_destroy(t_sdl *sdl)
 	SDL_Quit();
 	return (SUCCESS);
 }
-
-/*
-*	SDL_SetRenderDrawColor(sdl->renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-*	SDL_RenderFillRect(sdl->renderer, NULL);
-*/
 
 int				sdl_clear(t_sdl *sdl)
 {

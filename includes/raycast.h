@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/20 19:14:18 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/22 18:35:10 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,41 @@
 # define C_BLACK		0x00000000
 # define C_GREY			0x00999999
 
-t_vec2					move_forward(t_map *map, t_vec2 from, t_vec2 to,
-							t_float speed);
-t_vec2					straf(t_map *map, t_vec2 from, t_vec2 to,
-							t_float speed);
-t_vec2					vec_rotate(t_vec2 dir, t_float speed);
+#define STEP 0
+#define SIDE 0
+#define DELTA 0
+
+typedef struct			s_dist {
+	t_vec2				step;
+	t_vec2				side;
+	t_vec2				delta;
+}						t_dist;
 
 typedef struct			s_ray {
 	t_vec2				pos;
 	t_vec2				dir;
 }						t_ray;
 
-void					raycast(t_sdl *sdl, t_cam *cam, t_map *map,
+typedef struct			s_hit_info {
+	t_ray				ray;
+	t_vec2				map;
+	t_float				z;
+	int					side;
+	int					hit;
+}						t_hit_infos;
+
+t_vec2					move_forward(t_map *map, t_vec2 from, t_vec2 to,
+							t_float speed);
+t_vec2					straf(t_map *map, t_vec2 from, t_vec2 to,
+							t_float speed);
+t_vec2					vec_rotate(t_vec2 dir, t_float speed);
+
+
+
+void					render(t_sdl *sdl, t_cam *cam, t_map *map,
 							t_ivec2 range);
-int						compute_raycast(void *data);
+int						start_render(void *data);
+
+int						raycast(t_hit_infos *infos, t_map *map);
 
 #endif

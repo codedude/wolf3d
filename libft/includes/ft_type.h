@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 19:08:37 by valentin          #+#    #+#             */
-/*   Updated: 2018/11/20 17:17:25 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/22 17:27:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ typedef t_int					t_ivec2 __attribute__((ext_vector_type(2)));
 typedef t_float					t_vec2 __attribute__((ext_vector_type(2)));
 typedef t_float					t_vec3 __attribute__((ext_vector_type(3)));
 typedef t_float					t_vec4 __attribute__((ext_vector_type(4)));
-typedef t_float					t_color __attribute__((ext_vector_type(4)));
+typedef t_float					t_vcolor __attribute__((ext_vector_type(4)));
+typedef unsigned int			t_color;
 
 # define IVEC2_ZERO				(t_ivec2){0.0, 0.0}
 # define VEC2_ZERO				(t_vec2){0.0, 0.0}
@@ -93,8 +94,8 @@ typedef t_float					t_color __attribute__((ext_vector_type(4)));
 # define VEC2_INIT(a, b)		(t_vec2){(a), (b)}
 # define VEC3_INIT(a, b, c)		(t_vec3){(a), (b), (c)}
 # define VEC4_INIT(a, b, c, d)	(t_vec4){(a), (b), (c), (d)}
-# define COLOR_ZERO				(t_color){0.0, 0.0, 0.0, 0.0}
-# define COLOR_INIT(a, b, c, d)	(t_color){(a), (b), (c), (d)}
+# define COLOR_ZERO				(t_vcolor){0.0, 0.0, 0.0, 0.0}
+# define COLOR_INIT(a, b, c, d)	(t_vcolor){(a), (b), (c), (d)}
 
 t_float						clamp_float(t_float clamp, t_float min,
 								t_float max);

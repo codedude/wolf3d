@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/20 19:08:28 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/22 17:42:03 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	compute(t_env *env)
 		pack[i].start = i * n_div;
 		pack[i].end = i < tasks - 1 ? n_div : n_div + n_mod;
 		pack[i].end += pack[i].start;
-		tp_add_task(env->tpool, &compute_raycast, &pack[i]);
+		tp_add_task(env->tpool, &start_render, &pack[i]);
 		i++;
 	}
 	tp_wait_for_queue(env->tpool);
