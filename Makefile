@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/22 18:11:33 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/23 11:22:40 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,11 +36,11 @@ OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD)
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g #-O2 -flto
-LDLIBS		+=	-L$(LIBFTD) -lft -L$(LIBTPOOLD) -ltpool -L$(SDLLIBD) -lSDL2 \
-				-lSDL2_image -lm
+LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g -O2
+LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
+				-lft -ltpool -lSDL2 -lSDL2_image -lm -pthread -lft
 
-HEADER		= 	$(INCD)/env.h
+HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h
 
 .PHONY: clean fclean re rer
 
