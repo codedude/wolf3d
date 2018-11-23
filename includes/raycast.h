@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/22 18:35:10 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/23 13:03:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define C_GREY			0x00999999
 
 #define STEP 0
-#define SIDE 0
-#define DELTA 0
+#define SIDE 1
+#define DELTA 2
 
 typedef struct			s_dist {
 	t_vec2				step;

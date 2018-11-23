@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/22 18:34:14 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/23 13:03:42 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static void	raycast_init(t_vec2 dist[3], t_hit_infos *infos)
 	map_pos = infos->map;
 	if (ray.dir.x < 0.0)
 	{
-		dist[STEP][0] = -1.0;
+		dist[STEP].x = -1.0;
 		dist[SIDE].x = (ray.pos.x - map_pos.x) * dist[DELTA].x;
 	}
 	else
 	{
-		dist[STEP][0] = 1.0;
+		dist[STEP].x = 1.0;
 		dist[SIDE].x = (map_pos.x + 1.0 - ray.pos.x) * dist[DELTA].x;
 	}
 	if (ray.dir.y < 0.0)
@@ -69,7 +69,6 @@ static int	raycast_compute(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
 		if (map->data[(int)infos->map.x][(int)infos->map.y] > 0)
 			hit = 1;
 	}
-		printf("coucou\n");
 	return (hit);
 }
 
@@ -80,7 +79,6 @@ int			raycast(t_hit_infos *infos, t_map *map)
 	dist[DELTA] = VEC2_INIT(fabs(1.0 / infos->ray.dir.x),
 		fabs(1.0 / infos->ray.dir.y));
 	raycast_init(dist, infos);
-	printf("side: %f\n", dist[STEP][0]);
 	infos->hit = raycast_compute(dist, infos, map);
 	if (infos->side == 0)
 		infos->z = (infos->map.x - infos->ray.pos.x +
