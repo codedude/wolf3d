@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/23 12:52:42 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/26 16:01:33 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ else
 	SDLINCD		=	/usr/include/SDL2
 endif
 
-FILES		=	main.c env.c raycast.c raycast_2.c
+FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c map_parser.c \
+				manage_binds.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
@@ -38,7 +39,7 @@ CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD)
 LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g -O2
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
-				-lft -ltpool -lSDL2 -lSDL2_image -lm -pthread -lft
+				-lft -ltpool -lSDL2 -lSDL2_image -lm -lft
 
 HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h
 
@@ -49,7 +50,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make -C $(LIBFTD)
 	make -C $(LIBTPOOLD)
-	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $^ $(LDLIBS) -fsanitize=address -o $(NAME)
 	@echo "$(NAME) - compiled"
 
 %.o: %.c $(HEADER)

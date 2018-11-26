@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/20 19:25:21 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/26 15:38:48 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,68 +16,16 @@
 # include "sdl_m.h"
 # include "env.h"
 
-int map_tmp[24][24] =
+static int	wolf_init(t_map *map, t_cam *cam, char *filename)
 {
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
-
-/*
-*	TODO : load from file
-*/
-
-static int	load_map(t_map *map)
-{
-	int	i;
-
-	map->spawn = IVEC2_INIT(15, 12);
-	map->width = 24;
-	map->height = 24;
-	if ((map->data = (int **)malloc(map->height * sizeof(int *))) == NULL)
+	if (load_map(map, filename) == ERROR)
 		return (ERROR);
-	i = 0;
-	while (i < map->height)
-	{
-		if ((map->data[i] = (int *)malloc(map->width * sizeof(int )))
-			== NULL)
-			return (ERROR);
-		ft_memcpy((void *)map->data[i], (void *)map_tmp[i],
-			map->width * sizeof(int));
-		i++;
-	}
-	return (SUCCESS);
-}
-static int	wolf_init(t_map *map, t_cam *cam)
-{
-	if (load_map(map) == ERROR)
-		return (ERROR);
-	cam->pos = VEC2_INIT((t_float)map->spawn.x, (t_float)map->spawn.y);
+	cam->pos = VEC2_INIT((t_float)map->spawn.x, (t_float)map->spawn.y) + 0.5;
 	cam->dir = VEC2_INIT(-1., 0.0);
 	cam->plane = VEC2_INIT(0.0, 0.8);
-	cam->mov_speed = 0.1;
-	cam->rot_speed = 0.033;
+	cam->mov_speed = 0.05;
+	cam->rot_speed = 0.016;
+	cam->acceleration = 0.0;
 	return (SUCCESS);
 }
 
@@ -88,9 +36,9 @@ static void	wolf_destroy(t_map *map, t_cam *cam)
 	//Delete map
 }
 
-int			env_init(t_env *env)
+int			env_init(t_env *env, char *filename)
 {
-	if (sdl_init(&env->sdl, WINDOW_NAME, WIDTH, HEIGHT) == ERROR)
+	if (sdl_init(&env->sdl, WINDOW_NAME, 1280, 720) == ERROR)
 	{
 		ft_putstr_fd("SDL2 can't start\n", 2);
 		return (ERROR);
@@ -105,7 +53,7 @@ int			env_init(t_env *env)
 		ft_putstr_fd("Thread pool can't start\n", 2);
 		return (ERROR);
 	}
-	if (wolf_init(&env->map, &env->cam) == ERROR)
+	if (wolf_init(&env->map, &env->cam, filename) == ERROR)
 	{
 		ft_putstr_fd("Can't init wolf\n", 2);
 		return (ERROR);

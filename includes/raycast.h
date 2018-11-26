@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/23 13:03:09 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/26 15:56:18 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,7 @@ void					render(t_sdl *sdl, t_cam *cam, t_map *map,
 int						start_render(void *data);
 
 int						raycast(t_hit_infos *infos, t_map *map);
+void					rc_render(t_sdl *sdl, t_map *map, t_hit_infos *infos,
+							int x);
 
 #endif

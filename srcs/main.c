@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/22 17:42:03 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/26 16:14:01 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,53 +49,20 @@ t_vec2		vec_rotate(t_vec2 dir, t_float speed)
 	return (dir);
 }
 
-void	manage_down(const Uint8	*state, t_cam *player, t_map *map)
+void	player_set_acceleration(t_cam *player)
 {
-	if (state[SDL_SCANCODE_W])
+	if (player->acceleration > 0)
 	{
-		player->pos = move_forward(map, player->pos, player->dir,
-			player->mov_speed);
+		player->acceleration *= 0.85;
+		if (player->acceleration < 0.005)
+			player->acceleration = -(player->mov_speed * 0.2);
 	}
-	if (state[SDL_SCANCODE_A])
+	else if (player->acceleration < 0)
 	{
-		player->pos = straf(map, player->pos, player->dir,
-			-player->mov_speed);
+		player->acceleration *= 0.85;
+		if (player->acceleration > -0.005)
+			player->acceleration = 0.0;
 	}
-	if (state[SDL_SCANCODE_S])
-	{
-		player->pos = move_forward(map, player->pos, player->dir,
-			-player->mov_speed);
-	}
-	if (state[SDL_SCANCODE_D])
-	{
-		player->pos = straf(map, player->pos, player->dir,
-			player->mov_speed);
-	}
-	if (state[SDL_SCANCODE_Q])
-	{
-      player->dir = vec_rotate(player->dir, -player->rot_speed);
-      player->plane = vec_rotate(player->plane, -player->rot_speed);
-	}
-	if (state[SDL_SCANCODE_E])
-	{
-      player->dir = vec_rotate(player->dir, player->rot_speed);
-      player->plane = vec_rotate(player->plane, player->rot_speed);
-	}
-}
-
-int		manage_binds(SDL_Event *event)
-{
-	int		r;
-
-	r = 1;
-	if (event->type == SDL_QUIT)
-		r = 0;
-	else if (event->type == SDL_KEYUP)
-	{
-		if (event->key.keysym.sym == SDLK_ESCAPE)
-			r = 0;
-	}
-	return (r);
 }
 
 void	compute(t_env *env)
@@ -134,7 +101,7 @@ void	loop(t_env *env)
 		SDL_PumpEvents();
 		state = SDL_GetKeyboardState(NULL);
 		while (SDL_PollEvent(&event))
-			loop = manage_binds(&event);
+			loop = manage_binds(&event, &env->cam);
 		manage_down(state, &env->cam, &env->map);
 		if (loop != 1)
 		{
@@ -144,19 +111,25 @@ void	loop(t_env *env)
 		sdl_clear(&env->sdl);
 		compute(env);
 		sdl_render(&env->sdl);
-		get_fps(1, 1);
+		player_set_acceleration(&env->cam);
+		// get_fps(1, 1);
 	}
 }
 
-int		main(void)
+int		main(int ac, char **av)
 {
 	t_env	env;
 
-	if (env_init(&env) == ERROR)
+	if (ac != 2)
+	{
+		ft_putstr_fd(ac == 1 ? "Wolf3d: not enough argument\n" : "Wolf3d: too many arguments\n", 2);
+		return (1);
+	}
+	if (env_init(&env, av[1]) == ERROR)
 	{
 		exit(1);
 	}
-
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	loop(&env);
 
 	env_destroy(&env);
