@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/26 15:59:12 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/26 19:06:20 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct		s_map {
 }					t_map;
 
 typedef struct		s_cam {
+	t_float			*lookup_table;
 	t_vec2			pos;
 	t_vec2			dir;
 	t_vec2			plane;

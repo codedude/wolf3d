@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/26 15:55:42 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/26 19:12:13 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	render(t_sdl *sdl, t_cam *cam, t_map *map, t_ivec2 range)
 		infos.map = VEC2_INIT(floor(cam->pos.x), floor(cam->pos.y));
 		infos.ray.dir = cam->dir + cam->plane *
 			(2.0 * x / (t_float)sdl->width - 1.0);
-		raycast(&infos, map);
-		rc_render(sdl, map, &infos, x);
+		raycast(&infos, map, sdl, x);
+		rc_render(sdl, cam, map, &infos);
 		x++;
 	}
 }

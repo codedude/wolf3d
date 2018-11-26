@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/26 16:14:01 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/26 17:35:45 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	loop(t_env *env)
 		compute(env);
 		sdl_render(&env->sdl);
 		player_set_acceleration(&env->cam);
-		// get_fps(1, 1);
+		get_fps(1, 1);
 	}
 }
 

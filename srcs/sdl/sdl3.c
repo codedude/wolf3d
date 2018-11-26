@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 16:18:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/26 15:29:21 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/26 17:12:25 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ SDL_Surface			*sdl_get_texture(int id)
 {
 	t_textures	*textures;
 
+	if (id == TEX_COUNT)
+		return (NULL);
 	textures = sdl_get_textures();
 	return (textures[id].texture);
 }
