@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/27 21:28:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 23:32:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	t_color 			color;
 	t_float				half_height;
 
-	tex.x = (int)(infos->wall_x * (double)text->w);
+	tex.x = (int)(infos->wall_x * (t_float)text->w);
 	if(infos->side == 0 && infos->ray.dir.x > 0)
 		tex.x = text->w - tex.x - 1;
 	if(infos->side == 1 && infos->ray.dir.y < 0)
@@ -147,13 +147,12 @@ static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 	y = infos->draw_end;
 	while (y < (int)sdl->height)
 	{
-		lookup = 2.0 * (y - cam->height) - sdl->height;
-		weight = sdl->height / lookup / infos->z;
+		lookup = sdl->height / (2.0 * (y - cam->height) - sdl->height);
+		weight = lookup / infos->z;
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
 		if (infos->effect != 0)
-			depth_effect = compute_depth(infos->effect, 0,
-				sdl->height / lookup);
+			depth_effect = compute_depth(infos->effect, 0, lookup);
 		else
 			depth_effect = -1.0;
 		sdl->image[infos->x + y * sdl->width] = get_cf_color(3, curr_cf,
@@ -174,13 +173,12 @@ static void		draw_ceil_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 	y = 0;
 	while (y < infos->draw_start)
 	{
-		lookup = fabs(2.0 * (y - cam->height) - sdl->height);
-		weight = sdl->height / lookup / infos->z;
+		lookup = sdl->height / fabs(2.0 * (y - cam->height) - sdl->height);
+		weight = lookup / infos->z;
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
 		if (infos->effect != 0)
-			depth_effect = compute_depth(infos->effect, 0,
-				sdl->height / lookup);
+			depth_effect = compute_depth(infos->effect, 0, lookup);
 		else
 			depth_effect = -1.0;
 		sdl->image[infos->x + y * sdl->width] = get_cf_color(5, curr_cf,

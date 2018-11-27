@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 17:22:53 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 23:40:10 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int		sdl_init2(t_sdl *sdl, const char *title, int width,
 int				sdl_init(t_sdl *sdl, const char *title, int width,
 					int height)
 {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		ft_putstr("SDL could not initialize ! SDL_Error : ");
 		ft_putendl(SDL_GetError());

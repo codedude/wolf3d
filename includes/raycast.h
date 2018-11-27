@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 17:16:54 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 23:05:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@
 # define C_BLACK		0x00000000
 # define C_GREY			0x00999999
 
-#define STEP 0
-#define SIDE 1
-#define DELTA 2
+#define STEP	0
+#define SIDE	1
+#define DELTA	2
 
 typedef struct			s_dist {
 	t_vec2				step;
@@ -46,13 +46,13 @@ typedef struct			s_hit_info {
 	t_vec2				map;
 	t_float				z;
 	t_float				wall_x;
-	int					effect;
 	int					line_height;
 	int					draw_start;
 	int					draw_end;
 	int					x;
 	int					side;
 	int					hit;
+	int					effect;
 }						t_hit_infos;
 
 t_vec2					move_forward(t_map *map, t_vec2 from, t_vec2 to,

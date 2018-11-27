@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 21:40:28 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 23:56:10 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam)
 	draw.x = (-line_height / 2.0 + sdl->height / 2.0) + cam->height;
 	if (draw.x < 0)
 		draw.x = 0;
+	else if (draw.x >= (int)sdl->height)
+		draw.x = (int)sdl->height - 1;
 	draw.y = (line_height / 2.0 + sdl->height / 2.0) + cam->height;
 	if (draw.y >= (int)sdl->height)
 		draw.y = sdl->height - 1;
