@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 18:53:55 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 18:59:00 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static t_float	*init_lu_table(int height)
 	t_float		*table;
 	int			y;
 
-	height += 0;
+	height += MAX_OFFSET * 2;
 	if (!(table = (t_float*)malloc(sizeof(*table) * height)))
 		return (NULL);
 	y = 0;
 	while (y < height)
 	{
-		table[y] = height / (2.0 * (y - 0) - height);
+		table[y] = height / (2.0 * (y - MAX_OFFSET) - height);
 		y++;
 	}
 	return (table);

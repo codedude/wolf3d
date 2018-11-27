@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/27 18:53:24 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 20:08:03 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ t_float		compute_depth(int effect, int side, t_float z)
 	return (depth_effect);
 }
 
-static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos,
+static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 								SDL_Surface * text)
 {
 	t_ivec2				tex;
 	int					y;
 	t_color 			color;
-	int					d;
+	t_float				half_height;
 
 	tex.x = (int)(infos->wall_x * (double)text->w);
 	if(infos->side == 0 && infos->ray.dir.x > 0)
@@ -67,9 +67,11 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos,
 	if(infos->side == 1 && infos->ray.dir.y < 0)
 		tex.x = text->w - tex.x - 1;
 	y = infos->draw_start;
+	half_height = -(sdl->height / 2.0) + infos->line_height / 2.0;
 	while (y < infos->draw_end)
 	{
-		tex.y = text->w * ((t_float)(y - infos->draw_start) / (t_float)(infos->draw_end - infos->draw_start));
+		tex.y = text->h * ((t_float)((t_float)(y - cam->height) + half_height)
+			/ (t_float)(infos->line_height));
 		color = dark_color(
 			sdl_get_pixel(text, tex.x, tex.y),
 			compute_depth(infos->effect, infos->side, infos->z)
@@ -79,14 +81,14 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos,
 	}
 }
 
-static void		render_wall(t_sdl *sdl, t_map *map, t_hit_infos *infos)
+static void		render_wall(t_sdl *sdl, t_map *map, t_cam *cam, t_hit_infos *infos)
 {
 	SDL_Surface			*text;
 	int					text_id;
 
 	text_id = map->data[(int)infos->map.x][(int)infos->map.y] - 1;
 	text = sdl_get_texture(text_id);
-	draw_tex_line(sdl, infos, text);
+	draw_tex_line(sdl, infos, cam, text);
 }
 
 static t_vec2	get_wall_texel(t_hit_infos *infos)
@@ -133,40 +135,56 @@ static t_color	get_cf_color(int text_id, t_vec2 curr_cf, t_float effect)
 ** TODO : lookup table depth effect ?
 */
 
-static void		draw_cf_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
+static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 					t_vec2 texel)
 {
 	t_vec2		curr_cf;
 	double		weight;
 	int			y;
-	int			i;
-	t_color		color;
 	t_float		depth_effect;
+	t_float		lookup;
 
 	y = infos->draw_end;
 	while (y < (int)sdl->height)
 	{
-		weight = cam->lookup_table[y + 0] / infos->z;
+		lookup = 2.0 * (y - cam->height) - sdl->height;
+		weight = sdl->height / lookup / infos->z;
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
 		if (infos->effect != 0)
-		{
 			depth_effect = compute_depth(infos->effect, 0,
-				cam->lookup_table[y + 0]);
-		}
+				sdl->height / lookup);
 		else
 			depth_effect = -1.0;
-		//floor
-		color = get_cf_color(3, curr_cf, depth_effect);
-		i = y;
-		if (i < (int)sdl->height && i >= infos->draw_end)
-			sdl->image[infos->x + i * sdl->width] = color;
-		//ceil
-		color = get_cf_color(5, curr_cf, depth_effect);
-		i = ((int)sdl->height - y);
-		if (i >= 0 && i < infos->draw_start)
-			sdl->image[infos->x + i * sdl->width] = color;
+		sdl->image[infos->x + y * sdl->width] = get_cf_color(3, curr_cf,
+															depth_effect);
+		y++;
+	}
+}
 
+static void		draw_ceil_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
+					t_vec2 texel)
+{
+	t_vec2		curr_cf;
+	double		weight;
+	int			y;
+	t_float		depth_effect;
+	t_float		lookup;
+
+	y = 0;
+	while (y < infos->draw_start)
+	{
+		lookup = fabs(2.0 * (y - cam->height) - sdl->height);
+		weight = sdl->height / lookup / infos->z;
+		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
+		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
+		if (infos->effect != 0)
+			depth_effect = compute_depth(infos->effect, 0,
+				sdl->height / lookup);
+		else
+			depth_effect = -1.0;
+		sdl->image[infos->x + y * sdl->width] = get_cf_color(5, curr_cf,
+															depth_effect);
 		y++;
 	}
 }
@@ -176,11 +194,12 @@ static void		render_floor(t_sdl *sdl, t_cam *cam, t_hit_infos *infos)
 	t_vec2		texel;
 
 	texel = get_wall_texel(infos);
-	draw_cf_line(sdl, cam, infos, texel);
+	draw_floor_line(sdl, cam, infos, texel);
+	draw_ceil_line(sdl, cam, infos, texel);
 }
 
 void		rc_render(t_sdl *sdl, t_cam *cam, t_map *map, t_hit_infos *infos)
 {
-	render_wall(sdl, map, infos);
+	render_wall(sdl, map, cam, infos);
 	render_floor(sdl, cam, infos);
 }
