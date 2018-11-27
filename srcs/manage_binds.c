@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/26 16:11:53 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 16:11:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,49 @@
 #include "sdl_m.h"
 #include "raycast.h"
 
-t_float	player_speed(t_cam *player, t_float factor)
+t_float		player_speed(t_float speed, t_float acceleration, t_float factor)
 {
-	return ((player->mov_speed + player->acceleration) * factor);
+	return ((speed + acceleration) * factor);
 }
 
-void	manage_down(const Uint8	*state, t_cam *player, t_map *map)
+void		manage_down(const Uint8	*state, t_env *env)
 {
+	t_cam	*cam;
+
+	cam = &env->cam;
 	if (state[SDL_SCANCODE_A])
 	{
-		player->pos = straf(map, player->pos, player->dir,
-			player_speed(player, -0.75));
+		env->cam.pos = straf(&env->map, cam->pos, cam->dir,
+			player_speed(cam->mov_speed, cam->acceleration, -0.75));
 	}
 	if (state[SDL_SCANCODE_D])
 	{
-		player->pos = straf(map, player->pos, player->dir,
-			player_speed(player, 0.75));
+		cam->pos = straf(&env->map, cam->pos, cam->dir,
+			player_speed(cam->mov_speed, cam->acceleration, 0.75));
 	}
 	if (state[SDL_SCANCODE_W])
 	{
-		player->pos = move_forward(map, player->pos, player->dir,
-			player_speed(player, 1.0));
+		cam->pos = move_forward(&env->map, cam->pos, cam->dir,
+			player_speed(cam->mov_speed, cam->acceleration, 1.0));
 	}
 	if (state[SDL_SCANCODE_S])
 	{
-		player->pos = move_forward(map, player->pos, player->dir,
-			player_speed(player, -0.75));
+		cam->pos = move_forward(&env->map, cam->pos, cam->dir,
+			player_speed(cam->mov_speed, cam->acceleration, -0.75));
 	}
 	if (state[SDL_SCANCODE_Q])
 	{
-      player->dir = vec_rotate(player->dir, -player->rot_speed);
-      player->plane = vec_rotate(player->plane, -player->rot_speed);
+      cam->dir = vec_rotate(cam->dir, -cam->rot_speed);
+      cam->plane = vec_rotate(cam->plane, -cam->rot_speed);
 	}
 	if (state[SDL_SCANCODE_E])
 	{
-      player->dir = vec_rotate(player->dir, player->rot_speed);
-      player->plane = vec_rotate(player->plane, player->rot_speed);
+      cam->dir = vec_rotate(cam->dir, cam->rot_speed);
+      cam->plane = vec_rotate(cam->plane, cam->rot_speed);
 	}
 }
 
-int		manage_binds(SDL_Event *event, t_cam *player)
+int			manage_binds(SDL_Event *event, t_env *env)
 {
 	int		r;
 
@@ -69,16 +72,28 @@ int		manage_binds(SDL_Event *event, t_cam *player)
 	else if (event->type == SDL_KEYDOWN)
 	{
 		if (event->key.keysym.sym == SDLK_LSHIFT
-			&& player->acceleration == 0.0)
-			player->acceleration = 0.25;
+			&& env->cam.acceleration == 0.0)
+			env->cam.acceleration = 0.25;
+		if (event->key.keysym.sym == SDLK_f)
+		{
+			env->show_fps = !env->show_fps;
+		}
+		else if (event->key.keysym.sym == SDLK_1)
+		{
+			env->effect = 0;
+		}
+		else if (event->key.keysym.sym == SDLK_2)
+		{
+			env->effect = EFFECT_DEPTH;
+		}
 	}
 	else if (event->type == SDL_MOUSEMOTION)
 	{
-    	player->dir = vec_rotate(player->dir,
-					player->rot_speed *
+    	env->cam.dir = vec_rotate(env->cam.dir,
+					env->cam.rot_speed *
 					(t_float)(event->motion.xrel * 0.33));
-    	player->plane = vec_rotate(player->plane,
-					player->rot_speed *
+    	env->cam.plane = vec_rotate(env->cam.plane,
+					env->cam.rot_speed *
 					(t_float)(event->motion.xrel * 0.33));
 	}
 	return (r);

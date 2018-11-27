@@ -6,12 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:20:25 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/24 19:52:38 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 14:56:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/time.h>
 #include "SDL.h"
-#include "ft_type.h"
+#include "libft.h"
 
 t_color	sdl_get_pixel(SDL_Surface *surface, int x, int y)
 {
@@ -37,4 +38,21 @@ t_color	sdl_get_pixel(SDL_Surface *surface, int x, int y)
 	else
 		pixel = 0;
     return (pixel);
+}
+
+void    get_fps(int show_fps)
+{
+    static struct timeval   last = {0, 0};
+    double                  fps;
+    struct timeval          new;
+
+    if (show_fps == 0)
+        return ;
+    gettimeofday(&new, NULL);
+    fps = (new.tv_sec - last.tv_sec) * 1000 + (new.tv_usec - last.tv_usec)
+        / 1000.;
+    ft_putstr("\rFPS : ");
+    ft_putnbr((int)(1000. / fps));
+    last.tv_usec = new.tv_usec;
+    last.tv_sec = new.tv_sec;
 }

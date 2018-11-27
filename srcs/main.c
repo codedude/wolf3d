@@ -3,41 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/26 17:35:45 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 15:19:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/time.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
 #include "env.h"
 #include "sdl_m.h"
 #include "raycast.h"
-
-void		get_fps(int show_fps, int refresh)
-{
-	static struct timeval	last = {0, 0};
-	double					fps;
-	struct timeval			new;
-
-	if (show_fps == 0)
-		return ;
-	gettimeofday(&new, NULL);
-	if (refresh == 1)
-	{
-		fps = (new.tv_sec - last.tv_sec) * 1000 + (new.tv_usec - last.tv_usec)
-			/ 1000.;
-		ft_putchar('\r');
-		ft_putstr("FPS : ");
-		ft_putnbr((int)(1000. / fps));
-	}
-	last.tv_usec = new.tv_usec;
-	last.tv_sec = new.tv_sec;
-}
 
 t_vec2		vec_rotate(t_vec2 dir, t_float speed)
 {
@@ -101,18 +78,17 @@ void	loop(t_env *env)
 		SDL_PumpEvents();
 		state = SDL_GetKeyboardState(NULL);
 		while (SDL_PollEvent(&event))
-			loop = manage_binds(&event, &env->cam);
-		manage_down(state, &env->cam, &env->map);
+			loop = manage_binds(&event, env);
+		manage_down(state, env);
 		if (loop != 1)
 		{
 			break ;
 		}
-
 		sdl_clear(&env->sdl);
 		compute(env);
 		sdl_render(&env->sdl);
 		player_set_acceleration(&env->cam);
-		get_fps(1, 1);
+		get_fps(env->show_fps);
 	}
 }
 

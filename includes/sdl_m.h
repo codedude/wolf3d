@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/26 19:06:07 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 15:11:59 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct		s_textures {
 
 typedef struct		s_sdl {
 	t_color			*image;
+	t_float			*z_buffer;
 	SDL_Texture		*texture;
 	SDL_Renderer	*renderer;
 	size_t			width;
@@ -76,5 +77,6 @@ SDL_Surface			*sdl_get_texture(int id);
 */
 
 t_color				sdl_get_pixel(SDL_Surface *surface, int x, int y);
+void    			get_fps(int show_fps);
 
 #endif

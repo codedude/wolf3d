@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/26 19:13:41 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 15:54:03 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct			s_hit_info {
 	t_vec2				map;
 	t_float				z;
 	t_float				wall_x;
+	t_float				depth_effect;
+	int					effect;
 	int					line_height;
 	int					draw_start;
 	int					draw_end;
@@ -62,8 +64,7 @@ t_vec2					vec_rotate(t_vec2 dir, t_float speed);
 
 
 
-void					render(t_sdl *sdl, t_cam *cam, t_map *map,
-							t_ivec2 range);
+void					render(t_env *env, t_ivec2 range);
 int						start_render(void *data);
 
 int						raycast(t_hit_infos *infos, t_map *map, t_sdl *sdl,

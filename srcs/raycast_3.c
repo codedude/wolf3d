@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/26 19:13:31 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 16:09:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,25 @@
 #include "env.h"
 #include "raycast.h"
 
-static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, SDL_Surface * text)
+t_color		dark_color(t_color c, t_float step)
+{
+	t_color		r;
+	t_color		g;
+	t_color		b;
+
+	if (step < 0.0)
+		return (c);
+	r = c & 0xff;
+	g = (c & (0xff << 8)) >> 8;
+	b = (c & (0xff << 16)) >> 16;
+	r *= step;
+	g *= step;
+	b *= step;
+	return ((t_color)(r | (g << 8) | (b << 16)));
+}
+
+static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos,
+					SDL_Surface * text)
 {
 	t_ivec2				tex;
 	int					y;
@@ -37,8 +55,7 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, SDL_Surface * text)
 		// TODO: avoid the division to speed this up
 		tex.y = ((d * text->w) / infos->line_height) / 256;
 		color = sdl_get_pixel(text, tex.x, tex.y);
-		if(infos->side == 1)
-			color = (color >> 1) & 0x7f7f7f;
+		color = dark_color(color, infos->depth_effect);
 		sdl->image[infos->x + y * sdl->width] = color;
 		y++;
 	}
@@ -82,17 +99,17 @@ static t_vec2	get_wall_texel(t_hit_infos *infos)
 	return (texel);
 }
 
-static t_color	get_cf_color(int text_id, t_vec2 curr_cf, int shadow)
+static t_color	get_cf_color(int text_id, t_vec2 curr_cf, t_hit_infos *infos)
 {
 	SDL_Surface *text;
 	t_ivec2		tex;
+	t_color		color;
 
 	text = sdl_get_texture(text_id);
 	tex.x = (int)(curr_cf.x * text->w) % text->w;
 	tex.y = (int)(curr_cf.y * text->h) % text->h;
-	if (shadow)
-		return ((sdl_get_pixel(text, tex.x, tex.y) >> 1) & 0x7f7f7f);
-	return (sdl_get_pixel(text, tex.x, tex.y));
+	color = sdl_get_pixel(text, tex.x, tex.y);
+	return (color);
 }
 
 static void		draw_cf_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
@@ -109,9 +126,9 @@ static void		draw_cf_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 		weight = cam->lookup_table[y] / infos->z;
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
-		color = get_cf_color(3, curr_cf, 1);
+		color = get_cf_color(3, curr_cf, infos);
 		sdl->image[infos->x + y * sdl->width] = color;
-		color = get_cf_color(5, curr_cf, 0);
+		color = get_cf_color(5, curr_cf, infos);
 		sdl->image[infos->x + ((int)sdl->height - y) * sdl->width] = color;
 
 		y++;

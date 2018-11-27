@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/22 17:26:48 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 15:22:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ int			sdl_create_buffer(t_sdl *sdl)
 	if ((sdl->image = (t_color *)malloc(sdl->size_buffer)) == NULL)
 	{
 		ft_putendl("Image buffer cannot be created !");
+		return (ERROR);
+	}
+	if ((sdl->z_buffer = (t_float *)malloc(sdl->width * sizeof(t_float)))
+		== NULL)
+	{
+		ft_putendl("Z buffer cannot be created !");
 		return (ERROR);
 	}
 	return (SUCCESS);

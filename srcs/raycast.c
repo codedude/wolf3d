@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/26 19:12:13 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 16:05:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,34 @@ void	draw_line(t_sdl *sdl, int x, t_ivec2 range, int color)
 	}
 }
 
-void	render(t_sdl *sdl, t_cam *cam, t_map *map, t_ivec2 range)
+void	render(t_env *env, t_ivec2 range)
 {
 	int			x;
+	t_cam		*cam;
 	t_hit_infos	infos;
 
+	cam = &env->cam;
 	infos.ray.pos = cam->pos;
 	x = range.x;
 	while (x < range.y)
 	{
 		infos.map = VEC2_INIT(floor(cam->pos.x), floor(cam->pos.y));
 		infos.ray.dir = cam->dir + cam->plane *
-			(2.0 * x / (t_float)sdl->width - 1.0);
-		raycast(&infos, map, sdl, x);
-		rc_render(sdl, cam, map, &infos);
+			(2.0 * x / (t_float)env->sdl.width - 1.0);
+		infos.effect = EFFECT_DEPTH;
+		raycast(&infos, &env->map, &env->sdl, x);
+		if (env->effect > 0)
+		{
+			if (infos.z >= MAX_DEPTH)
+				infos.depth_effect = 0.0;
+			else
+				infos.depth_effect = 1.0 - (infos.z / MAX_DEPTH);
+		}
+		else if (infos.side == 1)
+			infos.depth_effect = 0.5;
+		else
+			infos.depth_effect = -1.0;
+		rc_render(&env->sdl, &env->cam, &env->map, &infos);
 		x++;
 	}
 }
@@ -92,7 +106,6 @@ int			start_render(void *data)
 
 	algo = (t_algo *)data;
 	env = algo->env;
-	render(&env->sdl, &env->cam, &env->map,
-		IVEC2_INIT((int)algo->start, (int)algo->end));
+	render(env, IVEC2_INIT((int)algo->start, (int)algo->end));
 	return (SUCCESS);
 }

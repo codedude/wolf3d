@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/26 19:14:24 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 14:57:14 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int				env_init(t_env *env, char *filename)
 		ft_putstr_fd("Can't init wolf\n", 2);
 		return (ERROR);
 	}
+	env->show_fps = 0;
 	return (SUCCESS);
 }
 

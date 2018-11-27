@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/26 17:33:40 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/27 15:27:11 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int				raycast(t_hit_infos *infos, t_map *map, t_sdl *sdl, int x)
 	else
 		infos->z = (infos->map.y - infos->ray.pos.y +
 				(1.0 - dist[STEP].y) / 2.0) / infos->ray.dir.y;
+	sdl->z_buffer[x] = infos->z;
 	infos->wall_x = get_wall_x(infos);
 	infos->x = x;
 	infos->line_height = (int)((t_float)sdl->height / infos->z);
