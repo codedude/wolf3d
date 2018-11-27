@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/27 18:26:25 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 21:25:46 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		}
 		else if (event->key.keysym.sym == SDLK_t)
 		{
-			env->cam.height = 60.0;
+			env->cam.height = (t_float)MAX_OFFSET;
 		}
 		else if (event->key.keysym.sym == SDLK_g)
 		{
@@ -96,7 +96,7 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		}
 		else if (event->key.keysym.sym == SDLK_b)
 		{
-			env->cam.height = -60.0;
+			env->cam.height = -(t_float)MAX_OFFSET;
 		}
 	}
 	else if (event->type == SDL_MOUSEMOTION)
@@ -107,6 +107,9 @@ int			manage_binds(SDL_Event *event, t_env *env)
     	env->cam.plane = vec_rotate(env->cam.plane,
 					env->cam.rot_speed *
 					(t_float)(event->motion.xrel * 0.33));
+		env->cam.height = clamp_float(
+						env->cam.height + -(t_float)event->motion.yrel * 2.5,
+						-MAX_OFFSET, MAX_OFFSET);
 	}
 	return (r);
 }

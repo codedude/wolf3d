@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/27 17:34:05 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/27 21:41:32 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make -C $(LIBFTD)
 	make -C $(LIBTPOOLD)
-	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $(NAME) # -fsanitize=address
+	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $(NAME) #-fsanitize=address
 	@echo "$(NAME) - compiled"
 
 %.o: %.c $(HEADER)

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 20:08:37 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 21:36:35 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define TEXLAST	{-1, NULL, NULL}
 # define TEX_COUNT	6
 
-# define MAX_OFFSET		240
+# define MAX_OFFSET		600
 # define MAX_DEPTH		18.0
 # define EFFECT_DEPTH	1
 
