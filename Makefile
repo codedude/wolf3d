@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/27 21:41:32 by jbulant          ###   ########.fr        #
+#    Updated: 2018/11/27 21:56:08 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ LIBFTD		=	libft
 LIBTPOOLD	=	libtpool
 SDLD		=	sdl
 
+LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
+				-lft -ltpool -lSDL2 -lSDL2_image -lm -lft
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
 	SDLLIBD		=	$(HOME)/.brew/lib
@@ -26,6 +28,7 @@ ifeq ($(UNAME_S),Darwin)
 else
 	SDLLIBD		=	/usr/lib/x86_64-linux-gnu
 	SDLINCD		=	/usr/include/SDL2
+	LDLIBS		+=	-pthread
 endif
 
 FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c map_parser.c \
@@ -38,8 +41,7 @@ OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD)
 LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g -O2
-LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
-				-lft -ltpool -lSDL2 -lSDL2_image -lm -lft
+
 
 HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h
 
