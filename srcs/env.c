@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 14:57:14 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 18:53:55 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ static t_float	*init_lu_table(int height)
 	t_float		*table;
 	int			y;
 
+	height += 0;
 	if (!(table = (t_float*)malloc(sizeof(*table) * height)))
 		return (NULL);
 	y = 0;
 	while (y < height)
 	{
-		table[y] = height / (2.0 * y - height);
+		table[y] = height / (2.0 * (y - 0) - height);
 		y++;
 	}
 	return (table);
@@ -42,6 +43,7 @@ static int		wolf_init(t_sdl *sdl, t_map *map, t_cam *cam, char *filename)
 	cam->mov_speed = 0.05;
 	cam->rot_speed = 0.016;
 	cam->acceleration = 0.0;
+	cam->height = 0.0;
 	if (!(cam->lookup_table = init_lu_table((int)sdl->height)))
 		return (ERROR);
 	return (SUCCESS);

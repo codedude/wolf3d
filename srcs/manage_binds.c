@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/27 16:11:43 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 18:26:25 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,18 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		else if (event->key.keysym.sym == SDLK_2)
 		{
 			env->effect = EFFECT_DEPTH;
+		}
+		else if (event->key.keysym.sym == SDLK_t)
+		{
+			env->cam.height = 60.0;
+		}
+		else if (event->key.keysym.sym == SDLK_g)
+		{
+			env->cam.height = 0.0;
+		}
+		else if (event->key.keysym.sym == SDLK_b)
+		{
+			env->cam.height = -60.0;
 		}
 	}
 	else if (event->type == SDL_MOUSEMOTION)

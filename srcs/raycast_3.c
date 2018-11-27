@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/27 16:09:34 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 18:53:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,26 @@ t_color		dark_color(t_color c, t_float step)
 	return ((t_color)(r | (g << 8) | (b << 16)));
 }
 
+t_float		compute_depth(int effect, int side, t_float z)
+{
+	t_float	depth_effect;
+
+	if (effect != 0)
+	{
+		if (z >= MAX_DEPTH)
+			depth_effect = 0.0;
+		else
+			depth_effect = 1.0 - (z / MAX_DEPTH);
+	}
+	else if (side == 1)
+		depth_effect = 0.5;
+	else
+		depth_effect = -1.0;
+	return (depth_effect);
+}
+
 static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos,
-					SDL_Surface * text)
+								SDL_Surface * text)
 {
 	t_ivec2				tex;
 	int					y;
@@ -51,11 +69,11 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos,
 	y = infos->draw_start;
 	while (y < infos->draw_end)
 	{
-		d = y * 256 - sdl->height * 128 + infos->line_height * 128;  //256 and 128 factors to avoid floats
-		// TODO: avoid the division to speed this up
-		tex.y = ((d * text->w) / infos->line_height) / 256;
-		color = sdl_get_pixel(text, tex.x, tex.y);
-		color = dark_color(color, infos->depth_effect);
+		tex.y = text->w * ((t_float)(y - infos->draw_start) / (t_float)(infos->draw_end - infos->draw_start));
+		color = dark_color(
+			sdl_get_pixel(text, tex.x, tex.y),
+			compute_depth(infos->effect, infos->side, infos->z)
+			);
 		sdl->image[infos->x + y * sdl->width] = color;
 		y++;
 	}
@@ -69,7 +87,6 @@ static void		render_wall(t_sdl *sdl, t_map *map, t_hit_infos *infos)
 	text_id = map->data[(int)infos->map.x][(int)infos->map.y] - 1;
 	text = sdl_get_texture(text_id);
 	draw_tex_line(sdl, infos, text);
-	//x coordinate on the texture
 }
 
 static t_vec2	get_wall_texel(t_hit_infos *infos)
@@ -99,7 +116,7 @@ static t_vec2	get_wall_texel(t_hit_infos *infos)
 	return (texel);
 }
 
-static t_color	get_cf_color(int text_id, t_vec2 curr_cf, t_hit_infos *infos)
+static t_color	get_cf_color(int text_id, t_vec2 curr_cf, t_float effect)
 {
 	SDL_Surface *text;
 	t_ivec2		tex;
@@ -108,9 +125,13 @@ static t_color	get_cf_color(int text_id, t_vec2 curr_cf, t_hit_infos *infos)
 	text = sdl_get_texture(text_id);
 	tex.x = (int)(curr_cf.x * text->w) % text->w;
 	tex.y = (int)(curr_cf.y * text->h) % text->h;
-	color = sdl_get_pixel(text, tex.x, tex.y);
+	color = dark_color(sdl_get_pixel(text, tex.x, tex.y), effect);
 	return (color);
 }
+
+/*
+** TODO : lookup table depth effect ?
+*/
 
 static void		draw_cf_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 					t_vec2 texel)
@@ -118,18 +139,33 @@ static void		draw_cf_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 	t_vec2		curr_cf;
 	double		weight;
 	int			y;
+	int			i;
 	t_color		color;
+	t_float		depth_effect;
 
 	y = infos->draw_end;
 	while (y < (int)sdl->height)
 	{
-		weight = cam->lookup_table[y] / infos->z;
+		weight = cam->lookup_table[y + 0] / infos->z;
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
-		color = get_cf_color(3, curr_cf, infos);
-		sdl->image[infos->x + y * sdl->width] = color;
-		color = get_cf_color(5, curr_cf, infos);
-		sdl->image[infos->x + ((int)sdl->height - y) * sdl->width] = color;
+		if (infos->effect != 0)
+		{
+			depth_effect = compute_depth(infos->effect, 0,
+				cam->lookup_table[y + 0]);
+		}
+		else
+			depth_effect = -1.0;
+		//floor
+		color = get_cf_color(3, curr_cf, depth_effect);
+		i = y;
+		if (i < (int)sdl->height && i >= infos->draw_end)
+			sdl->image[infos->x + i * sdl->width] = color;
+		//ceil
+		color = get_cf_color(5, curr_cf, depth_effect);
+		i = ((int)sdl->height - y);
+		if (i >= 0 && i < infos->draw_start)
+			sdl->image[infos->x + i * sdl->width] = color;
 
 		y++;
 	}

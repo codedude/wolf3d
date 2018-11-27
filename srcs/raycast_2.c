@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 15:27:11 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 17:38:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,20 +83,20 @@ static t_float	get_wall_x(t_hit_infos *infos)
 	return (wall_x - floor(wall_x));
 }
 
-static t_ivec2	init_draw(int line_height, t_sdl *sdl)
+static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam)
 {
 	t_ivec2		draw;
 
-	draw.x = -line_height / 2.0 + sdl->height / 2.0;
+	draw.x = (-line_height / 2.0 + sdl->height / 2.0) + cam->height;
 	if(draw.x < 0)
 		draw.x = 0;
-	draw.y = line_height / 2.0 + sdl->height / 2.0;
+	draw.y = (line_height / 2.0 + sdl->height / 2.0) + cam->height;
 	if(draw.y >= (int)sdl->height)
 		draw.y = sdl->height - 1;
 	return (draw);
 }
 
-int				raycast(t_hit_infos *infos, t_map *map, t_sdl *sdl, int x)
+int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 {
 	t_vec2	dist[3];
 	t_ivec2	draw;
@@ -111,11 +111,11 @@ int				raycast(t_hit_infos *infos, t_map *map, t_sdl *sdl, int x)
 	else
 		infos->z = (infos->map.y - infos->ray.pos.y +
 				(1.0 - dist[STEP].y) / 2.0) / infos->ray.dir.y;
-	sdl->z_buffer[x] = infos->z;
+	env->sdl.z_buffer[x] = infos->z;
 	infos->wall_x = get_wall_x(infos);
 	infos->x = x;
-	infos->line_height = (int)((t_float)sdl->height / infos->z);
-	draw = init_draw(infos->line_height, sdl);
+	infos->line_height = (int)((t_float)env->sdl.height / infos->z);
+	draw = init_draw(infos->line_height, &env->sdl, &env->cam);
 	infos->draw_start = draw.x;
 	infos->draw_end = draw.y;
 	return (infos->hit);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 16:09:51 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 18:27:00 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define TEXLAST	{-1, NULL, NULL}
 # define TEX_COUNT	6
 
+# define MAX_OFFSET		60
 # define MAX_DEPTH		18.0
 # define EFFECT_DEPTH	1
 
@@ -46,6 +47,7 @@ typedef struct		s_cam {
 	t_float			mov_speed;
 	t_float			acceleration;
 	t_float			rot_speed;
+	t_float			height;
 }					t_cam;
 
 typedef struct		s_env {
@@ -55,7 +57,6 @@ typedef struct		s_env {
 	t_cam			cam;
 	int				show_fps;
 	int				effect;
-
 }					t_env;
 
 typedef struct		s_algo {

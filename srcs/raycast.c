@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 16:05:34 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/27 17:19:20 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,8 @@ void	render(t_env *env, t_ivec2 range)
 		infos.map = VEC2_INIT(floor(cam->pos.x), floor(cam->pos.y));
 		infos.ray.dir = cam->dir + cam->plane *
 			(2.0 * x / (t_float)env->sdl.width - 1.0);
-		infos.effect = EFFECT_DEPTH;
-		raycast(&infos, &env->map, &env->sdl, x);
-		if (env->effect > 0)
-		{
-			if (infos.z >= MAX_DEPTH)
-				infos.depth_effect = 0.0;
-			else
-				infos.depth_effect = 1.0 - (infos.z / MAX_DEPTH);
-		}
-		else if (infos.side == 1)
-			infos.depth_effect = 0.5;
-		else
-			infos.depth_effect = -1.0;
+		infos.effect = env->effect;
+		raycast(&infos, &env->map, env, x);
 		rc_render(&env->sdl, &env->cam, &env->map, &infos);
 		x++;
 	}
