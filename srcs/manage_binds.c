@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/28 00:38:24 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/28 03:21:25 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,11 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		else if (event->key.keysym.sym == SDLK_3)
 			env->effect = EFFECT_FOG;
 		else if (event->key.keysym.sym == SDLK_4)
-			env->effect = EFFECT_OOZE;
+			env->effect = EFFECT_UNDERWATER;
+		else if (event->key.keysym.sym == SDLK_5)
+			env->effect = EFFECT_SEPIA;
+		else if (event->key.keysym.sym == SDLK_6)
+			env->effect = EFFECT_BLACKWHITE;
 	}
 	else if (event->type == SDL_MOUSEMOTION)
 	{

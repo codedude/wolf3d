@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/28 02:11:51 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/28 03:46:26 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,11 @@
 #include "env.h"
 #include "raycast.h"
 
-t_color		dark_color(t_color c, t_float step)
-{
-	t_color		r;
-	t_color		g;
-	t_color		b;
-
-	if (step < 0.0)
-		return (c);
-	r = c & 0xff;
-	g = (c & (0xff << 8)) >> 8;
-	b = (c & (0xff << 16)) >> 16;
-	r *= step;
-	g *= step;
-	b *= step;
-	return ((t_color)(r | (g << 8) | (b << 16)));
-}
-
 t_float		compute_depth(int effect, int side, t_float z)
 {
 	t_float	depth_effect;
 
-	if (effect != 0)
+	if (effect > 0)
 	{
 		if (z >= MAX_DEPTH)
 			depth_effect = 0.0;
@@ -51,6 +34,81 @@ t_float		compute_depth(int effect, int side, t_float z)
 	else
 		depth_effect = -1.0;
 	return (depth_effect);
+}
+
+t_color		dark_color(t_color color, int effect, int side, t_float z)
+{
+	t_color		c[3];
+	t_color		tmp[3];
+	t_float		step;
+
+	step = compute_depth(effect, side, z);
+	if (step < 0.0)
+		return (color);
+	c[0] = color & 0xff;
+	c[1] = (color & 0xff00) >> 8;
+	c[2] = (color & 0xff0000) >> 16;
+	if (effect == EFFECT_NONE)
+	{
+		c[0] *= step;
+		c[1] *= step;
+		c[2] *= step;
+	}
+	else if (effect == EFFECT_DEPTH)
+	{
+		c[0] *= step;
+		c[1] *= step;
+		c[2] *= step;
+	}
+	else if (effect == EFFECT_FOG)
+	{
+		if (step == 0.0)
+		{
+			c[0] = 153;
+			c[1] = 211;
+			c[2] = 137;
+		}
+		else
+		{
+			c[0] = c[0] * step + 153 * (1.0 - step);
+			c[1] = c[1] * step + 211 * (1.0 - step);
+			c[2] = c[2] * step + 137 * (1.0 - step);
+		}
+	}
+	else if (effect == EFFECT_UNDERWATER)
+	{
+		if (step == 0.0)
+		{
+			c[0] = 136;
+			c[1] = 210;
+			c[2] = 208;
+		}
+		else
+		{
+			c[0] = c[0] * (step / 2.0) + 136 * (1.0 - (step / 2.0));
+			c[1] = c[1] * (step / 2.0) + 210 * (1.0 - (step / 2.0));
+			c[2] = c[2] * (step / 2.0) + 208 * (1.0 - (step / 2.0));
+		}
+	}
+	else if (effect == EFFECT_BLACKWHITE)
+	{
+		c[0] = 0.21 * c[0] + 0.72 * c[1] + 0.07 * c[2];
+		c[1] = c[0];
+		c[2] = c[0];
+	}
+	else if (effect == EFFECT_SEPIA)
+	{
+		tmp[0] = c[0];
+		tmp[1] = c[1];
+		tmp[2] = c[2];
+		c[0] = clamp_i32(0.393 * tmp[0] + 0.769 * tmp[1] + 0.189 * tmp[2],
+			0, 255);
+		c[1] = clamp_i32(0.349 * tmp[0] + 0.686 * tmp[1] + 0.168 * tmp[2],
+			0, 255);
+		c[2] = clamp_i32(0.272 * tmp[0] + 0.534 * tmp[1] + 0.131 * tmp[2],
+			0, 255);
+	}
+	return ((t_color)(c[0] | (c[1] << 8) | (c[2] << 16)));
 }
 
 static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
@@ -72,10 +130,8 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	{
 		tex.y = text->h * ((t_float)((t_float)(y - cam->height) + half_height)
 			/ (t_float)(infos->line_height));
-		color = dark_color(
-			sdl_get_pixel(text, tex.x, tex.y),
-			compute_depth(infos->effect, infos->side, infos->z)
-			);
+		color = dark_color(sdl_get_pixel(text, tex.x, tex.y),
+			infos->effect, infos->side, infos->z);
 		sdl->image[infos->x + y * sdl->width] = color;
 		y++;
 	}
@@ -118,7 +174,8 @@ static t_vec2	get_wall_texel(t_hit_infos *infos)
 	return (texel);
 }
 
-static t_color	get_cf_color(int text_id, t_vec2 curr_cf, t_float effect)
+static t_color	get_cf_color(int text_id, t_vec2 curr_cf, int effect,
+							t_float z)
 {
 	SDL_Surface *text;
 	t_ivec2		tex;
@@ -127,7 +184,7 @@ static t_color	get_cf_color(int text_id, t_vec2 curr_cf, t_float effect)
 	text = sdl_get_texture(text_id);
 	tex.x = (int)(curr_cf.x * text->w) % text->w;
 	tex.y = (int)(curr_cf.y * text->h) % text->h;
-	color = dark_color(sdl_get_pixel(text, tex.x, tex.y), effect);
+	color = dark_color(sdl_get_pixel(text, tex.x, tex.y), effect, 0, z);
 	return (color);
 }
 
@@ -141,7 +198,6 @@ static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 	t_vec2		curr_cf;
 	double		weight;
 	int			y;
-	t_float		depth_effect;
 	t_float		lookup;
 
 	y = infos->draw_end;
@@ -151,12 +207,8 @@ static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 		weight = lookup / infos->z;
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
-		if (infos->effect != 0)
-			depth_effect = compute_depth(infos->effect, 0, lookup);
-		else
-			depth_effect = -1.0;
-		sdl->image[infos->x + y * sdl->width] = get_cf_color(6, curr_cf,
-															depth_effect);
+		sdl->image[infos->x + y * sdl->width] = get_cf_color(
+			3, curr_cf, infos->effect, lookup);
 		y++;
 	}
 }
@@ -167,7 +219,6 @@ static void		draw_ceil_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 	t_vec2		curr_cf;
 	double		weight;
 	int			y;
-	t_float		depth_effect;
 	t_float		lookup;
 
 	y = 0;
@@ -177,12 +228,8 @@ static void		draw_ceil_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 		weight = lookup / infos->z;
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
-		if (infos->effect != 0)
-			depth_effect = compute_depth(infos->effect, 0, lookup);
-		else
-			depth_effect = -1.0;
-		sdl->image[infos->x + y * sdl->width] = get_cf_color(6, curr_cf,
-															depth_effect);
+		sdl->image[infos->x + y * sdl->width] = get_cf_color(
+			5, curr_cf, infos->effect, lookup);
 		y++;
 	}
 }
