@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/28 03:46:26 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/28 18:52:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	if(infos->side == 1 && infos->ray.dir.y < 0)
 		tex.x = text->w - tex.x - 1;
 	y = infos->draw_start;
-	half_height = -(sdl->height / 2.0) + infos->line_height / 2.0;
+	half_height = -(sdl->height / 2.0) + infos->line_height / 2.0 + ((HALF_HEIGHT - cam->z) / infos->z);
 	while (y < infos->draw_end)
 	{
 		tex.y = text->h * ((t_float)((t_float)(y - cam->height) + half_height)
@@ -208,7 +208,7 @@ static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
 		sdl->image[infos->x + y * sdl->width] = get_cf_color(
-			3, curr_cf, infos->effect, lookup);
+			DEFAULT_FLOOR, curr_cf, infos->effect, lookup);
 		y++;
 	}
 }
@@ -229,7 +229,7 @@ static void		draw_ceil_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
 		sdl->image[infos->x + y * sdl->width] = get_cf_color(
-			5, curr_cf, infos->effect, lookup);
+			DEFAULT_CEIL, curr_cf, infos->effect, lookup);
 		y++;
 	}
 }

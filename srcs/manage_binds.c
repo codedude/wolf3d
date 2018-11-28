@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/28 03:21:25 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/28 18:50:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ t_float		player_speed(t_float speed, t_float acceleration, t_float factor)
 void		manage_down(const Uint8	*state, t_env *env)
 {
 	t_cam	*cam;
+	t_float	percent;
+
 
 	cam = &env->cam;
 	if (state[SDL_SCANCODE_A])
 	{
-		env->cam.pos = straf(&env->map, cam->pos, cam->dir,
+		cam->pos = straf(&env->map, cam->pos, cam->dir,
 			player_speed(cam->mov_speed, cam->acceleration, -0.75));
 	}
 	if (state[SDL_SCANCODE_D])
@@ -47,13 +49,29 @@ void		manage_down(const Uint8	*state, t_env *env)
 	}
 	if (state[SDL_SCANCODE_Q])
 	{
-      cam->dir = vec_rotate(cam->dir, -cam->rot_speed);
-      cam->plane = vec_rotate(cam->plane, -cam->rot_speed);
+		cam->dir = vec_rotate(cam->dir, -cam->rot_speed);
+		cam->plane = vec_rotate(cam->plane, -cam->rot_speed);
 	}
 	if (state[SDL_SCANCODE_E])
 	{
-      cam->dir = vec_rotate(cam->dir, cam->rot_speed);
-      cam->plane = vec_rotate(cam->plane, cam->rot_speed);
+		cam->dir = vec_rotate(cam->dir, cam->rot_speed);
+		cam->plane = vec_rotate(cam->plane, cam->rot_speed);
+	}
+	if (state[SDL_SCANCODE_LCTRL])
+	{
+		percent = WORLD_HEIGHT / 10.0;
+		if (cam->z > percent)
+		{
+			cam->z -= percent;
+		}
+	}
+	if (state[SDL_SCANCODE_SPACE])
+	{
+		percent = WORLD_HEIGHT / 10.0;
+		if (cam->z < WORLD_HEIGHT - percent)
+		{
+			cam->z += percent;
+		}
 	}
 }
 

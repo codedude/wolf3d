@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/28 03:17:00 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/28 18:51:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,13 @@
 
 # define TEX_BASE(x, y)	{(x), "textures/" y, NULL}
 # define TEXLAST	{-1, NULL, NULL}
-# define TEX_COUNT	9
+# define TEX_COUNT	15
+
+# define WORLD_HEIGHT 450
+# define HALF_HEIGHT (WORLD_HEIGHT / 2.0)
+
+# define DEFAULT_CEIL	10
+# define DEFAULT_FLOOR	11
 
 # define MAX_OFFSET		600
 # define MAX_DEPTH		16.0
@@ -53,6 +59,7 @@ typedef struct		s_cam {
 	t_float			acceleration;
 	t_float			rot_speed;
 	t_float			height;
+	t_float			z;
 }					t_cam;
 
 typedef struct		s_env {

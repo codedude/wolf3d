@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 16:18:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/28 01:55:19 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/28 16:01:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static t_textures	*sdl_get_textures(void)
 		TEX_BASE(3, "eagle.png"), TEX_BASE(4, "wood.png"),
 		TEX_BASE(5, "purplestone.png"), TEX_BASE(6, "colorstone.png"),
 		TEX_BASE(7, "test_cf.png"), TEX_BASE(8, "test_wall.png"),
+		TEX_BASE(9, "wood.jpg"), TEX_BASE(10, "bookshelf.png"),
+		TEX_BASE(11, "stone_ground.jpg"), TEX_BASE(12, "kitchen_tile_ground.jpg"),
+		TEX_BASE(13, "stone_wall.jpg"), TEX_BASE(14, "rock_wall.jpg"),
 		TEXLAST
 	};
 
