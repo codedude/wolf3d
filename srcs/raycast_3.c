@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/27 23:32:52 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/28 02:11:51 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 	y = infos->draw_end;
 	while (y < (int)sdl->height)
 	{
-		lookup = sdl->height / (2.0 * (y - cam->height) - sdl->height);
+		lookup = sdl->height / (2.0 * ((y + 1) - cam->height) - sdl->height);
 		weight = lookup / infos->z;
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
@@ -155,7 +155,7 @@ static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 			depth_effect = compute_depth(infos->effect, 0, lookup);
 		else
 			depth_effect = -1.0;
-		sdl->image[infos->x + y * sdl->width] = get_cf_color(3, curr_cf,
+		sdl->image[infos->x + y * sdl->width] = get_cf_color(6, curr_cf,
 															depth_effect);
 		y++;
 	}
@@ -181,7 +181,7 @@ static void		draw_ceil_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 			depth_effect = compute_depth(infos->effect, 0, lookup);
 		else
 			depth_effect = -1.0;
-		sdl->image[infos->x + y * sdl->width] = get_cf_color(5, curr_cf,
+		sdl->image[infos->x + y * sdl->width] = get_cf_color(6, curr_cf,
 															depth_effect);
 		y++;
 	}

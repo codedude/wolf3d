@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/27 23:51:18 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/28 02:07:16 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD)
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g3 #-O2
+LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g3 -O2
 
 
 HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h
@@ -78,4 +78,4 @@ rer:
 	make $(NAME)
 
 valg:
-	valgrind --leak-resolution=high --track-origins=yes ./$(NAME) map.w3d
+	valgrind --leak-resolution=low --track-origins=yes ./$(NAME) map.w3d

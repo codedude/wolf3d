@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 23:56:10 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/28 02:13:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam)
 {
 	t_ivec2		draw;
 
-	draw.x = (-line_height / 2.0 + sdl->height / 2.0) + cam->height;
+	draw.x = (int)floor(((t_float)-line_height / 2.0 + (t_float)sdl->height / 2.0) + (t_float)cam->height);
+	draw.y = (int)floor(((t_float)line_height / 2.0 + (t_float)sdl->height / 2.0) + (t_float)cam->height);
 	if (draw.x < 0)
 		draw.x = 0;
-	else if (draw.x >= (int)sdl->height)
-		draw.x = (int)sdl->height - 1;
-	draw.y = (line_height / 2.0 + sdl->height / 2.0) + cam->height;
-	if (draw.y >= (int)sdl->height)
-		draw.y = sdl->height - 1;
+	else if (draw.x > (int)sdl->height)
+		draw.x = (int)sdl->height;
+	if (draw.y > (int)sdl->height)
+		draw.y = sdl->height;
 	else if (draw.y < 0)
 		draw.y = 0;
 	return (draw);
@@ -118,7 +118,7 @@ int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 	env->sdl.z_buffer[x] = infos->z;
 	infos->wall_x = get_wall_x(infos);
 	infos->x = x;
-	infos->line_height = (int)((t_float)env->sdl.height / infos->z);
+	infos->line_height = (int)(env->sdl.height / infos->z);
 	draw = init_draw(infos->line_height, &env->sdl, &env->cam);
 	infos->draw_start = draw.x;
 	infos->draw_end = draw.y;

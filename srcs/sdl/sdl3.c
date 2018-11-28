@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 16:18:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/26 17:12:25 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/28 01:55:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 
 static t_textures	*sdl_get_textures(void)
 {
-	static t_textures	textures[TEX_COUNT + 1] = {
+	static t_textures	textures[] = {
 		TEX_BASE(1, "greystone.png"), TEX_BASE(2, "mossy.png"),
 		TEX_BASE(3, "eagle.png"), TEX_BASE(4, "wood.png"),
 		TEX_BASE(5, "purplestone.png"), TEX_BASE(6, "colorstone.png"),
+		TEX_BASE(7, "test_cf.png"), TEX_BASE(8, "test_wall.png"),
 		TEXLAST
 	};
 

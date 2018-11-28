@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/27 21:25:46 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/28 00:38:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,40 +75,26 @@ int			manage_binds(SDL_Event *event, t_env *env)
 			&& env->cam.acceleration == 0.0)
 			env->cam.acceleration = 0.25;
 		if (event->key.keysym.sym == SDLK_f)
-		{
 			env->show_fps = !env->show_fps;
-		}
 		else if (event->key.keysym.sym == SDLK_1)
-		{
 			env->effect = 0;
-		}
 		else if (event->key.keysym.sym == SDLK_2)
-		{
 			env->effect = EFFECT_DEPTH;
-		}
-		else if (event->key.keysym.sym == SDLK_t)
-		{
-			env->cam.height = (t_float)MAX_OFFSET;
-		}
-		else if (event->key.keysym.sym == SDLK_g)
-		{
-			env->cam.height = 0.0;
-		}
-		else if (event->key.keysym.sym == SDLK_b)
-		{
-			env->cam.height = -(t_float)MAX_OFFSET;
-		}
+		else if (event->key.keysym.sym == SDLK_3)
+			env->effect = EFFECT_FOG;
+		else if (event->key.keysym.sym == SDLK_4)
+			env->effect = EFFECT_OOZE;
 	}
 	else if (event->type == SDL_MOUSEMOTION)
 	{
-    	env->cam.dir = vec_rotate(env->cam.dir,
+		env->cam.dir = vec_rotate(env->cam.dir,
 					env->cam.rot_speed *
 					(t_float)(event->motion.xrel * 0.33));
-    	env->cam.plane = vec_rotate(env->cam.plane,
+		env->cam.plane = vec_rotate(env->cam.plane,
 					env->cam.rot_speed *
 					(t_float)(event->motion.xrel * 0.33));
 		env->cam.height = clamp_float(
-						env->cam.height + -(t_float)event->motion.yrel * 2.5,
+						env->cam.height + -(t_float)event->motion.yrel * 2.0,
 						-MAX_OFFSET, MAX_OFFSET);
 	}
 	return (r);

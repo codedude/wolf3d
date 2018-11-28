@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 23:58:07 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/28 01:55:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@
 
 # define TEX_BASE(x, y)	{(x), "textures/" y, NULL}
 # define TEXLAST	{-1, NULL, NULL}
-# define TEX_COUNT	6
+# define TEX_COUNT	9
 
-# define MAX_OFFSET		600
+# define MAX_OFFSET		500
 # define MAX_DEPTH		18.0
 # define EFFECT_DEPTH	1
+# define EFFECT_FOG		1
+# define EFFECT_OOZE	1
 
 
 typedef struct		s_map {
