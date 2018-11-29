@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/28 18:52:13 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 12:41:31 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,97 +18,71 @@
 #include "env.h"
 #include "raycast.h"
 
-t_float		compute_depth(int effect, int side, t_float z)
+t_float		compute_depth(t_float z)
 {
-	t_float	depth_effect;
-
-	if (effect > 0)
-	{
-		if (z >= MAX_DEPTH)
-			depth_effect = 0.0;
-		else
-			depth_effect = 1.0 - (z / MAX_DEPTH);
-	}
-	else if (side == 1)
-		depth_effect = 0.5;
+	if (z >= MAX_DEPTH)
+		return (0.0);
 	else
-		depth_effect = -1.0;
-	return (depth_effect);
+		return (1.0 - (z / MAX_DEPTH));
 }
 
 t_color		dark_color(t_color color, int effect, int side, t_float z)
 {
-	t_color		c[3];
-	t_color		tmp[3];
-	t_float		step;
+	t_vec3		c;
+	t_vec3		c_tmp;
+	t_float		depth;
 
-	step = compute_depth(effect, side, z);
-	if (step < 0.0)
-		return (color);
-	c[0] = color & 0xff;
-	c[1] = (color & 0xff00) >> 8;
-	c[2] = (color & 0xff0000) >> 16;
-	if (effect == EFFECT_NONE)
+
+	c[0] = (t_float)(color & 0xff);
+	c[1] = (t_float)((color & 0xff00) >> 8);
+	c[2] = (t_float)((color & 0xff0000) >> 16);
+	depth = compute_depth(z);
+	if (side == 1 && effect & EFFECT_SIDE)
+		c *= 0.66;
+	if (effect & EFFECT_DEPTH)
 	{
-		c[0] *= step;
-		c[1] *= step;
-		c[2] *= step;
+		if (depth == 0.0)
+			c = VEC3_ZERO;
+		else
+			c *= depth;
 	}
-	else if (effect == EFFECT_DEPTH)
+	else if (effect & EFFECT_FOG)
 	{
-		c[0] *= step;
-		c[1] *= step;
-		c[2] *= step;
+		c_tmp = VEC3_INIT(153.0, 211.0, 137.0);
+		if (depth == 0.0)
+			c = c_tmp;
+		else
+			c = c * depth + c_tmp * (1.0 - depth);
 	}
-	else if (effect == EFFECT_FOG)
+	else if (effect & EFFECT_WATER)
 	{
-		if (step == 0.0)
-		{
-			c[0] = 153;
-			c[1] = 211;
-			c[2] = 137;
-		}
+		c_tmp = VEC3_INIT(136.0, 210.0, 208.0);
+		if (depth == 0.0)
+			c = c_tmp;
 		else
 		{
-			c[0] = c[0] * step + 153 * (1.0 - step);
-			c[1] = c[1] * step + 211 * (1.0 - step);
-			c[2] = c[2] * step + 137 * (1.0 - step);
+			depth /= 2.0;
+			c = c * depth + c_tmp * (1.0 - depth);
 		}
 	}
-	else if (effect == EFFECT_UNDERWATER)
+ 	if (effect & EFFECT_BAW)
 	{
-		if (step == 0.0)
-		{
-			c[0] = 136;
-			c[1] = 210;
-			c[2] = 208;
-		}
-		else
-		{
-			c[0] = c[0] * (step / 2.0) + 136 * (1.0 - (step / 2.0));
-			c[1] = c[1] * (step / 2.0) + 210 * (1.0 - (step / 2.0));
-			c[2] = c[2] * (step / 2.0) + 208 * (1.0 - (step / 2.0));
-		}
-	}
-	else if (effect == EFFECT_BLACKWHITE)
-	{
-		c[0] = 0.21 * c[0] + 0.72 * c[1] + 0.07 * c[2];
+		c = c * VEC3_INIT(0.21, 0.72, 0.07);
+		c[0] = c[0] + c[1] + c[2];
 		c[1] = c[0];
 		c[2] = c[0];
 	}
-	else if (effect == EFFECT_SEPIA)
+	else if (effect & EFFECT_SEPIA)
 	{
-		tmp[0] = c[0];
-		tmp[1] = c[1];
-		tmp[2] = c[2];
-		c[0] = clamp_i32(0.393 * tmp[0] + 0.769 * tmp[1] + 0.189 * tmp[2],
-			0, 255);
-		c[1] = clamp_i32(0.349 * tmp[0] + 0.686 * tmp[1] + 0.168 * tmp[2],
-			0, 255);
-		c[2] = clamp_i32(0.272 * tmp[0] + 0.534 * tmp[1] + 0.131 * tmp[2],
-			0, 255);
+		c = VEC3_INIT(
+			clamp_float(0.393 * c[0] + 0.769 * c[1] + 0.189 * c[2], 0.0, 255.0),
+			clamp_float(0.349 * c[0] + 0.686 * c[1] + 0.168 * c[2], 0.0, 255.0),
+			clamp_float(0.272 * c[0] + 0.534 * c[1] + 0.131 * c[2], 0.0, 255.0)
+		);
 	}
-	return ((t_color)(c[0] | (c[1] << 8) | (c[2] << 16)));
+	return ((t_color)(
+		(t_color)c[0] | ((t_color)c[1] << 8) | ((t_color)c[2] << 16))
+	);
 }
 
 static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
@@ -128,8 +102,10 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	half_height = -(sdl->height / 2.0) + infos->line_height / 2.0 + ((HALF_HEIGHT - cam->z) / infos->z);
 	while (y < infos->draw_end)
 	{
-		tex.y = text->h * ((t_float)((t_float)(y - cam->height) + half_height)
-			/ (t_float)(infos->line_height));
+		tex.y = (int)fabs(text->h * (((t_float)y - cam->height + half_height)
+			/ (t_float)(infos->line_height)));
+		if (tex.y < 0)
+			printf("%d\n", tex.y);
 		color = dark_color(sdl_get_pixel(text, tex.x, tex.y),
 			infos->effect, infos->side, infos->z);
 		sdl->image[infos->x + y * sdl->width] = color;

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/28 18:50:48 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 12:24:59 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,24 @@ void		manage_down(const Uint8	*state, t_env *env)
 	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
-		percent = WORLD_HEIGHT / 10.0;
+		percent = WORLD_HEIGHT / 5.0;
 		if (cam->z > percent)
-		{
 			cam->z -= percent;
-		}
 	}
 	if (state[SDL_SCANCODE_SPACE])
 	{
-		percent = WORLD_HEIGHT / 10.0;
+		percent = WORLD_HEIGHT / 5.0;
 		if (cam->z < WORLD_HEIGHT - percent)
-		{
 			cam->z += percent;
-		}
 	}
+}
+
+int			switch_effect(int current, int new, int mask)
+{
+	if (current & mask && !(current & new))
+		return ((current & ~mask) ^ new);
+	else
+		return (current ^ new);
 }
 
 int			manage_binds(SDL_Event *event, t_env *env)
@@ -95,17 +99,25 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		if (event->key.keysym.sym == SDLK_f)
 			env->show_fps = !env->show_fps;
 		else if (event->key.keysym.sym == SDLK_1)
-			env->effect = 0;
+			env->effect = switch_effect(env->effect, EFFECT_SIDE,
+				EFFECT_MASK);
 		else if (event->key.keysym.sym == SDLK_2)
-			env->effect = EFFECT_DEPTH;
+			env->effect = switch_effect(env->effect, EFFECT_DEPTH,
+				EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_3)
-			env->effect = EFFECT_FOG;
+			env->effect = switch_effect(env->effect, EFFECT_FOG,
+				EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_4)
-			env->effect = EFFECT_UNDERWATER;
+			env->effect = switch_effect(env->effect, EFFECT_WATER,
+				EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_5)
-			env->effect = EFFECT_SEPIA;
+			env->effect = switch_effect(env->effect, EFFECT_SEPIA,
+				EFFECT_MASK_FILTERS);
 		else if (event->key.keysym.sym == SDLK_6)
-			env->effect = EFFECT_BLACKWHITE;
+			env->effect = switch_effect(env->effect, EFFECT_BAW,
+				EFFECT_MASK_FILTERS);
+		else if (event->key.keysym.sym == SDLK_0)
+			env->effect = EFFECT_NONE;
 	}
 	else if (event->type == SDL_MOUSEMOTION)
 	{

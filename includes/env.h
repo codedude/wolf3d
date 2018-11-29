@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/28 18:51:33 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 12:12:41 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,16 @@
 
 # define MAX_OFFSET		600
 # define MAX_DEPTH		16.0
+# define EFFECT_MASK			0xff
+# define EFFECT_MASK_DEPTH		0xff00
+# define EFFECT_MASK_FILTERS	0xff0000
 # define EFFECT_NONE	0
-# define EFFECT_DEPTH	1
-# define EFFECT_FOG		2
-# define EFFECT_UNDERWATER	3
-# define EFFECT_SEPIA	4
-# define EFFECT_BLACKWHITE	5
+# define EFFECT_SIDE	0x01
+# define EFFECT_DEPTH	0x0100
+# define EFFECT_FOG		0x0200
+# define EFFECT_WATER	0x0400
+# define EFFECT_SEPIA	0x010000
+# define EFFECT_BAW		0x020000
 
 
 typedef struct		s_map {
