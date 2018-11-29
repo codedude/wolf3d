@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/28 02:07:29 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/29 13:22:31 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ LIBFT_SRCS	+= $(MATHD)/ft_sqrt.c $(MATHD)/ft_find_next_prime.c \
 			$(MATHD)/ft_power.c $(MATHD)/ft_factorial.c
 LIBFT_SRCS	+= $(CONVERTD)/ft_atoi_base.c $(CONVERTD)/ft_atoi_s.c \
 			$(CONVERTD)/ft_itoa.c $(CONVERTD)/ft_atoi.c $(CONVERTD)/ft_clamp.c \
-			$(CONVERTD)/ft_atof_s.c $(CONVERTD)/ft_clamp_vec.c
+			$(CONVERTD)/ft_atof_s.c
 LIBFT_SRCS	+= $(ASCIID)/ft_toupper.c $(ASCIID)/ft_islower.c \
 			$(ASCIID)/ft_isgraph.c $(ASCIID)/ft_isupper.c \
 			$(ASCIID)/ft_isspace.c $(ASCIID)/ft_isdigit.c \
@@ -79,8 +79,8 @@ LIBFT_SRCS	+= $(LISTD)/ft_lstnew.c $(LISTD)/ft_lstdelone.c \
 LIBFT_SRCS	+= $(INPUTD)/ft_gnl.c
 
 OBJS		= $(patsubst %.c, %.o, $(LIBFT_SRCS))
-LDFLAGS		+= -Werror -Wall -Wextra -Wno-unused-result
-CFLAGS		+= -I$(INCD) -g3 -O2
+LDFLAGS		+= -Werror -Wall -Wextra -Wno-unused-result -ansi -pedantic
+CFLAGS		+= -I$(INCD) -O3 -g #-flto
 
 HEADER		=	$(INCD)/libft.h $(INCD)/ft_type.h $(INCD)/ft_list.h \
 				$(INCD)/ft_input.h $(INCD)/ft_math.h
@@ -90,14 +90,14 @@ HEADER		=	$(INCD)/libft.h $(INCD)/ft_type.h $(INCD)/ft_list.h \
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@ar rs $@ $(OBJS)
+	@llvm-ar rs $@ $(OBJS)
 	@echo "libft - compiled"
 
 %.o: %.c $(HEADER)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $<
 
 showlib: $(NAME)
-	@ar -t $(NAME)
+	@llvm-ar -t $(NAME)
 
 clean:
 	@rm -f $(OBJS)

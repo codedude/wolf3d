@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/29 12:41:31 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 13:05:59 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "SDL.h"
 #include "env.h"
 #include "raycast.h"
+#include "types.h"
 
 t_float		compute_depth(t_float z)
 {

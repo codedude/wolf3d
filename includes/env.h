@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 12:12:41 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 13:05:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "libft.h"
 # include "libtpool.h"
 # include "sdl_m.h"
-# include "ft_type.h"
+# include "types.h"
 
 # define THREADS		0
 # define TASKS			16

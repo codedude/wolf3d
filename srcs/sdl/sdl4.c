@@ -6,13 +6,14 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:20:25 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 14:56:18 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 13:07:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include "SDL.h"
 #include "libft.h"
+#include "types.h"
 
 t_color	sdl_get_pixel(SDL_Surface *surface, int x, int y)
 {

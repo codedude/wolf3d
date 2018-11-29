@@ -6,13 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/20 17:58:31 by vparis            #+#    #+#             */
-/*   Updated: 2018/03/20 17:58:48 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 13:03:54 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static inline int	ft_atoi_s_sign(char c)
+static int			ft_atoi_s_sign(char c)
 {
 	if (c == '-')
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 12:29:20 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 13:05:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "sdl_m.h"
 #include "env.h"
 #include "raycast.h"
+#include "types.h"
 
 static void	raycast_init(t_vec2 dist[3], t_hit_infos *infos)
 {

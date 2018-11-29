@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/28 17:38:29 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 13:05:54 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "SDL.h"
 #include "env.h"
 #include "raycast.h"
+#include "types.h"
 
 t_vec2	allow_move(t_map *map, t_vec2 from, t_vec2 to, t_vec2 calc)
 {

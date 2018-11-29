@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/29 12:54:28 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/29 13:23:06 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ LIBTPOOLD	=	libtpool
 SDLD		=	sdl
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
-				-lft -ltpool -lSDL2 -lSDL2_image -lm -lft
+				-lm -lSDL2 -lSDL2_image \
+				libft/libft.a libtpool/libtpool.a libft/libft.a
+#-lft -ltpool
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
 	SDLLIBD		=	$(HOME)/.brew/lib
@@ -32,15 +34,15 @@ else
 endif
 
 FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c map_parser.c \
-				manage_binds.c
+				manage_binds.c types.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-				-I$(INCD)
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -g3 -O2
+				-I$(INCD) -O2 -g3 #-flto
+LDFLAGS		+=	-Wextra -Wall -Wno-unused-result
 
 
 HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h

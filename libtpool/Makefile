@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/28 02:07:21 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/29 13:22:21 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ SRCS		=	$(SRCD)/tp_queue.c $(SRCD)/tp_thread.c \
 				$(SRCD)/tp_pool.c $(SRCD)/tp_pool2.c
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
-CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -g3 -O2
-LDFLAGS		+=	-Wall -Wextra -Werror -Wno-unused-result
+CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -O3 -g #-flto
+LDFLAGS		+=	-Wall -Wextra -Werror -Wno-unused-result -ansi -pedantic
 LDLIBS		+=
 
 HEADER		=	$(INCD)/libtpool.h
@@ -32,14 +32,14 @@ HEADER		=	$(INCD)/libtpool.h
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@ar rs $@ $(OBJS)
+	@llvm-ar rs $@ $(OBJS)
 	@echo "libtpool - compiled"
 
 %.o: %.c $(HEADER)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $< $(LDLIBS)
 
 showlib: $(NAME)
-	@ar -t $(NAME)
+	@llvm-ar -t $(NAME)
 
 clean:
 	@rm -f $(OBJS)
