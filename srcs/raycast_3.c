@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/29 19:30:49 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 23:25:20 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,35 +167,30 @@ static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 					t_vec2 texel)
 {
 	t_vec2		curr_cf;
+	t_float		lookup;
 	t_float		weight_x;
 	t_float		weight_y;
-	t_float		lookup_x;
-	t_float		lookup_y;
 	int			y;
 
 	y = infos->draw_end;
 	while (y < (int)sdl->height)
 	{
-		lookup_x = sdl->height / (
+		//keep the y + 1 here ?
+		lookup = sdl->height / (
 			(2.0 *
-			((y + 1) - cam->height)
+			(y - cam->height)
 			- sdl->height
 			)
 		);
-		lookup_y = sdl->height / (
-			(2.0 *
-			((y + 1) - cam->height)
-			- sdl->height
-			)
-		);
-		// printf("%f\n", lookup_x);
 		// weight * factor = zoom texture
-		weight_x = (lookup_x / infos->z);
-		weight_y = (lookup_y / infos->z);
-		curr_cf.x = weight_x * texel.x + (1.0 - weight_x) * infos->ray.pos.x;
-		curr_cf.y = weight_y * texel.y + (1.0 - weight_y) * infos->ray.pos.y;
+		weight_x = (lookup / infos->z) * (cam->z) / WORLD_HEIGHT;
+		weight_y = (lookup / infos->z) * (cam->z) / WORLD_HEIGHT;
+		curr_cf.x = weight_x * texel.x + (1.0 + cam->z - weight_x)
+			* infos->ray.pos.x;
+		curr_cf.y = weight_y * texel.y + (1.0 + cam->z - weight_y)
+			* infos->ray.pos.y;
 		sdl->image[infos->x + y * sdl->width] = get_cf_color(
-			DEFAULT_FLOOR, curr_cf, infos->effect, lookup_x);
+			DEFAULT_FLOOR, curr_cf, infos->effect, lookup);
 		y++;
 	}
 }
@@ -211,11 +206,12 @@ static void		draw_ceil_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 	y = 0;
 	while (y < infos->draw_start)
 	{
-		lookup = sdl->height / fabs(2.0 * (y - cam->height) - sdl->height
-			+ (HALF_HEIGHT - cam->z));
+		lookup = sdl->height / fabs(2.0 * (y - cam->height) - sdl->height);
 		weight = lookup / infos->z;
-		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
-		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
+		curr_cf.x = weight * texel.x + (1.0 + cam->z - weight)
+			* infos->ray.pos.x;
+		curr_cf.y = weight * texel.y + (1.0 + cam->z - weight)
+			* infos->ray.pos.y;
 		sdl->image[infos->x + y * sdl->width] = get_cf_color(
 			DEFAULT_CEIL, curr_cf, infos->effect, lookup);
 		y++;

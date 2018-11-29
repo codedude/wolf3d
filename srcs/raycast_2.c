@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 13:05:50 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 23:04:51 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,16 @@ static t_float	get_wall_x(t_hit_infos *infos)
 	return (wall_x - floor(wall_x));
 }
 
-static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam, t_float z)
+static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam,
+							t_hit_infos *infos)
 {
 	t_ivec2		draw;
 	int			sdl_height;
 
 	sdl_height = (int)sdl->height;
-	draw.y = (int)((line_height + sdl_height) / 2.0
-		- ((HALF_HEIGHT - cam->z) / z)
+	draw.y = (int)(
+		(line_height + sdl_height) / 2.0
+		- (HALF_HEIGHT - cam->z) / infos->z
 		+ cam->height);
 	draw.x = draw.y - line_height;
 	if (draw.x < 0)
@@ -124,7 +126,7 @@ int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 	infos->wall_x = get_wall_x(infos);
 	infos->x = x;
 	infos->line_height = (int)((env->sdl.height) / infos->z);
-	draw = init_draw(infos->line_height, &env->sdl, &env->cam, infos->z);
+	draw = init_draw(infos->line_height, &env->sdl, &env->cam, infos);
 	infos->draw_start = draw.x;
 	infos->draw_end = draw.y;
 	return (infos->hit);

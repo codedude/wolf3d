@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 13:06:19 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 22:42:40 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct			s_hit_info {
 	t_vec2				map;
 	t_float				z;
 	t_float				wall_x;
+	int					offset;
 	int					line_height;
 	int					draw_start;
 	int					draw_end;
