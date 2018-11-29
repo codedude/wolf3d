@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/29 13:05:59 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 19:30:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	{
 		tex.y = (int)fabs(text->h * (((t_float)y - cam->height + half_height)
 			/ (t_float)(infos->line_height)));
-		if (tex.y < 0)
-			printf("%d\n", tex.y);
 		color = dark_color(sdl_get_pixel(text, tex.x, tex.y),
 			infos->effect, infos->side, infos->z);
 		sdl->image[infos->x + y * sdl->width] = color;
@@ -165,27 +163,39 @@ static t_color	get_cf_color(int text_id, t_vec2 curr_cf, int effect,
 	return (color);
 }
 
-/*
-** TODO : lookup table depth effect ?
-*/
-
 static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 					t_vec2 texel)
 {
 	t_vec2		curr_cf;
-	double		weight;
+	t_float		weight_x;
+	t_float		weight_y;
+	t_float		lookup_x;
+	t_float		lookup_y;
 	int			y;
-	t_float		lookup;
 
 	y = infos->draw_end;
 	while (y < (int)sdl->height)
 	{
-		lookup = sdl->height / (2.0 * ((y + 1) - cam->height) - sdl->height);
-		weight = lookup / infos->z;
-		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
-		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
+		lookup_x = sdl->height / (
+			(2.0 *
+			((y + 1) - cam->height)
+			- sdl->height
+			)
+		);
+		lookup_y = sdl->height / (
+			(2.0 *
+			((y + 1) - cam->height)
+			- sdl->height
+			)
+		);
+		// printf("%f\n", lookup_x);
+		// weight * factor = zoom texture
+		weight_x = (lookup_x / infos->z);
+		weight_y = (lookup_y / infos->z);
+		curr_cf.x = weight_x * texel.x + (1.0 - weight_x) * infos->ray.pos.x;
+		curr_cf.y = weight_y * texel.y + (1.0 - weight_y) * infos->ray.pos.y;
 		sdl->image[infos->x + y * sdl->width] = get_cf_color(
-			DEFAULT_FLOOR, curr_cf, infos->effect, lookup);
+			DEFAULT_FLOOR, curr_cf, infos->effect, lookup_x);
 		y++;
 	}
 }
@@ -194,14 +204,15 @@ static void		draw_ceil_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 					t_vec2 texel)
 {
 	t_vec2		curr_cf;
-	double		weight;
-	int			y;
+	t_float		weight;
 	t_float		lookup;
+	int			y;
 
 	y = 0;
 	while (y < infos->draw_start)
 	{
-		lookup = sdl->height / fabs(2.0 * (y - cam->height) - sdl->height);
+		lookup = sdl->height / fabs(2.0 * (y - cam->height) - sdl->height
+			+ (HALF_HEIGHT - cam->z));
 		weight = lookup / infos->z;
 		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
@@ -217,7 +228,7 @@ static void		render_floor(t_sdl *sdl, t_cam *cam, t_hit_infos *infos)
 
 	texel = get_wall_texel(infos);
 	draw_floor_line(sdl, cam, infos, texel);
-	draw_ceil_line(sdl, cam, infos, texel);
+	//draw_ceil_line(sdl, cam, infos, texel);
 }
 
 void		rc_render(t_sdl *sdl, t_cam *cam, t_map *map, t_hit_infos *infos)

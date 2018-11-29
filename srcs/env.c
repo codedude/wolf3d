@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 11:52:11 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 16:26:11 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int				env_init(t_env *env, char *filename)
 		return (ERROR);
 	}
 	env->show_fps = 0;
-	env->effect = EFFECT_SIDE | EFFECT_DEPTH;
+	env->effect = EFFECT_NONE;
 	return (SUCCESS);
 }
 

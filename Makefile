@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/29 13:23:06 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/29 15:28:57 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SDLD		=	sdl
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image \
 				libft/libft.a libtpool/libtpool.a libft/libft.a
-#-lft -ltpool
+
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
 	SDLLIBD		=	$(HOME)/.brew/lib
@@ -45,7 +45,8 @@ CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 LDFLAGS		+=	-Wextra -Wall -Wno-unused-result
 
 
-HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h
+HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h \
+				$(INCD)/types.h
 
 .PHONY: clean fclean re rer valg
 

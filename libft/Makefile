@@ -6,12 +6,19 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/29 13:22:31 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/29 15:21:07 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= libft.a
 CC			= clang
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	AR		= ar
+else
+	AR		= llvm-ar
+endif
 
 SRCD		= srcs
 INCD		= includes
@@ -90,14 +97,14 @@ HEADER		=	$(INCD)/libft.h $(INCD)/ft_type.h $(INCD)/ft_list.h \
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@llvm-ar rs $@ $(OBJS)
+	@$(AR) rs $@ $(OBJS)
 	@echo "libft - compiled"
 
 %.o: %.c $(HEADER)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $<
 
 showlib: $(NAME)
-	@llvm-ar -t $(NAME)
+	@$(AR) -t $(NAME)
 
 clean:
 	@rm -f $(OBJS)

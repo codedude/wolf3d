@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 13:05:37 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 18:18:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define WORLD_HEIGHT 450
 # define HALF_HEIGHT (WORLD_HEIGHT / 2.0)
 
-# define DEFAULT_CEIL	10
+# define DEFAULT_CEIL	11
 # define DEFAULT_FLOOR	11
 
 # define MAX_OFFSET		600

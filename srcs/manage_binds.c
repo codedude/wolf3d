@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/29 12:24:59 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/29 17:32:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ void		manage_down(const Uint8	*state, t_env *env)
 	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
-		percent = WORLD_HEIGHT / 5.0;
+		percent = WORLD_HEIGHT / 20.0;
 		if (cam->z > percent)
 			cam->z -= percent;
 	}
 	if (state[SDL_SCANCODE_SPACE])
 	{
-		percent = WORLD_HEIGHT / 5.0;
+		percent = WORLD_HEIGHT / 20.0;
 		if (cam->z < WORLD_HEIGHT - percent)
 			cam->z += percent;
 	}
