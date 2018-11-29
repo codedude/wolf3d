@@ -53,3 +53,5 @@ dkms.conf
 
 # Program name
 wolf3d
+
+.DS_Store

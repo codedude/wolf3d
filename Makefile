@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/29 12:34:50 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/29 12:54:28 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,4 +78,4 @@ rer:
 	make $(NAME)
 
 valg:
-	valgrind --leak-resolution=high --track-origins=yes ./$(NAME) map.w3d
+	valgrind --show-leak-kinds=all --leak-resolution=high --track-origins=yes ./$(NAME) map.w3d
