@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/30 02:35:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/30 12:59:06 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 #include "sdl_m.h"
 #include "raycast.h"
 
-t_float		player_speed(t_float speed, t_float acceleration, t_float factor)
+t_float		player_speed(int action_state, t_float speed,
+					t_float acceleration, t_float factor)
 {
+	if (action_state & ACTION_CROUCHING)
+		factor *= 0.6;
 	return ((speed + acceleration) * factor);
 }
 
@@ -24,29 +27,43 @@ void		manage_down(const Uint8	*state, t_env *env)
 {
 	t_cam	*cam;
 	t_float	percent;
+	int		is_walking;
 
 
 	cam = &env->cam;
+	is_walking = False;
 	if (state[SDL_SCANCODE_A])
 	{
+		is_walking = True;
 		cam->pos = straf(&env->map, cam->pos, cam->dir,
-			player_speed(cam->mov_speed, cam->acceleration, -0.75));
+			player_speed(cam->action_state, cam->mov_speed,
+					cam->acceleration, -0.75));
 	}
 	if (state[SDL_SCANCODE_D])
 	{
+		is_walking = True;
 		cam->pos = straf(&env->map, cam->pos, cam->dir,
-			player_speed(cam->mov_speed, cam->acceleration, 0.75));
+			player_speed(cam->action_state, cam->mov_speed,
+					cam->acceleration, 0.75));
 	}
 	if (state[SDL_SCANCODE_W])
 	{
+		is_walking = True;
 		cam->pos = move_forward(&env->map, cam->pos, cam->dir,
-			player_speed(cam->mov_speed, cam->acceleration, 1.0));
+			player_speed(cam->action_state, cam->mov_speed,
+					cam->acceleration, 1.0));
 	}
 	if (state[SDL_SCANCODE_S])
 	{
+		is_walking = True;
 		cam->pos = move_forward(&env->map, cam->pos, cam->dir,
-			player_speed(cam->mov_speed, cam->acceleration, -0.75));
+			player_speed(cam->action_state, cam->mov_speed,
+					cam->acceleration, -0.75));
 	}
+	if (is_walking == True)
+		env->cam.action_state |= ACTION_WALKING;
+	else
+		env->cam.action_state &= ~ACTION_WALKING;
 	if (state[SDL_SCANCODE_Q])
 	{
 		cam->dir = vec_rotate(cam->dir, -cam->rot_speed);
@@ -59,15 +76,16 @@ void		manage_down(const Uint8	*state, t_env *env)
 	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
-		percent = env->sdl.height / 35;
-		// if (cam->z > percent)
-			cam->z -= percent;
+		cam->action_state |= ACTION_CROUCHING;
+		// percent = env->sdl.height / 35;
+		// cam->z_pos -= percent;
 	}
+	else
+		cam->action_state &= ~ACTION_CROUCHING;
 	if (state[SDL_SCANCODE_SPACE])
 	{
 		percent = env->sdl.height / 35;
-		// if (cam->z < WORLD_HEIGHT - percent)
-			cam->z += percent;
+		cam->z_pos += percent;
 	}
 }
 

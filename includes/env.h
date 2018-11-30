@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 00:31:38 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 12:56:42 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,19 @@ typedef struct		s_map {
 	int				height;
 }					t_map;
 
+# define ACTION_NONE		0b0
+# define ACTION_GROUNDED	0b0001// 0x1
+# define ACTION_WALKING		0b0010// 0x2
+# define ACTION_CROUCHING	0b0100// 0x4
+# define ANIM_WALK_UP		(0b0001 << 4)//0x10
+# define ANIM_WALK_DOWN		(0b0010 << 4)//0x20
+# define ANIM_WALK			(0b0011 << 4)//0x30
+
+# define ANIM_WALK_SPEED	3.5
+# define ANIM_WALK_HEIGHT	10	// wrong value, must be relative to sdl->height
+
+# define ANIM_CROUCH_SPEED	25.0
+
 typedef struct		s_cam {
 	t_float			*lookup_table;
 	t_vec2			pos;
@@ -64,6 +77,9 @@ typedef struct		s_cam {
 	t_float			rot_speed;
 	t_float			height;
 	t_float			z;
+	t_float			z_pos;
+	t_float			walk_anim;
+	int				action_state;
 }					t_cam;
 
 typedef struct		s_env {

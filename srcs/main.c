@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/27 15:19:44 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 12:55:59 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,72 @@ void	player_set_acceleration(t_cam *player)
 		if (player->acceleration > -0.005)
 			player->acceleration = 0.0;
 	}
+}
+
+void	player_set_walk_anim(t_cam *player)
+{
+	if (!(player->action_state & ANIM_WALK))
+		player->action_state |= ANIM_WALK_UP;
+	if (player->action_state & ANIM_WALK_UP)
+	{
+		player->walk_anim += ANIM_WALK_SPEED;
+		if (player->walk_anim > ANIM_WALK_HEIGHT)
+			player->action_state = (player->action_state
+						& ~ANIM_WALK_UP) | ANIM_WALK_DOWN;
+	}
+	else if (player->action_state & ANIM_WALK_DOWN)
+	{
+		player->walk_anim -= ANIM_WALK_SPEED;
+		if (player->walk_anim < -ANIM_WALK_HEIGHT)
+			player->action_state = (player->action_state
+						& ~ANIM_WALK_DOWN) | ANIM_WALK_UP;
+	}
+}
+
+void	player_disable_walk_anim(t_cam *player)
+{
+	if (player->walk_anim < 0.0)
+	{
+		player->walk_anim += ANIM_WALK_SPEED;
+		if (player->walk_anim > -0.001)
+		{
+			player->walk_anim = 0.0;
+			player->action_state &= ~ANIM_WALK;
+		}
+	}
+	else
+	{
+		player->walk_anim -= ANIM_WALK_SPEED;
+		if (player->walk_anim < -0.001)
+		{
+			player->walk_anim = 0.0;
+			player->action_state &= ~ANIM_WALK;
+		}
+	}
+}
+
+void	player_set_anim(t_cam *player, t_sdl *sdl)
+{
+	if (player->action_state & ACTION_WALKING)
+		player_set_walk_anim(player);
+	else if (player->walk_anim != 0.0)
+		player_disable_walk_anim(player);
+	if (player->action_state & ACTION_CROUCHING)
+	{
+		if (player->z_pos > sdl->height / 4.0)
+			player->z_pos -= ANIM_CROUCH_SPEED;
+	}
+	else if (player->z_pos < sdl->height / 2.0)
+	{
+		player->z_pos += ANIM_CROUCH_SPEED;
+		if (player->z_pos > (sdl->height / 2.0) - 0.001)
+			player->z_pos = sdl->height / 2.0;
+	}
+}
+
+void	player_set_z(t_cam *player)
+{
+	player->z = player->walk_anim + player->z_pos;
 }
 
 void	compute(t_env *env)
@@ -88,6 +154,8 @@ void	loop(t_env *env)
 		compute(env);
 		sdl_render(&env->sdl);
 		player_set_acceleration(&env->cam);
+		player_set_anim(&env->cam, &env->sdl);
+		player_set_z(&env->cam);
 		get_fps(env->show_fps);
 	}
 }
