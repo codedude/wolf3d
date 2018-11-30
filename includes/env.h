@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 13:30:39 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/30 16:46:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,12 @@
 # include "types.h"
 
 # define THREADS		0
-# define TASKS			16
+# define TASKS			32
 # define WINDOW_NAME	"DAT Wolf3D"
 
 # define TEX_BASE(x, y)	{(x), "textures/" y, NULL}
 # define TEXLAST	{-1, NULL, NULL}
 # define TEX_COUNT	15
-
-# define WORLD_HEIGHT 720
-# define HALF_HEIGHT (WORLD_HEIGHT / 2.0)
 
 # define DEFAULT_CEIL	11
 # define DEFAULT_FLOOR	11
@@ -45,7 +42,6 @@
 # define EFFECT_WATER	0x0400
 # define EFFECT_SEPIA	0x010000
 # define EFFECT_BAW		0x020000
-
 
 typedef struct		s_map {
 	int				**data;
@@ -69,8 +65,8 @@ typedef struct		s_map {
 # define ANIM_WALK_UP		(0b0001 << 4)//0x10
 # define ANIM_WALK_DOWN		(0b0010 << 4)//0x20
 # define ANIM_WALK			(0b0011 << 4)//0x30
-# define ANIM_WALK_SPEED	3.5
-# define ANIM_WALK_HEIGHT	10	// wrong value, must be relative to sdl->height
+# define ANIM_WALK_SPEED	2.2
+# define ANIM_WALK_HEIGHT	12	// wrong value, must be relative to sdl->height
 
 # define ANIM_CROUCH_SPEED	25.0
 
@@ -84,6 +80,7 @@ typedef struct		s_cam {
 	t_float			height;
 	t_float			z;
 	t_float			z_pos;
+	t_float			z_default;
 	t_float			jump_time;
 	t_float			walk_anim;
 	int				action_state;

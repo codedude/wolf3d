@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 23:04:51 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:43:54 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	raycast_init(t_vec2 dist[3], t_hit_infos *infos)
 	}
 }
 
-static int	raycast_compute(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
+static int	raycast_compute(t_vec2 dist[3], t_hit_infos *infos, int **map)
 {
 	int	hit;
 
@@ -67,66 +67,61 @@ static int	raycast_compute(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
 			infos->map.y += dist[STEP].y;
 			infos->side = 1;
 		}
-		if (map->data[(int)infos->map.x][(int)infos->map.y] > 0)
+		if (map[(int)infos->map.x][(int)infos->map.y] > 0)
 			hit = 1;
 	}
 	return (hit);
 }
 
-static t_float	get_wall_x(t_hit_infos *infos)
+static void		get_wall_xz(t_hit_infos *infos, t_vec2 dir, t_vec2 dist_step)
 {
 	t_float		wall_x;
+	t_float		z;
 
 	if (infos->side == 0)
-		wall_x = infos->ray.pos.y + infos->z * infos->ray.dir.y;
+	{
+		z = (infos->map.x - infos->ray.pos.x
+			+ (1.0 - dist_step.x) / 2.0) / dir.x;
+		wall_x = infos->ray.pos.y + z * dir.y;
+	}
 	else
-		wall_x = infos->ray.pos.x + infos->z * infos->ray.dir.x;
-	return (wall_x - floor(wall_x));
+	{
+		z = (infos->map.y - infos->ray.pos.y
+			+ (1.0 - dist_step.y) / 2.0) / dir.y;
+		wall_x = infos->ray.pos.x + z * dir.x;
+	}
+	infos->wall_x = wall_x - floor(wall_x);
+	infos->z = z;
 }
 
 static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam,
 							t_hit_infos *infos)
 {
 	t_ivec2		draw;
-	int			sdl_height;
 
-	sdl_height = (int)sdl->height;
 	draw.y = (int)(
-		(line_height + sdl_height) / 2.0
-		- (HALF_HEIGHT - cam->z) / infos->z
+		(line_height + sdl->height) / 2.0
+		- (sdl->half_canvas_h - cam->z) / infos->z
 		+ cam->height);
 	draw.x = draw.y - line_height;
-	if (draw.x < 0)
-		draw.x = 0;
-	else if (draw.x > sdl_height)
-		draw.x = sdl_height;
-	if (draw.y > sdl_height)
-		draw.y = sdl_height;
-	else if (draw.y < 0)
-		draw.y = 0;
-	return (draw);
+	return (clamp_ivec2(draw, 0, sdl->height));
 }
 
 int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 {
 	t_vec2	dist[3];
 	t_ivec2	draw;
+	t_vec2	dir;
 
-	dist[DELTA] = VEC2_INIT(fabs(1.0 / infos->ray.dir.x),
-		fabs(1.0 / infos->ray.dir.y));
+	dir = infos->ray.dir;
+	dist[DELTA] = VEC2_INIT(fabs(1.0 / dir.x), fabs(1.0 / dir.y));
 	raycast_init(dist, infos);
-	infos->hit = raycast_compute(dist, infos, map);
-	if (infos->side == 0)
-		infos->z = (infos->map.x - infos->ray.pos.x +
-				(1.0 - dist[STEP].x) / 2.0) / infos->ray.dir.x;
-	else
-		infos->z = (infos->map.y - infos->ray.pos.y +
-				(1.0 - dist[STEP].y) / 2.0) / infos->ray.dir.y;
-	env->sdl.z_buffer[x] = infos->z;
-	infos->wall_x = get_wall_x(infos);
-	infos->x = x;
-	infos->line_height = (int)((env->sdl.height) / infos->z);
+	infos->hit = raycast_compute(dist, infos, map->data);
+	get_wall_xz(infos, dir, dist[STEP]);
+	infos->line_height = (int)(env->sdl.canvas_h / infos->z);
 	draw = init_draw(infos->line_height, &env->sdl, &env->cam, infos);
+	env->sdl.z_buffer[x] = infos->z;
+	infos->x = x;
 	infos->draw_start = draw.x;
 	infos->draw_end = draw.y;
 	return (infos->hit);

@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/29 15:28:57 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/30 16:05:37 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,8 @@ SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-				-I$(INCD) -O2 -g3 #-flto
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result
+				-I$(INCD) -O3 -flto #-fsanitize=address
+LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
 
 
 HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h \
@@ -55,7 +55,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make -C $(LIBFTD)
 	make -C $(LIBTPOOLD)
-	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $(NAME) #-fsanitize=address
+	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $(NAME)
 	@echo "$(NAME) - compiled"
 
 %.o: %.c $(HEADER)

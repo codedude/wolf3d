@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 13:06:28 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:46:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,17 @@ typedef struct		s_textures {
 }					t_textures;
 
 typedef struct		s_sdl {
+	t_float			canvas_h;
+	t_float			half_canvas_h;
 	t_color			*image;
 	t_float			*z_buffer;
+	t_float			canvas_w;
+	int				width;
+	int				height;
+	int				size_line;
+	int				size_buffer;
 	SDL_Texture		*texture;
 	SDL_Renderer	*renderer;
-	size_t			width;
-	size_t			height;
-	size_t			size_line;
-	size_t			size_buffer;
 	SDL_Window		*window;
 }					t_sdl;
 

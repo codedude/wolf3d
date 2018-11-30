@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/30 13:33:46 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/30 14:48:45 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ void		manage_down(const Uint8	*state, t_env *env)
 	{
 		if (cam->action_state & ACTION_GROUNDED)
 			cam->action_state |= ACTION_CROUCHING;
-		// percent = env->sdl.height / 35;
-		// cam->z_pos -= percent;
 	}
 	else
 		cam->action_state &= ~ACTION_CROUCHING;
@@ -87,7 +85,7 @@ void		manage_down(const Uint8	*state, t_env *env)
 	{
 		if (cam->action_state & ACTION_FLY_MODE)
 		{
-			percent = env->sdl.height / 35;
+			percent = env->sdl.canvas_h / 33.33;
 			cam->z_pos += percent;
 		}
 		else if (cam->action_state & ACTION_GROUNDED)
@@ -150,7 +148,7 @@ int			manage_binds(SDL_Event *event, t_env *env)
 			if (env->cam.action_state & ACTION_FLY_MODE)
 			{
 				env->cam.action_state &= ~ACTION_FLY_MODE;
-				if (env->cam.z_pos > env->sdl.height / 2.0)
+				if (env->cam.z_pos > env->sdl.half_canvas_h)
 					env->cam.action_state =
 					(env->cam.action_state & ~ACTION_GROUNDED) | ACTION_FALLING;
 			}

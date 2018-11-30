@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/27 19:43:43 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 17:30:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ int			sdl_create_texture(t_sdl *sdl)
 
 int			sdl_create_buffer(t_sdl *sdl)
 {
-	sdl->size_line = sdl->width * sizeof(t_u32);
+	sdl->size_line = sdl->width * (int)sizeof(t_color);
 	sdl->size_buffer = sdl->height * sdl->size_line;
-	if ((sdl->image = (t_color *)malloc(sdl->size_buffer)) == NULL)
+	if ((sdl->image = (t_color *)malloc((size_t)sdl->size_buffer)) == NULL)
 	{
 		ft_putendl("Image buffer cannot be created !");
 		return (ERROR);
 	}
-	if ((sdl->z_buffer = (t_float *)malloc(sdl->width * sizeof(t_float)))
+	if ((sdl->z_buffer = (t_float *)malloc((size_t)sdl->width * sizeof(t_float)))
 		== NULL)
 	{
 		ft_putendl("Z buffer cannot be created !");
@@ -62,6 +62,9 @@ int			sdl_create_screen(t_sdl *sdl, int width, int height)
 {
 	sdl->width = width;
 	sdl->height = height;
+	sdl->canvas_h = (t_float)height;
+	sdl->canvas_w = (t_float)width;
+	sdl->half_canvas_h = sdl->canvas_h / 2.0;
 	if (sdl_create_renderer(sdl) == ERROR
 		|| sdl_create_texture(sdl) == ERROR
 		|| sdl_create_buffer(sdl) == ERROR)

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 13:05:54 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:30:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,6 @@ t_vec2	straf(t_map *map, t_vec2 from, t_vec2 to, t_float speed)
 	return (move_forward(map, from, to, speed));
 }
 
-void	draw_line(t_sdl *sdl, int x, t_ivec2 range, int color)
-{
-	int		i;
-
-	i = range.x;
-	while (i < range.y)
-	{
-		sdl->image[x + i * sdl->width] = color;
-		i++;
-	}
-}
-
 void	render(t_env *env, t_ivec2 range)
 {
 	int			x;
@@ -82,7 +70,8 @@ void	render(t_env *env, t_ivec2 range)
 	{
 		infos.map = VEC2_INIT(floor(cam->pos.x), floor(cam->pos.y));
 		infos.ray.dir = cam->dir + cam->plane *
-			(2.0 * x / (t_float)env->sdl.width - 1.0);
+			((x << 1) / env->sdl.canvas_w - 1.0);
+		//no hit = skybox
 		raycast(&infos, &env->map, env, x);
 		rc_render(&env->sdl, &env->cam, &env->map, &infos);
 		x++;
