@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/30 12:59:06 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/30 13:33:46 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ void		manage_down(const Uint8	*state, t_env *env)
 	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
-		cam->action_state |= ACTION_CROUCHING;
+		if (cam->action_state & ACTION_GROUNDED)
+			cam->action_state |= ACTION_CROUCHING;
 		// percent = env->sdl.height / 35;
 		// cam->z_pos -= percent;
 	}
@@ -84,8 +85,16 @@ void		manage_down(const Uint8	*state, t_env *env)
 		cam->action_state &= ~ACTION_CROUCHING;
 	if (state[SDL_SCANCODE_SPACE])
 	{
-		percent = env->sdl.height / 35;
-		cam->z_pos += percent;
+		if (cam->action_state & ACTION_FLY_MODE)
+		{
+			percent = env->sdl.height / 35;
+			cam->z_pos += percent;
+		}
+		else if (cam->action_state & ACTION_GROUNDED)
+		{
+			cam->action_state &= ~ACTION_GROUNDED;
+			cam->jump_time = ACTION_MAX_JUMP_TIME;
+		}
 	}
 }
 
@@ -136,6 +145,18 @@ int			manage_binds(SDL_Event *event, t_env *env)
 				EFFECT_MASK_FILTERS);
 		else if (event->key.keysym.sym == SDLK_0)
 			env->effect = EFFECT_NONE;
+		else if (event->key.keysym.sym == SDLK_g)
+		{
+			if (env->cam.action_state & ACTION_FLY_MODE)
+			{
+				env->cam.action_state &= ~ACTION_FLY_MODE;
+				if (env->cam.z_pos > env->sdl.height / 2.0)
+					env->cam.action_state =
+					(env->cam.action_state & ~ACTION_GROUNDED) | ACTION_FALLING;
+			}
+			else
+				env->cam.action_state |= ACTION_FLY_MODE;
+		}
 	}
 	else if (event->type == SDL_MOUSEMOTION)
 	{

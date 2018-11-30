@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/30 12:55:59 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/11/30 13:28:51 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,46 @@ void	player_set_anim(t_cam *player, t_sdl *sdl)
 		player_set_walk_anim(player);
 	else if (player->walk_anim != 0.0)
 		player_disable_walk_anim(player);
-	if (player->action_state & ACTION_CROUCHING)
+	if (player->action_state & ACTION_GROUNDED)
 	{
-		if (player->z_pos > sdl->height / 4.0)
-			player->z_pos -= ANIM_CROUCH_SPEED;
+		if (player->action_state & ACTION_CROUCHING)
+		{
+			if (player->z_pos > sdl->height / 4.0)
+				player->z_pos -= ANIM_CROUCH_SPEED;
+		}
+		else if (player->z_pos < sdl->height / 2.0)
+		{
+			player->z_pos += ANIM_CROUCH_SPEED;
+			if (player->z_pos > (sdl->height / 2.0) - 0.001)
+				player->z_pos = sdl->height / 2.0;
+		}
 	}
-	else if (player->z_pos < sdl->height / 2.0)
+	else
 	{
-		player->z_pos += ANIM_CROUCH_SPEED;
-		if (player->z_pos > (sdl->height / 2.0) - 0.001)
-			player->z_pos = sdl->height / 2.0;
+		if (player->action_state & ACTION_FALLING)
+		{
+			if (player->z_pos < sdl->height / 2.0)
+			{
+				player->action_state |= ACTION_GROUNDED;
+				player->action_state &= ~ACTION_FALLING;
+			}
+			else
+			{
+				player->z_pos -= ACTION_FALL_SPEED * player->jump_time;
+				player->jump_time += 0.15;
+			}
+		}
+		else
+		{
+
+			if (player->jump_time > 0.001)
+			{
+				player->z_pos += ACTION_JUMP_FORCE * player->jump_time;
+				player->jump_time -= (ACTION_MAX_JUMP_TIME / 10.0);
+			}
+			else
+				player->action_state |= ACTION_FALLING;
+		}
 	}
 }
 
