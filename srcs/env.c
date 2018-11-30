@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 16:26:11 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 02:28:12 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int		wolf_init(t_sdl *sdl, t_map *map, t_cam *cam, char *filename)
 	if (load_map(map, filename) == ERROR)
 		return (ERROR);
 	cam->pos = VEC2_INIT((t_float)map->spawn.x , (t_float)map->spawn.y) + 0.5;
-	cam->z = (t_float)WORLD_HEIGHT / 2.0;
+	cam->z = WORLD_HEIGHT / 2.66;
 	cam->dir = VEC2_INIT(-1., 0.0);
 	cam->plane = VEC2_INIT(0.0, 0.8);
 	cam->mov_speed = 0.05;

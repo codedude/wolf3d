@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 21:46:05 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 00:31:38 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define TEXLAST	{-1, NULL, NULL}
 # define TEX_COUNT	15
 
-# define WORLD_HEIGHT 512
+# define WORLD_HEIGHT 720
 # define HALF_HEIGHT (WORLD_HEIGHT / 2.0)
 
 # define DEFAULT_CEIL	11
