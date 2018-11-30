@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/29 21:46:29 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 02:35:32 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ void		manage_down(const Uint8	*state, t_env *env)
 	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
-		percent = 8.0;
-		if (cam->z > percent)
+		percent = env->sdl.height / 35;
+		// if (cam->z > percent)
 			cam->z -= percent;
 	}
 	if (state[SDL_SCANCODE_SPACE])
 	{
-		percent = 8.0;
-		if (cam->z < WORLD_HEIGHT - percent)
+		percent = env->sdl.height / 35;
+		// if (cam->z < WORLD_HEIGHT - percent)
 			cam->z += percent;
 	}
 }

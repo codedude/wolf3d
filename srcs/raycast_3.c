@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/30 02:34:54 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 02:37:56 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,15 +174,20 @@ static void		draw_floor_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 	y = infos->draw_end;
 	while (y < (int)sdl->height)
 	{
-		//keep the y + 1 here ?
-		lookup = sdl->height / (2.0 * (y - cam->height) - sdl->height)
-			* cam->z / HALF_HEIGHT;
-		// weight * factor = zoom texture
-		weight = lookup / infos->z;
-		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
-		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
-		sdl->image[infos->x + y * sdl->width] = get_cf_color(
-			DEFAULT_FLOOR, curr_cf, infos->effect, lookup);
+		if (cam->z > 0.0)
+		{
+			//keep the y + 1 here ?
+			lookup = sdl->height / (2.0 * (y - cam->height) - sdl->height)
+				* cam->z / HALF_HEIGHT;
+			// weight * factor = zoom texture
+			weight = lookup / infos->z;
+			curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
+			curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
+			sdl->image[infos->x + y * sdl->width] = get_cf_color(
+				DEFAULT_FLOOR, curr_cf, infos->effect, lookup);
+		}
+		else
+			sdl->image[infos->x + y * sdl->width] = 0x0;
 		y++;
 	}
 }
@@ -198,13 +203,18 @@ static void		draw_ceil_line(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 	y = 0;
 	while (y < infos->draw_start)
 	{
-		lookup = sdl->height / fabs(2.0 * (y - cam->height) - sdl->height)
-			* ((WORLD_HEIGHT - cam->z) / HALF_HEIGHT);
-		weight = lookup / infos->z;
-		curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
-		curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
-		sdl->image[infos->x + y * sdl->width] = get_cf_color(
-			DEFAULT_CEIL, curr_cf, infos->effect, lookup);
+		if (cam->z < sdl->height)
+		{
+			lookup = sdl->height / fabs(2.0 * (y - cam->height) - sdl->height)
+				* ((WORLD_HEIGHT - cam->z) / HALF_HEIGHT);
+			weight = lookup / infos->z;
+			curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
+			curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
+			sdl->image[infos->x + y * sdl->width] = get_cf_color(
+				DEFAULT_CEIL, curr_cf, infos->effect, lookup);
+		}
+		else
+			sdl->image[infos->x + y * sdl->width] = 0x0;
 		y++;
 	}
 }
