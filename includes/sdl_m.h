@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 15:46:19 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 21:07:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct		s_textures {
 typedef struct		s_sdl {
 	t_float			canvas_h;
 	t_float			half_canvas_h;
-	t_color			*image;
+	unsigned int	*image;
 	t_float			*z_buffer;
 	t_float			canvas_w;
 	int				width;

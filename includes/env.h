@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 16:46:36 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 21:54:21 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include "sdl_m.h"
 # include "types.h"
 
-# define THREADS		0
-# define TASKS			32
+# define THREADS		1
+# define TASKS			1
 # define WINDOW_NAME	"DAT Wolf3D"
 
 # define TEX_BASE(x, y)	{(x), "textures/" y, NULL}
@@ -42,6 +42,9 @@
 # define EFFECT_WATER	0x0400
 # define EFFECT_SEPIA	0x010000
 # define EFFECT_BAW		0x020000
+
+# define FOG_AMBIENT	VEC3_INIT(153.0, 211.0, 137.0)
+# define WATER_AMBIENT	VEC3_INIT(136.0, 210.0, 208.0)
 
 typedef struct		s_map {
 	int				**data;
@@ -71,6 +74,8 @@ typedef struct		s_map {
 # define ANIM_CROUCH_SPEED	25.0
 
 typedef struct		s_cam {
+	t_vec3			(*depth_filter)(t_vec3 color, t_float depth);
+	t_vec3			(*color_filter)(t_vec3 color);
 	t_vec2			pos;
 	t_vec2			dir;
 	t_vec2			plane;

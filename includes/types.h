@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 12:59:23 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 16:20:43 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 21:20:47 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,16 @@ typedef t_float			t_vec2 __attribute__((ext_vector_type(2)));
 typedef t_float			t_vec3 __attribute__((ext_vector_type(3)));
 typedef t_float			t_vec4 __attribute__((ext_vector_type(4)));
 typedef t_float			t_vcolor __attribute__((ext_vector_type(4)));
-typedef unsigned int	t_color;
+
+typedef union			u_color {
+	unsigned int		c;
+	struct {
+		unsigned char	r;
+		unsigned char	g;
+		unsigned char	b;
+		unsigned char	a;
+	};
+}						t_color;
 
 # define IVEC2_ZERO				(t_ivec2){0.0, 0.0}
 # define IVEC2_INIT(a, b)		(t_ivec2){(a), (b)}

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/30 14:48:45 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 22:02:58 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,9 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		if (event->key.keysym.sym == SDLK_f)
 			env->show_fps = !env->show_fps;
 		else if (event->key.keysym.sym == SDLK_1)
-			env->effect = switch_effect(env->effect, EFFECT_SIDE,
-				EFFECT_MASK);
+			env->effect = switch_effect(env->effect, EFFECT_SIDE);
 		else if (event->key.keysym.sym == SDLK_2)
-			env->effect = switch_effect(env->effect, EFFECT_DEPTH,
+			env->cam.depth_effect = switch_effect(env->effect, EFFECT_DEPTH,
 				EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_3)
 			env->effect = switch_effect(env->effect, EFFECT_FOG,

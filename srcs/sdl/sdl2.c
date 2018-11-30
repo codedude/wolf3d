@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 17:30:29 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 21:09:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int			sdl_create_texture(t_sdl *sdl)
 
 int			sdl_create_buffer(t_sdl *sdl)
 {
-	sdl->size_line = sdl->width * (int)sizeof(t_color);
+	sdl->size_line = sdl->width * (int)sizeof(unsigned int);
 	sdl->size_buffer = sdl->height * sdl->size_line;
-	if ((sdl->image = (t_color *)malloc((size_t)sdl->size_buffer)) == NULL)
+	if ((sdl->image = (unsigned int *)malloc((size_t)sdl->size_buffer)) == NULL)
 	{
 		ft_putendl("Image buffer cannot be created !");
 		return (ERROR);

@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/30 16:05:37 by vparis           ###   ########.fr        #
+#    Updated: 2018/11/30 21:43:50 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ else
 endif
 
 FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c map_parser.c \
-				manage_binds.c types.c
+				manage_binds.c types.c depth_filters.c color_filters.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 14:54:14 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 21:58:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "libtpool.h"
 # include "sdl_m.h"
 # include "env.h"
+# include "raycast.h"
 
 static int		wolf_init(t_sdl *sdl, t_map *map, t_cam *cam, char *filename)
 {
@@ -32,6 +33,8 @@ static int		wolf_init(t_sdl *sdl, t_map *map, t_cam *cam, char *filename)
 	cam->action_state = ACTION_GROUNDED;
 	cam->jump_time = 0.0;
 	cam->walk_anim = 0.0;
+	cam->depth_filter = &depth_filter_depth;
+	cam->color_filter = &color_filter_baw;
 	return (SUCCESS);
 }
 

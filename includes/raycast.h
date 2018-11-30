@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 22:42:40 by vparis           ###   ########.fr       */
+/*   Updated: 2018/11/30 21:57:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,12 @@ int						start_render(void *data);
 int						raycast(t_hit_infos *infos, t_map *map, t_env *env,
 							int x);
 void					rc_render(t_sdl *sdl, t_cam *cam, t_map *map, t_hit_infos *infos);
+
+t_vec3					color_filter_baw(t_vec3 c);
+t_vec3					color_filter_sepia(t_vec3 c);
+
+t_vec3					depth_filter_depth(t_vec3 color, t_float depth);
+t_vec3					depth_filter_fog(t_vec3 c, t_float depth);
+t_vec3					depth_filter_water(t_vec3 c, t_float depth);
 
 #endif
