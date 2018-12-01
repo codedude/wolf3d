@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/24 22:00:50 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/01 17:34:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char		*file_get_content(char *filename)
 	if ((fd = open(filename, O_RDONLY | O_NOFOLLOW)) == -1)
 		return (NULL);
 	content = NULL;
-	while ((read_ret = read(fd, buff, sizeof(buff) - 1)) > 0)
+	while ((read_ret = (int)read(fd, buff, sizeof(buff) - 1)) > 0)
 	{
 		buff[read_ret] = '\0';
 		if ((tmp = content))
@@ -134,7 +134,7 @@ static int		parse_map(t_map *map, char *content)
 
 	if (get_map_wh(map, content) == ERROR)
 		return (parse_failed(map, content, "map format error"));
-	if (!(map->data = (int **)ft_memalloc(sizeof(int *) * map->height)))
+	if (!(map->data = (int **)ft_memalloc(sizeof(int *) * (size_t)map->height)))
 		return (parse_failed(map, content, strerror(errno)));
 	i = 0;
 	dummy = content;
@@ -143,7 +143,7 @@ static int		parse_map(t_map *map, char *content)
 	{
 		while (*dummy == '\n')
 			dummy++;
-		if (!(map->data[i] = (int *)malloc(sizeof(int) * map->width)))
+		if (!(map->data[i] = (int *)malloc(sizeof(int) * (size_t)map->width)))
 			return (parse_failed(map, content, strerror(errno)));
 		if (!(dummy = convert_value(map, i++, dummy)))
 			return (parse_failed(map, content, "invalid texture identifier"));

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/01 16:49:34 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 17:33:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,15 +134,20 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		else if (event->key.keysym.sym == SDLK_1)
 			env->cam.side_filter ^= EFFECT_SIDE;
 		else if (event->key.keysym.sym == SDLK_2)
-			switch_effect(&env->cam, depth_filter_depth, EFFECT_MASK_DEPTH);
+			switch_effect(&env->cam, (void *)&depth_filter_depth,
+				EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_3)
-			switch_effect(&env->cam, depth_filter_fog, EFFECT_MASK_DEPTH);
+			switch_effect(&env->cam, (void *)&depth_filter_fog,
+				EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_4)
-			switch_effect(&env->cam, depth_filter_water, EFFECT_MASK_DEPTH);
+			switch_effect(&env->cam, (void *)&depth_filter_water,
+				EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_5)
-			switch_effect(&env->cam, color_filter_baw, EFFECT_MASK_COLOR);
+			switch_effect(&env->cam, (void *)&color_filter_baw,
+				EFFECT_MASK_COLOR);
 		else if (event->key.keysym.sym == SDLK_6)
-			switch_effect(&env->cam, color_filter_sepia, EFFECT_MASK_COLOR);
+			switch_effect(&env->cam, (void *)&color_filter_sepia,
+				EFFECT_MASK_COLOR);
 		else if (event->key.keysym.sym == SDLK_0)
 		{
 			env->cam.side_filter = EFFECT_NONE;

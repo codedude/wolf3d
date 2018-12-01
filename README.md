@@ -20,4 +20,5 @@ dark_color : 31% fonction, 12% filter, 4.5% compute depth
 filter : 5% compute depth
 
 Solutions :
-Améliorer chargement textures + infos, et leur accès
+Améliorer chargement textures + infos, et leur accès => petit opti visible +10-20%
+Améliorer l'applications des effets => gros boost de fps +30-50%
