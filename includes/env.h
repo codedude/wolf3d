@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 21:54:21 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 15:18:20 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define MAX_DEPTH		16.0
 # define EFFECT_MASK			0xff
 # define EFFECT_MASK_DEPTH		0xff00
-# define EFFECT_MASK_FILTERS	0xff0000
+# define EFFECT_MASK_COLOR		0xff0000
 # define EFFECT_NONE	0
 # define EFFECT_SIDE	0x01
 # define EFFECT_DEPTH	0x0100
@@ -89,6 +89,7 @@ typedef struct		s_cam {
 	t_float			jump_time;
 	t_float			walk_anim;
 	int				action_state;
+	int				side_filter;
 }					t_cam;
 
 typedef struct		s_env {
@@ -97,7 +98,6 @@ typedef struct		s_env {
 	t_map			map;
 	t_cam			cam;
 	int				show_fps;
-	int				effect;
 }					t_env;
 
 typedef struct		s_algo {

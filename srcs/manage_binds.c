@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/30 22:02:58 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 15:26:38 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,20 @@ void		manage_down(const Uint8	*state, t_env *env)
 	}
 }
 
-int			switch_effect(int current, int new, int mask)
+void		switch_effect(t_cam *cam, void *new, int type)
 {
-	if (current & mask && !(current & new))
-		return ((current & ~mask) ^ new);
+	void	**current;
+
+	if (type == EFFECT_MASK_DEPTH)
+		current = (void **)&cam->depth_filter;
+	else if (type == EFFECT_MASK_COLOR)
+		current = (void **)&cam->color_filter;
 	else
-		return (current ^ new);
+		current = NULL;
+	if (*current == new)
+		*current = NULL;
+	else
+		*current = new;
 }
 
 int			manage_binds(SDL_Event *event, t_env *env)
@@ -110,11 +118,11 @@ int			manage_binds(SDL_Event *event, t_env *env)
 
 	r = 1;
 	if (event->type == SDL_QUIT)
-		r = 0;
+		return (0);
 	else if (event->type == SDL_KEYUP)
 	{
 		if (event->key.keysym.sym == SDLK_ESCAPE)
-			r = 0;
+			return (0);
 	}
 	else if (event->type == SDL_KEYDOWN)
 	{
@@ -124,24 +132,23 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		if (event->key.keysym.sym == SDLK_f)
 			env->show_fps = !env->show_fps;
 		else if (event->key.keysym.sym == SDLK_1)
-			env->effect = switch_effect(env->effect, EFFECT_SIDE);
+			env->cam.side_filter ^= EFFECT_SIDE;
 		else if (event->key.keysym.sym == SDLK_2)
-			env->cam.depth_effect = switch_effect(env->effect, EFFECT_DEPTH,
-				EFFECT_MASK_DEPTH);
+			switch_effect(&env->cam, depth_filter_depth, EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_3)
-			env->effect = switch_effect(env->effect, EFFECT_FOG,
-				EFFECT_MASK_DEPTH);
+			switch_effect(&env->cam, depth_filter_fog, EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_4)
-			env->effect = switch_effect(env->effect, EFFECT_WATER,
-				EFFECT_MASK_DEPTH);
+			switch_effect(&env->cam, depth_filter_water, EFFECT_MASK_DEPTH);
 		else if (event->key.keysym.sym == SDLK_5)
-			env->effect = switch_effect(env->effect, EFFECT_SEPIA,
-				EFFECT_MASK_FILTERS);
+			switch_effect(&env->cam, color_filter_baw, EFFECT_MASK_COLOR);
 		else if (event->key.keysym.sym == SDLK_6)
-			env->effect = switch_effect(env->effect, EFFECT_BAW,
-				EFFECT_MASK_FILTERS);
+			switch_effect(&env->cam, color_filter_sepia, EFFECT_MASK_COLOR);
 		else if (event->key.keysym.sym == SDLK_0)
-			env->effect = EFFECT_NONE;
+		{
+			env->cam.side_filter = EFFECT_NONE;
+			switch_effect(&env->cam, NULL, EFFECT_MASK_DEPTH);
+			switch_effect(&env->cam, NULL, EFFECT_MASK_COLOR);
+		}
 		else if (event->key.keysym.sym == SDLK_g)
 		{
 			if (env->cam.action_state & ACTION_FLY_MODE)

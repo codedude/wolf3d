@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 21:37:23 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 21:57:21 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 15:30:54 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,20 @@ t_vec3		color_filter_baw(t_vec3 c)
 	return (c);
 }
 
+static t_float	half_clamp_float(t_float f, t_float max)
+{
+	if (f > max)
+		return (max);
+	else
+		return (f);
+}
+
 t_vec3		color_filter_sepia(t_vec3 c)
 {
 	c = VEC3_INIT(
-		clamp_float(0.393 * c[0] + 0.769 * c[1] + 0.189 * c[2], 0.0, 255.0),
-		clamp_float(0.349 * c[0] + 0.686 * c[1] + 0.168 * c[2], 0.0, 255.0),
-		clamp_float(0.272 * c[0] + 0.534 * c[1] + 0.131 * c[2], 0.0, 255.0)
+		half_clamp_float(0.393 * c[0] + 0.769 * c[1] + 0.189 * c[2], 255.0),
+		half_clamp_float(0.349 * c[0] + 0.686 * c[1] + 0.168 * c[2], 255.0),
+		half_clamp_float(0.272 * c[0] + 0.534 * c[1] + 0.131 * c[2], 255.0)
 	);
 	return (c);
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 21:58:28 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 15:18:38 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ static int		wolf_init(t_sdl *sdl, t_map *map, t_cam *cam, char *filename)
 	cam->action_state = ACTION_GROUNDED;
 	cam->jump_time = 0.0;
 	cam->walk_anim = 0.0;
+	cam->side_filter = EFFECT_SIDE;
 	cam->depth_filter = &depth_filter_depth;
-	cam->color_filter = &color_filter_baw;
+	cam->color_filter = NULL;
 	return (SUCCESS);
 }
 
@@ -68,7 +69,6 @@ int				env_init(t_env *env, char *filename)
 		return (ERROR);
 	}
 	env->show_fps = 0;
-	env->effect = EFFECT_SIDE | EFFECT_DEPTH;
 	return (SUCCESS);
 }
 

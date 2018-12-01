@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/11/30 21:58:14 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 15:32:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 unsigned int	dark_color(t_color color, t_cam *cam, int side, t_float z)
 {
 	t_vec3		c;
-	t_float		depth;
 
 	c = VEC3_INIT((t_float)color.r, (t_float)color.g, (t_float)color.b);
 	if (side)
@@ -68,9 +67,9 @@ static t_vec2	get_wall_texel(t_hit_infos *infos)
 static unsigned int	get_cf_color(int text_id, t_vec2 curr_cf, t_cam *cam,
 					t_float z)
 {
-	SDL_Surface *text;
-	t_ivec2		tex;
-	unsigned int		color;
+	SDL_Surface 	*text;
+	t_ivec2			tex;
+	unsigned int	color;
 
 	text = sdl_get_texture(text_id);
 	tex.x = (int)(curr_cf.x * text->w) % text->w;
@@ -163,7 +162,7 @@ static void		draw_tex_line(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 		tex.y = (int)fabs(text->h * ((y - cam->height + half_height)
 			/ (t_float)(infos->line_height)));
 		color = dark_color(sdl_get_pixel(text, tex.x, tex.y),
-			cam, infos->side & EFFECT_SIDE, infos->z);
+			cam, infos->side & cam->side_filter, infos->z);
 		sdl->image[infos->x + y * sdl->width] = color;
 		y++;
 	}

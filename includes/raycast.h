@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 21:57:28 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 15:19:45 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct			s_hit_info {
 	int					x;
 	int					side;
 	int					hit;
-	int					effect;
 }						t_hit_infos;
 
 t_vec2					move_forward(t_map *map, t_vec2 from, t_vec2 to,

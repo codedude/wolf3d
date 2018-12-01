@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 15:30:19 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 15:20:11 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	render(t_env *env, t_ivec2 range)
 	cam = &env->cam;
 	infos.ray.pos = cam->pos;
 	x = range.x;
-	infos.effect = env->effect;
 	while (x < range.y)
 	{
 		infos.map = VEC2_INIT(floor(cam->pos.x), floor(cam->pos.y));
