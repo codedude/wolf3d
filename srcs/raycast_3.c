@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/01 15:32:33 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 14:47:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,8 @@ unsigned int	dark_color(t_color color, t_cam *cam, int side, t_float z)
 		c = cam->depth_filter(c, z);
 	if (cam->color_filter)
 		c = cam->color_filter(c);
- 	color.c = (unsigned int)c[0] | (unsigned int)c[1] << 8
- 		| (unsigned int)c[2] << 16;
-	return (color.c);
+	return ((unsigned int)c[0] | (unsigned int)c[1] << 8
+ 		| (unsigned int)c[2] << 16);
 }
 
 static t_vec2	get_wall_texel(t_hit_infos *infos)
