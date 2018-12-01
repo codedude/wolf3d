@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 15:20:11 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 16:48:04 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_vec2	allow_move(t_map *map, t_vec2 from, t_vec2 to, t_vec2 calc)
 {
 	t_vec2	offset;
 
-	calc = clamp_vec2(calc, 0, \
+	calc = clamp_vec2(calc, VEC2_ZERO, \
 				VEC2_INIT((t_float)map->width - 0.1,
 					(t_float)map->height - 0.1));
 	offset.x = ((to.x < 0) ? -0.1 : 0.1);

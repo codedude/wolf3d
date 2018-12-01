@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 15:18:38 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 16:50:42 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static int		wolf_init(t_sdl *sdl, t_map *map, t_cam *cam, char *filename)
 	if (load_map(map, filename) == ERROR)
 		return (ERROR);
 	cam->pos = VEC2_INIT((t_float)map->spawn.x , (t_float)map->spawn.y) + 0.5;
-	cam->z_pos = sdl->canvas_h / 2.66;
-	cam->z_default = cam->z_pos;
+	cam->z = sdl->canvas_h / 2.66;
+	cam->z_default = cam->z;
 	cam->dir = VEC2_INIT(-1., 0.0);
 	cam->plane = VEC2_INIT(0.0, 0.8);
 	cam->mov_speed = 0.05;
@@ -43,7 +43,6 @@ static void		wolf_destroy(t_map *map, t_cam *cam)
 {
 	(void)cam;
 	map_destroy(map);
-	//Delete map
 }
 
 int				env_init(t_env *env, char *filename)

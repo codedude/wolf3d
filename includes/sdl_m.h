@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 21:07:24 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 16:36:53 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct		s_sdl {
 	int				width;
 	int				height;
 	int				size_line;
-	int				size_buffer;
+	size_t			size_buffer;
 	SDL_Texture		*texture;
 	SDL_Renderer	*renderer;
 	SDL_Window		*window;

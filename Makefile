@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/11/30 21:43:50 by vparis           ###   ########.fr        #
+#    Updated: 2018/12/01 16:53:28 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-				-I$(INCD) -O3 -flto #-fsanitize=address
+				-I$(INCD) -g3
 LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
 
 
@@ -82,3 +82,6 @@ rer:
 
 valg:
 	valgrind --show-leak-kinds=all --leak-resolution=high --track-origins=yes ./$(NAME) map.w3d
+
+bench:
+	valgrind --tool=callgrind ./$(NAME) map.w3d

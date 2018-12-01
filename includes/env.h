@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 14:39:36 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 16:47:30 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ typedef struct		s_cam {
 	t_float			rot_speed;
 	t_float			height;
 	t_float			z;
-	t_float			z_pos;
 	t_float			z_default;
 	t_float			jump_time;
 	t_float			walk_anim;

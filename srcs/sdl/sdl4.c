@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:20:25 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 14:46:42 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 16:19:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ t_color	sdl_get_pixel(SDL_Surface *surface, int x, int y)
     t_color	pixel;
 
     p = (Uint8 *)surface->pixels + y * surface->pitch + x * 3;
-	if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-    	pixel.c = (unsigned int)(p[0] << 16 | p[1] << 8 | p[2]);
-	else
-    	pixel.c = (unsigned int)(p[0] | p[1] << 8 | p[2] << 16);
+	pixel.c = (unsigned int)(p[0] | p[1] << 8 | p[2] << 16);
     return (pixel);
 }
 
