@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 16:47:30 by vparis           ###   ########.fr       */
+/*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
+/*   Updated: 2018/12/02 03:56:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include "sdl_m.h"
 # include "types.h"
 
-# define THREADS		1
-# define TASKS			1
+# define THREADS		0
+# define TASKS			32
 # define WINDOW_NAME	"DAT Wolf3D"
 
 # define TEX_BASE(x, y)	{(x), "textures/" y, NULL}
