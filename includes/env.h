@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/02 03:56:01 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/02 23:06:15 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,20 @@ typedef struct		s_map {
 
 
 # define ACTION_NONE		0b0
-# define ACTION_GROUNDED	0b0001// 0x1
-# define ACTION_WALKING		0b0010// 0x2
-# define ACTION_CROUCHING	0b0100// 0x4
-# define ACTION_FALLING		0b1000// 0x8
-# define ACTION_FLY_MODE	(0x100)
+# define ACTION_GROUNDED	0b00001// 0x1
+# define ACTION_WALKING		0b00010// 0x2
+# define ACTION_CROUCHING	0b00100// 0x4
+# define ACTION_FALLING		0b01000// 0x8
+# define ACTION_JUMPING		0b10000// 0x16
+# define ACTION_FLY_MODE	(0x1000)
 
 # define ACTION_MAX_JUMP_TIME	2.5
 # define ACTION_JUMP_FORCE		25.0
 # define ACTION_FALL_SPEED		25.0
 
-# define ANIM_WALK_UP		(0b0001 << 4)//0x10
-# define ANIM_WALK_DOWN		(0b0010 << 4)//0x20
-# define ANIM_WALK			(0b0011 << 4)//0x30
+# define ANIM_WALK_UP		(0b0001 << 8)//0x10
+# define ANIM_WALK_DOWN		(0b0010 << 8)//0x20
+# define ANIM_WALK			(0b0011 << 8)//0x30
 # define ANIM_WALK_SPEED	2.2
 # define ANIM_WALK_HEIGHT	12	// wrong value, must be relative to sdl->height
 
@@ -84,6 +85,7 @@ typedef struct		s_cam {
 	t_float			rot_speed;
 	t_float			height;
 	t_float			z;
+	t_float			z_pos;
 	t_float			z_default;
 	t_float			jump_time;
 	t_float			walk_anim;
@@ -103,6 +105,7 @@ typedef struct		s_algo {
 	t_env			*env;
 	int				start;
 	int				end;
+	int				step;
 }					t_algo;
 
 int					env_init(t_env *env, char *filename);

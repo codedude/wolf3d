@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 15:19:45 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/02 23:09:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_vec2					vec_rotate(t_vec2 dir, t_float speed);
 
 
 
-void					render(t_env *env, t_ivec2 range);
+void					render(t_env *env, int start, int end, int step);
 int						start_render(void *data);
 
 int						raycast(t_hit_infos *infos, t_map *map, t_env *env,

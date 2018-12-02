@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/01 17:33:09 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 18:36:54 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ void		manage_down(const Uint8	*state, t_env *env)
 		env->cam.action_state &= ~ACTION_WALKING;
 	if (state[SDL_SCANCODE_Q])
 	{
-		cam->dir = vec_rotate(cam->dir, -cam->rot_speed);
-		cam->plane = vec_rotate(cam->plane, -cam->rot_speed);
+		cam->dir = vec_rotate(cam->dir, -cam->rot_speed * 5.0);
+		cam->plane = vec_rotate(cam->plane, -cam->rot_speed * 5.0);
 	}
 	if (state[SDL_SCANCODE_E])
 	{
-		cam->dir = vec_rotate(cam->dir, cam->rot_speed);
-		cam->plane = vec_rotate(cam->plane, cam->rot_speed);
+		cam->dir = vec_rotate(cam->dir, cam->rot_speed * 5.0);
+		cam->plane = vec_rotate(cam->plane, cam->rot_speed * 5.0);
 	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
@@ -86,11 +86,12 @@ void		manage_down(const Uint8	*state, t_env *env)
 		if (cam->action_state & ACTION_FLY_MODE)
 		{
 			percent = env->sdl.canvas_h / 33.33;
-			cam->z += percent;
+			cam->z_pos += percent;
 		}
 		else if (cam->action_state & ACTION_GROUNDED)
 		{
 			cam->action_state &= ~ACTION_GROUNDED;
+			cam->action_state |= ACTION_JUMPING;
 			cam->jump_time = ACTION_MAX_JUMP_TIME;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 16:48:04 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/02 23:12:58 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_vec2	straf(t_map *map, t_vec2 from, t_vec2 to, t_float speed)
 	return (move_forward(map, from, to, speed));
 }
 
-void	render(t_env *env, t_ivec2 range)
+void	render(t_env *env, int start, int end, int step)
 {
 	int			x;
 	t_cam		*cam;
@@ -64,8 +64,8 @@ void	render(t_env *env, t_ivec2 range)
 
 	cam = &env->cam;
 	infos.ray.pos = cam->pos;
-	x = range.x;
-	while (x < range.y)
+	x = start;
+	while (x < end)
 	{
 		infos.map = VEC2_INIT(floor(cam->pos.x), floor(cam->pos.y));
 		infos.ray.dir = cam->dir + cam->plane *
@@ -73,7 +73,7 @@ void	render(t_env *env, t_ivec2 range)
 		//no hit = skybox
 		raycast(&infos, &env->map, env, x);
 		rc_render(&env->sdl, &env->cam, &env->map, &infos);
-		x++;
+		x += step;
 	}
 }
 
@@ -82,6 +82,6 @@ int			start_render(void *data)
 	t_algo		*algo;
 
 	algo = (t_algo *)data;
-	render(algo->env, IVEC2_INIT((int)algo->start, (int)algo->end));
+	render(algo->env, algo->start, algo->end, algo->step);
 	return (SUCCESS);
 }
