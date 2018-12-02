@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/01 16:49:09 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/01 18:34:11 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	player_set_walk_anim(t_cam *player)
 	}
 	else if (player->action_state & ANIM_WALK_DOWN)
 	{
-		player->walk_anim -= ANIM_WALK_SPEED;
+		player->walk_anim -= ANIM_WALK_SPEED * 3.0;
 		if (player->walk_anim < -ANIM_WALK_HEIGHT)
 			player->action_state = (player->action_state
 						& ~ANIM_WALK_DOWN) | ANIM_WALK_UP;
@@ -86,14 +86,14 @@ void	player_disable_walk_anim(t_cam *player)
 
 void	player_fall(t_cam *player)
 {
-	if (player->z < player->z_default)
+	if (player->z_pos < player->z_default)
 	{
 		player->action_state |= ACTION_GROUNDED;
 		player->action_state &= ~ACTION_FALLING;
 	}
 	else
 	{
-		player->z -= ACTION_FALL_SPEED * player->jump_time;
+		player->z_pos -= ACTION_FALL_SPEED * player->jump_time;
 		player->jump_time += 0.15;
 	}
 }
@@ -102,25 +102,28 @@ void	player_jump(t_cam *player)
 {
 	if (player->jump_time > 0.001)
 	{
-		player->z += ACTION_JUMP_FORCE * player->jump_time;
+		player->z_pos += ACTION_JUMP_FORCE * player->jump_time;
 		player->jump_time -= (ACTION_MAX_JUMP_TIME / 10.0);
 	}
 	else
+	{
 		player->action_state |= ACTION_FALLING;
+		player->action_state &= ~ACTION_JUMPING;
+	}
 }
 
 void	player_ground_anim(t_cam *player)
 {
 	if (player->action_state & ACTION_CROUCHING)
 	{
-		if (player->z > player->z_default / 2.0)
-			player->z -= ANIM_CROUCH_SPEED;
+		if (player->z_pos > player->z_default / 2.0)
+			player->z_pos -= ANIM_CROUCH_SPEED;
 	}
 	else if (player->z < player->z_default)
 	{
-		player->z += ANIM_CROUCH_SPEED;
-		if (player->z > player->z_default - 0.001)
-			player->z = player->z_default;
+		player->z_pos += ANIM_CROUCH_SPEED;
+		if (player->z_pos > player->z_default - 0.001)
+			player->z_pos = player->z_default;
 	}
 }
 
@@ -136,14 +139,14 @@ void	player_set_anim(t_cam *player)
 	{
 		if (player->action_state & ACTION_FALLING)
 			player_fall(player);
-		else
+		else if (player->action_state & ACTION_JUMPING)
 			player_jump(player);
 	}
 }
 
 void	player_set_z(t_cam *player)
 {
-	player->z = player->walk_anim + player->z;
+	player->z = player->walk_anim + player->z_pos;
 }
 
 void	compute(t_env *env)
