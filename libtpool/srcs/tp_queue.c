@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/02 15:36:45 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 13:18:41 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/03 11:03:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,22 @@ void			*tp_queue_shift(t_tp_queue *queue)
 		queue->head = tmp;
 		if (tmp == NULL)
 			queue->tail = NULL;
+	}
+	else
+		data = NULL;
+	return (data);
+}
+
+void			*tp_queue_next(t_tp_queue *queue)
+{
+	void	*data;
+	t_list	*tmp;
+
+	tmp = queue->iter;
+	if (tmp != NULL)
+	{
+		data = tmp->content;
+		queue->iter = queue->iter->next;
 	}
 	else
 		data = NULL;

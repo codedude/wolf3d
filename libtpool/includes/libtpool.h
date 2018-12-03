@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tpool.h                                         :+:      :+:    :+:   */
+/*   libtpool.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 18:54:21 by valentin          #+#    #+#             */
-/*   Updated: 2018/11/20 18:29:32 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/03 11:21:16 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@
 # include "ft_list.h"
 
 # define TP_AUTO_THREADS	0
-# define TP_MASK_ON			0x0F
+# define TP_MASK_ON			0xFF
 # define TP_ON_START		0x00
 # define TP_ON_EXEC			0x01
+# define TP_MASK_MODE		0xFF00
+# define TP_ALGO_MODE		0x0000
+# define TP_FPS_MODE		0x0100
 # define TP_MIN_THREADS		0
-# define TP_MAX_THREADS		128
+# define TP_MAX_THREADS		256
 # define TH_READY			0
 # define TH_BUSY			1
 
@@ -36,6 +39,7 @@ typedef struct		s_tp_queue {
 	size_t			size;
 	t_list			*tail;
 	t_list			*head;
+	t_list			*iter;
 }					t_tp_queue;
 
 struct s_tpool;
@@ -76,6 +80,7 @@ int					tp_wait_for_queue(t_tpool *tp);
 int					th_start(t_tpool *tp, int i, void *(*f)(void *));
 void				*th_fun_start(void *param);
 int					th_getnbr_proc(void);
+int					tp_getnbr_proc(t_tpool *tp);
 
 /*
 ** tp_queue.c
@@ -83,6 +88,7 @@ int					th_getnbr_proc(void);
 
 t_tp_queue			*tp_queue_new(void);
 void				*tp_queue_shift(t_tp_queue *queue);
+void				*tp_queue_next(t_tp_queue *queue);
 int					tp_queue_add(t_tp_queue *queue, void *data, size_t size);
 void				tp_queue_del(t_tp_queue **queue);
 

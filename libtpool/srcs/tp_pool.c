@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 22:19:36 by valentin          #+#    #+#             */
-/*   Updated: 2018/11/20 18:29:46 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/03 11:30:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static int	tp_start_all(t_tpool *tp, int flag)
 		tp->threads[i].id = i;
 		pthread_mutex_init(&(tp->threads[i].mutex), NULL);
 		pthread_cond_init(&(tp->threads[i].cond), NULL);
-		if ((flag & TP_MASK_ON) == TP_ON_START)
+		if ((flag & TP_MASK_ON) == TP_ON_START
+			|| (flag & TP_MASK_MODE) == TP_FPS_MODE)
 		{
 			if (th_start(tp, i, &th_fun_start) == ERROR)
 				return (ERROR);

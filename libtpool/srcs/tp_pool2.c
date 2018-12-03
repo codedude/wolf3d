@@ -6,10 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 22:46:27 by valentin          #+#    #+#             */
-/*   Updated: 2018/11/20 18:29:51 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/03 11:35:00 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "libtpool.h"
 
@@ -43,6 +44,9 @@ static int	tp_is_done(t_tpool *tp)
 
 static int	tp_is_queue(t_tpool *tp)
 {
+	if ((tp->flag & TP_MASK_MODE) == TP_FPS_MODE)
+		return (tp->queue->iter != NULL);
+	else
 	return (tp->queue->size > 0);
 }
 
@@ -58,7 +62,11 @@ static int	tp_launch_task(t_tpool *tp)
 			if (th_start(tp, i, &th_fun_start) == ERROR)
 				return (ERROR);
 		}
-		if ((tp_data = (t_tp_data *)tp_queue_shift(tp->queue)) == NULL)
+		if ((tp->flag & TP_MASK_MODE) == TP_FPS_MODE)
+			tp_data = (t_tp_data *)tp_queue_next(tp->queue);
+		else
+			tp_data = (t_tp_data *)tp_queue_shift(tp->queue);
+		if (tp_data == NULL)
 			break ;
 		tp->threads[i].data = tp_data;
 		pthread_mutex_lock(&(tp->threads[i].mutex));
@@ -71,6 +79,7 @@ static int	tp_launch_task(t_tpool *tp)
 
 int			tp_wait_for_queue(t_tpool *tp)
 {
+	tp->queue->iter = tp->queue->head;
 	tp->working_threads = 0;
 	tp_launch_task(tp);
 	pthread_mutex_lock(&(tp->mutex));

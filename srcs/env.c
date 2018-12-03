@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 18:29:18 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/03 11:40:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int				env_init(t_env *env, char *filename)
 		ft_putstr_fd("Can't load textures\n", 2);
 		return (ERROR);
 	}
-	if ((env->tpool = tp_create(THREADS, TP_ON_START)) == NULL)
+	if ((env->tpool = tp_create(THREADS, TP_FPS_MODE)) == NULL)
 	{
 		ft_putstr_fd("Thread pool can't start\n", 2);
 		return (ERROR);
