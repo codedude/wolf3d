@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/02 23:06:15 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 11:33:57 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # define WINDOW_NAME	"DAT Wolf3D"
 
 # define TEX_BASE(x, y)	{(x), "textures/" y, NULL}
-# define TEXLAST	{-1, NULL, NULL}
-# define TEX_COUNT	15
+# define TEXLAST		{-1, NULL, NULL}
+# define TEX_COUNT		15
 
 # define DEFAULT_CEIL	11
 # define DEFAULT_FLOOR	11
@@ -53,22 +53,21 @@ typedef struct		s_map {
 	int				height;
 }					t_map;
 
-
 # define ACTION_NONE		0b0
-# define ACTION_GROUNDED	0b00001// 0x1
-# define ACTION_WALKING		0b00010// 0x2
-# define ACTION_CROUCHING	0b00100// 0x4
-# define ACTION_FALLING		0b01000// 0x8
-# define ACTION_JUMPING		0b10000// 0x16
+# define ACTION_GROUNDED	0b00001
+# define ACTION_WALKING		0b00010
+# define ACTION_CROUCHING	0b00100
+# define ACTION_FALLING		0b01000
+# define ACTION_JUMPING		0b10000
 # define ACTION_FLY_MODE	(0x1000)
 
 # define ACTION_MAX_JUMP_TIME	2.5
 # define ACTION_JUMP_FORCE		25.0
 # define ACTION_FALL_SPEED		25.0
 
-# define ANIM_WALK_UP		(0b0001 << 8)//0x10
-# define ANIM_WALK_DOWN		(0b0010 << 8)//0x20
-# define ANIM_WALK			(0b0011 << 8)//0x30
+# define ANIM_WALK_UP		(0b0001 << 8)
+# define ANIM_WALK_DOWN		(0b0010 << 8)
+# define ANIM_WALK			(0b0011 << 8)
 # define ANIM_WALK_SPEED	2.2
 # define ANIM_WALK_HEIGHT	12	// wrong value, must be relative to sdl->height
 

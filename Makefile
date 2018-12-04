@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/02 23:02:39 by vparis           ###   ########.fr        #
+#    Updated: 2018/12/04 12:04:59 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,9 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c map_parser.c \
-				manage_binds.c types.c depth_filters.c color_filters.c
+FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
+				map_parser.c manage_binds.c types.c depth_filters.c \
+				color_filters.c move_1.c move_2.c move_3.c raycast_4.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))

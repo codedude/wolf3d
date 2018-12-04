@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/01 18:36:54 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/04 12:11:39 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,11 @@
 #include "sdl_m.h"
 #include "raycast.h"
 
-t_float		player_speed(int action_state, t_float speed,
-					t_float acceleration, t_float factor)
-{
-	if (action_state & ACTION_CROUCHING)
-		factor *= 0.6;
-	return ((speed + acceleration) * factor);
-}
-
-void		manage_down(const Uint8	*state, t_env *env)
+void		manage_down(const Uint8 *state, t_env *env)
 {
 	t_cam	*cam;
 	t_float	percent;
 	int		is_walking;
-
 
 	cam = &env->cam;
 	is_walking = False;

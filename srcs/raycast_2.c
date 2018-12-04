@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 16:47:54 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 11:59:55 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "raycast.h"
 #include "types.h"
 
-static void	raycast_init(t_vec2 dist[3], t_hit_infos *infos)
+static void		raycast_init(t_vec2 dist[3], t_hit_infos *infos)
 {
 	t_ray	ray;
 	t_vec2	map_pos;
@@ -48,7 +48,7 @@ static void	raycast_init(t_vec2 dist[3], t_hit_infos *infos)
 	}
 }
 
-static int	raycast_compute(t_vec2 dist[3], t_hit_infos *infos, int **map)
+static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, int **map)
 {
 	int	hit;
 
@@ -97,7 +97,7 @@ static void		get_wall_xz(t_hit_infos *infos, t_vec2 dir, t_vec2 dist_step)
 static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam,
 							t_hit_infos *infos)
 {
-	t_ivec2		draw;
+	t_ivec2	draw;
 
 	draw.y = (int)(
 		(line_height + sdl->height) / 2.0
