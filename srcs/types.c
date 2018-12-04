@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 13:02:07 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/29 13:05:12 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 12:07:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,12 @@ t_vec2		clamp_vec2(t_vec2 v, t_vec2 min, t_vec2 max)
 {
 	return (VEC2_INIT(
 		clamp_float(v.x, min.x, max.x),
-		clamp_float(v.y, min.y, max.y)
-	));
+		clamp_float(v.y, min.y, max.y)));
 }
-
 
 t_ivec2		clamp_ivec2(t_ivec2 v, t_ivec2 min, t_ivec2 max)
 {
 	return (IVEC2_INIT(
 		clamp_int(v.x, min.x, max.x),
-		clamp_int(v.y, min.y, max.y)
-	));
+		clamp_int(v.y, min.y, max.y)));
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 22:19:36 by valentin          #+#    #+#             */
-/*   Updated: 2018/11/20 18:29:58 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/03 11:25:23 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void		*th_fun_start(void *param)
 		pthread_mutex_unlock(&(tp->mutex));
 		(*th->data->f)(th->data->param);
 		pthread_mutex_lock(&(th->mutex));
-		free(th->data);
+		if ((tp->flag & TP_MASK_MODE) != TP_FPS_MODE)
+			free(th->data);
 		th->state = TH_READY;
 		pthread_mutex_unlock(&(th->mutex));
 		pthread_mutex_lock(&(tp->mutex));
@@ -58,6 +59,11 @@ int			th_start(t_tpool *tp, int i, void *(*f)(void *))
 		return (ERROR);
 	pthread_detach(tp->threads[i].thread);
 	return (SUCCESS);
+}
+
+int			tp_getnbr_proc(t_tpool *tp)
+{
+	return (tp->size);
 }
 
 #ifdef __APPLE__

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/11/30 16:47:39 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 11:28:12 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,6 @@ int				sdl_destroy(t_sdl *sdl)
 	sdl_reset(sdl);
 	SDL_DestroyWindow(sdl->window);
 	SDL_Quit();
-	return (SUCCESS);
-}
-
-/*
-** TODO : optimize memset ! clear img not needed fi floor + ceil or skybox !
-*/
-
-int				sdl_clear(t_sdl *sdl)
-{
-	(void)sdl;
-	// ft_memset((void *)sdl->image, 255, sdl->size_buffer);
-	// ft_memset((void *)sdl->z_buffer, 127, sdl->width * sizeof(t_float));
 	return (SUCCESS);
 }
 

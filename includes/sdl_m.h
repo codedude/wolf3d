@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 16:36:53 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 11:31:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int					sdl_init(t_sdl *sdl, const char *title, int width,
 int					sdl_reset(t_sdl *sdl);
 int					sdl_destroy(t_sdl *sdl);
 int					sdl_render(t_sdl *sdl);
-int					sdl_clear(t_sdl *sdl);
 
 /*
 ** sdl2.c
@@ -80,6 +79,6 @@ SDL_Surface			*sdl_get_texture(int id);
 */
 
 t_color				sdl_get_pixel(SDL_Surface *surface, int x, int y);
-void    			get_fps(int show_fps);
+void				get_fps(int show_fps);
 
 #endif

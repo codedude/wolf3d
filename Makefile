@@ -6,12 +6,11 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/03 04:10:04 by jbulant          ###   ########.fr        #
+#    Updated: 2018/12/04 12:04:59 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	wolf3d
-MGEN_NAME	=	w3d_generator
 CC			=	clang
 
 SRCD		=	srcs
@@ -34,12 +33,10 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c map_parser.c \
-				manage_binds.c types.c depth_filters.c color_filters.c
+FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
+				map_parser.c manage_binds.c types.c depth_filters.c \
+				color_filters.c move_1.c move_2.c move_3.c raycast_4.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
-
-
-MGEN_FILES	=	$(MGEND)/main.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
@@ -49,8 +46,8 @@ CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
 
 
-HEADER		= 	$(INCD)/gen_env.h $(INCD)/env.h $(INCD)/sdl_m.h \
-				$(INCD)/raycast.h $(INCD)/types.h
+HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h \
+				$(INCD)/types.h
 
 .PHONY: clean fclean re rer valg
 
