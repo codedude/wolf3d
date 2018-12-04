@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/04 01:03:08 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/04 14:15:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -525,7 +525,7 @@ void		draw_node_tex(t_sdl *sdl, t_env *env, t_canvas canvas, t_ivec2 mapi)
 		{
 			px.x = (int)((t_float)surf->w * ((t_float)i.x / (t_float)canvas.size.x));
 			put_pixel_inside_canvas(sdl, env->grid,
-							canvas.pos + i, sdl_get_pixel(surf, px.x, px.y).c);
+							canvas.pos + i, sdl_get_pixel(surf, px.x, px.y).rgba);
 			i.x++;
 		}
 		i.y++;
@@ -651,8 +651,8 @@ void		draw_brushes(t_tex_pbox *box, t_canvas parent, t_sdl *sdl,
 			px = current.pos + i;
 			color = box->tex_data[i.x + i.y * current.size.y];
 			if ((int)env->brush != box->tex_id)
-				color.c = (color.c >> 2) & 0x3f3f3f;
-			put_pixel_inside_canvas(sdl, parent, px, color.c);
+				color.rgba = (color.rgba >> 2) & 0x3f3f3f;
+			put_pixel_inside_canvas(sdl, parent, px, color.rgba);
 			i.x++;
 		}
 		i.y++;
@@ -687,7 +687,7 @@ void		draw_brush_preview(t_env *env, t_sdl *sdl)
 			px.x = (int)((t_float)surf->w
 				* ((t_float)i.x / (t_float)canvas.size.x));
 			put_pixel_inside_canvas(sdl, CANVAS_INIT(0, 0), canvas.pos + i + 1,
-									sdl_get_pixel(surf, px.x, px.y).c);
+									sdl_get_pixel(surf, px.x, px.y).rgba);
 			i.x++;
 		}
 		i.y++;
