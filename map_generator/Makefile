@@ -6,23 +6,23 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/03 04:10:04 by jbulant          ###   ########.fr        #
+#    Updated: 2018/12/04 00:59:06 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	wolf3d
-MGEN_NAME	=	w3d_generator
+NAME		=	w3d_generator
 CC			=	clang
 
 SRCD		=	srcs
 INCD		=	includes
-LIBFTD		=	libft
-LIBTPOOLD	=	libtpool
-SDLD		=	sdl
+PARENT_INCD	=	../includes
+LIBFTD		=	../libft
+LIBTPOOLD	=	../libtpool
+SDLD		=	../srcs/sdl
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image \
-				libft/libft.a libtpool/libtpool.a libft/libft.a
+				../libft/libft.a ../libtpool/libtpool.a ../libft/libft.a
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
@@ -34,23 +34,26 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c map_parser.c \
-				manage_binds.c types.c depth_filters.c color_filters.c
-FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
+FILES		=	main.c tex_previewbox.c
+
+PARENT_FILES	=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 
 
 MGEN_FILES	=	$(MGEND)/main.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
+SRCS		+=	$(PARENT_FILES)
+
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-				-I$(INCD) -O3 -g3
+				-I$(INCD) -I$(PARENT_INCD) -O3 -g3 #-fsanitize=address
 LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
 
+HEADER			=	$(INCD)/gen_env.h $(PARENT_HEADER)
 
-HEADER		= 	$(INCD)/gen_env.h $(INCD)/env.h $(INCD)/sdl_m.h \
-				$(INCD)/raycast.h $(INCD)/types.h
+PARENT_HEADER	= 	$(PARENT_INCD)/env.h $(PARENT_INCD)/sdl_m.h \
+					$(PARENT_INCD)/types.h
 
 .PHONY: clean fclean re rer valg
 
