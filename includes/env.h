@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 11:33:57 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 17:08:47 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,15 @@ typedef struct		s_cam {
 	int				side_filter;
 }					t_cam;
 
+typedef struct		s_object {
+	t_sprite		*sprite;
+	t_vec2			pos;
+}					t_object;
+
 typedef struct		s_env {
 	t_tpool			*tpool;
+	t_object		*objects;
+	int				objects_nb;
 	t_sdl			sdl;
 	t_map			map;
 	t_cam			cam;
@@ -112,8 +119,5 @@ void				env_destroy(t_env *env);
 
 int					manage_binds(SDL_Event *event, t_env *env);
 void				manage_down(const Uint8	*state, t_env *env);
-
-int					load_map(t_map *map, char *mapfile);
-void				map_destroy(t_map *map);
 
 #endif

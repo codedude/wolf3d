@@ -6,23 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:45:59 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 11:54:54 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 17:45:25 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include "env.h"
 #include "raycast.h"
-
-t_vec2	vec_rotate(t_vec2 dir, t_float speed)
-{
-	t_float old_x;
-
-	old_x = dir.x;
-	dir.x = dir.x * cos(-speed) - dir.y * sin(-speed);
-	dir.y = old_x * sin(-speed) + dir.y * cos(-speed);
-	return (dir);
-}
 
 void	player_jump(t_cam *player)
 {

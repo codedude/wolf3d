@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 12:00:47 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 17:27:38 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 #include "env.h"
 #include "raycast.h"
 #include "types.h"
+
+/*
+** TODO: lookup table infos.ray.dir
+*/
 
 void	render(t_env *env, int start, int end, int step)
 {

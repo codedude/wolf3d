@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 22:19:36 by valentin          #+#    #+#             */
-/*   Updated: 2018/12/03 11:30:02 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 15:59:16 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void		tp_destroy(t_tpool **tp)
 	t_tpool		*tp_t;
 	t_thread	*th_t;
 
+	if (*tp == NULL)
+		return ;
 	i = 0;
 	tp_t = *tp;
 	while (i < tp_t->size)

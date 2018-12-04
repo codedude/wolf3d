@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/04 11:48:49 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 17:18:21 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	loop(t_env *env)
 		if (loop != 1)
 			break ;
 		tp_wait_for_queue(env->tpool);
+		render_sprites(env);
 		sdl_render(&env->sdl);
 		get_fps(env->show_fps);
 		player_set_acceleration(&env->cam);
@@ -75,10 +76,11 @@ int		main(int ac, char **av)
 			2);
 		return (1);
 	}
-	if (env_init(&env, av[1]) == ERROR)
-		exit(1);
-	SDL_SetRelativeMouseMode(SDL_TRUE);
-	loop(&env);
+	if (env_init(&env, av[1]) == SUCCESS)
+	{
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		loop(&env);
+	}
 	env_destroy(&env);
 	return (0);
 }

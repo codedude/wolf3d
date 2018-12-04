@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 11:28:12 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 16:59:39 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,22 @@ static int		sdl_init2(t_sdl *sdl, const char *title, int width,
 		SDL_WINDOWPOS_UNDEFINED, width, height,
 		SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI)) == NULL)
 	{
-		ft_putstr("Window could not be created ! SDL_Error : ");
+		ft_putstr_fd("Window could not be created ! SDL_Error : ", 2);
 		ft_putendl(SDL_GetError());
 		return (ERROR);
 	}
 	if (sdl_create_screen(sdl, width, height) == ERROR)
 		return (ERROR);
+	if (sdl_init_textures(sdl) == ERROR)
+	{
+		ft_putstr_fd("Can't init textures\n", 2);
+		return (ERROR);
+	}
+	if (sdl_init_sprites(sdl) == ERROR)
+	{
+		ft_putstr_fd("Can't init sprites\n", 2);
+		return (ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -36,7 +46,7 @@ int				sdl_init(t_sdl *sdl, const char *title, int width,
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		ft_putstr("SDL could not initialize ! SDL_Error : ");
+		ft_putstr_fd("SDL could not initialize ! SDL_Error : ", 2);
 		ft_putendl(SDL_GetError());
 		return (ERROR);
 	}
@@ -57,6 +67,8 @@ int				sdl_reset(t_sdl *sdl)
 		free(sdl->z_buffer);
 		sdl->z_buffer = NULL;
 	}
+	sdl_destroy_textures(sdl);
+	sdl_destroy_sprites(sdl);
 	SDL_DestroyTexture(sdl->texture);
 	SDL_DestroyRenderer(sdl->renderer);
 	return (SUCCESS);

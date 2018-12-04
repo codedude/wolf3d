@@ -6,22 +6,20 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:20:25 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 11:43:36 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 15:40:58 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
-#include "SDL.h"
+#include "sdl_m.h"
 #include "libft.h"
 #include "types.h"
 
-t_color		sdl_get_pixel(SDL_Surface *surface, int x, int y)
+t_color		sdl_get_pixel(t_texture *text, int x, int y)
 {
-	Uint8	*p;
 	t_color	pixel;
 
-	p = (Uint8 *)surface->pixels + y * surface->pitch + x * 3;
-	pixel.rgba = (unsigned int)(p[0] | p[1] << 8 | p[2] << 16);
+	pixel.rgba = text->data[x + y * text->w];
 	return (pixel);
 }
 

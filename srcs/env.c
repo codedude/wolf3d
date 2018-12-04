@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 12:09:31 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 18:46:35 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,39 @@
 #include "sdl_m.h"
 #include "env.h"
 #include "raycast.h"
+#include "parser.h"
 
-static int	wolf_init(t_sdl *sdl, t_map *map, t_cam *cam, char *filename)
+int			load_objects(t_env *env)
+{
+	int		i;
+
+	env->objects_nb = 1;
+	env->objects = (t_object *)malloc(sizeof(*env->objects)
+		* (size_t)env->objects_nb);
+	if (env->objects == NULL)
+		return (ERROR);
+	i = 0;
+	while (i < env->objects_nb)
+	{
+		env->objects[i].sprite = env->sdl.sprites + i;
+		env->objects[i].pos = VEC2_INIT(9.0 + i * 2.0, 6.0);
+		i++;
+	}
+	return (SUCCESS);
+}
+
+static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 {
 	if (load_map(map, filename) == ERROR)
 		return (ERROR);
+	if (load_objects(env) == ERROR)
+		return (ERROR);
 	cam->pos = VEC2_INIT((t_float)map->spawn.x, (t_float)map->spawn.y) + 0.5;
-	cam->z = sdl->canvas_h / 2.66;
+	cam->z = env->sdl.canvas_h / 2.66;
 	cam->z_default = cam->z;
 	cam->z_pos = cam->z_default;
 	cam->dir = VEC2_INIT(-1., 0.0);
-	cam->plane = VEC2_INIT(0.0, 0.8);
+	cam->plane = VEC2_INIT(0.0, 0.75);
 	cam->mov_speed = 0.05;
 	cam->rot_speed = 0.016;
 	cam->acceleration = 0.0;
@@ -48,14 +70,10 @@ static void	wolf_destroy(t_map *map, t_cam *cam)
 
 int			env_init(t_env *env, char *filename)
 {
+	ft_bzero(env, sizeof(*env));
 	if (sdl_init(&env->sdl, WINDOW_NAME, 1280, 720) == ERROR)
 	{
 		ft_putstr_fd("SDL2 can't start\n", 2);
-		return (ERROR);
-	}
-	if (sdl_init_textures() == ERROR)
-	{
-		ft_putstr_fd("Can't load textures\n", 2);
 		return (ERROR);
 	}
 	if ((env->tpool = tp_create(THREADS, TP_FPS_MODE)) == NULL)
@@ -63,7 +81,7 @@ int			env_init(t_env *env, char *filename)
 		ft_putstr_fd("Thread pool can't start\n", 2);
 		return (ERROR);
 	}
-	if (wolf_init(&env->sdl, &env->map, &env->cam, filename) == ERROR)
+	if (wolf_init(env, &env->map, &env->cam, filename) == ERROR)
 	{
 		ft_putstr_fd("Can't init wolf\n", 2);
 		return (ERROR);
@@ -74,7 +92,6 @@ int			env_init(t_env *env, char *filename)
 
 void		env_destroy(t_env *env)
 {
-	sdl_destroy_textures();
 	tp_destroy(&env->tpool);
 	sdl_destroy(&env->sdl);
 	wolf_destroy(&env->map, &env->cam);

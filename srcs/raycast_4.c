@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 12:18:12 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 15:36:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,12 @@ static unsigned int	dark_color(t_color color, t_cam *cam, int side, t_float z)
 		| (unsigned int)c[2] << 16);
 }
 
-static unsigned int	get_cf_color(int text_id, t_vec2 curr_cf, t_cam *cam,
+static unsigned int	get_cf_color(t_texture *text, t_vec2 curr_cf, t_cam *cam,
 					t_float z)
 {
-	SDL_Surface		*text;
 	t_ivec2			tex;
 	unsigned int	color;
 
-	text = sdl_get_texture(text_id);
 	tex.x = (int)(curr_cf.x * text->w) % text->w;
 	tex.y = (int)(curr_cf.y * text->h) % text->h;
 	color = dark_color(sdl_get_pixel(text, tex.x, tex.y), cam, 0, z);
@@ -68,12 +66,12 @@ void				draw_floor(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 		if (cam->z > 0.0)
 		{
 			lookup = z_by_half_canvas
-				/ (2.0 * (y - cam->height) - sdl->canvas_h);
+				/ (2.0 * ((y + 1) - cam->height) - sdl->canvas_h);
 			weight = lookup / infos->z;
 			curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 			curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
 			sdl->image[infos->x + y * sdl->width] = get_cf_color(
-				DEFAULT_FLOOR, curr_cf, cam, lookup);
+				sdl->textures + DEFAULT_FLOOR, curr_cf, cam, lookup);
 		}
 		else
 			sdl->image[infos->x + y * sdl->width] = 0;
@@ -103,7 +101,7 @@ void				draw_ceil(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 			curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 			curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
 			sdl->image[infos->x + y * sdl->width] = get_cf_color(
-				DEFAULT_CEIL, curr_cf, cam, lookup);
+				sdl->textures + DEFAULT_CEIL, curr_cf, cam, lookup);
 		}
 		else
 			sdl->image[infos->x + y * sdl->width] = 0x0;
@@ -112,7 +110,7 @@ void				draw_ceil(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 }
 
 void				draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
-					SDL_Surface *text)
+					t_texture *text)
 {
 	t_ivec2			tex;
 	int				y;

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/04 12:11:39 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 17:45:38 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "env.h"
 #include "sdl_m.h"
 #include "raycast.h"
+#include "types.h"
 
 void		manage_down(const Uint8 *state, t_env *env)
 {

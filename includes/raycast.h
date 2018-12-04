@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 12:17:41 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 15:53:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void					player_jump(t_cam *player);
 void					player_fall(t_cam *player);
 
 void					draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
-							SDL_Surface *text);
+							t_texture *text);
 void					draw_ceil(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 							t_vec2 texel);
 void					draw_floor(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,

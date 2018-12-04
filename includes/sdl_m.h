@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 11:31:48 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 16:53:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "SDL.h"
 # include "types.h"
+
+# define TEXTURES_CONF_FILE	"textures/textures.conf"
+# define SPRITES_CONF_FILE	"sprites/sprites.conf"
 
 # define KEY_ESCAPE		SDLK_ESCAPE
 # define KEY_FPS		SDLK_1
@@ -25,15 +28,23 @@
 # define KEY_SPEED		SDLK_6
 # define KEY_MODE		SDLK_SPACE
 
-typedef struct		s_textures {
-	int				id;
-	char			*filename;
-	SDL_Surface		*texture;
-}					t_textures;
+typedef struct		s_texture {
+	int				w;
+	int				h;
+	unsigned int	*data;
+}					t_texture;
+
+typedef struct		s_sprite {
+	t_texture		texture;
+}					t_sprite;
 
 typedef struct		s_sdl {
+	t_texture		*textures;
+	t_sprite		*sprites;
 	t_float			canvas_h;
 	t_float			half_canvas_h;
+	int				textures_nb;
+	int				sprites_nb;
 	unsigned int	*image;
 	t_float			*z_buffer;
 	t_float			canvas_w;
@@ -70,15 +81,16 @@ int					sdl_resize(t_sdl *sdl, int width, int height);
 ** sdl3.c
 */
 
-int					sdl_init_textures(void);
-void				sdl_destroy_textures(void);
-SDL_Surface			*sdl_get_texture(int id);
+int					sdl_init_textures(t_sdl *sdl);
+int					sdl_init_sprites(t_sdl *sdl);
+void				sdl_destroy_textures(t_sdl *sdl);
+void				sdl_destroy_sprites(t_sdl *sdl);
 
 /*
 ** sdl4.c
 */
 
-t_color				sdl_get_pixel(SDL_Surface *surface, int x, int y);
+t_color				sdl_get_pixel(t_texture *text, int x, int y);
 void				get_fps(int show_fps);
 
 #endif

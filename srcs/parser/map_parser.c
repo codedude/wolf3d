@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/01 17:34:34 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 15:42:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <errno.h>
 #include "libft.h"
 #include "env.h"
+#include "parser.h"
 
 static char		*file_get_content(char *filename)
 {

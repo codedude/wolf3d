@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 22:46:27 by valentin          #+#    #+#             */
-/*   Updated: 2018/12/03 11:35:00 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/04 14:21:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	tp_is_queue(t_tpool *tp)
 	if ((tp->flag & TP_MASK_MODE) == TP_FPS_MODE)
 		return (tp->queue->iter != NULL);
 	else
-	return (tp->queue->size > 0);
+		return (tp->queue->size > 0);
 }
 
 static int	tp_launch_task(t_tpool *tp)
