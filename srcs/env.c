@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 18:46:35 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/05 22:15:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int			load_objects(t_env *env)
 {
 	int		i;
 
-	env->objects_nb = 1;
+	env->objects_nb = 3;
 	env->objects = (t_object *)malloc(sizeof(*env->objects)
 		* (size_t)env->objects_nb);
 	if (env->objects == NULL)
@@ -31,7 +31,8 @@ int			load_objects(t_env *env)
 	while (i < env->objects_nb)
 	{
 		env->objects[i].sprite = env->sdl.sprites + i;
-		env->objects[i].pos = VEC2_INIT(9.0 + i * 2.0, 6.0);
+		env->objects[i].pos = VEC2_INIT(10.0 + i * 2.0, 6.0);
+		env->objects[i].z = 0.0;
 		i++;
 	}
 	return (SUCCESS);

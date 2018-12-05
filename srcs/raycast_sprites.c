@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/05 16:48:23 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/05 21:55:53 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "types.h"
 #include "sdl_m.h"
 #include "raycast.h"
+#include "list.h"
 
 /*
 **	based on Barycentric_coordinate_system
@@ -80,6 +81,9 @@
 **			return (True);
 **		return (False);
 **	}
+**
+**
+**	OPTI : s*t > 0 ? check perf
 */
 
 t_bool		vec_is_in_front(t_vec2 left, t_vec2 right, t_vec2 p)
@@ -94,55 +98,47 @@ t_bool		vec_is_in_front(t_vec2 left, t_vec2 right, t_vec2 p)
 	return (False);
 }
 
+int			sort_object(t_object *a, t_object *b)
+{
+	if (a->z < b->z)
+		return (-1);
+	if (b->z < a->z)
+		return (1);
+	return (0);
+}
+
 void		render_sprites(t_env *env)
 {
 	t_vec2	dir[2];
 	t_vec2	obj_dir;
+	t_klist	*lst;
+	t_klist	*tmp;
 	int		i;
 
 	dir[0] = env->cam.dir + -env->cam.plane;
 	dir[1] = env->cam.dir + env->cam.plane;
-	obj_dir = env->objects[0].pos - env->cam.pos;
+	lst = NULL;
 	i = 0;
 	while (i < env->objects_nb)
 	{
+		obj_dir = env->objects[i].pos - env->cam.pos;
+		env->objects[i].z = vec_len(obj_dir);
+		env->objects[i].id = i;
 		if (vec_is_in_front(dir[0], dir[1], obj_dir) == True)
-			printf("obj[%d] (type: %d) : INSIDE\n");
-		else
-			printf("obj[%d] (type: %d) : NOT INSIDE\n");
+		{
+			//add error check
+			if ((tmp = list_new(env->objects + i)) == NULL)
+				return ;
+			list_add_sort(&lst, tmp, sort_object);
+		}
 		i++;
 	}
+	tmp = lst;
+	while (tmp != NULL)
+	{
+		printf("%d, ", tmp->value->id);
+		tmp = tmp->next;
+	}
+	printf("\n");
+	list_clear(&lst);
 }
-
-// void		render_sprites(t_env *env)
-// {
-// 	t_vec2	range_dir[2];
-// 	t_float	range_ang[2];
-// 	t_float	tmp;
-// 	t_vec2	object_dir;
-// 	t_float	ang;
-//
-// 	range_dir[0] = vec_norm(env->cam.dir + -env->cam.plane);
-// 	range_dir[1] = vec_norm(env->cam.dir + env->cam.plane);
-// 	object_dir = vec_norm(env->objects[0].pos - env->cam.pos);
-// 	range_ang[0] = atan2(range_dir[0].y, range_dir[0].x);
-// 	range_ang[1] = atan2(range_dir[1].y, range_dir[1].x);
-// 	ang = atan2(object_dir.y, object_dir.x);
-// 	if (range_ang[0] < 0.0)
-// 		range_ang[0] = fabs(range_ang[0]);
-// 	else
-// 		range_ang[0] = M_PI + (M_PI - range_ang[0]);
-// 	if (range_ang[1] < 0.0)
-// 		range_ang[1] = fabs(range_ang[1]);
-// 	else
-// 		range_ang[1] = M_PI + (M_PI - range_ang[1]);
-// 	if (ang < 0.0)
-// 		ang = fabs(ang);
-// 	else
-// 		ang = M_PI + (M_PI - ang);
-// 	printf("ang-min: %f\nang-max: %f\nang-obj: %f\n", range_ang[0] / M_PI * 180.0, range_ang[1] / M_PI * 180.0, ang / M_PI * 180.0);
-// 	if ((ang >= range_ang[0] && ang <= range_ang[1]))
-// 		printf("INSIDE\n");
-// 	else
-// 		printf("NOT INSIDE\n");
-// }

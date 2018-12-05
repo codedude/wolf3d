@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/04 17:46:40 by vparis           ###   ########.fr        #
+#    Updated: 2018/12/05 21:16:26 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ endif
 
 FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
 				manage_binds.c types.c depth_filters.c vector.c \
-				raycast_sprites.c \
+				raycast_sprites.c list.c \
 				color_filters.c move_1.c move_2.c move_3.c raycast_4.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 FILES		+=	$(PARSERD)/map_parser.c $(PARSERD)/stack.c \
@@ -51,7 +51,7 @@ LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
 
 
 HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h \
-				$(INCD)/types.h
+				$(INCD)/types.h $(INCD)/list.h
 
 .PHONY: clean fclean re rer valg
 
