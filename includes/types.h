@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 12:59:23 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 18:11:49 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/05 02:39:09 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ t_float					vec_dot(t_vec2 v1, t_vec2 v2);
 t_float					vec_len(t_vec2 v1);
 t_float					vec_ang(t_vec2 v1, t_vec2 v2);
 t_vec2					vec_norm(t_vec2 v1);
+t_vec2					vec_cross(t_vec2 v1, t_vec2 v2);
 
 #endif
