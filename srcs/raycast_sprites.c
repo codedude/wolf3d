@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/05 16:37:44 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/05 16:48:23 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 **			 + (p2.y - p0.y) * p.x + (p0.x - p2.x) * p.y)
 **		   * sign of area
 **	t    =  (p0.x * p1.y - p0.y * p1.x + (p0.y - p1.y) * p.x
-			 + (p1.x - p0.x) * p.y) * sign of area
+**			 + (p1.x - p0.x) * p.y) * sign of area
 **
 **	if s and t are both > 0 AND a + t < 2 * area * sign of area
 **	then p is inside the triangle

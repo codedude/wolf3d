@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/04 00:59:06 by jbulant          ###   ########.fr        #
+#    Updated: 2018/12/05 17:42:55 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ PARENT_INCD	=	../includes
 LIBFTD		=	../libft
 LIBTPOOLD	=	../libtpool
 SDLD		=	../srcs/sdl
+PARSERD		=	../srcs/parser
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image \
@@ -34,9 +35,12 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-FILES		=	main.c tex_previewbox.c
+FILES		=	brush_utilities.c draw_grid_lines.c draw_grid.c draw_node.c \
+				env_destroy.c env_init.c main.c manage_binds.c map.c \
+				tex_previewbox.c tools.c
 
 PARENT_FILES	=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
+PARENT_FILES	+=	$(PARSERD)/stack.c $(PARSERD)/reader.c
 
 
 MGEN_FILES	=	$(MGEND)/main.c

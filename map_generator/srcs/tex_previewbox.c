@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 17:30:56 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/03 22:23:15 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/05 16:55:33 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "types.h"
 #include "gen_env.h"
 
-static t_color	*new_texdata(SDL_Surface *tex, t_ivec2 size)
+static t_color	*new_texdata(t_texture *tex, t_ivec2 size)
 {
 	t_color		*tdata;
 	t_ivec2		i;
@@ -44,7 +44,7 @@ static t_color	*new_texdata(SDL_Surface *tex, t_ivec2 size)
 	return (tdata);
 }
 
-t_tex_pbox			*new_tex_previewbox(t_sdl *sdl, SDL_Surface *tex, int id)
+t_tex_pbox			*new_tex_previewbox(t_sdl *sdl, t_texture *tex, int id)
 {
 	t_tex_pbox	*tbox;
 	t_canvas	psize;

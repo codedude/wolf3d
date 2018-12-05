@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/04 00:59:11 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/05 17:43:51 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define GEN_ENV_H
 
 # include "libft.h"
+# include "sdl_m.h"
 
 # define MAP_GEN_NAME		"Wolf3d: Map generator"
-# define TEX_COUNT	15
+
 # define DEF_SIZE_X		16
 # define DEF_SIZE_Y		15
 # define MIN_SIZE_X		5
@@ -59,7 +60,7 @@ typedef struct	s_tex_previewbox {
 	int							tex_id;
 }				t_tex_pbox;
 
-t_tex_pbox		*new_tex_previewbox(t_sdl *sdl, SDL_Surface *tex, int id);
+t_tex_pbox		*new_tex_previewbox(t_sdl *sdl, t_texture *tex, int id);
 void			tex_previewbox_add(t_tex_pbox **abox, t_tex_pbox *add);
 void			destroy_tex_previewbox(t_tex_pbox *pbox);
 
@@ -83,9 +84,36 @@ typedef struct	s_env {
 	int			spawner_id;
 }				t_env;
 
+int				env_init(t_env *env);
+void			env_destroy(t_env *env);
+t_map			*create_new_map(t_ivec2 size);
+void			destroy_map(t_map *map);
+int				sdl_clear_color(t_sdl *sdl, unsigned int color);
+
+int				manage_binds(SDL_Event *event, t_env *env);
+void			manage_down(const Uint8	*state, t_env *env);
+
+void			draw_grid(t_env *env, t_sdl *sdl);
+void			draw_grid_lines(t_env *env, t_sdl *sdl);
+t_bool			drawing_node(t_env *env, t_ivec2 mpos, t_ivec2 node);
+void			draw_node(t_env *env, t_sdl *sdl, t_ivec2 i);
+void			draw_on_map(t_env *env, int brush);
+
 int				ipercent_of(int of, int percent);
 t_bool			is_bounded(t_ivec2 pos, t_canvas canvas);
 t_canvas		get_map_boundaries(t_env *env);
+t_ivec2			map_to_center(t_env *env);
+t_ivec2			mpos_to_map_index(t_canvas bounds, t_ivec2 mpos, t_env *env);
 t_ivec2			get_mouse_pos(void);
+
+void			draw_canvas_fill(t_sdl *sdl, t_canvas canvas, t_canvas parent,
+								unsigned int color);
+void			draw_canvas_border(t_sdl *sdl, t_canvas canvas, t_canvas parent,
+								unsigned int color);
+void			put_pixel_inside_canvas(t_sdl *sdl, t_canvas canvas,
+								t_ivec2 pos, unsigned int color);
+
+void			update_c_offset(t_env *env);
+void			switch_brush(t_ivec2 mpos, t_env *env);
 
 #endif
