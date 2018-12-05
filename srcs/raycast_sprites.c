@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/05 04:31:55 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/05 16:37:44 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,41 @@
 **		= -v2.x
 */
 
+/*
+**	OLD VERSION
+**	the variable area was used to know if the point is inside
+**	the triangle, if we don't use it, we just take
+**	the product of perpendicular of left-right side
+**	with the point's position in order to know if the point
+**	is on the left or the right of the side
+**	with this, we don't need more normalization of vectors
+**	and we skip more computation
+**
+**	t_bool		vec_is_in_front(t_vec2 left, t_vec2 right, t_vec2 p)
+**	{
+**		t_float	area;
+**	    t_float	sign;
+**		t_float	s;
+**		t_float	t;
+**
+**		area = (-left.y * right.x + left.x * right.y);
+**		sign = area < 0.0 ? -1.0 : 1.0;
+**		s = (right.y * p.x + -right.x * p.y) * sign;
+**		t = (-left.y * p.x + left.x * p.y) * sign;
+**		if (s > 0 && t > 0 && (s + t) < area * sign)
+**			return (True);
+**		return (False);
+**	}
+*/
+
 t_bool		vec_is_in_front(t_vec2 left, t_vec2 right, t_vec2 p)
 {
-	t_float	area;
-    t_float	sign;
 	t_float	s;
 	t_float	t;
 
-	area = (-left.y * right.x + left.x * right.y);
-	sign = area < 0.0 ? -1.0 : 1.0;
-	s = (right.y * p.x + -right.x * p.y) * sign;
-	t = (-left.y * p.x + left.x * p.y) * sign;
-	if (s > 0 && t > 0 && (s + t) < area * sign)
+	s = (right.y * p.x + -right.x * p.y);
+	t = (-left.y * p.x + left.x * p.y);
+	if (s <= 0 && t <= 0)
 		return (True);
 	return (False);
 }
@@ -77,9 +100,9 @@ void		render_sprites(t_env *env)
 	t_vec2	obj_dir;
 	int		i;
 
-	dir[0] = vec_norm(env->cam.dir + -env->cam.plane) * 5;
-	dir[1] = vec_norm(env->cam.dir + env->cam.plane) * 5;
-	obj_dir = vec_norm(env->objects[0].pos - env->cam.pos);
+	dir[0] = env->cam.dir + -env->cam.plane;
+	dir[1] = env->cam.dir + env->cam.plane;
+	obj_dir = env->objects[0].pos - env->cam.pos;
 	i = 0;
 	while (i < env->objects_nb)
 	{
