@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/06 13:16:17 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 16:04:35 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ void					player_set_acceleration(t_cam *player);
 void					player_jump(t_cam *player);
 void					player_fall(t_cam *player);
 
-int						precompute_sprites(void *data);
-void					render_sprites(t_env *env);
+void					compute_sprites(t_env *env);
 void					draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 							t_texture *text);
 void					draw_ceil(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,

@@ -6,12 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/06 13:04:33 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/06 19:04:58 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
+#include "ft_math.h"
 #include "libtpool.h"
 #include "sdl_m.h"
 #include "env.h"
@@ -31,7 +32,7 @@ int			load_objects(t_env *env)
 	while (i < env->objects_nb)
 	{
 		env->objects[i].sprite = env->sdl.sprites + i;
-		env->objects[i].pos = VEC2_INIT(10.0 + i * 2.0, 6.0);
+		env->objects[i].pos = VEC2_INIT(6.0, 10.0 + i * 2.0);
 		env->objects[i].z = 0.0;
 		i++;
 	}
@@ -49,7 +50,7 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	cam->z_default = cam->z;
 	cam->z_pos = cam->z_default;
 	cam->dir = VEC2_INIT(-1., 0.0);
-	cam->plane = VEC2_INIT(0.0, 0.75);
+	cam->plane = VEC2_INIT(0.0, cos(75.0 / 2.0 * DEG_TO_RAD));
 	cam->mov_speed = 0.05;
 	cam->rot_speed = 0.016;
 	cam->acceleration = 0.0;

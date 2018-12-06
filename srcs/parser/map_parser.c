@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/06 13:06:02 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/06 19:00:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static char		*convert_value(t_env *env, t_map *map, int i, char *start)
 		else if (map->data[i][j] == env->sdl.textures_nb + 1)
 		{
 			if (map->spawn.x == -1)
-				map->spawn = IVEC2_INIT(i, j);
+				map->spawn = IVEC2_INIT(j, i);
 			else
 				return (NULL);
 			map->data[i][j] = 0;
@@ -186,7 +186,6 @@ void			map_destroy(t_map *map)
 int				load_map(t_env *env, t_map *map, char *mapfile)
 {
 	char		*content;
-	printf("%d\n", env->sdl.textures_nb);
 
 	errno = 0;
 	if (is_valid_filename(mapfile) == ERROR)

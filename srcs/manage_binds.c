@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/04 17:45:38 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 19:13:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void		manage_down(const Uint8 *state, t_env *env)
 		is_walking = True;
 		cam->pos = straf(&env->map, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
-					cam->acceleration, -0.75));
+					cam->acceleration, 0.75));
 	}
 	if (state[SDL_SCANCODE_D])
 	{
 		is_walking = True;
 		cam->pos = straf(&env->map, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
-					cam->acceleration, 0.75));
+					cam->acceleration, -0.75));
 	}
 	if (state[SDL_SCANCODE_W])
 	{
@@ -58,13 +58,13 @@ void		manage_down(const Uint8 *state, t_env *env)
 		env->cam.action_state &= ~ACTION_WALKING;
 	if (state[SDL_SCANCODE_Q])
 	{
-		cam->dir = vec_rotate(cam->dir, -cam->rot_speed * 5.0);
-		cam->plane = vec_rotate(cam->plane, -cam->rot_speed * 5.0);
+		cam->dir = vec_rotate(cam->dir, cam->rot_speed * 5.0);
+		cam->plane = vec_rotate(cam->plane, cam->rot_speed * 5.0);
 	}
 	if (state[SDL_SCANCODE_E])
 	{
-		cam->dir = vec_rotate(cam->dir, cam->rot_speed * 5.0);
-		cam->plane = vec_rotate(cam->plane, cam->rot_speed * 5.0);
+		cam->dir = vec_rotate(cam->dir, cam->rot_speed * -5.0);
+		cam->plane = vec_rotate(cam->plane, cam->rot_speed * -5.0);
 	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
@@ -108,6 +108,7 @@ void		switch_effect(t_cam *cam, void *new, int type)
 int			manage_binds(SDL_Event *event, t_env *env)
 {
 	int		r;
+	t_float	motion;
 
 	r = 1;
 	if (event->type == SDL_QUIT)
@@ -162,12 +163,13 @@ int			manage_binds(SDL_Event *event, t_env *env)
 	}
 	else if (event->type == SDL_MOUSEMOTION)
 	{
+		motion = event->motion.xrel * -0.33;
 		env->cam.dir = vec_rotate(env->cam.dir,
 					env->cam.rot_speed *
-					(t_float)(event->motion.xrel * 0.33));
+					(t_float)(motion));
 		env->cam.plane = vec_rotate(env->cam.plane,
 					env->cam.rot_speed *
-					(t_float)(event->motion.xrel * 0.33));
+					(t_float)(motion));
 		env->cam.height = clamp_float(
 						env->cam.height + -(t_float)event->motion.yrel * 2.0,
 						-MAX_OFFSET, MAX_OFFSET);

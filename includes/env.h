@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/05 21:51:04 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 16:11:30 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ typedef struct		s_object {
 	t_sprite		*sprite;
 	t_vec2			pos;
 	t_float			z;
-	int				id;
+	int				x;
 }					t_object;
 
 typedef struct		s_env {

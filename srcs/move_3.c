@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 11:52:41 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 19:03:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ t_vec2		allow_move(t_map *map, t_vec2 from, t_vec2 to, t_vec2 calc)
 					(t_float)map->height - 0.1));
 	offset.x = ((to.x < 0) ? -0.1 : 0.1);
 	offset.y = ((to.y < 0) ? -0.1 : 0.1);
-	if (map->data[(int)from.x][(int)(calc.y + offset.y)] != 0)
-		calc.y = from.y;
-	if (map->data[(int)(calc.x + offset.x)][(int)from.y] != 0)
+	if (map->data[(int)from.y][(int)(calc.x + offset.x)] != 0)
 		calc.x = from.x;
-	if (map->data[(int)(calc.x + offset.x)][(int)(calc.y + offset.y)] != 0)
+	if (map->data[(int)(calc.y + offset.y)][(int)from.x] != 0)
+		calc.y = from.y;
+	if (map->data[(int)(calc.y + offset.y)][(int)(calc.x + offset.x)] != 0)
 		calc = from;
 	return (calc);
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 11:59:55 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 19:09:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, int **map)
 			infos->map.y += dist[STEP].y;
 			infos->side = 1;
 		}
-		if (map[(int)infos->map.x][(int)infos->map.y] > 0)
+		if (map[(int)infos->map.y][(int)infos->map.x] > 0)
 			hit = 1;
 	}
 	return (hit);

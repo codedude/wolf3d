@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:04:53 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/05 22:15:31 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 16:01:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void			list_del(t_klist **head, t_klist *entry)
 	while (*head != entry)
 		head = &(*head)->next;
 	*head = entry->next;
+	free(entry);
 }
 
 void			list_clear(t_klist **head)
@@ -69,11 +70,6 @@ void			list_add_sort(t_klist **head, t_klist *entry,
 {
 	t_klist	*last;
 
-	if (*head == NULL)
-	{
-		*head = entry; //append empty list
-		return ;
-	}
 	last = NULL;
 	while (*head != NULL)
 	{

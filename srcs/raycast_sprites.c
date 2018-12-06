@@ -6,11 +6,12 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/06 13:17:21 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 18:56:03 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "ft_math.h"
 #include "libft.h"
 #include "env.h"
 #include "types.h"
@@ -86,6 +87,11 @@
 **	OPTI : s*t > 0 ? check perf
 */
 
+/*
+
+x = ((angp - ang) * 100.0 / (1.0 - ang)) * 1280
+
+*/
 t_bool		vec_is_in_front(t_vec2 left, t_vec2 right, t_vec2 p)
 {
 	t_float	s;
@@ -107,43 +113,57 @@ int			sort_object(t_object *a, t_object *b)
 	return (0);
 }
 
-int		precompute_sprites(void *data)
+int			precompute_sprites(t_env *env, t_klist **lst)
 {
-	t_algo	*algo;
-	t_env	*env;
 	t_vec2	dir[2];
 	t_vec2	obj_dir;
-	t_klist	*lst;
 	t_klist	*tmp;
 	int		i;
 
-	algo = (t_algo *)data;
-	env = algo->env;
-	dir[0] = env->cam.dir + -env->cam.plane;
+	dir[0] = env->cam.dir - env->cam.plane;
 	dir[1] = env->cam.dir + env->cam.plane;
-	lst = NULL;
 	i = 0;
-	while (i < env->objects_nb)
+	while (i < 1)
 	{
 		obj_dir = env->objects[i].pos - env->cam.pos;
 		env->objects[i].z = vec_len(obj_dir);
-		env->objects[i].id = i;
 		if (vec_is_in_front(dir[0], dir[1], obj_dir) == True)
 		{
+			printf("IN\n");
 			if ((tmp = list_new(env->objects + i)) == NULL)
 			{
-				list_clear(&lst);
+				list_clear(lst);
 				return (ERROR);
 			}
-			list_add_sort(&lst, tmp, sort_object);
+			list_add_sort(lst, tmp, sort_object);
 		}
+		else
+			printf("OUT\n");
 		i++;
 	}
-	list_clear(&lst);
 	return (SUCCESS);
 }
 
-void		render_sprites(t_env *env)
+void		render_sprite(t_env *env, t_object *obj)
 {
-	(void)env;
+
+}
+
+void		compute_sprites(t_env *env)
+{
+	t_klist		*lst;
+	t_klist		*iter;
+	t_object	*obj;
+
+	lst = NULL;
+	if (precompute_sprites(env, &lst) == ERROR)
+		return ;
+	iter = lst;
+	while (iter != NULL)
+	{
+		obj = iter->value;
+		render_sprite(env, obj);
+		iter = iter->next;
+	}
+	list_clear(&lst);
 }

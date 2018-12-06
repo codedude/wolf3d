@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/06 13:19:25 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 18:53:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,17 @@ void	prepare_threads(t_env *env, t_algo **pack)
 	int			i;
 	int			tasks;
 
-	tasks = tp_getnbr_proc(env->tpool) + 1;
+	tasks = tp_getnbr_proc(env->tpool);
 	if ((*pack = (t_algo *)malloc((size_t)(tasks) * sizeof(t_algo)))
 		== NULL)
 		return ;
-	(*pack)[0].env = env;
-	tp_add_task(env->tpool, &precompute_sprites, &(*pack)[0]);
-	i = 1;
+	i = 0;
 	while (i < tasks)
 	{
 		(*pack)[i].env = env;
-		(*pack)[i].start = (i - 1);
+		(*pack)[i].start = i;
 		(*pack)[i].end = env->sdl.width;
-		(*pack)[i].step = tasks - 1;
+		(*pack)[i].step = tasks;
 		tp_add_task(env->tpool, &start_render, &(*pack)[i]);
 		i++;
 	}
@@ -57,8 +55,11 @@ void	loop(t_env *env)
 		manage_down(state, env);
 		if (loop != 1)
 			break ;
+		// sdl_render and computation in parallel ? make sure data copy is safe
+		// only SDL_UpdateTexture need to be protected
+		// step thread or cut screen ?
 		tp_wait_for_queue(env->tpool);
-		render_sprites(env);
+		compute_sprites(env);
 		sdl_render(&env->sdl);
 		get_fps(env->show_fps);
 		player_set_acceleration(&env->cam);
