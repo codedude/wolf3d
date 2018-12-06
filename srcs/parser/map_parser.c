@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/04 15:42:19 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 13:06:02 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int		get_map_wh(t_map *map, char *content)
 	return (SUCCESS);
 }
 
-static char		*convert_value(t_map *map, int i, char *start)
+static char		*convert_value(t_env *env, t_map *map, int i, char *start)
 {
 	int			j;
 
@@ -110,9 +110,9 @@ static char		*convert_value(t_map *map, int i, char *start)
 	{
 		while (*start == ' ')
 			start++;
-		if ((map->data[i][j] = ft_atoi(start)) > TEX_COUNT)
+		if ((map->data[i][j] = ft_atoi(start)) > env->sdl.textures_nb + 1)
 			return (NULL);
-		else if (map->data[i][j] == TEX_COUNT)
+		else if (map->data[i][j] == env->sdl.textures_nb + 1)
 		{
 			if (map->spawn.x == -1)
 				map->spawn = IVEC2_INIT(i, j);
@@ -128,7 +128,7 @@ static char		*convert_value(t_map *map, int i, char *start)
 
 }
 
-static int		parse_map(t_map *map, char *content)
+static int		parse_map(t_env *env, t_map *map, char *content)
 {
 	int			i;
 	char		*dummy;
@@ -146,7 +146,7 @@ static int		parse_map(t_map *map, char *content)
 			dummy++;
 		if (!(map->data[i] = (int *)malloc(sizeof(int) * (size_t)map->width)))
 			return (parse_failed(map, content, strerror(errno)));
-		if (!(dummy = convert_value(map, i++, dummy)))
+		if (!(dummy = convert_value(env, map, i++, dummy)))
 			return (parse_failed(map, content, "invalid texture identifier"));
 	}
 	if (map->spawn.x == -1)
@@ -154,7 +154,7 @@ static int		parse_map(t_map *map, char *content)
 	return (SUCCESS);
 }
 
-static int		check_filename(char *filename)
+static int		is_valid_filename(char *filename)
 {
 	char		*point;
 
@@ -183,17 +183,18 @@ void			map_destroy(t_map *map)
 	}
 }
 
-int				load_map(t_map *map, char *mapfile)
+int				load_map(t_env *env, t_map *map, char *mapfile)
 {
 	char		*content;
+	printf("%d\n", env->sdl.textures_nb);
 
 	errno = 0;
-	if (check_filename(mapfile) == ERROR)
+	if (is_valid_filename(mapfile) == ERROR)
 		return (ERROR);
 	if (!(content = file_get_content(mapfile)))
 		return (parse_failed(map, content, strerror(errno)));
 	ft_bzero(map, sizeof(*map));
-	if (parse_map(map, content) == ERROR)
+	if (parse_map(env, map, content) == ERROR)
 		return (ERROR);
 	free(content);
 	return (SUCCESS);

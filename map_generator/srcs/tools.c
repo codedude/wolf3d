@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:04:05 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/05 18:15:34 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,16 +127,16 @@ t_canvas	get_map_boundaries(t_env *env)
 
 	bounds.pos = env->map_pos;
 	bounds.size = env->map->size * env->node_size;
-	bounds.size.x = (int)((t_float)bounds.size.x * env->zoom);
-	bounds.size.y = (int)((t_float)bounds.size.y * env->zoom);
+	bounds.size.x = (int)(bounds.size.x * env->zoom);
+	bounds.size.y = (int)(bounds.size.y * env->zoom);
 	return (bounds);
 }
 
 t_ivec2		mpos_to_map_index(t_canvas bounds, t_ivec2 mpos, t_env *env)
 {
 	mpos -= bounds.pos;
-	mpos.x = (int)((t_float)mpos.x / ((t_float)env->node_size * env->zoom));
-	mpos.y = (int)((t_float)mpos.y / ((t_float)env->node_size * env->zoom));
+	mpos.x = (int)(mpos.x / (env->node_size * env->zoom));
+	mpos.y = (int)(mpos.y / (env->node_size * env->zoom));
 	return (mpos);
 }
 

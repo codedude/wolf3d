@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:34:12 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/06 12:34:04 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ int			manage_binds(SDL_Event *event, t_env *env)
 	{
 		if (event->key.keysym.sym == SDLK_ESCAPE)
 			return (0);
-		if (event->key.keysym.sym == SDLK_SPACE)
+		else if (event->key.keysym.sym == SDLK_SPACE)
 		{
 			SDL_SetRelativeMouseMode(SDL_FALSE);
 			env->space = False;
 		}
-		if (event->key.keysym.sym == SDLK_LALT)
+		else if (event->key.keysym.sym == SDLK_LALT)
 			env->alt = False;
+		else if (event->key.keysym.sym == SDLK_LCTRL)
+			env->ctrl = False;
 	}
 	else if (event->type == SDL_KEYDOWN)
 	{
@@ -55,24 +57,31 @@ int			manage_binds(SDL_Event *event, t_env *env)
 				SDL_SetRelativeMouseMode(SDL_TRUE);
 			env->space = True;
 		}
+		else if (event->key.keysym.sym == SDLK_LCTRL)
+			env->ctrl = True;
 		else if (event->key.keysym.sym == SDLK_r)
 			env->map_pos = map_to_center(env);
-		else if (event->key.keysym.sym == SDLK_t
+		else if (event->key.keysym.sym == SDLK_y
 			&& env->map->size.x < MAX_SIZE_X)
 			env->map->size.x++;
-		else if (event->key.keysym.sym == SDLK_y
+		else if (event->key.keysym.sym == SDLK_t
 			&& env->map->size.x > MIN_SIZE_X)
 			env->map->size.x--;
-		else if (event->key.keysym.sym == SDLK_g
+		else if (event->key.keysym.sym == SDLK_h
 			&& env->map->size.y < MAX_SIZE_Y)
 			env->map->size.y++;
-		else if (event->key.keysym.sym == SDLK_h
+		else if (event->key.keysym.sym == SDLK_g
 			&& env->map->size.y > MIN_SIZE_Y)
 			env->map->size.y--;
 		else if (event->key.keysym.sym == SDLK_LALT)
 			env->alt = True;
 		else if (event->key.keysym.sym == SDLK_s)
-		env->brush = env->spawner_id;
+		{
+			if (env->ctrl == True)
+				save_file(env);
+			else
+				env->brush = env->spawner_id;
+		}
 	}
 	else if (event->type == SDL_MOUSEMOTION)
 	{

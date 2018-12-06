@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:36:49 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/06 12:58:43 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,37 @@
 #include "gen_env.h"
 #include "libft.h"
 
+
+void		ask_saving(t_env *env)
+{
+	char	str[5];
+	ssize_t	r;
+
+	ft_putstr("W3dEditor: modification occurs\n");
+	ft_putstr("  Would you like to save (Yes/No): ");
+	while ((r = read(0, str, 4)) > 0)
+	{
+		str[r - 1] = '\0';
+		ft_strtolower(str);
+		if (ft_strequ("yes", str) || ft_strequ("y", str))
+		{
+			save_file(env);
+			break ;
+		}
+		if (ft_strequ("no", str) || ft_strequ("no", str))
+			break ;
+		ft_putstr("Please answer by [Yes] or [No]\n");
+		ft_putstr("  Would you like to save (Yes/No): ");
+	}
+}
+
+
 void		env_destroy(t_env *env)
 {
 	sdl_destroy_textures(&env->sdl);
 	sdl_destroy(&env->sdl);
+	if (env->saved == False)
+		ask_saving(env);
 	destroy_map(env->map);
 	destroy_tex_previewbox(env->brush_box);
 }

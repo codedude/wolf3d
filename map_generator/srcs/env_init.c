@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:36:29 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/06 12:45:50 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,10 @@ static t_tex_pbox	*create_brush_boxes(t_sdl *sdl)
 	return (box);
 }
 
-static int			env_init2(t_env *env)
+static int			env_init2(t_env *env, char *filename)
 {
 	init_grid(env, &env->sdl);
+	env->save_file = filename;
 	env->brush = 0;
 	env->brush_canvas.size.x = ipercent_of(env->sdl.width, BRUSH_PAN_SIZE_X);
 	env->brush_canvas.size.y = ipercent_of(env->sdl.height, BRUSH_PAN_SIZE_Y);
@@ -95,10 +96,17 @@ static int			env_init2(t_env *env)
 	env->space = 0;
 	env->brush_c_offset = 0;
 	env->spawner_id = env->brush_box->tex_id + 1;
+	env->saved = True;
 	return (SUCCESS);
 }
-int					env_init(t_env *env)
+
+int					env_init(t_env *env, char *filename)
 {
+	if (is_valid_mapfile(filename) == False)
+	{
+		ft_putstr_fd("Invalid filename\n" EDIT_USAGE, 2);
+		return (ERROR);
+	}
 	if (sdl_init(&env->sdl, MAP_GEN_NAME, 1280, 720) == ERROR)
 	{
 		ft_putstr_fd("SDL2 can't start\n", 2);
@@ -115,5 +123,5 @@ int					env_init(t_env *env)
 		perror("Wolf3d: ");
 		return (ERROR);
 	}
-	return (env_init2(env));
+	return (env_init2(env, filename));
 }
