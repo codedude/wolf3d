@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/05 21:55:53 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 13:17:21 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,14 +107,18 @@ int			sort_object(t_object *a, t_object *b)
 	return (0);
 }
 
-void		render_sprites(t_env *env)
+int		precompute_sprites(void *data)
 {
+	t_algo	*algo;
+	t_env	*env;
 	t_vec2	dir[2];
 	t_vec2	obj_dir;
 	t_klist	*lst;
 	t_klist	*tmp;
 	int		i;
 
+	algo = (t_algo *)data;
+	env = algo->env;
 	dir[0] = env->cam.dir + -env->cam.plane;
 	dir[1] = env->cam.dir + env->cam.plane;
 	lst = NULL;
@@ -126,19 +130,20 @@ void		render_sprites(t_env *env)
 		env->objects[i].id = i;
 		if (vec_is_in_front(dir[0], dir[1], obj_dir) == True)
 		{
-			//add error check
 			if ((tmp = list_new(env->objects + i)) == NULL)
-				return ;
+			{
+				list_clear(&lst);
+				return (ERROR);
+			}
 			list_add_sort(&lst, tmp, sort_object);
 		}
 		i++;
 	}
-	tmp = lst;
-	while (tmp != NULL)
-	{
-		printf("%d, ", tmp->value->id);
-		tmp = tmp->next;
-	}
-	printf("\n");
 	list_clear(&lst);
+	return (SUCCESS);
+}
+
+void		render_sprites(t_env *env)
+{
+	(void)env;
 }

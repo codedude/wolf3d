@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/04 17:18:21 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 13:19:25 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,19 @@ void	prepare_threads(t_env *env, t_algo **pack)
 	int			i;
 	int			tasks;
 
-	i = 0;
-	tasks = tp_getnbr_proc(env->tpool);
-	if ((*pack = (t_algo *)malloc((size_t)tasks * sizeof(t_algo))) == NULL)
+	tasks = tp_getnbr_proc(env->tpool) + 1;
+	if ((*pack = (t_algo *)malloc((size_t)(tasks) * sizeof(t_algo)))
+		== NULL)
 		return ;
+	(*pack)[0].env = env;
+	tp_add_task(env->tpool, &precompute_sprites, &(*pack)[0]);
+	i = 1;
 	while (i < tasks)
 	{
 		(*pack)[i].env = env;
-		(*pack)[i].start = i;
+		(*pack)[i].start = (i - 1);
 		(*pack)[i].end = env->sdl.width;
-		(*pack)[i].step = tasks;
+		(*pack)[i].step = tasks - 1;
 		tp_add_task(env->tpool, &start_render, &(*pack)[i]);
 		i++;
 	}
