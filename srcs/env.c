@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/05 22:15:44 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/06 13:04:33 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int			load_objects(t_env *env)
 
 static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 {
-	if (load_map(map, filename) == ERROR)
+	if (load_map(env, map, filename) == ERROR)
 		return (ERROR);
 	if (load_objects(env) == ERROR)
 		return (ERROR);

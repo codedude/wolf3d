@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:38:27 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/06 12:58:14 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,16 @@ void		loop(t_env *env)
 	}
 }
 
-int			main(void)
+int			main(int ac, char **argv)
 {
 	t_env	env;
 
-	if (env_init(&env) == ERROR)
+	if (ac != 2)
+	{
+		ft_putstr_fd(EDIT_USAGE, 2);
+		return (EXIT_FAILURE);
+	}
+	if (env_init(&env, argv[1]) == ERROR)
 		return (EXIT_FAILURE);
 	loop(&env);
 	env_destroy(&env);

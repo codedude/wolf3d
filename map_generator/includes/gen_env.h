@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:43:51 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/06 12:45:33 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,21 @@
 
 # define MAP_GEN_NAME		"Wolf3d: Map generator"
 
-# define DEF_SIZE_X		16
-# define DEF_SIZE_Y		15
-# define MIN_SIZE_X		5
-# define MIN_SIZE_Y		5
-# define MAX_SIZE_X		64
-# define MAX_SIZE_Y		64
+# define EDIT_USAGE			"W3d Editor:\n" EDIT_USAGE1
+# define EDIT_USAGE1		"usage -- ./w3d_generator map_name.w3d\n"
 
-# define GRID_OFF_X		5
-# define GRID_OFF_Y		5
-# define GRID_PERC_X	70
+# define DEF_SIZE_X			16
+# define DEF_SIZE_Y			15
+# define MIN_SIZE_X			5
+# define MIN_SIZE_Y			5
+# define MAX_SIZE_X			64
+# define MAX_SIZE_Y			64
 
-# define PREV_BOX_PERC	10
+# define GRID_OFF_X			5
+# define GRID_OFF_Y			5
+# define GRID_PERC_X		70
+
+# define PREV_BOX_PERC		10
 
 # define BRUSH_PAN_SIZE_X	15
 # define BRUSH_PAN_SIZE_Y	75
@@ -37,9 +40,9 @@
 # define BRUSH_PAN_OFF_X	75
 # define BRUSH_PAN_OFF_Y	7
 
-# define BRUSH_C_SIZE	10
-# define BRUSH_OFF_X	95
-# define BRUSH_OFF_Y	95
+# define BRUSH_C_SIZE		10
+# define BRUSH_OFF_X		95
+# define BRUSH_OFF_Y		95
 
 # define CANVAS_INIT(x, y)	(t_canvas){x, y}
 
@@ -73,6 +76,7 @@ typedef struct	s_env {
 	t_float		zoom;
 	int			space;
 	int			alt;
+	int			ctrl;
 	int			mouse1;
 	int			mouse2;
 	int			brush;
@@ -82,13 +86,19 @@ typedef struct	s_env {
 	int			brush_c_offset;
 	int			max_bcoffset;
 	int			spawner_id;
+	char		*save_file;
+	int			saved;
 }				t_env;
 
-int				env_init(t_env *env);
+int				env_init(t_env *env, char *filename);
 void			env_destroy(t_env *env);
 t_map			*create_new_map(t_ivec2 size);
 void			destroy_map(t_map *map);
 int				sdl_clear_color(t_sdl *sdl, unsigned int color);
+
+
+t_bool			is_valid_mapfile(char *filename);
+int				save_file(t_env *env);
 
 int				manage_binds(SDL_Event *event, t_env *env);
 void			manage_down(const Uint8	*state, t_env *env);
