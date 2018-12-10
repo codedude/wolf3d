@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 15:36:01 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/10 17:03:14 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "raycast.h"
 #include "types.h"
 
-static unsigned int	dark_color(t_color color, t_cam *cam, int side, t_float z)
+unsigned int		dark_color(t_color color, t_cam *cam, int side, t_float z)
 {
 	t_vec3		c;
 
