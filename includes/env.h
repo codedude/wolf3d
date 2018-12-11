@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/06 16:11:30 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/11 18:49:23 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,6 @@
 # define FOG_AMBIENT	VEC3_INIT(153.0, 211.0, 137.0)
 # define WATER_AMBIENT	VEC3_INIT(136.0, 210.0, 208.0)
 
-typedef struct		s_map {
-	int				**data;
-	t_ivec2			spawn;
-	int				width;
-	int				height;
-}					t_map;
 
 # define ACTION_NONE		0b0
 # define ACTION_GROUNDED	0b00001
@@ -92,11 +86,24 @@ typedef struct		s_cam {
 	int				side_filter;
 }					t_cam;
 
+typedef struct		s_map {
+	int				**data;
+	t_texture		skybox;
+	t_ivec2			spawn;
+	int				width;
+	int				height;
+	int				is_skybox;
+}					t_map;
+
 typedef struct		s_object {
 	t_sprite		*sprite;
 	t_vec2			pos;
+	t_vec2			size;
+	int				y_start;
+	int				y_end;
+	int				x_end;
+	int				x_start;
 	t_float			z;
-	int				x;
 }					t_object;
 
 typedef struct		s_env {

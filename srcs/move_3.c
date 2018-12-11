@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/06 19:03:33 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/11 18:30:05 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 #include "env.h"
 #include "raycast.h"
 
+int		is_inside(t_float x, t_float min, t_float max)
+{
+	return (x >= min && x < max);
+}
+
 t_vec2		allow_move(t_map *map, t_vec2 from, t_vec2 to, t_vec2 calc)
 {
 	t_vec2	offset;
 
-	calc = clamp_vec2(calc, VEC2_ZERO, \
-				VEC2_INIT((t_float)map->width - 0.1,
-					(t_float)map->height - 0.1));
 	offset.x = ((to.x < 0) ? -0.1 : 0.1);
 	offset.y = ((to.y < 0) ? -0.1 : 0.1);
+	calc = clamp_vec2(calc, VEC2_ZERO + 0.1, \
+				VEC2_INIT((t_float)map->width - 0.2,
+					(t_float)map->height - 0.2));
 	if (map->data[(int)from.y][(int)(calc.x + offset.x)] != 0)
 		calc.x = from.x;
 	if (map->data[(int)(calc.y + offset.y)][(int)from.x] != 0)

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/10 17:03:14 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/11 18:32:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static unsigned int	get_cf_color(t_texture *text, t_vec2 curr_cf, t_cam *cam,
 	t_ivec2			tex;
 	unsigned int	color;
 
-	tex.x = (int)(curr_cf.x * text->w) % text->w;
-	tex.y = (int)(curr_cf.y * text->h) % text->h;
+	tex.x = (int)fabs(curr_cf.x * text->w) % text->w;
+	tex.y = (int)fabs(curr_cf.y * text->h) % text->h;
 	color = dark_color(sdl_get_pixel(text, tex.x, tex.y), cam, 0, z);
 	return (color);
 }

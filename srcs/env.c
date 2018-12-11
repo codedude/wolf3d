@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/10 17:32:09 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/11 18:53:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 {
 	if (load_map(env, map, filename) == ERROR)
 		return (ERROR);
+	map->is_skybox = 1;
+	if (sdl_load_texture(&map->skybox, "skybox/skybox_day.png") == ERROR)
+		return (ERROR);
 	if (load_objects(env) == ERROR)
 		return (ERROR);
 	cam->pos = VEC2_INIT((t_float)map->spawn.x, (t_float)map->spawn.y) + 0.5;
@@ -70,6 +73,7 @@ static void	wolf_destroy(t_map *map, t_cam *cam)
 {
 	(void)cam;
 	map_destroy(map);
+	free(map->skybox.data);
 }
 
 int			env_init(t_env *env, char *filename)

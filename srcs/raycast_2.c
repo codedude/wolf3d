@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/06 19:09:36 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/11 18:29:21 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,11 @@ static void		raycast_init(t_vec2 dist[3], t_hit_infos *infos)
 	}
 }
 
-static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, int **map)
+static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
+					int **map_data)
 {
-	int	hit;
+	int		hit;
+	t_ivec2	map_pos;
 
 	hit = 0;
 	while (hit == 0)
@@ -67,7 +69,11 @@ static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, int **map)
 			infos->map.y += dist[STEP].y;
 			infos->side = 1;
 		}
-		if (map[(int)infos->map.y][(int)infos->map.x] > 0)
+		map_pos = IVEC2_INIT((int)infos->map.x, (int)infos->map.y);
+		if (map_pos.x < 0 || map_pos.y < 0
+			|| map_pos.x >= map->width || map_pos.y >= map->height)
+			break ;
+		if (map_data[map_pos.y][map_pos.x] > 0)
 			hit = 1;
 	}
 	return (hit);
@@ -116,7 +122,7 @@ int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 	dir = infos->ray.dir;
 	dist[DELTA] = VEC2_INIT(fabs(1.0 / dir.x), fabs(1.0 / dir.y));
 	raycast_init(dist, infos);
-	infos->hit = raycast_compute(dist, infos, map->data);
+	infos->hit = raycast_compute(dist, infos, map, map->data);
 	get_wall_xz(infos, dir, dist[STEP]);
 	infos->line_height = (int)(env->sdl.canvas_h / infos->z);
 	draw = init_draw(infos->line_height, &env->sdl, &env->cam, infos);
