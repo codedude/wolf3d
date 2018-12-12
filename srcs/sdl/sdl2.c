@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 16:36:45 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 19:06:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ int			sdl_create_renderer(t_sdl *sdl)
 
 int			sdl_create_texture(t_sdl *sdl)
 {
-	if ((sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_RGBA32,
-		SDL_TEXTUREACCESS_STATIC, sdl->width, sdl->height)) == NULL)
+	if ((sdl->texture = SDL_CreateTexture(sdl->renderer,
+		SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_STREAMING,
+		sdl->width, sdl->height)) == NULL)
 	{
 		ft_putstr("Texture could not be created ! SDL_Error : ");
 		ft_putendl(SDL_GetError());
@@ -42,14 +43,24 @@ int			sdl_create_texture(t_sdl *sdl)
 
 int			sdl_create_buffer(t_sdl *sdl)
 {
-	sdl->size_line = sdl->width * (int)sizeof(unsigned int);
-	sdl->size_buffer = (size_t)(sdl->height * sdl->size_line);
-	if ((sdl->image = (unsigned int *)malloc(sdl->size_buffer)) == NULL)
-	{
-		ft_putendl("Image buffer cannot be created !");
-		return (ERROR);
-	}
+	SDL_LockTexture(sdl->texture, NULL, (void **)&sdl->image, &sdl->pitch);
+	sdl->bpp = sdl->pitch / sdl->width;
+	sdl->size_buffer = (size_t)(sdl->height * sdl->pitch);
+	//printf("%d, %d\n", sdl->pitch, sdl->bpp);
+	//printf("win : %s\n",
+	//SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(sdl->window)));
+	/*SDL_version compiled;
+	SDL_version linked;
+
+	SDL_VERSION(&compiled);
+	SDL_GetVersion(&linked);
+	printf("We compiled against SDL version %d.%d.%d ...\n",
+	       compiled.major, compiled.minor, compiled.patch);
+	printf("But we are linking against SDL version %d.%d.%d.\n",
+	       linked.major, linked.minor, linked.patch);*/
+
 	ft_bzero(sdl->image, sdl->size_buffer);
+	SDL_UnlockTexture(sdl->texture);
 	if ((sdl->z_buffer = (t_float *)malloc(
 		(size_t)sdl->width * sizeof(t_float))) == NULL)
 	{

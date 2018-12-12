@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/11 18:49:23 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 17:58:32 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct		s_cam {
 typedef struct		s_map {
 	int				**data;
 	t_texture		skybox;
+	int				skybox_offset;
 	t_ivec2			spawn;
 	int				width;
 	int				height;

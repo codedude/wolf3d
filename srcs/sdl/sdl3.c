@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 16:18:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 16:58:03 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 17:34:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ unsigned int		*sdl_convert_data(SDL_Surface *surf)
 		x = 0;
 		while (x < surf->w)
 		{
-			p = pixels + y * surf->pitch + x * 3;
+			p = pixels + y * surf->pitch + x * surf->format->BytesPerPixel;
 			data[x + y * surf->w] =
-					(unsigned int)(p[0] | p[1] << 8 | p[2] << 16);
+					(unsigned int)(p[0] << 16 | p[1] << 8 | p[2]);
 			x++;
 		}
 		y++;
@@ -64,9 +64,14 @@ unsigned int		*sdl_convert_data(SDL_Surface *surf)
 int					sdl_load_texture(t_texture *texture, char *filename)
 {
 	SDL_Surface	*surf;
+	SDL_Surface	*tmp;
 
-	if ((surf = sdl_load_image(filename)) == NULL)
+	if ((tmp = sdl_load_image(filename)) == NULL)
 		return (ERROR);
+	if ((surf = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGB888, 0))
+		== NULL)
+		return (ERROR);
+	SDL_FreeSurface(tmp);
 	texture->h = surf->h;
 	texture->w = surf->w;
 	if ((texture->data = sdl_convert_data(surf)) == NULL)

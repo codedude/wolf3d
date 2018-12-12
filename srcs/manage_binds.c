@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/10 14:58:35 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 18:29:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		else if (event->key.keysym.sym == SDLK_6)
 			switch_effect(&env->cam, (void *)&color_filter_sepia,
 				EFFECT_MASK_COLOR);
+		else if (event->key.keysym.sym == SDLK_7)
+			env->map.is_skybox = !env->map.is_skybox;
 		else if (event->key.keysym.sym == SDLK_0)
 		{
 			env->cam.side_filter = EFFECT_NONE;
@@ -173,6 +175,7 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		env->cam.height = clamp_float(
 						env->cam.height + -(t_float)event->motion.yrel * 2.0,
 						-MAX_OFFSET, MAX_OFFSET);
+		update_skybox_offset(&env->cam, &env->sdl, &env->map);
 	}
 	return (r);
 }

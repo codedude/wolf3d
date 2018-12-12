@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/11 18:53:36 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 19:06:39 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 #include "env.h"
 #include "raycast.h"
 #include "parser.h"
+
+void	update_skybox_offset(t_cam *cam, t_sdl *sdl, t_map *map)
+{
+	t_float motion;
+
+	motion = atan2(cam->dir.y, cam->dir.x) + M_PI;
+	map->skybox_offset = (int)(motion * (sdl->canvas_w * 2.0) /  M_PI);
+}
 
 int			load_objects(t_env *env)
 {
@@ -54,8 +62,8 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	cam->z_pos = cam->z_default;
 	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
 	cam->plane = VEC2_INIT(0.0, 0.88);
-	cam->dir = vec_rotate(cam->dir, 45.0 * DEG_TO_RAD);
-	cam->plane = vec_rotate(cam->plane, 45.0 * DEG_TO_RAD);
+	cam->dir = vec_rotate(cam->dir, 100.0 * DEG_TO_RAD);
+	cam->plane = vec_rotate(cam->plane, 100.0 * DEG_TO_RAD);
 	cam->mov_speed = 0.05;
 	cam->rot_speed = 0.016;
 	cam->acceleration = 0.0;
@@ -66,6 +74,7 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	cam->side_filter = EFFECT_SIDE;
 	cam->depth_filter = &depth_filter_depth;
 	cam->color_filter = NULL;
+	update_skybox_offset(cam, &env->sdl, map);
 	return (SUCCESS);
 }
 
