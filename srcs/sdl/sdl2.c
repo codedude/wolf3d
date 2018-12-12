@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 16:36:45 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 13:02:42 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 int			sdl_create_renderer(t_sdl *sdl)
 {
 	if ((sdl->renderer = SDL_CreateRenderer(sdl->window, -1,
-		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)) == NULL)
+		SDL_RENDERER_ACCELERATED)) == NULL)
 	{
 		ft_putstr("Renderer could not be created ! SDL_Error : ");
 		ft_putendl(SDL_GetError());
@@ -30,26 +30,25 @@ int			sdl_create_renderer(t_sdl *sdl)
 
 int			sdl_create_texture(t_sdl *sdl)
 {
-	if ((sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_RGBA32,
-		SDL_TEXTUREACCESS_STATIC, sdl->width, sdl->height)) == NULL)
+	if ((sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_RGB888,
+		SDL_TEXTUREACCESS_STREAMING, sdl->width, sdl->height)) == NULL)
 	{
 		ft_putstr("Texture could not be created ! SDL_Error : ");
 		ft_putendl(SDL_GetError());
 		return (ERROR);
 	}
+	//printf("win : %s\n",
+		//SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(sdl->window)));
 	return (SUCCESS);
 }
 
 int			sdl_create_buffer(t_sdl *sdl)
 {
-	sdl->size_line = sdl->width * (int)sizeof(unsigned int);
+	SDL_LockTexture(sdl->texture, NULL, (void **)&sdl->image, &sdl->size_line);
+	sdl->bpp = 4;
 	sdl->size_buffer = (size_t)(sdl->height * sdl->size_line);
-	if ((sdl->image = (unsigned int *)malloc(sdl->size_buffer)) == NULL)
-	{
-		ft_putendl("Image buffer cannot be created !");
-		return (ERROR);
-	}
 	ft_bzero(sdl->image, sdl->size_buffer);
+	SDL_UnlockTexture(sdl->texture);
 	if ((sdl->z_buffer = (t_float *)malloc(
 		(size_t)sdl->width * sizeof(t_float))) == NULL)
 	{

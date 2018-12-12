@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/10 17:03:32 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 12:15:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void					player_set_acceleration(t_cam *player);
 void					player_jump(t_cam *player);
 void					player_fall(t_cam *player);
 
-unsigned int			dark_color(t_color color, t_cam *cam, int side,
+t_color					dark_color(t_color color, t_cam *cam, int side,
 							t_float z);
 void					compute_sprites(t_env *env);
 void					draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,

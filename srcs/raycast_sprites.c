@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/11 17:52:17 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 12:50:23 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,10 @@ void			render_sprite(t_env *env, t_object *obj)
 					/ obj->size.y * obj->sprite->texture.h);
 				color = sdl_get_pixel(&obj->sprite->texture, tex.x, tex.y);
 				if (color.rgba > 0)
-					env->sdl.image[it.x + it.y * env->sdl.width] = dark_color(
-						color, &env->cam, 0, obj->z);
+					sdl_put_pixel(&env->sdl, it.x, it.y,
+						dark_color(color, &env->cam, 0, obj->z));
+					//env->sdl.image[it.x + it.y * env->sdl.width] = dark_color(
+					//	color, &env->cam, 0, obj->z);
 				it.y++;
 			}
 		}

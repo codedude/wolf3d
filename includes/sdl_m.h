@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/11 18:47:08 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 12:58:17 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ typedef struct		s_sdl {
 	t_float			half_canvas_h;
 	int				textures_nb;
 	int				sprites_nb;
-	unsigned int	*image;
+	unsigned char	*image;
+	int				pitch;
+	int				bpp;
 	t_float			*z_buffer;
 	t_float			canvas_w;
 	int				width;
@@ -66,6 +68,7 @@ int					sdl_init(t_sdl *sdl, const char *title, int width,
 int					sdl_reset(t_sdl *sdl);
 int					sdl_destroy(t_sdl *sdl);
 int					sdl_render(t_sdl *sdl);
+int					sdl_update_texture(t_sdl *sdl);
 
 /*
 ** sdl2.c
@@ -91,6 +94,7 @@ void				sdl_destroy_sprites(t_sdl *sdl);
 ** sdl4.c
 */
 
+void				sdl_put_pixel(t_sdl *sdl, int x, int y, t_color color);
 t_color				sdl_get_pixel(t_texture *text, int x, int y);
 void				get_fps(int show_fps);
 

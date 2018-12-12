@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/11 18:53:36 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 12:01:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 {
 	if (load_map(env, map, filename) == ERROR)
 		return (ERROR);
-	map->is_skybox = 1;
+	map->is_skybox = 0;
 	if (sdl_load_texture(&map->skybox, "skybox/skybox_day.png") == ERROR)
 		return (ERROR);
 	if (load_objects(env) == ERROR)
@@ -54,8 +54,8 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	cam->z_pos = cam->z_default;
 	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
 	cam->plane = VEC2_INIT(0.0, 0.88);
-	cam->dir = vec_rotate(cam->dir, 45.0 * DEG_TO_RAD);
-	cam->plane = vec_rotate(cam->plane, 45.0 * DEG_TO_RAD);
+	cam->dir = vec_rotate(cam->dir, 100.0 * DEG_TO_RAD);
+	cam->plane = vec_rotate(cam->plane, 100.0 * DEG_TO_RAD);
 	cam->mov_speed = 0.05;
 	cam->rot_speed = 0.016;
 	cam->acceleration = 0.0;

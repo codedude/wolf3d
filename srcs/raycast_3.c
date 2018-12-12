@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/11 18:52:40 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 12:51:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,19 @@ static t_vec2	get_wall_texel(t_hit_infos *infos)
 void			draw_wall_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 					t_map *map)
 {
-	int				y;
+	int		y;
+	t_color	color;
 
+	color.rgba = 0x00;
 	y = infos->draw_start;
 	while (y < infos->draw_end)
 	{
 		if (map->is_skybox == 0)
-			sdl->image[infos->x + y * sdl->width] = 0x00;
+			sdl_put_pixel(sdl, infos->x, y, color);
+		//sdl->image[infos->x + y * sdl->width] = 0x00;
 		else
-			sdl->image[infos->x + y * sdl->width] = 0x00;
+			sdl_put_pixel(sdl, infos->x, y, color);
+		//sdl->image[infos->x + y * sdl->width] = 0x00;
 		y++;
 	}
 }
@@ -60,14 +64,18 @@ void			draw_ceil_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 					t_map *map)
 {
 	int		y;
+	t_color	color;
 
+	color.rgba = 0x00;
 	y = 0;
 	while (y < infos->draw_start)
 	{
 		if (map->is_skybox == 0)
-			sdl->image[infos->x + y * sdl->width] = 0x00;
+			sdl_put_pixel(sdl, infos->x, y, color);
+		//sdl->image[infos->x + y * sdl->width] = 0x00;
 		else
-			sdl->image[infos->x + y * sdl->width] = 0x00;
+			sdl_put_pixel(sdl, infos->x, y, color);
+		//sdl->image[infos->x + y * sdl->width] = 0x00;
 		y++;
 	}
 }

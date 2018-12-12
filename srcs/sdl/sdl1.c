@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 16:59:39 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/12 13:01:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,6 @@ int				sdl_init(t_sdl *sdl, const char *title, int width,
 
 int				sdl_reset(t_sdl *sdl)
 {
-	if (sdl->image != NULL)
-	{
-		free(sdl->image);
-		sdl->image = NULL;
-	}
 	if (sdl->z_buffer != NULL)
 	{
 		free(sdl->z_buffer);
@@ -82,9 +77,15 @@ int				sdl_destroy(t_sdl *sdl)
 	return (SUCCESS);
 }
 
+int				sdl_update_texture(t_sdl *sdl)
+{
+	SDL_LockTexture(sdl->texture, NULL, (void **)&sdl->image, &sdl->pitch);
+	return (SUCCESS);
+}
+
 int				sdl_render(t_sdl *sdl)
 {
-	SDL_UpdateTexture(sdl->texture, NULL, (void *)sdl->image, sdl->size_line);
+	SDL_UnlockTexture(sdl->texture);
 	SDL_RenderCopy(sdl->renderer, sdl->texture, NULL, NULL);
 	SDL_RenderPresent(sdl->renderer);
 	return (SUCCESS);
