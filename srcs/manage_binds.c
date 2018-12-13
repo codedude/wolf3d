@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/13 18:49:03 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/13 19:35:46 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,13 @@ void		manage_down(const Uint8 *state, t_env *env)
 	{
 		cam->dir = vec_rotate(cam->dir, cam->rot_speed * 5.0);
 		cam->plane = vec_rotate(cam->plane, cam->rot_speed * 5.0);
+		update_skybox_offset(&env->cam, &env->sdl, &env->map);
 	}
 	if (state[SDL_SCANCODE_E])
 	{
 		cam->dir = vec_rotate(cam->dir, cam->rot_speed * -5.0);
 		cam->plane = vec_rotate(cam->plane, cam->rot_speed * -5.0);
+		update_skybox_offset(&env->cam, &env->sdl, &env->map);
 	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
