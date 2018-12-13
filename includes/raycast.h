@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/12 18:28:16 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/13 18:22:38 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ typedef struct			s_hit_info {
 void					update_skybox_offset(t_cam *cam, t_sdl *sdl,
 							t_map *map);
 t_vec2					vec_rotate(t_vec2 dir, t_float speed);
-t_vec2					move_forward(t_map *map, t_vec2 from, t_vec2 to,
+t_vec2					move_forward(t_env *env, t_vec2 from, t_vec2 to,
 							t_float speed);
-t_vec2					straf(t_map *map, t_vec2 from, t_vec2 to,
+t_vec2					straf(t_env *env, t_vec2 from, t_vec2 to,
 							t_float speed);
 t_float					player_speed(int action_state, t_float speed,
 							t_float acceleration, t_float factor);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/12 17:58:32 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/13 18:54:58 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct		s_map {
 	int				**data;
 	t_texture		skybox;
 	int				skybox_offset;
+	int				skybox_anim;
 	t_ivec2			spawn;
 	int				width;
 	int				height;
@@ -100,6 +101,7 @@ typedef struct		s_object {
 	t_sprite		*sprite;
 	t_vec2			pos;
 	t_vec2			size;
+	int				walkthrough;
 	int				y_start;
 	int				y_end;
 	int				x_end;

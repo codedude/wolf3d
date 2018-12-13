@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/12 18:29:18 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/13 18:49:03 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,28 @@ void		manage_down(const Uint8 *state, t_env *env)
 	if (state[SDL_SCANCODE_A])
 	{
 		is_walking = True;
-		cam->pos = straf(&env->map, cam->pos, cam->dir,
+		cam->pos = straf(env, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
 					cam->acceleration, 0.75));
 	}
 	if (state[SDL_SCANCODE_D])
 	{
 		is_walking = True;
-		cam->pos = straf(&env->map, cam->pos, cam->dir,
+		cam->pos = straf(env, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
 					cam->acceleration, -0.75));
 	}
 	if (state[SDL_SCANCODE_W])
 	{
 		is_walking = True;
-		cam->pos = move_forward(&env->map, cam->pos, cam->dir,
+		cam->pos = move_forward(env, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
 					cam->acceleration, 1.0));
 	}
 	if (state[SDL_SCANCODE_S])
 	{
 		is_walking = True;
-		cam->pos = move_forward(&env->map, cam->pos, cam->dir,
+		cam->pos = move_forward(env, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
 					cam->acceleration, -0.75));
 	}
