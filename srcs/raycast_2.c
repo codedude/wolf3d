@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/11 18:29:21 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/14 16:51:14 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,29 @@ static void		raycast_init(t_vec2 dist[3], t_hit_infos *infos)
 	}
 }
 
+static int		raycast_thin(t_hit_infos *infos, t_map *map)
+{
+	int		hit;
+	int		last;
+	t_float	t;
+	t_float	wall_y;
+	t_vec2	new_pos;
+
+	hit = 0;
+	if (infos->ray.dir.y < 0)
+		wall_y = infos->map.y - 0.33;
+	else
+		wall_y = infos->map.y + 0.33;
+	t = (wall_y - infos->map.y) / infos->ray.dir.y;
+	new_pos.y = wall_y;
+	new_pos.x = infos->map.x + t * infos->ray.dir.x;
+
+	if (map->data[(int)new_pos.y][(int)new_pos.x] != 8)
+		return (0);
+	infos->map = new_pos;
+	return (1);
+}
+
 static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 					int **map_data)
 {
@@ -73,6 +96,13 @@ static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 		if (map_pos.x < 0 || map_pos.y < 0
 			|| map_pos.x >= map->width || map_pos.y >= map->height)
 			break ;
+		/*if (map_data[map_pos.y][map_pos.x] == 8)
+		{
+			if (infos->ray.dir.y < 0)
+				map_pos.y += -0.33;
+			else
+				map_pos.y += 0.33;
+		}*/
 		if (map_data[map_pos.y][map_pos.x] > 0)
 			hit = 1;
 	}
