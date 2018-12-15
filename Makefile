@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/06 18:31:59 by vparis           ###   ########.fr        #
+#    Updated: 2018/12/15 20:33:25 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,13 +40,14 @@ FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
 				color_filters.c move_1.c move_2.c move_3.c raycast_4.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 FILES		+=	$(PARSERD)/map_parser.c $(PARSERD)/stack.c \
-				$(PARSERD)/reader.c
+				$(PARSERD)/reader.c $(PARSERD)/map.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD) -O3 -g3 #-fsanitize=address
+
 LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
 
 

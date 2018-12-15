@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/06 16:11:30 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/15 20:33:34 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 typedef struct		s_map {
 	int				**data;
 	t_ivec2			spawn;
+	t_ivec2			spawn_dir;
 	int				width;
 	int				height;
 }					t_map;
@@ -104,6 +105,8 @@ typedef struct		s_env {
 	t_object		*objects;
 	int				objects_nb;
 	t_sdl			sdl;
+	t_texture		*textures;
+	int				textures_nb;
 	t_map			map;
 	t_cam			cam;
 	int				show_fps;

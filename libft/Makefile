@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/04 11:24:58 by vparis           ###   ########.fr        #
+#    Updated: 2018/12/15 20:50:48 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ LIBFT_SRCS	+= $(STRINGD)/ft_strncpy.c $(STRINGD)/ft_strsub.c \
 			$(STRINGD)/ft_strchr.c $(STRINGD)/ft_strsplit_whitespaces.c \
 			$(STRINGD)/ft_strequ.c $(STRINGD)/ft_strncat.c \
 			$(STRINGD)/ft_strrev.c $(STRINGD)/ft_strdup.c \
-			$(STRINGD)/ft_strnew_fast.c $(STRINGD)/ft_strjoin.c \
+			$(STRINGD)/ft_strnew_fast.c \
 			$(STRINGD)/ft_strcmp.c $(STRINGD)/ft_strrchr.c \
 			$(STRINGD)/ft_strcpy.c $(STRINGD)/ft_strsplit_free.c \
 			$(STRINGD)/ft_strdel.c $(STRINGD)/ft_strtrim.c \
@@ -83,11 +83,11 @@ LIBFT_SRCS	+= $(LISTD)/ft_lstnew.c $(LISTD)/ft_lstdelone.c \
 			$(LISTD)/ft_lstdel.c $(LISTD)/ft_lstadd.c \
 			$(LISTD)/ft_lstiter.c $(LISTD)/ft_lstmap.c $(LISTD)/ft_lstshift.c \
 			$(LISTD)/ft_lstdel_raw.c
-LIBFT_SRCS	+= $(INPUTD)/ft_gnl.c
+LIBFT_SRCS	+= $(INPUTD)/ft_gnl.c $(INPUTD)/get_next_line.c
 
 OBJS		= $(patsubst %.c, %.o, $(LIBFT_SRCS))
 LDFLAGS		+= -Werror -Wall -Wextra -Wno-unused-result -ansi -pedantic
-CFLAGS		+= -I$(INCD) -O3
+CFLAGS		+= -I$(INCD) -O3 #-g -fsanitize=address
 
 HEADER		=	$(INCD)/libft.h $(INCD)/ft_type.h $(INCD)/ft_list.h \
 				$(INCD)/ft_input.h $(INCD)/ft_math.h

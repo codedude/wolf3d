@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/10 17:32:09 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/15 21:21:44 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	if (load_objects(env) == ERROR)
 		return (ERROR);
 	cam->pos = VEC2_INIT((t_float)map->spawn.x, (t_float)map->spawn.y) + 0.5;
+	printf("%f %f\n", cam->pos.x, cam->pos.y);
 	cam->z = env->sdl.canvas_h * 33.0 / 100.0;
 	cam->z_default = cam->z;
 	cam->z_pos = cam->z_default;

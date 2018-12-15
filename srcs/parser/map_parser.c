@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/06 19:00:01 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/14 13:17:49 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,19 +182,19 @@ void			map_destroy(t_map *map)
 		map->data = NULL;
 	}
 }
-
-int				load_map(t_env *env, t_map *map, char *mapfile)
-{
-	char		*content;
-
-	errno = 0;
-	if (is_valid_filename(mapfile) == ERROR)
-		return (ERROR);
-	if (!(content = file_get_content(mapfile)))
-		return (parse_failed(map, content, strerror(errno)));
-	ft_bzero(map, sizeof(*map));
-	if (parse_map(env, map, content) == ERROR)
-		return (ERROR);
-	free(content);
-	return (SUCCESS);
-}
+//
+// int				load_map(t_env *env, t_map *map, char *mapfile)
+// {
+// 	char		*content;
+//
+// 	errno = 0;
+// 	if (is_valid_filename(mapfile) == ERROR)
+// 		return (ERROR);
+// 	if (!(content = file_get_content(mapfile)))
+// 		return (parse_failed(map, content, strerror(errno)));
+// 	ft_bzero(map, sizeof(*map));
+// 	if (parse_map(env, map, content) == ERROR)
+// 		return (ERROR);
+// 	free(content);
+// 	return (SUCCESS);
+// }

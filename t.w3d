@@ -1,0 +1,34 @@
+
+Texture 18 {
+	textures/bookshelf.png
+	textures/colorstone.png
+	textures/old_stone.jpg
+	textures/eagle.png
+	textures/greystone.png
+	textures/ice_ground.png
+	textures/kitchen_tile_ground.jpg
+	textures/mossy.png
+	textures/purplestone.png
+	textures/redbrick.png
+	textures/rock_wall.jpg
+	textures/bluestone.png
+	textures/stone_ground.jpg
+	textures/stone_wall.jpg
+	textures/wood.jpg
+	textures/wood.png
+	textures/test_cf.png
+	textures/test_wall.png
+}
+
+Spawn {
+	pos    2 2
+	dir    2 48
+}
+
+Map 4 4
+{
+	5 5 5  5,
+	0 5 5  0,
+	5 5 0  0,
+	0 0 0  0
+}

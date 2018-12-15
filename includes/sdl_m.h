@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 16:53:34 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/11 14:31:37 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int					sdl_resize(t_sdl *sdl, int width, int height);
 ** sdl3.c
 */
 
+int					sdl_load_texture(t_texture *texture, char *filename);
 int					sdl_init_textures(t_sdl *sdl);
 int					sdl_init_sprites(t_sdl *sdl);
 void				sdl_destroy_textures(t_sdl *sdl);
