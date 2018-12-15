@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/10 15:51:58 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/13 18:59:05 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	prepare_threads(t_env *env, t_algo **pack)
 	int			i;
 	int			tasks;
 
-	tasks = tp_getnbr_proc(env->tpool);
+	tasks = th_getnbr_proc();
 	if ((*pack = (t_algo *)malloc((size_t)(tasks) * sizeof(t_algo)))
 		== NULL)
 		return ;
@@ -35,6 +35,15 @@ void	prepare_threads(t_env *env, t_algo **pack)
 		tp_add_task(env->tpool, &start_render, &(*pack)[i]);
 		i++;
 	}
+}
+
+void	calc_player(t_env *env)
+{
+	env->map.skybox_anim = (env->map.skybox_anim + 1)
+						% (env->map.skybox.w * 2);
+	player_set_acceleration(&env->cam);
+	player_set_anim(&env->cam);
+	player_set_z(&env->cam);
 }
 
 void	loop(t_env *env)
@@ -55,16 +64,12 @@ void	loop(t_env *env)
 		manage_down(state, env);
 		if (loop != 1)
 			break ;
-		// sdl_render and computation in parallel ? make sure data copy is safe
-		// only SDL_UpdateTexture need to be protected
-		// step thread or cut screen ?
+		calc_player(env);
+		sdl_update_texture(&env->sdl);
 		tp_wait_for_queue(env->tpool);
 		compute_sprites(env);
 		sdl_render(&env->sdl);
 		get_fps(env->show_fps);
-		player_set_acceleration(&env->cam);
-		player_set_anim(&env->cam);
-		player_set_z(&env->cam);
 	}
 	free(pack);
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/15 20:33:34 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/15 21:40:17 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,11 @@
 # define TASKS			32
 # define WINDOW_NAME	"DAT Wolf3D"
 
-# define TEX_BASE(x, y)	{(x), "textures/" y, NULL}
-# define TEXLAST		{-1, NULL, NULL}
-# define TEX_COUNT		15
-
-# define DEFAULT_CEIL	11
-# define DEFAULT_FLOOR	11
+# define DEFAULT_CEIL	2
+# define DEFAULT_FLOOR	1
 
 # define MAX_OFFSET		600
-# define MAX_DEPTH		16.0
+# define MAX_DEPTH		20.0
 # define EFFECT_MASK			0xff
 # define EFFECT_MASK_DEPTH		0xff00
 # define EFFECT_MASK_COLOR		0xff0000
@@ -46,13 +42,6 @@
 # define FOG_AMBIENT	VEC3_INIT(153.0, 211.0, 137.0)
 # define WATER_AMBIENT	VEC3_INIT(136.0, 210.0, 208.0)
 
-typedef struct		s_map {
-	int				**data;
-	t_ivec2			spawn;
-	t_ivec2			spawn_dir;
-	int				width;
-	int				height;
-}					t_map;
 
 # define ACTION_NONE		0b0
 # define ACTION_GROUNDED	0b00001
@@ -93,11 +82,27 @@ typedef struct		s_cam {
 	int				side_filter;
 }					t_cam;
 
+typedef struct		s_map {
+	int				**data;
+	t_texture		skybox;
+	int				skybox_offset;
+	int				skybox_anim;
+	t_ivec2			spawn;
+	int				width;
+	int				height;
+	int				is_skybox;
+}					t_map;
+
 typedef struct		s_object {
 	t_sprite		*sprite;
 	t_vec2			pos;
+	t_vec2			size;
+	int				walkthrough;
+	int				y_start;
+	int				y_end;
+	int				x_end;
+	int				x_start;
 	t_float			z;
-	int				x;
 }					t_object;
 
 typedef struct		s_env {

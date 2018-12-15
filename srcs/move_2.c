@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/10 16:59:46 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/11 16:07:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ void	player_ground_anim(t_cam *player)
 
 void	player_set_anim(t_cam *player)
 {
-	// if (player->action_state & ACTION_WALKING)
-	// 	player_set_walk_anim(player);
-	// else if (player->walk_anim != 0.0)
-	// 	player_disable_walk_anim(player);
+	if (player->action_state & ACTION_WALKING)
+		player_set_walk_anim(player);
+	else if (player->walk_anim != 0.0)
+		player_disable_walk_anim(player);
 	if (player->action_state & ACTION_GROUNDED)
 		player_ground_anim(player);
 	else

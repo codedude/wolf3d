@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/10 14:58:35 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/13 19:35:46 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,28 @@ void		manage_down(const Uint8 *state, t_env *env)
 	if (state[SDL_SCANCODE_A])
 	{
 		is_walking = True;
-		cam->pos = straf(&env->map, cam->pos, cam->dir,
+		cam->pos = straf(env, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
 					cam->acceleration, 0.75));
 	}
 	if (state[SDL_SCANCODE_D])
 	{
 		is_walking = True;
-		cam->pos = straf(&env->map, cam->pos, cam->dir,
+		cam->pos = straf(env, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
 					cam->acceleration, -0.75));
 	}
 	if (state[SDL_SCANCODE_W])
 	{
 		is_walking = True;
-		cam->pos = move_forward(&env->map, cam->pos, cam->dir,
+		cam->pos = move_forward(env, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
 					cam->acceleration, 1.0));
 	}
 	if (state[SDL_SCANCODE_S])
 	{
 		is_walking = True;
-		cam->pos = move_forward(&env->map, cam->pos, cam->dir,
+		cam->pos = move_forward(env, cam->pos, cam->dir,
 			player_speed(cam->action_state, cam->mov_speed,
 					cam->acceleration, -0.75));
 	}
@@ -60,11 +60,13 @@ void		manage_down(const Uint8 *state, t_env *env)
 	{
 		cam->dir = vec_rotate(cam->dir, cam->rot_speed * 5.0);
 		cam->plane = vec_rotate(cam->plane, cam->rot_speed * 5.0);
+		update_skybox_offset(&env->cam, &env->sdl, &env->map);
 	}
 	if (state[SDL_SCANCODE_E])
 	{
 		cam->dir = vec_rotate(cam->dir, cam->rot_speed * -5.0);
 		cam->plane = vec_rotate(cam->plane, cam->rot_speed * -5.0);
+		update_skybox_offset(&env->cam, &env->sdl, &env->map);
 	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
@@ -142,6 +144,8 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		else if (event->key.keysym.sym == SDLK_6)
 			switch_effect(&env->cam, (void *)&color_filter_sepia,
 				EFFECT_MASK_COLOR);
+		else if (event->key.keysym.sym == SDLK_7)
+			env->map.is_skybox = !env->map.is_skybox;
 		else if (event->key.keysym.sym == SDLK_0)
 		{
 			env->cam.side_filter = EFFECT_NONE;
@@ -173,6 +177,7 @@ int			manage_binds(SDL_Event *event, t_env *env)
 		env->cam.height = clamp_float(
 						env->cam.height + -(t_float)event->motion.yrel * 2.0,
 						-MAX_OFFSET, MAX_OFFSET);
+		update_skybox_offset(&env->cam, &env->sdl, &env->map);
 	}
 	return (r);
 }
