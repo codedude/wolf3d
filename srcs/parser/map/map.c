@@ -6,48 +6,17 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 22:53:54 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/15 21:20:06 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 02:36:32 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <limits.h>
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "libft.h"
-#include "ft_input.h"
 #include "env.h"
 #include "parser.h"
-
-static int		ft_iswhitespace(int c)
-{
-	return (c == ' ' || c == '\t' || c == '\n');
-}
-
-static int		isopbracket(int c)
-{
-	return (c == '{');
-}
-
-static int		isclbracket(int c)
-{
-	return (c == '{');
-}
-
-static char		*skip_whitespace(char *str)
-{
-	while (ft_iswhitespace(*str))
-		str++;
-	return (str);
-}
-
-static char		*skip_digit(char *str)
-{
-	while (ft_isdigit(*str))
-		str++;
-	return (str);
-}
 
 static int		is_valid_filename(char *filename)
 {
@@ -63,94 +32,23 @@ static int		is_valid_filename(char *filename)
 	return (SUCCESS);
 }
 
-static int		parser_gnl(t_parser *parser)
-{
-	int		gnl_ret;
-
-	free(parser->base_line);
-	parser->line = NULL;
-	gnl_ret = get_next_line(parser->conf_fd, &parser->base_line);
-	if (gnl_ret == 1)
-	{
-		parser->line_nb++;
-		parser->line = parser->base_line;
-		if (!*parser->line)
-			return (parser_gnl(parser));
-	}
-	else
-		parser->base_line = NULL;
-	return (gnl_ret);
-}
-
-static char		*get_next_word(t_parser *parser, int (*cmp)(int))
-{
-	while (!cmp(*parser->line))
-	{
-		if (ft_iswhitespace(*parser->line))
-			parser->line = skip_whitespace(parser->line);
-		else if (!*parser->line)
-		{
-			if (parser_gnl(parser) != 1)
-				return (0);
-		}
-		else
-			return (NULL);
-	}
-	return (parser->line);
-}
-
-static size_t	get_next_word_len(t_parser *parser, int (*cmp)(int))
-{
-	char		*line;
-	size_t		len;
-
-	len = 0;
-	if ((line = get_next_word(parser, cmp)) == NULL)
-		return (0);
-	while (line[len] && cmp(line[len]))
-		len++;
-	parser->line = line;
-	return (len);
-}
-
 static int		get_next_opbracket(t_parser *parser)
 {
-	char	*line;
-
-	if (!((line = get_next_word(parser, isopbracket))))
+	if (skipchar(parser, '{') == ERROR)
 	{
 		parser->err_no = ENOBR;
 		return (ERROR);
 	}
-	parser->line = line + 1;
 	return (SUCCESS);
 }
 
-static int		is_sdigit(int c)
+static int		get_next_clbracket(t_parser *parser)
 {
-	return (c == '+' || c == '-' || ft_isdigit(c));
-}
-
-static int		get_and_skipdigit(t_parser *parser, int *get)
-{
-	char	*line;
-
-	if (!(line = get_next_word(parser, is_sdigit))
-	|| (*get = ft_atoi(line)) < 0)
+	if (skipchar(parser, '}') == ERROR)
+	{
+		parser->err_no = ENCBR;
 		return (ERROR);
-	parser->line = skip_digit(line);
-	return (SUCCESS);
-}
-
-static int		get_and_skipsdigit(t_parser *parser, int *get)
-{
-	char	*line;
-
-	if (!(line = get_next_word(parser, ft_isdigit))
-	|| ((*line == '+' || *line == '-') && ft_isdigit(line[1]))
-	|| (*get = ft_atoi(line)) < 0)
-		return (ERROR);
-	parser->line = skip_digit(line);
+	}
 	return (SUCCESS);
 }
 
@@ -179,59 +77,6 @@ static int		map_ent_analyze(t_env *env, t_parser *parser)
 	return (Map_parsing);
 }
 
-void			del_int_2d_array(int **ar, int h)
-{
-	int		i;
-
-	if (!ar)
-		return ;
-	i = 0;
-	while (i < h)
-	{
-		free(ar[i]);
-		i++;
-	}
-	free(ar);
-}
-
-static int		**int_new_2darray(int x, int y)
-{
-	int		**ar;
-	int		i;
-
-	if (!(ar = (int**)ft_memalloc(sizeof(int *) * (unsigned int) y)))
-		return (NULL);
-	i = 0;
-	while (i < y)
-	{
-		if (!(ar[i] = (int *)malloc(sizeof(int) * (unsigned int) x)))
-		{
-			del_int_2d_array(ar, y);
-			return (NULL);
-		}
-		i++;
-	}
-	return (ar);
-}
-
-static int		skipchar(t_parser *parser, char c)
-{
-	while (*parser->line != c)
-	{
-		if (ft_iswhitespace(*parser->line))
-			parser->line = skip_whitespace(parser->line);
-		else if (!*parser->line)
-		{
-			if (parser_gnl(parser) != 1)
-				return (ERROR);
-		}
-		else
-			return (ERROR);
-	}
-	parser->line++;
-	return (SUCCESS);
-}
-
 static int		get_map_content(t_map *map, t_parser *parser)
 {
 	t_ivec2		i;
@@ -244,55 +89,32 @@ static int		get_map_content(t_map *map, t_parser *parser)
 		while (i.x < map->width)
 		{
 			if (get_and_skipdigit(parser, &val) == ERROR)
-			{
-				parser->err_no = EMGET;
-				return (Parse_error);
-			}
+				return (ERROR);
 			map->data[i.y][i.x] = val;
 			i.x++;
 		}
 		i.y++;
-		if (skipchar(parser, (i.y !=  map->height ? ',' : '}')) == ERROR)
-		{
-			parser->err_no = EMGET;
-			return (Parse_error);
-		}
+		if (i.y != map->height && skipchar(parser, ',') == ERROR)
+			return (ERROR);
 	}
-	return (Name_entity);
+	return (SUCCESS);
 }
 
 static int		map_content_analyze(t_env *env, t_parser *parser)
 {
 	t_map		*map;
-	int			ret;
 
 	map = &env->map;
-	if (!(map->data = int_new_2darray(map->width, map->height)))
+	if (!(map->data = int_new_2darray(map->width, map->height))
+	|| get_map_content(map, parser) == ERROR)
 	{
 		parser->err_no = EMGET;
-		ret = Parse_error;
+		return (Parse_error);
 	}
-	else if ((ret = get_map_content(map, parser)) != Parse_error)
-		ft_putstr("Map: loaded\n");
-	return (ret);
-}
-
-static int		is_filechar(int c)
-{
-	return (c == '/' || c == '_' || ft_isalnum(c) || c == '.');
-}
-
-static int		fill_buffer(char *buff, t_parser *parser)
-{
-	size_t		wlen;
-
-	if ((wlen = get_next_word_len(parser, is_filechar)) == 0
-		|| wlen >= PATH_MAX)
-		return (ERROR);
-	ft_strncpy(buff, parser->line, wlen);
-	buff[wlen] = '\0';
-	parser->line += wlen;
-	return (SUCCESS);
+	if (get_next_clbracket(parser))
+		return (Parse_error);
+	ft_putstr("Map: loaded\n");
+	return (Name_entity);
 }
 
 static void		destroy_textures(t_env *env)
@@ -305,38 +127,23 @@ static void		destroy_textures(t_env *env)
 	while (i < env->textures_nb)
 	{
 		free(env->textures[i].data);
+		free(env->textures[i].name);
 		i++;
 	}
 	free(env->textures);
-}
-
-static int		load_textures(t_env *env, t_parser *parser)
-{
-	char		buff[PATH_MAX + 1];
-	int			i;
-
-	i = 0;
-	while (i < env->textures_nb)
-	{
-		if ((fill_buffer(buff, parser)) == ERROR
-		|| sdl_load_texture(env->textures + i, buff) == ERROR)
-			return (ERROR);
-		i++;
-	}
-	return (SUCCESS);
 }
 
 static int		texture_content_analyze(t_env *env, t_parser *parser)
 {
 	env->textures =
 		(t_texture *)ft_memalloc((size_t)env->textures_nb * sizeof(t_texture));
-	if (env->textures == NULL
-		|| load_textures(env, parser) == ERROR
-		|| skipchar(parser, '}') == ERROR)
+	if (env->textures == NULL || load_textures(env, parser) == ERROR)
 	{
 		parser->err_no = ETGET;
 		return (Parse_error);
 	}
+	if (get_next_clbracket(parser))
+		return (Parse_error);
 	ft_putstr("Textures: loaded\n");
 	return (Name_entity);
 }
@@ -365,11 +172,31 @@ static int		texture_ent_analyze(t_env *env, t_parser *parser)
 	return (Texture_parsing);
 }
 
-static int		spawn_content_getarg(t_parser *parser, char *word,
-									t_ivec2 *fill)
+static int		spawn_get_pos(t_parser *parser, t_env *env)
 {
 	int		x;
 	int		y;
+
+	if (get_and_skipsdigit(parser, &x) == ERROR
+	|| get_and_skipsdigit(parser, &y) == ERROR)
+		return (Parse_error);
+	env->map.spawn = IVEC2_INIT(x, y);
+	return (SUCCESS);
+}
+
+static int		spawn_get_rotation(t_parser *parser, t_env *env)
+{
+	int		r;
+
+	if (get_and_skipsdigit(parser, &r) == ERROR)
+		return (Parse_error);
+	env->map.spawn_rotation = (t_float)r;
+	return (SUCCESS);
+}
+
+static int		spawn_content_getarg(t_env *env, t_parser *parser, char *word,
+									int (*get)(t_parser *, t_env *))
+{
 	size_t	wlen;
 
 	if ((wlen = get_next_word_len(parser, ft_isalpha)) == 0)
@@ -377,22 +204,18 @@ static int		spawn_content_getarg(t_parser *parser, char *word,
 	if (!ft_strnequ(word, parser->line, wlen))
 		return (Parse_error);
 	parser->line += wlen;
-	if (get_and_skipsdigit(parser, &x) == ERROR
-	|| get_and_skipsdigit(parser, &y) == ERROR)
-		return (Parse_error);
-	*fill = IVEC2_INIT(x, y);
-	return (SUCCESS);
+	return (get(parser, env));
 }
 
 static int		spawn_content_analyze(t_env *env, t_parser *parser)
 {
-	if (spawn_content_getarg(parser, "pos", &env->map.spawn) == ERROR
-	|| spawn_content_getarg(parser, "dir", &env->map.spawn_dir) == ERROR)
+	if (spawn_content_getarg(env, parser, "pos", spawn_get_pos) == ERROR
+	|| spawn_content_getarg(env, parser, "dir", spawn_get_rotation) == ERROR)
 	{
 		parser->err_no = ESGET;
 		return (Parse_error);
 	}
-	if (skipchar(parser, '}') == ERROR)
+	if (get_next_clbracket(parser))
 		return (Parse_error);
 	ft_putstr("Spawn: loaded\n");
 	return (Name_entity);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/15 21:40:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 01:52:52 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct		s_texture {
 	int				w;
 	int				h;
 	unsigned int	*data;
+	char			*name;
 }					t_texture;
 
 typedef struct		s_sprite {

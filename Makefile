@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/15 21:39:25 by jbulant          ###   ########.fr        #
+#    Updated: 2018/12/15 22:45:05 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ LIBFTD		=	libft
 LIBTPOOLD	=	libtpool
 SDLD		=	sdl
 PARSERD		=	parser
+MPARD		=	$(PARSERD)/map
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image \
@@ -40,7 +41,9 @@ FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
 				color_filters.c move_1.c move_2.c move_3.c raycast_4.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 FILES		+=	$(PARSERD)/map_parser.c $(PARSERD)/stack.c \
-				$(PARSERD)/reader.c $(PARSERD)/map.c
+				$(PARSERD)/reader.c
+FILES		+=	$(MPARD)/map.c $(MPARD)/tools.c $(MPARD)/tools_2.c \
+				$(MPARD)/tools_3.c $(MPARD)/load_textures.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))

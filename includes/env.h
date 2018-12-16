@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/15 21:40:17 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/15 21:44:45 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct		s_map {
 	int				skybox_offset;
 	int				skybox_anim;
 	t_ivec2			spawn;
+	t_float			spawn_rotation;
 	int				width;
 	int				height;
 	int				is_skybox;

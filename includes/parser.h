@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 14:48:58 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/15 21:18:07 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/15 22:43:06 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,10 @@ enum parsing_actions {
 # define ESOOR_STR	"error: spawn position out of range"
 # define ESONW		13
 # define ESONW_STR	"error: spawn position inside wall"
+# define ENCBR		14
+# define ENCBR_STR	"error encountered while looking for '}'"
 
-# define ERRMSG_CNT	13
+# define ERRMSG_CNT	15
 # define ERRMSG_STR1	ENOBR_STR, EBTYPE_STR, EUNKST_STR, EMPAR_STR, EMGET_STR
 # define ERRMSG_STR2	ETPAR_STR, ETGET_STR, EMDEF_STR, ETDEF_STR, ESPAR_STR
 # define ERRMSG_STR3	ESGET_STR, ESDEF_STR, ESOOR_STR, ESONW_STR
@@ -116,5 +118,33 @@ void				ft_stackclear(t_stack **stack);
 int					read_file(char *filename, t_stack **stack);
 int					load_map(t_env *env, t_map *map, char *mapfile);
 void				map_destroy(t_map *map);
+
+int					load_textures(t_env *env, t_parser *parser);
+
+/*
+**	tools.c
+*/
+
+int					ft_iswhitespace(int c);
+char				*skip_whitespace(char *str);
+void				del_int_2d_array(int **ar, int h);
+int					**int_new_2darray(int x, int y);
+int					is_filechar(int c);
+
+/*
+**	tools_2.c
+*/
+
+int					get_and_skipdigit(t_parser *parser, int *get);
+int					get_and_skipsdigit(t_parser *parser, int *get);
+
+/*
+**	tools_3.c
+*/
+
+int					parser_gnl(t_parser *parser);
+char				*get_next_word(t_parser *parser, int (*cmp)(int));
+int					skipchar(t_parser *parser, char c);
+size_t				get_next_word_len(t_parser *parser, int (*cmp)(int));
 
 #endif

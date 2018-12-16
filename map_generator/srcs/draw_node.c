@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:58:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 02:18:00 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ static void		draw_canvas_tex(t_sdl *sdl, t_env *env,
 static void		draw_node_tex(t_sdl *sdl, t_env *env, t_canvas canvas,
 							t_ivec2 mapi)
 {
-	if (env->map->data[mapi.y][mapi.x] == 0)
-		draw_canvas_fill(sdl, canvas, env->grid, 0x853030);
-	else if (env->map->data[mapi.y][mapi.x] - 1 == env->spawner_id)
+	if (env->spawn.x == mapi.x && env->spawn.y == mapi.y)
 		draw_canvas_fill(sdl, canvas, env->grid, 0x303085);
+	else if (env->map->data[mapi.y][mapi.x] == 0)
+		draw_canvas_fill(sdl, canvas, env->grid, 0x853030);
 	else
 		draw_canvas_tex(sdl, env, canvas, mapi);
 }

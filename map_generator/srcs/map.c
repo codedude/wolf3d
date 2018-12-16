@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/06 12:46:23 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 02:20:54 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,9 @@ void		draw_on_map(t_env *env, int brush)
 	{
 		mpos = mpos_to_map_index(bounds, mpos, env);
 		if (brush - 1 == env->spawner_id)
-			disable_old_spawn(env->map, brush);
-		env->map->data[mpos.y][mpos.x] = brush;
+			env->spawn = mpos;
+		else
+			env->map->data[mpos.y][mpos.x] = brush;
 		env->saved = False;
 	}
 }

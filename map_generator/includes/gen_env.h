@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/06 12:45:33 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 01:58:55 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ typedef struct	s_env {
 	t_sdl		sdl;
 	t_map		*map;
 	t_ivec2		map_pos;
+	t_ivec2		spawn;
+	int			spawn_rotation;
 	t_canvas	grid;
 	int			node_size;
 	t_float		zoom;

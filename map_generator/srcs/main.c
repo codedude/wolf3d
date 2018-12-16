@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/06 12:58:14 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 01:24:04 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void		loop(t_env *env)
 		manage_down(state, env);
 		if (loop != 1)
 			break ;
+		sdl_update_texture(&env->sdl);
 		update_actions(env);
 		draw_grid(env, &env->sdl);
 		sdl_render(&env->sdl);

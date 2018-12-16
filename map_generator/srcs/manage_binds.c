@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/06 12:34:04 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 02:51:25 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int			manage_binds(SDL_Event *event, t_env *env)
 			t_ivec2	mpos;
 
 			mpos = get_mouse_pos();
+			env->map->data[env->spawn.y][env->spawn.x] = 0;
 			if (is_bounded(mpos, env->brush_canvas))
 				switch_brush(mpos, env);
 			SDL_SetRelativeMouseMode(SDL_FALSE);

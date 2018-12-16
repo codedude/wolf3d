@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 18:15:34 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 01:30:07 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@
 int				sdl_clear_color(t_sdl *sdl, unsigned int color)
 {
 	t_ivec2		i;
+	t_color		col;
 
+	col.rgba = color;
 	i.y = 0;
 	while (i.y < sdl->height)
 	{
 		i.x = 0;
 		while (i.x < sdl->width)
 		{
-			sdl->image[i.x + i.y * sdl->width] = color;
+			sdl_put_pixel(sdl, i.x, i.y, col);
 			i.x++;
 		}
 		i.y++;
@@ -55,9 +57,12 @@ int		ipercent_of(int of, int percent)
 
 void		put_pixel_to_image(t_sdl *sdl, t_ivec2 pos, unsigned int color)
 {
+	t_color		col;
+
+	col.rgba = color;
 	if (pos.x >= 0 && pos.x < sdl->width
 	&& pos.y >= 0 && pos.y < sdl->height)
-		sdl->image[pos.x + pos.y *sdl->width] = color;
+		sdl_put_pixel(sdl, pos.x, pos.y, col);
 }
 
 t_bool		is_bounded(t_ivec2 pos, t_canvas canvas)

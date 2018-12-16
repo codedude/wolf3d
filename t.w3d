@@ -1,29 +1,30 @@
 
-Texture 18 {
-	textures/bookshelf.png
-	textures/colorstone.png
-	textures/old_stone.jpg
-	textures/eagle.png
-	textures/greystone.png
+## Texture __Texture_count__
+##   field: texture_path (...)
+
+Texture 8 {
 	textures/ice_ground.png
-	textures/kitchen_tile_ground.jpg
-	textures/mossy.png
-	textures/purplestone.png
-	textures/redbrick.png
+	textures/old_stone.jpg
 	textures/rock_wall.jpg
-	textures/bluestone.png
 	textures/stone_ground.jpg
-	textures/stone_wall.jpg
+	textures/bookshelf.png
 	textures/wood.jpg
-	textures/wood.png
-	textures/test_cf.png
-	textures/test_wall.png
+	textures/kitchen_tile_ground.jpg
+	textures/stone_wall.jpg
 }
+
+## Spawn
+##   field: pos [x y]
+##   field: dir rot_angle (int degree)
 
 Spawn {
 	pos    2 2
-	dir    2 48
+	dir    0
 }
+
+## Map __Size_x__ __Size_y__
+##   field: content
+##   each row must be separated by a comma
 
 Map 4 4
 {
