@@ -6,19 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:04:53 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/06 16:01:13 by vparis           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   list.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/22 23:44:28 by valentin          #+#    #+#             */
-/*   Updated: 2018/10/24 23:47:07 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/17 13:19:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +23,6 @@ t_klist			*list_new(KLIST_TYPE value)
 	tmp->value = value;
 	tmp->next = NULL;
 	return (tmp);
-}
-
-void			list_append(t_klist **head, t_klist *entry)
-{
-	while (*head != NULL)
-		head = &(*head)->next;
-	*head = entry;
-}
-
-void			list_prepend(t_klist **head, t_klist *entry)
-{
-	if (*head != NULL)
-		entry->next = (*head)->next;
-	*head = entry;
 }
 
 void			list_del(t_klist **head, t_klist *entry)
@@ -83,5 +57,12 @@ void			list_add_sort(t_klist **head, t_klist *entry,
 	}
 	if (last != NULL)
 		last->next = entry;
+	*head = entry;
+}
+
+void			list_append(t_klist **head, t_klist *entry)
+{
+	while (*head != NULL)
+		head = &(*head)->next;
 	*head = entry;
 }

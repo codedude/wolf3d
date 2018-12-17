@@ -6,21 +6,22 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/27 22:19:36 by valentin          #+#    #+#             */
-/*   Updated: 2018/12/03 11:25:23 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/17 12:56:39 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifdef __APPLE__
-# include <sys/sysctl.h>
-#elif __linux
-# include <sys/sysinfo.h>
-#endif
-
 #include <pthread.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include "libft.h"
 #include "libtpool.h"
+
+static void	wait_signal(t_thread *th)
+{
+	pthread_mutex_lock(&(th->mutex));
+	while (th->state == TH_READY)
+		pthread_cond_wait(&(th->cond), &(th->mutex));
+	pthread_mutex_unlock(&(th->mutex));
+}
 
 void		*th_fun_start(void *param)
 {
@@ -31,10 +32,7 @@ void		*th_fun_start(void *param)
 	tp = th->tp;
 	while (1)
 	{
-		pthread_mutex_lock(&(th->mutex));
-		while (th->state == TH_READY)
-			pthread_cond_wait(&(th->cond), &(th->mutex));
-		pthread_mutex_unlock(&(th->mutex));
+		wait_signal(th);
 		pthread_mutex_lock(&(tp->mutex));
 		tp->working_threads += 1;
 		pthread_mutex_unlock(&(tp->mutex));
@@ -60,32 +58,3 @@ int			th_start(t_tpool *tp, int i, void *(*f)(void *))
 	pthread_detach(tp->threads[i].thread);
 	return (SUCCESS);
 }
-
-int			tp_getnbr_proc(t_tpool *tp)
-{
-	return (tp->size);
-}
-
-#ifdef __APPLE__
-
-int			th_getnbr_proc(void)
-{
-	int		mib[2];
-	int		maxproc;
-	size_t	len;
-
-	mib[0] = CTL_HW;
-	mib[1] = HW_NCPU;
-	len = sizeof(maxproc);
-	sysctl(mib, 2, &maxproc, &len, NULL, 0);
-	return (maxproc);
-}
-
-#elif __linux
-
-int			th_getnbr_proc(void)
-{
-	return (get_nprocs());
-}
-
-#endif

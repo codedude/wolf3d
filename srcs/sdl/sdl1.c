@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/12 16:05:16 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/17 13:14:59 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,30 @@ int				sdl_destroy(t_sdl *sdl)
 	return (SUCCESS);
 }
 
-int				sdl_update_texture(t_sdl *sdl)
+void			sdl_print_infos(t_sdl *sdl)
 {
-	SDL_LockTexture(sdl->texture, NULL, (void **)&sdl->image, &sdl->pitch);
-	return (SUCCESS);
-}
+	SDL_version	compiled;
+	SDL_version	linked;
 
-int				sdl_render(t_sdl *sdl)
-{
-	SDL_UnlockTexture(sdl->texture);
-	SDL_RenderCopy(sdl->renderer, sdl->texture, NULL, NULL);
-	SDL_RenderPresent(sdl->renderer);
-	return (SUCCESS);
+	SDL_VERSION(&compiled);
+	SDL_GetVersion(&linked);
+	ft_putstr("We compiled against SDL version ");
+	ft_putnbr(compiled.major);
+	ft_putchar('.');
+	ft_putnbr(compiled.minor);
+	ft_putchar('.');
+	ft_putnbr(compiled.patch);
+	ft_putstr("\nAnd we are linking against SDL version ");
+	ft_putnbr(linked.major);
+	ft_putchar('.');
+	ft_putnbr(linked.minor);
+	ft_putchar('.');
+	ft_putnbr(linked.patch);
+	ft_putchar('\n');
+	if (sdl->window != NULL)
+	{
+		ft_putstr("Pixel format of the window : ");
+		ft_putendl(
+			SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(sdl->window)));
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/13 18:57:00 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/17 13:20:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 #include "raycast.h"
 #include "parser.h"
 
-void	update_skybox_offset(t_cam *cam, t_sdl *sdl, t_map *map)
+void		update_skybox_offset(t_cam *cam, t_sdl *sdl, t_map *map)
 {
 	t_float motion;
 
 	motion = atan2(cam->dir.y, cam->dir.x) + M_PI;
-	map->skybox_offset = (int)(motion * (sdl->canvas_w * 2.0) /  M_PI);
+	map->skybox_offset = (int)(motion * (sdl->canvas_w * 2.0) / M_PI);
 }
 
 int			load_objects(t_env *env)

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/12 15:57:36 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/17 13:10:46 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ int					sdl_init(t_sdl *sdl, const char *title, int width,
 						int height);
 int					sdl_reset(t_sdl *sdl);
 int					sdl_destroy(t_sdl *sdl);
-int					sdl_render(t_sdl *sdl);
-int					sdl_update_texture(t_sdl *sdl);
+void				sdl_print_infos(t_sdl *sdl);
 
 /*
 ** sdl2.c
@@ -83,18 +82,30 @@ int					sdl_resize(t_sdl *sdl, int width, int height);
 ** sdl3.c
 */
 
-int					sdl_load_texture(t_texture *texture, char *filename);
-int					sdl_init_textures(t_sdl *sdl);
-int					sdl_init_sprites(t_sdl *sdl);
-void				sdl_destroy_textures(t_sdl *sdl);
-void				sdl_destroy_sprites(t_sdl *sdl);
-
-/*
-** sdl4.c
-*/
-
+int					sdl_update_texture(t_sdl *sdl);
+int					sdl_render(t_sdl *sdl);
 void				sdl_put_pixel(t_sdl *sdl, int x, int y, t_color color);
 t_color				sdl_get_pixel(t_texture *text, int x, int y);
-void				get_fps(int show_fps);
+void				sdl_get_fps(int show_fps);
+
+/*
+** sdl_load_image.c
+*/
+
+int					sdl_load_texture(t_texture *texture, char *filename);
+
+/*
+** sdl_textures.c
+*/
+
+int					sdl_init_textures(t_sdl *sdl);
+void				sdl_destroy_textures(t_sdl *sdl);
+
+/*
+** sdl_sprites.c
+*/
+
+int					sdl_init_sprites(t_sdl *sdl);
+void				sdl_destroy_sprites(t_sdl *sdl);
 
 #endif

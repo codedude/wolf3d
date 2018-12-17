@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/13 18:59:05 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/17 13:14:46 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	loop(t_env *env)
 		tp_wait_for_queue(env->tpool);
 		compute_sprites(env);
 		sdl_render(&env->sdl);
-		get_fps(env->show_fps);
+		sdl_get_fps(env->show_fps);
 	}
 	free(pack);
 }

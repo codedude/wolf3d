@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/13 18:55:04 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/17 13:21:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "env.h"
 #include "raycast.h"
 
-int		is_inside(t_float x, t_float min, t_float max)
+int			is_inside(t_float x, t_float min, t_float max)
 {
 	return (x >= min && x < max);
 }
@@ -78,12 +78,4 @@ t_vec2		straf(t_env *env, t_vec2 from, t_vec2 to, t_float speed)
 {
 	to = VEC2_INIT(to.y, -to.x);
 	return (move_forward(env, from, to, speed));
-}
-
-t_float		player_speed(int action_state, t_float speed,
-					t_float acceleration, t_float factor)
-{
-	if (action_state & ACTION_CROUCHING)
-		factor *= 0.6;
-	return ((speed + acceleration) * factor);
 }

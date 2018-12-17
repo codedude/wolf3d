@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/13 18:59:16 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/17 13:22:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,4 @@ void			rc_render(t_sdl *sdl, t_cam *cam, t_map *map,
 		infos->draw_start = 0;
 		draw_skybox(sdl, infos, cam, map);
 	}
-
 }

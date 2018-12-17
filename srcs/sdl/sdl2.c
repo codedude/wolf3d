@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/12 19:06:13 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/17 13:02:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,6 @@ int			sdl_create_buffer(t_sdl *sdl)
 	SDL_LockTexture(sdl->texture, NULL, (void **)&sdl->image, &sdl->pitch);
 	sdl->bpp = sdl->pitch / sdl->width;
 	sdl->size_buffer = (size_t)(sdl->height * sdl->pitch);
-	//printf("%d, %d\n", sdl->pitch, sdl->bpp);
-	//printf("win : %s\n",
-	//SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(sdl->window)));
-	/*SDL_version compiled;
-	SDL_version linked;
-
-	SDL_VERSION(&compiled);
-	SDL_GetVersion(&linked);
-	printf("We compiled against SDL version %d.%d.%d ...\n",
-	       compiled.major, compiled.minor, compiled.patch);
-	printf("But we are linking against SDL version %d.%d.%d.\n",
-	       linked.major, linked.minor, linked.patch);*/
-
 	ft_bzero(sdl->image, sdl->size_buffer);
 	SDL_UnlockTexture(sdl->texture);
 	if ((sdl->z_buffer = (t_float *)malloc(

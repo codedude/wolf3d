@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:45:59 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 17:45:25 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/17 13:21:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "env.h"
 #include "raycast.h"
 
-void	player_jump(t_cam *player)
+void		player_jump(t_cam *player)
 {
 	if (player->jump_time > 0.001)
 	{
@@ -28,7 +28,7 @@ void	player_jump(t_cam *player)
 	}
 }
 
-void	player_fall(t_cam *player)
+void		player_fall(t_cam *player)
 {
 	if (player->z_pos < player->z_default)
 	{
@@ -42,7 +42,7 @@ void	player_fall(t_cam *player)
 	}
 }
 
-void	player_set_acceleration(t_cam *player)
+void		player_set_acceleration(t_cam *player)
 {
 	if (player->acceleration > 0)
 	{
@@ -58,7 +58,15 @@ void	player_set_acceleration(t_cam *player)
 	}
 }
 
-void	player_set_z(t_cam *player)
+void		player_set_z(t_cam *player)
 {
 	player->z = player->walk_anim + player->z_pos;
+}
+
+t_float		player_speed(int action_state, t_float speed,
+					t_float acceleration, t_float factor)
+{
+	if (action_state & ACTION_CROUCHING)
+		factor *= 0.6;
+	return ((speed + acceleration) * factor);
 }

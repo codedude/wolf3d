@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/14 16:51:14 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/17 13:23:41 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static int		raycast_thin(t_hit_infos *infos, t_map *map)
 	t = (wall_y - infos->map.y) / infos->ray.dir.y;
 	new_pos.y = wall_y;
 	new_pos.x = infos->map.x + t * infos->ray.dir.x;
-
 	if (map->data[(int)new_pos.y][(int)new_pos.x] != 8)
 		return (0);
 	infos->map = new_pos;

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/12 15:50:54 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/17 13:23:06 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@
 **	OPTI : s*t > 0 ? check perf
 */
 
-int			sort_object(t_object *a, t_object *b)
+int				sort_object(t_object *a, t_object *b)
 {
 	if (a->z < b->z)
 		return (-1);
@@ -171,7 +171,7 @@ void			render_sprite(t_env *env, t_object *obj)
 		{
 			it.y = obj->y_start < 0 ? 0 : obj->y_start;
 			tex.x = (int)(
-				(it.x - obj->x_start)/ obj->size.x * obj->sprite->texture.w);
+				(it.x - obj->x_start) / obj->size.x * obj->sprite->texture.w);
 			while (it.y < obj->y_end && it.y < env->sdl.height)
 			{
 				tex.y = (int)((it.y - obj->y_start)
