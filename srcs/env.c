@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 13:20:09 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/17 16:13:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	cam->z_pos = cam->z_default;
 	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
 	cam->plane = VEC2_INIT(0.0, 0.88);
-	cam->dir = vec_rotate(cam->dir, 100.0 * DEG_TO_RAD);
-	cam->plane = vec_rotate(cam->plane, 100.0 * DEG_TO_RAD);
+	cam->dir = vec_rotate(cam->dir, 270.0 * DEG_TO_RAD);
+	cam->plane = vec_rotate(cam->plane, 270.0 * DEG_TO_RAD);
 	cam->mov_speed = 0.05;
 	cam->rot_speed = 0.016;
 	cam->acceleration = 0.0;

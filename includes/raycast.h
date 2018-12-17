@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/13 18:22:38 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/17 18:30:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct			s_hit_info {
 	int					x;
 	int					side;
 	int					hit;
+	int					is_thin;
 }						t_hit_infos;
 
 void					update_skybox_offset(t_cam *cam, t_sdl *sdl,
