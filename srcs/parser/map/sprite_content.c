@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   load_textures.c                                    :+:      :+:    :+:   */
+/*   sprite_content.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/15 22:18:01 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/15 22:48:22 by jbulant          ###   ########.fr       */
+/*   Created: 2018/12/16 17:18:08 by jbulant           #+#    #+#             */
+/*   Updated: 2018/12/16 17:44:16 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <limits.h>
+#include "env.h"
+#include "libft.h"
 #include "parser.h"
 
 static int	fill_buffer(char *buff, t_parser *parser)
@@ -27,18 +28,33 @@ static int	fill_buffer(char *buff, t_parser *parser)
 	return (SUCCESS);
 }
 
-int			load_textures(t_env *env, t_parser *parser)
+int			load_sprites(t_env *env, t_parser *parser)
 {
 	char		buff[PATH_MAX + 1];
 	int			i;
 
 	i = 0;
-	while (i < env->textures_nb)
+	while (i < env->sprites_nb)
 	{
 		if ((fill_buffer(buff, parser)) == ERROR
-		|| sdl_load_texture(env->textures + i, buff) == ERROR)
+		|| sdl_load_texture(&env->sprites[i].texture, buff) == ERROR)
 			return (ERROR);
 		i++;
 	}
 	return (SUCCESS);
+}
+
+int			sprite_content_analyze(t_env *env, t_parser *parser)
+{
+	env->sprites =
+		(t_sprite *)ft_memalloc((size_t)env->sprites_nb * sizeof(t_sprite));
+	if (env->sprites == NULL || load_sprites(env, parser) == ERROR)
+	{
+		parser->err_no = ESPRGET;
+		return (Parse_error);
+	}
+	if (get_next_clbracket(parser))
+		return (Parse_error);
+	ft_putstr("Sprites: loaded\n");
+	return (Name_entity);
 }

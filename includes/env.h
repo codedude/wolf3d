@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/15 21:44:45 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 19:50:52 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct		s_object {
 	t_sprite		*sprite;
 	t_vec2			pos;
 	t_vec2			size;
-	int				walkthrough;
+	int				solid;
 	int				y_start;
 	int				y_end;
 	int				x_end;
@@ -113,6 +113,8 @@ typedef struct		s_env {
 	t_sdl			sdl;
 	t_texture		*textures;
 	int				textures_nb;
+	t_sprite		*sprites;
+	int				sprites_nb;
 	t_map			map;
 	t_cam			cam;
 	int				show_fps;

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/15 22:50:17 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 19:51:50 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			load_objects(t_env *env)
 	i = 0;
 	while (i < env->objects_nb)
 	{
-		env->objects[i].walkthrough = !(i > 0);
+		env->objects[i].solid = (i > 0);
 		env->objects[i].sprite = env->sdl.sprites + i;
 		env->objects[i].pos = VEC2_INIT(6.0, 10.0 + i * 2.0) + 0.5;
 		env->objects[i].z = 0.0;
@@ -56,8 +56,8 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	map->skybox_anim = 0;
 	if (sdl_load_texture(&map->skybox, "skybox/skybox_day.png") == ERROR)
 		return (ERROR);
-	if (load_objects(env) == ERROR)
-		return (ERROR);
+	// if (load_objects(env) == ERROR)
+	// 	return (ERROR);
 	cam->pos = VEC2_INIT((t_float)map->spawn.x, (t_float)map->spawn.y) + 0.5;
 	cam->z = env->sdl.canvas_h * 33.0 / 100.0;
 	cam->z_default = cam->z;

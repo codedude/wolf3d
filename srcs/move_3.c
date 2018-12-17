@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/13 18:55:04 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 19:51:28 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int			is_close_objects(t_env *env, t_vec2 pos)
 	i = 0;
 	while (i < env->objects_nb)
 	{
-		if (env->objects[i].walkthrough == 0)
+		if (env->objects[i].solid == 1)
 		{
 			t = vec_len(env->objects[i].pos - pos);
 			if (t < 0.3)

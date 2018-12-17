@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/15 22:20:22 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/16 02:47:27 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/16 19:40:19 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,38 +36,57 @@ int			parser_gnl(t_parser *parser)
 	return (gnl_ret);
 }
 
+static int	check_parse_line(t_parser *parser)
+{
+	if (ft_iswhitespace(*parser->line))
+	{
+		parser->line = skip_whitespace(parser->line);
+		return (SUCCESS);
+	}
+	else if (!*parser->line && parser_gnl(parser) == 1)
+		return (SUCCESS);
+	return (ERROR);
+}
+
 char		*get_next_word(t_parser *parser, int (*cmp)(int))
 {
 	while (!cmp(*parser->line))
 	{
-		if (ft_iswhitespace(*parser->line))
-			parser->line = skip_whitespace(parser->line);
-		else if (!*parser->line)
-		{
-			if (parser_gnl(parser) != 1)
-				return (0);
-		}
-		else
+		if (check_parse_line(parser) == ERROR)
 			return (NULL);
 	}
 	return (parser->line);
 }
 
-int			skipchar(t_parser *parser, char c)
+int			get_next_char(t_parser *parser, int c)
 {
 	while (*parser->line != c)
 	{
-		if (ft_iswhitespace(*parser->line))
-			parser->line = skip_whitespace(parser->line);
-		else if (!*parser->line)
-		{
-			if (parser_gnl(parser) != 1)
-				return (ERROR);
-		}
-		else
+		if (check_parse_line(parser) == ERROR)
 			return (ERROR);
 	}
+	return (SUCCESS);
+}
+
+int			skipchar(t_parser *parser, char c)
+{
+	if (get_next_char(parser, c) == ERROR)
+		return (ERROR);
 	parser->line++;
+	return (SUCCESS);
+}
+
+int			skipword(t_parser *parser, char *word)
+{
+	size_t		wlen;
+
+	wlen = ft_strlen(word);
+	if (get_next_char(parser, *word) == ERROR
+	|| !ft_strnequ(parser->line, word, wlen)
+	|| (!ft_iswhitespace(parser->line[wlen])
+		&& parser->line[wlen] != ':' && parser->line[wlen] != '\0'))
+		return (ERROR);
+	parser->line += wlen;
 	return (SUCCESS);
 }
 

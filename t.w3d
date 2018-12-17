@@ -13,6 +13,29 @@ Texture 8 {
 	textures/stone_wall.jpg
 }
 
+## Sprite __Sprite_count__
+##   field: texture_path (...)
+
+Sprite 3 {
+	sprites/barrel.png
+	sprites/pillar.png
+	sprites/greenlight.png
+}
+
+## Object __Object_count__
+##   field: object components
+##     component 1: is solid [True : False] (boolean)
+##     component 2: sprite index (unsigned int)
+##     component 3: position [x, y] (vec2)
+
+Object 5 {
+	True : 0 : 2.45, 8.65
+	True : 1 :  4.5, 3.33
+	True : 1 :  7.5, 3.33
+	True : 1 :  6.0, 6.66
+	False : 2 : 5.12, 5.2
+}
+
 ## Spawn
 ##   field: pos [x y]
 ##   field: dir rot_angle (int degree)
@@ -24,12 +47,17 @@ Spawn {
 
 ## Map __Size_x__ __Size_y__
 ##   field: content
-##   each row must be separated by a comma
+##  	 each row must be separated by a comma
 
-Map 4 4
+Map 9 9
 {
-	5 5 5  5,
-	0 5 5  0,
-	5 5 0  0,
-	0 0 0  0
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0
 }

@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/15 22:45:05 by jbulant          ###   ########.fr        #
+#    Updated: 2018/12/16 19:17:03 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,13 @@ FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 FILES		+=	$(PARSERD)/map_parser.c $(PARSERD)/stack.c \
 				$(PARSERD)/reader.c
-FILES		+=	$(MPARD)/map.c $(MPARD)/tools.c $(MPARD)/tools_2.c \
-				$(MPARD)/tools_3.c $(MPARD)/load_textures.c
+FILES		+=	$(MPARD)/load_map.c $(MPARD)/parse_map.c \
+				$(MPARD)/tools.c $(MPARD)/tools_2.c $(MPARD)/tools_3.c \
+				$(MPARD)/tools_4.c \
+				$(MPARD)/map_content.c $(MPARD)/spawn_content.c \
+				$(MPARD)/texture_content.c $(MPARD)/sprite_content.c \
+				$(MPARD)/object_content.c \
+				$(MPARD)/ent_analyze.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
