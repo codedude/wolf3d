@@ -38,11 +38,11 @@ Object 5 {
 
 ## Spawn
 ##   field: pos [x y]
-##   field: dir rot_angle (int degree)
+##   field: dir rot_angle (int degree >= 0)
 
 Spawn {
 	pos    2 2
-	dir    0
+	dir    720
 }
 
 ## Map __Size_x__ __Size_y__
@@ -52,7 +52,7 @@ Spawn {
 Map 9 9
 {
 	 0  0  0  0  0  0  0  0  0,
-	 0  0  0  0  0  0  0  0  0,
+	 0  1  4  5  0  0  0  0  0,
 	 0  0  0  0  0  0  0  0  0,
 	 0  0  0  0  0  0  0  0  0,
 	 0  0  0  0  0  0  0  0  0,

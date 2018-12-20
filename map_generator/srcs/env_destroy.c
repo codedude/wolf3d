@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/06 12:58:43 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/19 16:09:02 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "libft.h"
 
 
-void		ask_saving(t_env *env)
+static void		ask_saving(t_env *env)
 {
 	char	str[5];
 	ssize_t	r;
@@ -33,20 +33,20 @@ void		ask_saving(t_env *env)
 			save_file(env);
 			break ;
 		}
-		if (ft_strequ("no", str) || ft_strequ("no", str))
+		if (ft_strequ("no", str) || ft_strequ("n", str))
 			break ;
 		ft_putstr("Please answer by [Yes] or [No]\n");
 		ft_putstr("  Would you like to save (Yes/No): ");
 	}
 }
 
-
-void		env_destroy(t_env *env)
+void			env_destroy(t_env *env)
 {
 	sdl_destroy_textures(&env->sdl);
 	sdl_destroy(&env->sdl);
 	if (env->saved == False)
 		ask_saving(env);
 	destroy_map(env->map);
-	destroy_tex_previewbox(env->brush_box);
+	panel_destroy(&env->obj_pan);
+	panel_destroy(&env->brush_pan);
 }

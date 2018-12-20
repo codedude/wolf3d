@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/16 02:18:00 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/20 16:47:06 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,15 @@ void			draw_node(t_env *env, t_sdl *sdl, t_ivec2 i)
 {
 	t_canvas		canvas;
 	t_ivec2			node_size;
+	t_ivec2			coef;
 
-	node_size = IVEC2_INIT((int)((t_float)env->node_size * env->zoom),
-						((int)((t_float)env->node_size * env->zoom)));
-	canvas.pos = env->map_pos + (i * node_size);
-	canvas.size = node_size;
+	canvas.pos.x = env->map_pos.x + (int)(env->map_topleft.x);
+	canvas.pos.y = env->map_pos.y + (int)(env->map_topleft.y);
+	canvas.size = (int)(env->ns_zoom);
+	// node_size = (int)((t_float)env->node_size * env->zoom);
+	// coef = (env->map->size / 2) * node_size;
+	// canvas.pos = env->map_pos + (i * node_size) - coef;
+	// canvas.size = node_size;
 	draw_node_tex(sdl, env, canvas, i);
 	draw_canvas_border(sdl, canvas, env->grid, 0);
 }

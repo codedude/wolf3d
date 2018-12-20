@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:58:07 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/20 16:32:30 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,17 @@ void			draw_grid_lines(t_env *env, t_sdl *sdl)
 
 	i_min = get_node_min(env);
 	i_max = get_node_max(env, env->map);
+	env->ns_zoom = (t_float)env->node_size * env->zoom;
 	i.y = i_min.y;
 	while (i.y < i_max.y)
 	{
+		env->map_topleft.y = ((t_float)i.y - ((t_float)env->map->size.y / 2.0))
+						* env->ns_zoom;
 		i.x = i_min.x;
 		while (i.x < i_max.x)
 		{
+			env->map_topleft.x = ((t_float)i.x
+						- ((t_float)env->map->size.x / 2.0)) * env->ns_zoom;
 			draw_node(env, sdl, i);
 			i.x++;
 		}

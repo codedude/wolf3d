@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/16 19:50:52 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/18 19:40:57 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 # define ACTION_CROUCHING	0b00100
 # define ACTION_FALLING		0b01000
 # define ACTION_JUMPING		0b10000
-# define ACTION_FLY_MODE	(0x1000)
+# define ACTION_FLY_MODE	0x1000
 
 # define ACTION_MAX_JUMP_TIME	2.5
 # define ACTION_JUMP_FORCE		25.0

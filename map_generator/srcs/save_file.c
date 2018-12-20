@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 12:06:56 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/16 02:34:42 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/18 19:36:10 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_bool			is_valid_mapfile(char *filename)
 	if ((fd = open(filename, O_RDWR)) == -1
 	&& errno != ENOENT)
 	{
-		perror("W3dEditor: ");
+		perror("W3dEditor");
 		return (False);
 	}
 	if (fd != -1)
