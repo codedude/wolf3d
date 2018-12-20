@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 15:40:17 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/20 14:20:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 # define TASKS			32
 # define WINDOW_NAME	"DAT Wolf3D"
 
-# define DEFAULT_CEIL	2
-# define DEFAULT_FLOOR	1
+# define DEFAULT_CEIL	1
+# define DEFAULT_FLOOR	4
 
 # define MAX_OFFSET		600
-# define MAX_DEPTH		20.0
+# define MAX_DEPTH		30.0
 # define EFFECT_MASK			0xff
 # define EFFECT_MASK_DEPTH		0xff00
 # define EFFECT_MASK_COLOR		0xff0000
