@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/17 13:15:40 by vparis           ###   ########.fr        #
+#    Updated: 2018/12/27 13:14:06 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,8 +48,9 @@ SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-				-I$(INCD) -O3 -g3 #-fsanitize=address
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
+				-I$(INCD) -O3 -g3 -Wextra -Wall -Wno-unused-result \
+				-Wconversion -flto #-fsanitize=address
+LDFLAGS		+=	-flto
 
 
 HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h \
@@ -62,11 +63,11 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make -C $(LIBFTD)
 	make -C $(LIBTPOOLD)
-	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $(NAME)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $(NAME)
 	@echo "$(NAME) - compiled"
 
 %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
 	make -C $(LIBFTD) clean

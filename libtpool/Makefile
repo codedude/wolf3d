@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 23:02:03 by vparis            #+#    #+#              #
-#    Updated: 2018/12/17 12:54:42 by vparis           ###   ########.fr        #
+#    Updated: 2018/12/27 13:10:14 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS		=	$(SRCD)/tp_queue.c $(SRCD)/tp_thread.c $(SRCD)/tp_thread2.c \
 				$(SRCD)/tp_pool.c $(SRCD)/tp_pool2.c
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
-CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -O3
+CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -O3 -flto
 LDFLAGS		+=	-Wall -Wextra -Werror -Wno-unused-result -ansi -pedantic
 LDLIBS		+=
 
