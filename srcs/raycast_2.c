@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 19:04:26 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/28 12:45:31 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,13 @@ int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
 			|| (sens == 1 && infos->wall_x < 0.5))
 			return (0);
 	}
+	//vérifier l'ouverture
+	t_float t;
+	t_float sol_x;
+	t = ((infos->map.y + 0.5) - infos->ray.pos.y) / infos->ray.dir.y;
+	sol_x = infos->ray.pos.x + infos->ray.dir.x * t;
+	if (sol_x > infos->map.x + 0.5)
+		return (0);
 	infos->map.y += 0.5;
 	infos->is_thin = 1;
 	return (1);
@@ -161,6 +168,13 @@ int				thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
 		}
 
 	}
+	//vérifier l'ouverture
+	t_float t;
+	t_float sol_y;
+	t = ((infos->map.x + 0.5) - infos->ray.pos.x) / infos->ray.dir.x;
+	sol_y = infos->ray.pos.y + infos->ray.dir.y * t;
+	if (sol_y > infos->map.y + 0.5)
+		return (0);
 	infos->is_thin = 1;
 	infos->map.x += 0.5;
 	return (1);
