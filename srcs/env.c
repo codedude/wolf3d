@@ -6,7 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/01/02 15:41:17 by vparis           ###   ########.fr       */
+=======
+/*   Updated: 2018/12/16 19:51:50 by jbulant          ###   ########.fr       */
+>>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +43,7 @@ int			load_objects(t_env *env)
 	i = 0;
 	while (i < env->objects_nb)
 	{
-		env->objects[i].walkthrough = !(i > 0);
+		env->objects[i].solid = (i > 0);
 		env->objects[i].sprite = env->sdl.sprites + i;
 		env->objects[i].pos = VEC2_INIT(6.0, 10.0 + i * 2.0) + 0.5;
 		env->objects[i].z = 0.0;
@@ -93,16 +97,21 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	map->skybox_anim = 0;
 	if (sdl_load_texture(&map->skybox, "skybox/skybox_day.png") == ERROR)
 		return (ERROR);
-	if (load_objects(env) == ERROR)
-		return (ERROR);
+	// if (load_objects(env) == ERROR)
+	// 	return (ERROR);
 	cam->pos = VEC2_INIT((t_float)map->spawn.x, (t_float)map->spawn.y) + 0.5;
 	cam->z = env->sdl.canvas_h * 40.0 / 100.0;
 	cam->z_default = cam->z;
 	cam->z_pos = cam->z_default;
 	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
 	cam->plane = VEC2_INIT(0.0, 0.88);
+<<<<<<< HEAD
 	cam->dir = vec_rotate(cam->dir, 270.0 * DEG_TO_RAD);
 	cam->plane = vec_rotate(cam->plane, 270.0 * DEG_TO_RAD);
+=======
+	cam->dir = vec_rotate(cam->dir, map->spawn_rotation * DEG_TO_RAD);
+	cam->plane = vec_rotate(cam->plane, map->spawn_rotation * DEG_TO_RAD);
+>>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 	cam->mov_speed = 0.05;
 	cam->rot_speed = 0.016;
 	cam->acceleration = 0.0;

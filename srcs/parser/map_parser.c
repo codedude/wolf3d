@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2018/12/20 14:13:41 by vparis           ###   ########.fr       */
+=======
+/*   Updated: 2018/12/16 17:16:30 by jbulant          ###   ########.fr       */
+>>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,44 +132,44 @@ static char		*convert_value(t_env *env, t_map *map, int i, char *start)
 	return (start);
 
 }
-
-static int		parse_map(t_env *env, t_map *map, char *content)
-{
-	int			i;
-	char		*dummy;
-
-	if (get_map_wh(map, content) == ERROR)
-		return (parse_failed(map, content, "map format error"));
-	if (!(map->data = (int **)ft_memalloc(sizeof(int *) * (size_t)map->height)))
-		return (parse_failed(map, content, strerror(errno)));
-	i = 0;
-	dummy = content;
-	map->spawn = IVEC2_INIT(-1, -1);
-	while (i < map->height)
-	{
-		while (*dummy == '\n')
-			dummy++;
-		if (!(map->data[i] = (int *)malloc(sizeof(int) * (size_t)map->width)))
-			return (parse_failed(map, content, strerror(errno)));
-		if (!(dummy = convert_value(env, map, i++, dummy)))
-			return (parse_failed(map, content, "invalid texture identifier"));
-	}
-	if (map->spawn.x == -1)
-		return (parse_failed(map, content, "no spawn point found"));
-	return (SUCCESS);
-}
-
-static int		is_valid_filename(char *filename)
-{
-	char		*point;
-
-	if (!(point = ft_strrchr(filename, '.')) || !ft_strequ(point, ".w3d"))
-	{
-		ft_putstr_fd("Wolf3d: map format error\n", 2);
-		return (ERROR);
-	}
-	return (SUCCESS);
-}
+//
+// static int		parse_map(t_env *env, t_map *map, char *content)
+// {
+// 	int			i;
+// 	char		*dummy;
+//
+// 	if (get_map_wh(map, content) == ERROR)
+// 		return (parse_failed(map, content, "map format error"));
+// 	if (!(map->data = (int **)ft_memalloc(sizeof(int *) * (size_t)map->height)))
+// 		return (parse_failed(map, content, strerror(errno)));
+// 	i = 0;
+// 	dummy = content;
+// 	map->spawn = IVEC2_INIT(-1, -1);
+// 	while (i < map->height)
+// 	{
+// 		while (*dummy == '\n')
+// 			dummy++;
+// 		if (!(map->data[i] = (int *)malloc(sizeof(int) * (size_t)map->width)))
+// 			return (parse_failed(map, content, strerror(errno)));
+// 		if (!(dummy = convert_value(env, map, i++, dummy)))
+// 			return (parse_failed(map, content, "invalid texture identifier"));
+// 	}
+// 	if (map->spawn.x == -1)
+// 		return (parse_failed(map, content, "no spawn point found"));
+// 	return (SUCCESS);
+// }
+//
+// static int		is_valid_filename(char *filename)
+// {
+// 	char		*point;
+//
+// 	if (!(point = ft_strrchr(filename, '.')) || !ft_strequ(point, ".w3d"))
+// 	{
+// 		ft_putstr_fd("Wolf3d: map format error\n", 2);
+// 		return (ERROR);
+// 	}
+// 	return (SUCCESS);
+// }
 
 void			map_destroy(t_map *map)
 {
@@ -183,19 +187,19 @@ void			map_destroy(t_map *map)
 		map->data = NULL;
 	}
 }
-
-int				load_map(t_env *env, t_map *map, char *mapfile)
-{
-	char		*content;
-
-	errno = 0;
-	if (is_valid_filename(mapfile) == ERROR)
-		return (ERROR);
-	if (!(content = file_get_content(mapfile)))
-		return (parse_failed(map, content, strerror(errno)));
-	ft_bzero(map, sizeof(*map));
-	if (parse_map(env, map, content) == ERROR)
-		return (ERROR);
-	free(content);
-	return (SUCCESS);
-}
+//
+// int				load_map(t_env *env, t_map *map, char *mapfile)
+// {
+// 	char		*content;
+//
+// 	errno = 0;
+// 	if (is_valid_filename(mapfile) == ERROR)
+// 		return (ERROR);
+// 	if (!(content = file_get_content(mapfile)))
+// 		return (parse_failed(map, content, strerror(errno)));
+// 	ft_bzero(map, sizeof(*map));
+// 	if (parse_map(env, map, content) == ERROR)
+// 		return (ERROR);
+// 	free(content);
+// 	return (SUCCESS);
+// }

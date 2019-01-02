@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:58:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/29 05:58:04 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,40 @@
 #include "gen_env.h"
 #include "types.h"
 
-static void		draw_canvas_tex(t_sdl *sdl, t_env *env,
-							t_canvas canvas, t_ivec2 mapi)
+static void		env_update_map_value(t_env *env, t_ivec2 mapi)
+{
+	int			value;
+
+	if (env->mouse.is_editing == False
+	|| (value = env->map_info.map_mask->data[mapi.y][mapi.x]) == 0)
+		value = env->map_info.map->data[mapi.y][mapi.x];
+	env->erasing = (value == -1);
+	if (env->erasing)
+		value = env->map_info.map->data[mapi.y][mapi.x];
+	env->ed_map_value = value;
+}
+
+static t_u32	compute_color(t_bool erasing, t_texture *text, t_ivec2 px)
+{
+	t_color		c;
+
+	c = sdl_get_pixel(text, px.x, px.y);
+	if (erasing)
+	{
+		c.c.r += 40;
+		c.c.g = (t_u8)ipercent_of(c.c.g, 45);
+		c.c.b = (t_u8)ipercent_of(c.c.b, 45);
+	}
+	return (c.rgba);
+}
+
+static void		draw_canvas_tex(t_sdl *sdl, t_env *env, t_canvas canvas)
 {
 	t_texture	*text;
 	t_ivec2		i;
 	t_ivec2		px;
 
-	text = sdl->textures + (env->map->data[mapi.y][mapi.x] - 1);
+	text = sdl->textures + (env->ed_map_value - 1);
 	i.y = 0;
 	while (i.y < canvas.size.y)
 	{
@@ -33,7 +59,7 @@ static void		draw_canvas_tex(t_sdl *sdl, t_env *env,
 			px.x = (int)((t_float)text->w
 				* ((t_float)i.x / (t_float)canvas.size.x));
 			put_pixel_inside_canvas(sdl, env->grid, canvas.pos + i,
-							sdl_get_pixel(text, px.x, px.y).rgba);
+							compute_color(env->erasing, text, px));
 			i.x++;
 		}
 		i.y++;
@@ -43,34 +69,23 @@ static void		draw_canvas_tex(t_sdl *sdl, t_env *env,
 static void		draw_node_tex(t_sdl *sdl, t_env *env, t_canvas canvas,
 							t_ivec2 mapi)
 {
-	if (env->map->data[mapi.y][mapi.x] == 0)
-		draw_canvas_fill(sdl, canvas, env->grid, 0x853030);
-	else if (env->map->data[mapi.y][mapi.x] - 1 == env->spawner_id)
-		draw_canvas_fill(sdl, canvas, env->grid, 0x303085);
+	env_update_map_value(env, mapi);
+	if (env->spawn.x == mapi.x && env->spawn.y == mapi.y)
+		draw_canvas_fill(sdl, canvas, env->grid, 0x30a530);
+	else if (env->ed_map_value == 0)
+		draw_canvas_fill(sdl, canvas, env->grid,
+				env->erasing ? 0x1010a2 : 0x853030);
 	else
-		draw_canvas_tex(sdl, env, canvas, mapi);
+		draw_canvas_tex(sdl, env, canvas);
 }
 
-void			draw_node(t_env *env, t_sdl *sdl, t_ivec2 i)
+void			draw_node(t_env *env, t_sdl *sdl, t_map_info *minf, t_ivec2 i)
 {
 	t_canvas		canvas;
-	t_ivec2			node_size;
 
-	node_size = IVEC2_INIT((int)((t_float)env->node_size * env->zoom),
-						((int)((t_float)env->node_size * env->zoom)));
-	canvas.pos = env->map_pos + (i * node_size);
-	canvas.size = node_size;
+	canvas.pos = IVEC2_INIT(minf->x_draw[i.x], minf->y_draw[i.y]);
+	canvas.size = IVEC2_INIT(minf->x_draw[i.x + 1],
+						minf->y_draw[i.y + 1]) - canvas.pos;
 	draw_node_tex(sdl, env, canvas, i);
 	draw_canvas_border(sdl, canvas, env->grid, 0);
-}
-
-t_bool			drawing_node(t_env *env, t_ivec2 mpos, t_ivec2 node)
-{
-	t_canvas	canvas;
-
-	canvas.size = (int)((t_float)env->node_size * env->zoom);
-	canvas.pos = env->map_pos + node * canvas.size;
-	if (is_bounded(mpos, canvas))
-		return (True);
-	return (False);
 }

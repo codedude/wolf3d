@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 17:43:14 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/29 18:02:14 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,95 +16,119 @@
 #include "gen_env.h"
 #include "libft.h"
 
-static unsigned int	get_brush_px(t_tex_pbox *box, t_ivec2 i, t_float size_x,
-							int brush)
+static void			draw_mprops(t_env *env, t_mprops *props)
 {
-	t_color		color;
+	t_u32		i;
 
-	color = box->tex_data[(int)(i.x + i.y * size_x)];
-	if (brush != box->tex_id)
-		color.rgba = (color.rgba >> 2) & 0x3f3f3f;
-	return (color.rgba);
-}
-
-static void			draw_brushes(t_tex_pbox *box, t_canvas parent, t_sdl *sdl,
-							t_env *env)
-{
-	t_ivec2		i;
-	t_canvas	current;
-
-	if (!box)
-		return ;
-	draw_brushes(box->next, parent, sdl, env);
-	current = box->canvas;
-	current.pos.y -= env->brush_c_offset;
-	if (current.pos.y >= parent.pos.y + parent.size.y
-	|| current.pos.y + current.size.y < parent.pos.y)
-		return ;
-	i.y = 0;
-	while (i.y < current.size.y)
+	draw_canvas_fill(&env->sdl, props->anchor, CANVAS_INIT(0, 0), 0x222222);
+	i = 0;
+	while (i < Max_editor_action)
 	{
-		i.x = 0;
-		while (i.x < current.size.x)
-		{
-			put_pixel_inside_canvas(sdl, parent, current.pos + i,
-						get_brush_px(box, i, current.size.x, (int)env->brush));
-			i.x++;
-		}
-		i.y++;
+		button_draw(env, props->actions[i]);
+		i++;
 	}
 }
 
-static void			draw_brush_texture(t_env *env, t_sdl *sdl)
+static void			draw_ui(t_env *env, t_sdl *sdl)
 {
-	t_ivec2		px;
-	t_canvas	canvas;
-	t_ivec2		i;
-	t_texture	*text;
+	t_u32		i;
 
-	text = sdl->textures + env->brush;
-	canvas = env->brush_prev;
-	canvas.size -= 1;
-	i.y = 0;
-	while (i.y < canvas.size.y)
+	panel_draw(env, sdl, env->obj.pan);
+	panel_draw(env, sdl, env->palette.b_pan);
+	i = 0;
+	while (i < Max_action)
 	{
-		px.y = (int)((t_float)text->h
-				* ((t_float)i.y / (t_float)canvas.size.y));
-		i.x = 0;
-		while (i.x < canvas.size.x)
-		{
-			px.x = (int)((t_float)text->w
-				* ((t_float)i.x / (t_float)canvas.size.x));
-			put_pixel_inside_canvas(sdl, CANVAS_INIT(0, 0), canvas.pos + i + 1,
-									sdl_get_pixel(text, px.x, px.y).rgba);
-			i.x++;
-		}
-		i.y++;
+		button_draw(env, env->act_buttons[i]);
+		i++;
+	}
+	button_draw(env, env->inspector.action[env->inspector.mod]);
+	env->inspector.draw[env->inspector.mod](env);
+	draw_mprops(env, &env->map_properties);
+}
+
+static void			draw_obj_prev_on_mouse(t_env *env)
+{
+	t_canvas		anchor;
+	t_panel			*p;
+
+	p = env->obj.pan;
+	anchor.size = env->obj.mb_size;
+	anchor.pos = env->mouse.pos - anchor.size / 2;
+	draw_tex(env, env->obj.map_boxes[env->mouse.button_index], False, anchor);
+}
+
+t_ivec2				map_coord_to_screen(t_env *env, t_vec2 v2)
+{
+	t_map_info	*inf;
+	t_vec2		top_left;
+	t_vec2		coord;
+
+	inf = &env->map_info;
+	top_left = (inf->pos - inf->map_center) * inf->zoom;
+	coord = top_left + v2 * inf->zoom + inf->grid_center;
+	return (IVEC2_INIT((int)coord.x, (int)coord.y) + env->grid.pos);
+}
+
+static void			sdl_draw_rect(t_env *env, t_canvas rect, int line_h)
+{
+	t_ivec2		from;
+	int			xy;
+	int			i;
+
+	i = 0;
+	while (i < line_h)
+	{
+		from = rect.pos - i;
+		xy = rect.pos.y + rect.size.y + i;
+		draw_vline(env, from, xy);
+		from.x = rect.pos.x + rect.size.x + i;
+		draw_vline(env, from, xy);
+		from = rect.pos - i;
+		xy = rect.pos.x + rect.size.x + i;
+		draw_hline(env, from, xy);
+		from.y = rect.pos.y + rect.size.y + i;
+		draw_hline(env, from, xy);
+		i++;
 	}
 }
 
-static void			draw_brush_preview(t_env *env, t_sdl *sdl)
+static void			draw_map_obj(t_env *env)
 {
-	draw_canvas_border(sdl, env->grid, CANVAS_INIT(0, 0), 0x777777);
-	if (env->brush == env->spawner_id)
-		draw_canvas_fill(sdl, env->brush_prev, CANVAS_INIT(0, 0),
-						0x303080);
-	else
-		draw_brush_texture(env, sdl);
+	t_u32				i;
+	t_objects_tools		*otools;
+	t_object			*obj;
+	t_canvas			anchor;
+
+	env_set_color(env, 0xffffff);
+	env_set_canvas(env, env->grid);
+	i = 0;
+	otools = &env->obj;
+	anchor.size = otools->mb_size;
+	while (i < otools->count)
+	{
+		obj = otools->list[i];
+		anchor.pos = map_coord_to_screen(env, obj->pos);
+		if (is_bounded(anchor.pos, env->grid))
+		{
+			anchor.pos -= anchor.size / 2;
+			draw_tex(env, env->obj.map_boxes[obj->id], False, anchor);
+			if (env->user_action == Edit_Obj
+				&& (int)i == env->obj.edit.selected)
+				sdl_draw_rect(env, anchor, 3);
+		}
+		i++;
+	}
+	env->cpick.use_canvas = False;
 }
 
 void				draw_grid(t_env *env, t_sdl *sdl)
 {
-	t_ivec2		g_pos;
-
 	sdl_clear_color(sdl, 0x101010);
-	g_pos = IVEC2_INIT(ipercent_of(sdl->width, GRID_OFF_X),
-					ipercent_of(sdl->height, GRID_OFF_Y));
 	draw_canvas_fill(sdl, env->grid, CANVAS_INIT(0, 0), 0x252525);
-	draw_grid_lines(env, sdl);
-	draw_brush_preview(env, sdl);
-	draw_canvas_border(sdl, env->brush_prev, CANVAS_INIT(0, 0), 0x777777);
-	draw_canvas_fill(sdl, env->brush_canvas, CANVAS_INIT(0, 0), 0x252525);
-	draw_canvas_border(sdl, env->brush_canvas, CANVAS_INIT(0, 0), 0x777777);
-	draw_brushes(env->brush_box, env->brush_canvas, sdl, env);
+	draw_map(env, sdl);
+	// draw_grid_lines(env, sdl);
+	draw_ui(env, sdl);
+	if (env->mouse.b1 == True && env->mouse.area == Object_Textures_Menu)
+		draw_obj_prev_on_mouse(env);
+	draw_map_obj(env);
 }

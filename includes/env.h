@@ -6,7 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/01/02 15:30:34 by vparis           ###   ########.fr       */
+=======
+/*   Updated: 2018/12/18 19:40:57 by jbulant          ###   ########.fr       */
+>>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +52,7 @@
 # define ACTION_CROUCHING	0b00100
 # define ACTION_FALLING		0b01000
 # define ACTION_JUMPING		0b10000
-# define ACTION_FLY_MODE	(0x1000)
+# define ACTION_FLY_MODE	0x1000
 
 # define ACTION_MAX_JUMP_TIME	2.5
 # define ACTION_JUMP_FORCE		25.0
@@ -95,6 +99,7 @@ typedef struct		s_map {
 	int				skybox_offset;
 	int				skybox_anim;
 	t_ivec2			spawn;
+	t_float			spawn_rotation;
 	int				width;
 	int				height;
 	int				is_skybox;
@@ -104,7 +109,7 @@ typedef struct		s_object {
 	t_sprite		*sprite;
 	t_vec2			pos;
 	t_vec2			size;
-	int				walkthrough;
+	int				solid;
 	int				y_start;
 	int				y_end;
 	int				x_end;
@@ -117,6 +122,10 @@ typedef struct		s_env {
 	t_object		*objects;
 	int				objects_nb;
 	t_sdl			sdl;
+	t_texture		*textures;
+	int				textures_nb;
+	t_sprite		*sprites;
+	int				sprites_nb;
 	t_map			map;
 	t_cam			cam;
 	int				show_fps;

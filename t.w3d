@@ -1,0 +1,63 @@
+
+## Texture __Texture_count__
+##   field: texture_path (...)
+
+Texture 8 {
+	textures/ice_ground.png
+	textures/old_stone.jpg
+	textures/rock_wall.jpg
+	textures/stone_ground.jpg
+	textures/bookshelf.png
+	textures/wood.jpg
+	textures/kitchen_tile_ground.jpg
+	textures/stone_wall.jpg
+}
+
+## Sprite __Sprite_count__
+##   field: texture_path (...)
+
+Sprite 3 {
+	sprites/barrel.png
+	sprites/pillar.png
+	sprites/greenlight.png
+}
+
+## Object __Object_count__
+##   field: object components
+##     component 1: is solid [True : False] (boolean)
+##     component 2: sprite index (unsigned int)
+##     component 3: position [x, y] (vec2)
+
+Object 5 {
+	True : 0 : 2.45, 8.65
+	True : 1 :  4.5, 3.33
+	True : 1 :  7.5, 3.33
+	True : 1 :  6.0, 6.66
+	False : 2 : 5.12, 5.2
+}
+
+## Spawn
+##   field: pos [x y]
+##   field: dir rot_angle (int degree >= 0)
+
+Spawn {
+	pos    2 2
+	dir    720
+}
+
+## Map __Size_x__ __Size_y__
+##   field: content
+##  	 each row must be separated by a comma
+
+Map 9 9
+{
+	 0  0  0  0  0  0  0  0  0,
+	 0  1  4  5  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0,
+	 0  0  0  0  0  0  0  0  0
+}

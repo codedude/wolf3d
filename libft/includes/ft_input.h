@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_input.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 19:13:38 by valentin          #+#    #+#             */
-/*   Updated: 2018/01/12 13:44:39 by vparis           ###   ########.fr       */
+/*   Updated: 2018/12/15 20:47:52 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ typedef	struct		s_fd_l {
 }					t_fd_list;
 
 int					ft_gnl(int const fd, char **line);
+int					get_next_line(int fd, char **line);
 
 #endif

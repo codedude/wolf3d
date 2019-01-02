@@ -6,7 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2018/12/17 13:14:59 by vparis           ###   ########.fr       */
+=======
+/*   Updated: 2018/12/27 03:27:39 by jbulant          ###   ########.fr       */
+>>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +77,7 @@ int				sdl_destroy(t_sdl *sdl)
 {
 	sdl_reset(sdl);
 	SDL_DestroyWindow(sdl->window);
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	SDL_Quit();
 	return (SUCCESS);
 }

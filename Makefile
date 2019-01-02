@@ -6,7 +6,11 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2019/01/02 12:57:17 by vparis           ###   ########.fr        #
+=======
+#    Updated: 2018/12/18 22:18:13 by jbulant          ###   ########.fr        #
+>>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +23,7 @@ LIBFTD		=	libft
 LIBTPOOLD	=	libtpool
 SDLD		=	sdl
 PARSERD		=	parser
+MPARD		=	$(PARSERD)/map
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image \
@@ -43,14 +48,27 @@ FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
 				$(SDLD)/sdl_sprites.c
 FILES		+=	$(PARSERD)/map_parser.c $(PARSERD)/stack.c \
 				$(PARSERD)/reader.c
+FILES		+=	$(MPARD)/load_map.c $(MPARD)/parse_map.c \
+				$(MPARD)/tools.c $(MPARD)/tools_2.c $(MPARD)/tools_3.c \
+				$(MPARD)/tools_4.c \
+				$(MPARD)/map_content.c $(MPARD)/spawn_content.c \
+				$(MPARD)/texture_content.c $(MPARD)/sprite_content.c \
+				$(MPARD)/object_content.c \
+				$(MPARD)/ent_analyze.c
 
 SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
+<<<<<<< HEAD
 				-I$(INCD) -g3 -Wextra -Wall -Wno-unused-result \
 				-Wconversion -O3 -flto #-fsanitize=address
 LDFLAGS		+=	-flto -O3
+=======
+				-I$(INCD) -O3 -g3 #-fsanitize=address
+
+LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
+>>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 
 
 HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h \
