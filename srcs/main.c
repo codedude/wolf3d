@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/17 13:14:46 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/02 15:40:32 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,26 @@ void	calc_player(t_env *env)
 	player_set_z(&env->cam);
 }
 
+void	calc_doors(t_env *env)
+{
+	t_ivec2		i;
+	t_map		*map;
+
+	map = &env->map;
+	i.y = 0;
+	while (i.y < map->height)
+	{
+		i.x = 0;
+		while (i.x < map->width)
+		{
+			// if (map->doors[i.y][i.x].is_door)
+			// 	update_door(env, &map->doors[i.y][i.x]);
+			i.x++;
+		}
+		i.y++;
+	}
+}
+
 void	loop(t_env *env)
 {
 	int			loop;
@@ -65,6 +85,7 @@ void	loop(t_env *env)
 		if (loop != 1)
 			break ;
 		calc_player(env);
+		calc_doors(env);
 		sdl_update_texture(&env->sdl);
 		tp_wait_for_queue(env->tpool);
 		compute_sprites(env);

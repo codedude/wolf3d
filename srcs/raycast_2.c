@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/28 12:45:31 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/02 15:35:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ static void		get_wall_xz(t_hit_infos *infos, t_vec2 dir, t_vec2 dist_step)
 	infos->z = z;
 }
 
-int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
+int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
+							t_door *door)
 {
 	t_ivec2	map_pos;
 	t_vec2	dist_side;
@@ -116,14 +117,15 @@ int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
 	t_float sol_x;
 	t = ((infos->map.y + 0.5) - infos->ray.pos.y) / infos->ray.dir.y;
 	sol_x = infos->ray.pos.x + infos->ray.dir.x * t;
-	if (sol_x > infos->map.x + 0.5)
+	if (sol_x > infos->map.x + door->open_offset)
 		return (0);
 	infos->map.y += 0.5;
 	infos->is_thin = 1;
 	return (1);
 }
 
-int				thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
+int				thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
+							t_door *door)
 {
 	t_ivec2	map_pos;
 	t_vec2	dist_side;
@@ -173,15 +175,34 @@ int				thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
 	t_float sol_y;
 	t = ((infos->map.x + 0.5) - infos->ray.pos.x) / infos->ray.dir.x;
 	sol_y = infos->ray.pos.y + infos->ray.dir.y * t;
-	if (sol_y > infos->map.y + 0.5)
+	if (sol_y > infos->map.y + door->open_offset)
 		return (0);
 	infos->is_thin = 1;
 	infos->map.x += 0.5;
 	return (1);
 }
 
-static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
-					int **map_data)
+static int		get_hit_value(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
+								t_ivec2	map_pos)
+{
+	t_door	*door;
+	int		hit;
+
+	hit = 0;
+	if (map->data[map_pos.y][map_pos.x] > 0)
+	{
+		door = &map->doors[map_pos.y][map_pos.x];
+		if (door->is_door == False)
+			hit = 1;
+		else if (door->orientation == 0)
+			hit = thin_wall_ew(dist, infos, map, door);
+		else if (door->orientation == 1)
+			hit = thin_wall_ns(dist, infos, map, door);
+	}
+	return (hit);
+}
+
+static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, t_map *map)
 {
 	int		hit;
 	t_ivec2	map_pos;
@@ -205,15 +226,7 @@ static int		raycast_compute(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 		if (map_pos.x < 0 || map_pos.y < 0
 			|| map_pos.x >= map->width || map_pos.y >= map->height)
 			break ;
-		if (map_data[map_pos.y][map_pos.x] > 0)
-		{
-			if (map_data[map_pos.y][map_pos.x] == 8)
-				hit = thin_wall_ew(dist, infos, map);
-			else if (map_data[map_pos.y][map_pos.x] == 5)
-				hit = thin_wall_ns(dist, infos, map);
-			else
-				hit = 1;
-		}
+		hit = get_hit_value(dist, infos, map, map_pos);
 	}
 	return (hit);
 }
@@ -241,7 +254,7 @@ int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 	dist[DELTA] = VEC2_INIT(fabs(1.0 / dir.x), fabs(1.0 / dir.y));
 	raycast_init(dist, infos);
 	infos->is_thin = 0;
-	infos->hit = raycast_compute(dist, infos, map, map->data);
+	infos->hit = raycast_compute(dist, infos, map);
 	get_wall_xz(infos, dir, dist[STEP]);
 	infos->line_height = (int)(env->sdl.canvas_h / infos->z);
 	draw = init_draw(infos->line_height, &env->sdl, &env->cam, infos);
