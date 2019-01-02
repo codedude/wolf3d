@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/12 15:51:05 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/02 17:11:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ void				draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	t_color			color;
 	t_float			half_height;
 
-	tex.x = (int)(infos->wall_x * text->w);
+	// if (infos->tex_off_x > infos->wall_x)
+	// 	infos->tex_off_x = infos->wall_x;
+	tex.x = (int)fmod((fabs(infos->wall_x - infos->tex_off_x) * text->w), text->w);
 	if (infos->side == 0 && infos->ray.dir.x > 0)
 		tex.x = text->w - tex.x - 1;
 	else if (infos->side == 1 && infos->ray.dir.y < 0)

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/02 15:35:18 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/02 16:22:12 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 		return (0);
 	infos->map.y += 0.5;
 	infos->is_thin = 1;
+	infos->tex_off_x = door->open_offset;
 	return (1);
 }
 
@@ -179,6 +180,7 @@ int				thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 		return (0);
 	infos->is_thin = 1;
 	infos->map.x += 0.5;
+	infos->tex_off_x = door->open_offset;
 	return (1);
 }
 
@@ -254,6 +256,7 @@ int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 	dist[DELTA] = VEC2_INIT(fabs(1.0 / dir.x), fabs(1.0 / dir.y));
 	raycast_init(dist, infos);
 	infos->is_thin = 0;
+	infos->tex_off_x = 0.0;
 	infos->hit = raycast_compute(dist, infos, map);
 	get_wall_xz(infos, dir, dist[STEP]);
 	infos->line_height = (int)(env->sdl.canvas_h / infos->z);

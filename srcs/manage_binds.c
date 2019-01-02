@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_binds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/13 19:35:46 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/02 17:17:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,29 @@ void		switch_effect(t_cam *cam, void *new, int type)
 		*current = new;
 }
 
+void		binds_open_door(t_env *env)
+{
+	t_ivec2		i;
+	t_door		*door;
+
+	i.y = 0;
+	while (i.y < (int)env->map.height)
+	{
+		i.x = 0;
+		while (i.x < (int)env->map.width)
+		{
+			door = &env->map.doors[i.y][i.x];
+			if (door->is_door == True)
+			{
+				door->is_open = !door->is_open;
+				door->is_active = True;
+			}
+			i.x++;
+		}
+		i.y++;
+	}
+}
+
 int			manage_binds(SDL_Event *event, t_env *env)
 {
 	int		r;
@@ -164,6 +187,8 @@ int			manage_binds(SDL_Event *event, t_env *env)
 			else
 				env->cam.action_state |= ACTION_FLY_MODE;
 		}
+		else if (event->key.keysym.sym == SDLK_k)
+			binds_open_door(env);
 	}
 	else if (event->type == SDL_MOUSEMOTION)
 	{

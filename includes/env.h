@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/02 15:30:34 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/02 17:25:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@
 
 # define ANIM_CROUCH_SPEED	25.0
 
+# define ANIM_DOOR_OFFSET	0.01
+
 typedef struct		s_cam {
 	t_vec3			(*depth_filter)(t_vec3 color, t_float depth);
 	t_vec3			(*color_filter)(t_vec3 color);
@@ -84,6 +86,7 @@ typedef struct		s_cam {
 typedef struct		s_door {
 	t_float			open_offset;
 	t_bool			is_door;
+	t_bool			is_active;
 	t_u32			orientation;
 	t_bool			is_open;
 }					t_door;

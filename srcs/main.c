@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/02 15:40:32 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/02 17:36:15 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,33 @@ void	calc_player(t_env *env)
 	player_set_z(&env->cam);
 }
 
+void	update_door(t_door *door)
+{
+	t_u32		cmp;
+	t_float		cmp_val;
+	t_float		off;
+
+	if (door->is_open == True)
+	{
+		cmp = (door->open_offset < 0.0);
+		cmp_val = 0.0;
+		off = -ANIM_DOOR_OFFSET;
+	}
+	else
+	{
+		cmp = (door->open_offset > 1.0);
+		cmp_val = 1.0;
+		off = ANIM_DOOR_OFFSET;
+	}
+	door->open_offset += off;
+	if (cmp)
+	{
+		door->open_offset = cmp_val;
+		// door->is_open = (!door->is_open);
+		door->is_active = False;
+	}
+}
+
 void	calc_doors(t_env *env)
 {
 	t_ivec2		i;
@@ -58,8 +85,8 @@ void	calc_doors(t_env *env)
 		i.x = 0;
 		while (i.x < map->width)
 		{
-			// if (map->doors[i.y][i.x].is_door)
-			// 	update_door(env, &map->doors[i.y][i.x]);
+			if (map->doors[i.y][i.x].is_door && map->doors[i.y][i.x].is_active)
+				update_door(&map->doors[i.y][i.x]);
 			i.x++;
 		}
 		i.y++;

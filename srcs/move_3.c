@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 13:21:37 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/02 17:36:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,22 @@ t_vec2		allow_move(t_env *env, t_vec2 from, t_vec2 to, t_vec2 calc)
 	calc = clamp_vec2(calc, VEC2_ZERO + 0.1, \
 				VEC2_INIT((t_float)map->width - 0.2,
 					(t_float)map->height - 0.2));
-	if (map->data[(int)from.y][(int)(calc.x + offset.x)] != 0
+	if ((map->data[(int)from.y][(int)(calc.x + offset.x)] != 0
+		&& (!map->doors[(int)from.y][(int)(calc.x + offset.x)].is_door
+				|| !map->doors[(int)from.y][(int)(calc.x + offset.x)].is_open
+								|| map->doors[(int)from.y][(int)(calc.x + offset.x)].open_offset != 0.0))
 	|| is_close_objects(env, VEC2_INIT(calc.x + offset.x, from.y)))
 		calc.x = from.x;
-	if (map->data[(int)(calc.y + offset.y)][(int)from.x] != 0
+	if ((map->data[(int)(calc.y + offset.y)][(int)from.x] != 0
+		&& (!map->doors[(int)(calc.y + offset.y)][(int)from.x].is_door
+				|| !map->doors[(int)(calc.y + offset.y)][(int)from.x].is_open
+								|| map->doors[(int)(calc.y + offset.y)][(int)from.x].open_offset != 0.0))
 	|| is_close_objects(env, VEC2_INIT(from.x, calc.y + offset.y)))
 		calc.y = from.y;
-	if (map->data[(int)(calc.y + offset.y)][(int)(calc.x + offset.x)] != 0
+	if ((map->data[(int)(calc.y + offset.y)][(int)(calc.x + offset.x)] != 0
+		&& (!map->doors[(int)(calc.y + offset.y)][(int)(calc.x + offset.x)].is_door
+				|| !map->doors[(int)(calc.y + offset.y)][(int)(calc.x + offset.x)].is_open
+				|| map->doors[(int)(calc.y + offset.y)][(int)(calc.x + offset.x)].open_offset != 0.0))
 	|| is_close_objects(env, VEC2_INIT(calc.x + offset.x, calc.y + offset.y)))
 		calc = from;
 	return (calc);

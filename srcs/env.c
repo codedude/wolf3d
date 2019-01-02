@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/02 15:41:17 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/02 17:18:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ static int	load_doors(t_env *env, t_map *map)
 		for (int x = 0; x < map->width; x++) {
 			if (map->data[y][x] == 8)
 			{
-				map->doors[y][x].open_offset = 0.5;
+				map->doors[y][x].open_offset = 1.0;
 				map->doors[y][x].is_door = True;
 				map->doors[y][x].orientation = 0;
 				map->doors[y][x].is_open = False;
 			}
 			if (map->data[y][x] == 5)
 			{
-				map->doors[y][x].open_offset = 0.5;
+				map->doors[y][x].open_offset = 1.0;
 				map->doors[y][x].is_door = True;
 				map->doors[y][x].orientation = 1;
 				map->doors[y][x].is_open = False;
