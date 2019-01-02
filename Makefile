@@ -5,12 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2019/01/02 12:57:17 by vparis           ###   ########.fr        #
-=======
-#    Updated: 2018/12/18 22:18:13 by jbulant          ###   ########.fr        #
->>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
+#    Created: 2019/01/02 15:50:58 by vparis            #+#    #+#              #
+#    Updated: 2019/01/02 15:52:02 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,15 +56,9 @@ SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-<<<<<<< HEAD
 				-I$(INCD) -g3 -Wextra -Wall -Wno-unused-result \
 				-Wconversion -O3 -flto #-fsanitize=address
 LDFLAGS		+=	-flto -O3
-=======
-				-I$(INCD) -O3 -g3 #-fsanitize=address
-
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
->>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 
 
 HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h \

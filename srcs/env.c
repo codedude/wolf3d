@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2019/01/02 15:41:17 by vparis           ###   ########.fr       */
-=======
-/*   Updated: 2018/12/16 19:51:50 by jbulant          ###   ########.fr       */
->>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
+/*   Created: 2019/01/02 15:50:58 by vparis            #+#    #+#             */
+/*   Updated: 2019/01/02 15:54:10 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +101,8 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	cam->z_pos = cam->z_default;
 	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
 	cam->plane = VEC2_INIT(0.0, 0.88);
-<<<<<<< HEAD
-	cam->dir = vec_rotate(cam->dir, 270.0 * DEG_TO_RAD);
-	cam->plane = vec_rotate(cam->plane, 270.0 * DEG_TO_RAD);
-=======
 	cam->dir = vec_rotate(cam->dir, map->spawn_rotation * DEG_TO_RAD);
 	cam->plane = vec_rotate(cam->plane, map->spawn_rotation * DEG_TO_RAD);
->>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 	cam->mov_speed = 0.05;
 	cam->rot_speed = 0.016;
 	cam->acceleration = 0.0;

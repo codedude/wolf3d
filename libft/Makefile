@@ -5,12 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2019/01/02 12:57:07 by vparis           ###   ########.fr        #
-=======
-#    Updated: 2018/12/15 20:50:48 by jbulant          ###   ########.fr        #
->>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
+#    Created: 2019/01/02 15:50:58 by vparis            #+#    #+#              #
+#    Updated: 2019/01/02 15:52:30 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,11 +87,7 @@ LIBFT_SRCS	+= $(INPUTD)/ft_gnl.c $(INPUTD)/get_next_line.c
 
 OBJS		= $(patsubst %.c, %.o, $(LIBFT_SRCS))
 LDFLAGS		+= -Werror -Wall -Wextra -Wno-unused-result -ansi -pedantic
-<<<<<<< HEAD
 CFLAGS		+= -I$(INCD) -O3 -flto
-=======
-CFLAGS		+= -I$(INCD) -O3 #-g -fsanitize=address
->>>>>>> 935f2ef52abe6a61f552b7f3beb1fecb27471c00
 
 HEADER		=	$(INCD)/libft.h $(INCD)/ft_type.h $(INCD)/ft_list.h \
 				$(INCD)/ft_input.h $(INCD)/ft_math.h
