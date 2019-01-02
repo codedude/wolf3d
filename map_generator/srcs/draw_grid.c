@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/20 15:51:38 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/29 18:02:14 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,16 @@
 #include "gen_env.h"
 #include "libft.h"
 
-void			draw_line(t_sdl *sdl, t_ivec2 v1, t_ivec2 v2, t_u32 c)
+static void			draw_mprops(t_env *env, t_mprops *props)
 {
-	t_ivec2 orientation;
-	t_ivec2 direction;
-	t_ivec2 error;
+	t_u32		i;
 
-	direction = IVEC2_INIT(abs(v1.x - v2.x), abs(v1.y - v2.y));
-	orientation = IVEC2_INIT(((v1.x < v2.x) ? 1 : -1), ((v1.y < v2.y) ? 1 : -1));
-	error.x = ((direction.x > direction.y) ? direction.x : -direction.y) / 2;
-	while (!(v1.x == v2.x && v1.y == v2.y))
+	draw_canvas_fill(&env->sdl, props->anchor, CANVAS_INIT(0, 0), 0x222222);
+	i = 0;
+	while (i < Max_editor_action)
 	{
-		sdl_put_pixel_safe(sdl, v1, (t_color)c);
-		error.y = error.x;
-		if (error.y > -direction.x)
-		{
-			error.x -= direction.y;
-			v1.x += orientation.x;
-		}
-		if (error.y < direction.y)
-		{
-			error.x += direction.x;
-			v1.y += orientation.y;
-		}
+		button_draw(env, props->actions[i]);
+		i++;
 	}
 }
 
@@ -46,20 +33,102 @@ static void			draw_ui(t_env *env, t_sdl *sdl)
 {
 	t_u32		i;
 
-	panel_draw(sdl, env->obj_pan);
-	panel_draw(sdl, env->brush_pan);
+	panel_draw(env, sdl, env->obj.pan);
+	panel_draw(env, sdl, env->palette.b_pan);
 	i = 0;
 	while (i < Max_action)
 	{
-		button_draw(sdl, env->act_buttons[i]);
+		button_draw(env, env->act_buttons[i]);
 		i++;
 	}
+	button_draw(env, env->inspector.action[env->inspector.mod]);
+	env->inspector.draw[env->inspector.mod](env);
+	draw_mprops(env, &env->map_properties);
+}
+
+static void			draw_obj_prev_on_mouse(t_env *env)
+{
+	t_canvas		anchor;
+	t_panel			*p;
+
+	p = env->obj.pan;
+	anchor.size = env->obj.mb_size;
+	anchor.pos = env->mouse.pos - anchor.size / 2;
+	draw_tex(env, env->obj.map_boxes[env->mouse.button_index], False, anchor);
+}
+
+t_ivec2				map_coord_to_screen(t_env *env, t_vec2 v2)
+{
+	t_map_info	*inf;
+	t_vec2		top_left;
+	t_vec2		coord;
+
+	inf = &env->map_info;
+	top_left = (inf->pos - inf->map_center) * inf->zoom;
+	coord = top_left + v2 * inf->zoom + inf->grid_center;
+	return (IVEC2_INIT((int)coord.x, (int)coord.y) + env->grid.pos);
+}
+
+static void			sdl_draw_rect(t_env *env, t_canvas rect, int line_h)
+{
+	t_ivec2		from;
+	int			xy;
+	int			i;
+
+	i = 0;
+	while (i < line_h)
+	{
+		from = rect.pos - i;
+		xy = rect.pos.y + rect.size.y + i;
+		draw_vline(env, from, xy);
+		from.x = rect.pos.x + rect.size.x + i;
+		draw_vline(env, from, xy);
+		from = rect.pos - i;
+		xy = rect.pos.x + rect.size.x + i;
+		draw_hline(env, from, xy);
+		from.y = rect.pos.y + rect.size.y + i;
+		draw_hline(env, from, xy);
+		i++;
+	}
+}
+
+static void			draw_map_obj(t_env *env)
+{
+	t_u32				i;
+	t_objects_tools		*otools;
+	t_object			*obj;
+	t_canvas			anchor;
+
+	env_set_color(env, 0xffffff);
+	env_set_canvas(env, env->grid);
+	i = 0;
+	otools = &env->obj;
+	anchor.size = otools->mb_size;
+	while (i < otools->count)
+	{
+		obj = otools->list[i];
+		anchor.pos = map_coord_to_screen(env, obj->pos);
+		if (is_bounded(anchor.pos, env->grid))
+		{
+			anchor.pos -= anchor.size / 2;
+			draw_tex(env, env->obj.map_boxes[obj->id], False, anchor);
+			if (env->user_action == Edit_Obj
+				&& (int)i == env->obj.edit.selected)
+				sdl_draw_rect(env, anchor, 3);
+		}
+		i++;
+	}
+	env->cpick.use_canvas = False;
 }
 
 void				draw_grid(t_env *env, t_sdl *sdl)
 {
 	sdl_clear_color(sdl, 0x101010);
 	draw_canvas_fill(sdl, env->grid, CANVAS_INIT(0, 0), 0x252525);
-	draw_grid_lines(env, sdl);
+	draw_map(env, sdl);
+	// draw_grid_lines(env, sdl);
 	draw_ui(env, sdl);
+	if (env->mouse.b1 == True && env->mouse.area == Object_Textures_Menu)
+		draw_obj_prev_on_mouse(env);
+	draw_map_obj(env);
 }

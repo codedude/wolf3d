@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2018/12/19 20:24:13 by jbulant          ###   ########.fr        #
+#    Updated: 2018/12/31 01:09:34 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,9 @@ INCD		=	includes
 PARENT_INCD	=	../includes
 LIBFTD		=	../libft
 LIBTPOOLD	=	../libtpool
-SDLD		=	../srcs/sdl
-PARSERD		=	../srcs/parser
+PARENT_SD	=	../srcs
+SDLD		=	$(PARENT_SD)/sdl
+PARSERD		=	$(PARENT_SD)/parser
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image \
@@ -35,15 +36,23 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-FILES		=	draw_grid_lines.c draw_grid.c draw_node.c \
-				env_destroy.c env_init.c main.c manage_binds.c map.c \
-				tools.c save_file.c
+FILES		=	env_destroy.c main.c manage_binds.c map.c \
+				save_file.c algo.c
+FILES		+=	env_tools.c tools.c mouse_tools.c mouse_track.c
 FILES		+=	panel.c panel_tex.c panel_draw.c panel_tools.c
-FILES		+=	buttons.c
+FILES		+=	buttons.c env_create_buttons.c
+FILES		+=	slider.c checkbox.c
+FILES		+=	env_init.c inspector_init.c map_props_init.c \
+				obj_prevbox_init.c wall_prevbox_init.c
+FILES		+=	texdata_draw.c
+FILES		+=	draw_grid_lines.c draw_grid.c draw_node.c \
+				draw_line.c draw_player_radar.c draw_map.c
+FILES		+=	paint_bucket_tools.c brushes.c objects.c \
+				toolset.c
 
 PARENT_FILES	=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
 PARENT_FILES	+=	$(PARSERD)/stack.c $(PARSERD)/reader.c
-
+PARENT_FILES	+=	$(PARENT_SD)/types.c
 
 MGEN_FILES	=	$(MGEND)/main.c
 
@@ -56,7 +65,7 @@ CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD) -I$(PARENT_INCD) -O3 -g3 #-fsanitize=address
 LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
 
-HEADER			=	$(INCD)/gen_env.h $(PARENT_HEADER)
+HEADER			=	$(INCD)/gen_env.h $(INCD)/algo.h $(PARENT_HEADER)
 
 PARENT_HEADER	= 	$(PARENT_INCD)/env.h $(PARENT_INCD)/sdl_m.h \
 					$(PARENT_INCD)/types.h

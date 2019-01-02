@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 12:06:56 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/18 19:36:10 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/02 13:25:02 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,17 @@ t_bool			is_valid_mapfile(char *filename)
 
 void			save_spawn(t_env *env, int fd)
 {
+	int		rot;
+
+	rot = env->spawn_rotation;
+	if (rot)
+		rot = (rot + 180) % 360;
 	ft_putstr_fd("Spawn {\n\tpos\t", fd);
 	ft_putnbr_fd(env->spawn.x, fd);
 	ft_putchar_fd(' ', fd);
 	ft_putnbr_fd(env->spawn.y, fd);
 	ft_putstr_fd("\n\tdir\t", fd);
-	ft_putnbr_fd(env->spawn_rotation, fd);
+	ft_putnbr_fd(rot, fd);
 	ft_putstr_fd("\n}\n\n", fd);
 }
 
@@ -131,8 +136,8 @@ void			save_map_title(t_map *map, int fd)
 
 void			save_map(t_env *env, int *nb_save, int fd)
 {
-	save_map_title(env->map, fd);
-	save_map_content(env->map, nb_save, fd);
+	save_map_title(env->map_info.map, fd);
+	save_map_content(env->map_info.map, nb_save, fd);
 	ft_putstr_fd("}\n\n", fd);
 }
 
@@ -142,7 +147,7 @@ int				fill_nbsave(int *nb_save, t_env *env)
 	t_ivec2		i;
 	int			saved;
 
-	map = env->map;
+	map = env->map_info.map;
 	saved = 0;
 	i.y = 0;
 	while (i.y < map->size.y)
@@ -204,6 +209,121 @@ void			save_textures(t_env *env, int fd)
 	free(nb_save);
 }
 
+
+void			print_obj_title(t_env *env, int fd)
+{
+	ft_putstr_fd("Object ", fd);
+	ft_putnbr_fd((int)env->obj.count, fd);
+	ft_putstr_fd(" {\n", fd);
+}
+
+void			ft_putnbrf_fd(t_float f, int fd, t_u32 prec)
+{
+	t_float		m;
+	char		*str;
+	size_t		i;
+
+	ft_putnbr_fd((int)f, fd);
+	m = fmod(f, 1.0);
+	str = ft_static_itoa((int)(pow(10.0, prec) * m));
+	i = ft_strlen(str);
+	while (i && str[i - 1] == '0')
+		i--;
+	if (i && str[i] == '0')
+		str[i] ='\0';
+	ft_putchar_fd('.', fd);
+	ft_putstr_fd(str, fd);
+}
+
+void			save_objects(t_env *env, int fd, int *nb_save)
+{
+	t_objects_tools	*otools;
+	t_object		*obj;
+	t_u32			i;
+
+	print_obj_title(env, fd);
+	otools = &env->obj;
+	i = 0;
+	while (i < otools->count)
+	{
+		obj = otools->list[i];
+		ft_putstr_fd((obj->is_solid ? "True" : "False"), fd);
+		ft_putstr_fd(" : ", fd);
+		ft_putnbr_fd(nb_save[obj->id], fd);
+		ft_putstr_fd(" : ", fd);
+		ft_putnbrf_fd(obj->pos.x, fd, 6);
+		ft_putstr_fd(", ", fd);
+		ft_putnbrf_fd(obj->pos.y, fd, 6);
+		ft_putchar_fd('\n', fd);
+		i++;
+	}
+	ft_putstr_fd("}\n\n", fd);
+}
+
+int				sprites_fill_nbsave(int *nb_save, t_env *env)
+{
+	t_objects_tools	*otools;
+	t_object		*obj;
+	t_u32			i;
+	int				saved;
+
+	otools = &env->obj;
+	saved = 0;
+	i = 0;
+	while (i < otools->count)
+	{
+		obj = otools->list[i];
+		if (nb_save[obj->id] == 0)
+		{
+			nb_save[obj->id] = 1;
+			saved++;
+		}
+		i++;
+	}
+	return (saved);
+}
+
+int				*save_sprites_title(t_env *env, int fd)
+{
+	int			*nb_save;
+	int			saved;
+
+	if ((nb_save = ft_memalloc(sizeof(int) * (size_t)env->sdl.sprites_nb)))
+	{
+		saved = sprites_fill_nbsave(nb_save, env);
+		ft_putstr_fd("Sprite ", fd);
+		ft_putnbr_fd(saved, fd);
+		ft_putstr_fd(" {\n", fd);
+	}
+	return (nb_save);
+}
+
+void			save_sprites(t_env *env, int fd)
+{
+	int			*nb_save;
+	int			i;
+	int			save_index;
+
+	if (!(nb_save = save_sprites_title(env, fd)))
+		return ;
+	i = 0;
+	save_index = 0;
+	while (i < env->sdl.sprites_nb)
+	{
+		if (nb_save[i] == 1)
+		{
+			nb_save[i] = save_index++;
+			ft_putchar_fd('\t', fd);
+			ft_putstr_fd(env->sdl.sprites[i].texture.name, fd);
+			ft_putchar_fd('\n', fd);
+		}
+		i++;
+	}
+	ft_putstr_fd("}\n\n", fd);
+	save_objects(env, fd, nb_save);
+	free(nb_save);
+}
+
 int				save_file(t_env *env)
 {
 	int			fd;
@@ -217,6 +337,7 @@ int				save_file(t_env *env)
 		return (ERROR);
 	}
 	save_spawn(env, fd);
+	save_sprites(env, fd);
 	save_textures(env, fd);
 	ft_putstr("W3dEditor: ");
 	ft_putstr(env->save_file);

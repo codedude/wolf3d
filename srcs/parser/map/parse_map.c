@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:02:08 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/16 17:13:31 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/02 13:10:35 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static int		clean_info(t_env *env, t_parser *parser)
 	if (!(parser->a_state & Parse_action_map)
 		|| !(parser->a_state & Parse_action_texture)
 		|| !(parser->a_state & Parse_action_spawn)
-		|| !(parser->a_state & Parse_action_sprite))
+		|| (!(parser->a_state & Parse_action_sprite)
+			&& (parser->a_state & Parse_action_object)))
 	{
 		parser->err_no = EBTYPE;
 		return (Parse_error);

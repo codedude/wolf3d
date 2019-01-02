@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/02 16:18:38 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/16 02:24:48 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/27 03:28:50 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,7 @@ void				sdl_destroy_sprites(t_sdl *sdl)
 	while (i < sdl->sprites_nb)
 	{
 		free(sdl->sprites[i].texture.data);
+		free(sdl->sprites[i].texture.name);
 		i++;
 	}
 	free(sdl->sprites);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/18 19:42:46 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/27 03:27:39 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int				sdl_destroy(t_sdl *sdl)
 {
 	sdl_reset(sdl);
 	SDL_DestroyWindow(sdl->window);
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	SDL_Quit();
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 19:27:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/19 20:25:05 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/29 17:45:46 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_color	*create_button_tex(t_texture *tex, t_ivec2 size)
 }
 
 t_button		*button_new(t_canvas anchor, t_texture *tex, void *param,
-						void (*on_enable)(void*))
+						void (*trigger)(void*))
 {
 	t_button	*b;
 
@@ -53,7 +53,7 @@ t_button		*button_new(t_canvas anchor, t_texture *tex, void *param,
 	b->anchor = anchor;
 	b->is_active = False;
 	b->param = param;
-	b->on_enable = on_enable;
+	b->trigger = trigger;
 	return (b);
 }
 
@@ -68,12 +68,17 @@ void			button_setactive(t_button *button, t_bool active)
 		return ;
 	button->is_active = active;
 	if (active == True)
-		button->on_enable(button->param);
+		button->trigger(button->param);
 }
 
-void			button_draw(t_sdl *sdl, t_button *button)
+void			button_draw(t_env *env, t_button *button)
 {
-	draw_tex(sdl, button->tex, !button->is_active, button->anchor);
+	draw_tex(env, button->tex, !button->is_active, button->anchor);
+}
+
+void			button_trigger(t_button *button)
+{
+	button->trigger(button->param);
 }
 
 void			button_destroy(t_button **button)
