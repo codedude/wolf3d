@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/02 15:57:13 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/04 13:55:48 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,9 @@ FILES		+=	draw_grid_lines.c draw_grid.c draw_node.c \
 FILES		+=	paint_bucket_tools.c brushes.c objects.c \
 				toolset.c
 
-PARENT_FILES	=	$(SDLD)/*.c
+PARENT_FILES	=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
+					$(SDLD)/sdl_load_image.c $(SDLD)/sdl_sprites.c \
+					$(SDLD)/sdl_textures.c
 PARENT_FILES	+=	$(PARSERD)/stack.c $(PARSERD)/reader.c
 PARENT_FILES	+=	$(PARENT_SD)/types.c
 
@@ -62,8 +64,11 @@ SRCS		+=	$(PARENT_FILES)
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-				-I$(INCD) -I$(PARENT_INCD) -O3 -g3 #-fsanitize=address
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
+				-I$(INCD) -I$(PARENT_INCD) -g3 -Wextra -Wall \
+				-Wno-unused-result -Wconversion -O3 -flto \
+				#-fsanitize=address
+
+LDFLAGS		+=	-flto -O3
 
 HEADER			=	$(INCD)/gen_env.h $(INCD)/algo.h $(PARENT_HEADER)
 
@@ -77,11 +82,11 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make -C $(LIBFTD)
 	make -C $(LIBTPOOLD)
-	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $(NAME)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $(NAME)
 	@echo "$(NAME) - compiled"
 
 %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
 	make -C $(LIBFTD) clean

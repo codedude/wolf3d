@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 13:07:22 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 13:10:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/04 14:30:25 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int						sdl_load_texture(t_texture *texture, char *filename)
 	SDL_FreeSurface(tmp);
 	texture->h = surf->h;
 	texture->w = surf->w;
-	if ((texture->data = sdl_convert_data(surf)) == NULL)
+	if ((texture->name = ft_strdup(filename)) == NULL
+		|| (texture->data = sdl_convert_data(surf)) == NULL)
 		return (ERROR);
 	SDL_FreeSurface(surf);
 	return (SUCCESS);

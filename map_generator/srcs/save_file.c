@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 12:06:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/02 13:25:02 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/04 14:12:50 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,6 @@ void			save_textures(t_env *env, int fd)
 	save_map(env, nb_save, fd);
 	free(nb_save);
 }
-
 
 void			print_obj_title(t_env *env, int fd)
 {

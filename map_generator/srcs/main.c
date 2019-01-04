@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/31 02:27:20 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/04 14:02:32 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,6 @@
 #include "sdl_m.h"
 #include "gen_env.h"
 #include "libft.h"
-
-// void		pick_tile(t_env *env)
-// {
-// 	t_canvas	bounds;
-// 	t_ivec2		mpos;
-//
-// 	mpos = get_mouse_pos();
-// 	bounds = get_map_boundaries(env);
-// 	if (is_bounded(mpos, env->grid) && is_bounded(mpos, bounds))
-// 	{
-// 		mpos = mpos_to_map_index(bounds, mpos, env);
-// 		if ((int)env->map->data[mpos.y][mpos.x] > 0)
-// 			env->palette.brush = (int)env->map->data[mpos.y][mpos.x] - 1;
-// 	}
-// }
-
-// void		update_actions(t_env *env)
-// {
-// 	t_ivec2		mpos;
-//
-// 	mpos = get_mouse_pos();
-// 	if (env->mouse2)
-// 		return (draw_on_map(env, 0));
-// 	if (!env->mouse1 || env->space)
-// 		return ;
-// 	if (env->alt)
-// 		pick_tile(env);
-// 	else if (button_hover(env->inspector.action[env->user_action], mpos) == True)
-// 		button_trigger(env->inspector.action[env->user_action]);
-// 	else
-// 		draw_on_map(env, (int)(env->palette.brush + 1));
-// }
 
 void		update_zoom(t_env *env)
 {
