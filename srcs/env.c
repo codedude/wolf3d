@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/02 17:18:44 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 23:02:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "env.h"
 #include "raycast.h"
 #include "parser.h"
+#include "texture.h"
 
 void		update_skybox_offset(t_cam *cam, t_sdl *sdl, t_map *map)
 {
@@ -40,7 +41,7 @@ int			load_objects(t_env *env)
 	while (i < env->objects_nb)
 	{
 		env->objects[i].walkthrough = !(i > 0);
-		env->objects[i].sprite = env->sdl.sprites + i;
+		env->objects[i].sprite = i;
 		env->objects[i].pos = VEC2_INIT(6.0, 10.0 + i * 2.0) + 0.5;
 		env->objects[i].z = 0.0;
 		i++;
@@ -48,18 +49,20 @@ int			load_objects(t_env *env)
 	return (SUCCESS);
 }
 
-static int	load_doors(t_env *env, t_map *map)
+static int	load_doors(t_map *map)
 {
 	int			y;
 	int			error;
 
-	if (!(map->doors = (t_door**)malloc(sizeof(t_door*) * map->height)))
+	if (!(map->doors = (t_door **)malloc(
+		sizeof(t_door *) * (size_t)map->height)))
 		return (ERROR);
 	error = 0;
 	y = 0;
 	while (y < map->height)
 	{
-		map->doors[y] = (t_door*)ft_memalloc(sizeof(t_door) * map->width);
+		map->doors[y] = (t_door*)ft_memalloc(
+			sizeof(t_door) * (size_t)map->width);
 		error |= (map->doors == NULL);
 		// TMP
 		for (int x = 0; x < map->width; x++) {
@@ -87,11 +90,11 @@ static int	load_doors(t_env *env, t_map *map)
 static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 {
 	if (load_map(env, map, filename) == ERROR
-	|| load_doors(env, map) == ERROR)
+	|| load_doors(map) == ERROR)
 		return (ERROR);
 	map->is_skybox = 1;
 	map->skybox_anim = 0;
-	if (sdl_load_texture(&map->skybox, "skybox/skybox_day.png") == ERROR)
+	if (tex_load(&map->skybox, "skybox/skybox_day.png", 1) == ERROR)
 		return (ERROR);
 	if (load_objects(env) == ERROR)
 		return (ERROR);
@@ -121,7 +124,8 @@ static void	wolf_destroy(t_map *map, t_cam *cam)
 {
 	(void)cam;
 	map_destroy(map);
-	free(map->skybox.data);
+	//free skybox
+	free(map->skybox.pixels);
 }
 
 int			env_init(t_env *env, char *filename)

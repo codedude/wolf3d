@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/20 14:13:41 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 23:07:30 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static char		*convert_value(t_env *env, t_map *map, int i, char *start)
 	{
 		while (*start == ' ')
 			start++;
-		if ((map->data[i][j] = ft_atoi(start)) > env->sdl.textures_nb + 1
+		if ((map->data[i][j] = ft_atoi(start)) > env->sdl.tex_wall_nb + 1
 			&& map->data[i][j] != 99)
 			return (NULL);
 		else if (map->data[i][j] == 99)

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/08 17:35:58 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 23:05:47 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,9 @@ static int		sdl_init2(t_sdl *sdl, const char *title, int width,
 	}
 	if (sdl_create_screen(sdl, width, height) == ERROR)
 		return (ERROR);
-	if (sdl_init_textures(sdl) == ERROR)
-	{
-		ft_putstr_fd("Can't init textures\n", 2);
-		return (ERROR);
-	}
-	if (sdl_init_sprites(sdl) == ERROR)
-	{
-		ft_putstr_fd("Can't init sprites\n", 2);
-		return (ERROR);
-	}
 	if (tex_load_all(sdl) == ERROR)
 	{
-		ft_putstr_fd("Can't init all\n", 2);
+		ft_putstr_fd("Can't init textures and sprites\n", 2);
 		return (ERROR);
 	}
 	return (SUCCESS);
@@ -68,8 +58,6 @@ int				sdl_reset(t_sdl *sdl)
 		free(sdl->z_buffer);
 		sdl->z_buffer = NULL;
 	}
-	sdl_destroy_textures(sdl);
-	sdl_destroy_sprites(sdl);
 	tex_destroy_all(sdl);
 	SDL_DestroyTexture(sdl->texture);
 	SDL_DestroyRenderer(sdl->renderer);

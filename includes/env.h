@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/02 17:25:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 23:02:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ typedef struct		s_door {
 typedef struct		s_map {
 	int				**data;
 	t_door			**doors;
-	t_texture		skybox;
+	t_tex			skybox;
 	int				skybox_offset;
 	int				skybox_anim;
 	t_ivec2			spawn;
@@ -104,7 +104,7 @@ typedef struct		s_map {
 }					t_map;
 
 typedef struct		s_object {
-	t_sprite		*sprite;
+	int				sprite;
 	t_vec2			pos;
 	t_vec2			size;
 	int				walkthrough;

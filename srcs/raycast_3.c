@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/17 18:45:12 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 22:58:51 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void			draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	t_float		lerp;
 	t_color		color;
 	t_ivec2		pos;
-	t_texture	*text;
+	t_tex		*text;
 
 	text = &map->skybox;
 	y = infos->draw_start;
@@ -90,14 +90,14 @@ void			draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 void			rc_render(t_sdl *sdl, t_cam *cam, t_map *map,
 					t_hit_infos *infos)
 {
-	t_texture	*text;
+	t_tex		*text;
 	int			text_id;
 	t_vec2		texel;
 
 	if (infos->hit == 1)
 	{
 		text_id = map->data[(int)infos->map.y][(int)infos->map.x] - 1;
-		text = sdl->textures + text_id;
+		text = tex_get_wall(sdl, text_id);
 		draw_wall(sdl, infos, cam, text);
 	}
 	texel = get_wall_texel(infos);

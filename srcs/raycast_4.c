@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/02 17:11:44 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 22:58:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_color				dark_color(t_color color, t_cam *cam, int side, t_float z)
 	return (color);
 }
 
-static t_color		get_cf_color(t_texture *text, t_vec2 curr_cf, t_cam *cam,
+static t_color		get_cf_color(t_tex *text, t_vec2 curr_cf, t_cam *cam,
 					t_float z)
 {
 	t_ivec2			tex;
@@ -72,7 +72,7 @@ void				draw_floor(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 			curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 			curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
 			sdl_put_pixel(sdl, infos->x, y, get_cf_color(
-				sdl->textures + DEFAULT_FLOOR, curr_cf, cam, lookup));
+				tex_get_wall(sdl, DEFAULT_FLOOR), curr_cf, cam, lookup));
 		}
 		else
 			sdl->image[infos->x + y * sdl->width] = 0;
@@ -102,7 +102,7 @@ void				draw_ceil(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 			curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
 			curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
 			sdl_put_pixel(sdl, infos->x, y, get_cf_color(
-				sdl->textures + DEFAULT_CEIL, curr_cf, cam, lookup));
+				tex_get_wall(sdl, DEFAULT_CEIL), curr_cf, cam, lookup));
 		}
 		else
 			sdl->image[infos->x + y * sdl->width] = 0x0;
@@ -111,7 +111,7 @@ void				draw_ceil(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
 }
 
 void				draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
-					t_texture *text)
+					t_tex *text)
 {
 	t_ivec2			tex;
 	int				y;

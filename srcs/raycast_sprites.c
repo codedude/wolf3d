@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 13:23:06 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 23:05:06 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,9 @@ void			render_sprite(t_env *env, t_object *obj)
 	t_ivec2	tex;
 	t_color	color;
 	t_ivec2	it;
+	t_tex	*text;
 
+	text = tex_get_sprite(&env->sdl, obj->sprite);
 	it.x = obj->x_start < 0 ? 0 : obj->x_start;
 	while (it.x < obj->x_end && it.x < env->sdl.width)
 	{
@@ -171,12 +173,12 @@ void			render_sprite(t_env *env, t_object *obj)
 		{
 			it.y = obj->y_start < 0 ? 0 : obj->y_start;
 			tex.x = (int)(
-				(it.x - obj->x_start) / obj->size.x * obj->sprite->texture.w);
+				(it.x - obj->x_start) / obj->size.x * text->w);
 			while (it.y < obj->y_end && it.y < env->sdl.height)
 			{
 				tex.y = (int)((it.y - obj->y_start)
-					/ obj->size.y * obj->sprite->texture.h);
-				color = sdl_get_pixel(&obj->sprite->texture, tex.x, tex.y);
+					/ obj->size.y * text->h);
+				color = sdl_get_pixel(text, tex.x, tex.y);
 				if (color.rgba > 0)
 					sdl_put_pixel(&env->sdl, it.x, it.y,
 						dark_color(color, &env->cam, 0, obj->z));

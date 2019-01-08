@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sdl4.c                                             :+:      :+:    :+:   */
+/*   sdl3.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:20:25 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 13:09:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 22:02:57 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void		sdl_put_pixel(t_sdl *sdl, int x, int y, t_color color)
 	img[pos + 2] = color.c.r;
 }
 
-t_color		sdl_get_pixel(t_texture *text, int x, int y)
+t_color		sdl_get_pixel(t_tex *text, int x, int y)
 {
 	t_color	pixel;
 
-	pixel.rgba = text->data[x + y * text->w];
+	pixel.rgba = text->pixels[x + y * text->w];
 	return (pixel);
 }
 

@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/08 16:42:08 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/08 23:07:05 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,7 @@ FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
 				raycast_sprites.c list.c \
 				color_filters.c move_1.c move_2.c move_3.c raycast_4.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
-				$(SDLD)/sdl_load_image.c  $(SDLD)/sdl_textures.c \
-				$(SDLD)/sdl_sprites.c $(SDLD)/texture.c
+				$(SDLD)/sdl_load_image.c $(SDLD)/texture.c
 FILES		+=	$(PARSERD)/map_parser.c $(PARSERD)/stack.c \
 				$(PARSERD)/reader.c
 

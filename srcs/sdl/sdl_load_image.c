@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 13:07:22 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/08 16:49:32 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 21:47:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,4 @@ t_pixel					*sdl_convert_data(SDL_Surface *surf)
 		y++;
 	}
 	return (data);
-}
-
-int						sdl_load_texture(t_texture *texture, char *filename)
-{
-	SDL_Surface	*surf;
-	SDL_Surface	*tmp;
-
-	if ((tmp = sdl_load_image(filename)) == NULL)
-		return (ERROR);
-	if ((surf = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGB888, 0))
-		== NULL)
-		return (ERROR);
-	SDL_FreeSurface(tmp);
-	texture->h = surf->h;
-	texture->w = surf->w;
-	if ((texture->data = sdl_convert_data(surf)) == NULL)
-		return (ERROR);
-	SDL_FreeSurface(surf);
-	return (SUCCESS);
 }
