@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 12:59:23 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 12:57:24 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 16:08:00 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef union			u_color {
 		unsigned char	a;
 	}					c;
 }						t_color;
+
+typedef unsigned int	t_pixel;
 
 t_float					clamp_float(t_float clamp, t_float min, t_float max);
 t_vec2					clamp_vec2(t_vec2 clamp, t_vec2 min, t_vec2 max);

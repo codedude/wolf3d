@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 13:14:59 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 17:35:58 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "SDL.h"
 #include "libft.h"
 #include "sdl_m.h"
+#include "texture.h"
 
 static int		sdl_init2(t_sdl *sdl, const char *title, int width,
 					int height)
@@ -36,6 +37,11 @@ static int		sdl_init2(t_sdl *sdl, const char *title, int width,
 	if (sdl_init_sprites(sdl) == ERROR)
 	{
 		ft_putstr_fd("Can't init sprites\n", 2);
+		return (ERROR);
+	}
+	if (tex_load_all(sdl) == ERROR)
+	{
+		ft_putstr_fd("Can't init all\n", 2);
 		return (ERROR);
 	}
 	return (SUCCESS);
@@ -64,6 +70,7 @@ int				sdl_reset(t_sdl *sdl)
 	}
 	sdl_destroy_textures(sdl);
 	sdl_destroy_sprites(sdl);
+	tex_destroy_all(sdl);
 	SDL_DestroyTexture(sdl->texture);
 	SDL_DestroyRenderer(sdl->renderer);
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 13:07:22 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 13:10:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 16:49:32 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "env.h"
 #include "parser.h"
 
-static SDL_Surface		*sdl_load_image(char *filename)
+SDL_Surface				*sdl_load_image(char *filename)
 {
 	SDL_Surface	*surf;
 
@@ -33,15 +33,15 @@ static SDL_Surface		*sdl_load_image(char *filename)
 	return (surf);
 }
 
-static unsigned int		*sdl_convert_data(SDL_Surface *surf)
+t_pixel					*sdl_convert_data(SDL_Surface *surf)
 {
-	Uint8			*pixels;
-	Uint8			*p;
-	unsigned int	*data;
-	int				x;
-	int				y;
+	Uint8		*pixels;
+	Uint8		*p;
+	t_pixel		*data;
+	int			x;
+	int			y;
 
-	data = (unsigned int *)malloc(sizeof(*data) * (size_t)(surf->w * surf->h));
+	data = (t_pixel *)malloc(sizeof(*data) * (size_t)(surf->w * surf->h));
 	if (data == NULL)
 		return (NULL);
 	pixels = (Uint8 *)surf->pixels;
@@ -53,7 +53,7 @@ static unsigned int		*sdl_convert_data(SDL_Surface *surf)
 		{
 			p = pixels + y * surf->pitch + x * surf->format->BytesPerPixel;
 			data[x + y * surf->w] =
-					(unsigned int)(p[0] << 16 | p[1] << 8 | p[2]);
+					(t_pixel)(p[0] << 16 | p[1] << 8 | p[2]);
 			x++;
 		}
 		y++;

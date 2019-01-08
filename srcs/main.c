@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/02 17:36:15 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 16:06:05 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "env.h"
 #include "sdl_m.h"
 #include "raycast.h"
+#include "texture.h"
 
 void	prepare_threads(t_env *env, t_algo **pack)
 {

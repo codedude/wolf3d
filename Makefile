@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/02 17:25:19 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/08 16:42:08 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
 				color_filters.c move_1.c move_2.c move_3.c raycast_4.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
 				$(SDLD)/sdl_load_image.c  $(SDLD)/sdl_textures.c \
-				$(SDLD)/sdl_sprites.c
+				$(SDLD)/sdl_sprites.c $(SDLD)/texture.c
 FILES		+=	$(PARSERD)/map_parser.c $(PARSERD)/stack.c \
 				$(PARSERD)/reader.c
 
@@ -53,8 +53,8 @@ CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 LDFLAGS		+=	-flto -O3 #-fsanitize=address
 
 
-HEADER		= 	$(INCD)/env.h $(INCD)/sdl_m.h $(INCD)/raycast.h \
-				$(INCD)/types.h $(INCD)/list.h
+HEADER		= 	env.h sdl_m.h raycast.h types.h list.h texture.h
+HEADERS		=	$(addprefix $(INCD)/, $(HEADER))
 
 .PHONY: clean fclean re rer valg
 
@@ -66,7 +66,7 @@ $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $(NAME)
 	@echo "$(NAME) - compiled"
 
-%.o: %.c $(HEADER)
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/06 20:48:43 by vparis            #+#    #+#             */
-/*   Updated: 2017/11/08 20:51:35 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 17:31:14 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char			**ft_strsplit_str(char const *s, char const *charset)
 	tmp = (char **)malloc(sizeof(char *) * (n_str + 1));
 	if (tmp == NULL)
 		return (NULL);
-	tmp[n_str] = 0;
+	tmp[n_str] = NULL;
 	n = 0;
 	i = -1;
 	while ((i = get_next_word(s, i, charset)) != -1)

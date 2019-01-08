@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 13:10:46 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/08 17:05:42 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "SDL.h"
 # include "types.h"
+# include "texture.h"
 
 # define TEXTURES_CONF_FILE	"textures/textures.conf"
 # define SPRITES_CONF_FILE	"sprites/sprites.conf"
@@ -39,6 +40,10 @@ typedef struct		s_sprite {
 }					t_sprite;
 
 typedef struct		s_sdl {
+	t_tex			*tex_walls;
+	t_tex			*tex_sprites;
+	int				tex_wall_nb;
+	int				tex_sprite_nb;
 	t_texture		*textures;
 	t_sprite		*sprites;
 	t_float			canvas_h;
@@ -93,6 +98,8 @@ void				sdl_get_fps(int show_fps);
 */
 
 int					sdl_load_texture(t_texture *texture, char *filename);
+SDL_Surface			*sdl_load_image(char *filename);
+t_pixel				*sdl_convert_data(SDL_Surface *surf);
 
 /*
 ** sdl_textures.c
