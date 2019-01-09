@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 16:19:00 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 16:34:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 17:07:42 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "types.h"
 #include "entity.h"
 
-t_entity	*entity_new(int tex_id, int crossable, int id)
+t_entity	*entity_new(int tex_id, int id, int crossable)
 {
 	t_entity	*tmp;
 
@@ -23,6 +23,8 @@ t_entity	*entity_new(int tex_id, int crossable, int id)
 	tmp->tex_id = tex_id;
 	tmp->id = id;
 	tmp->crossable = crossable;
+	tmp->type = ENTITY_NONE;
+	tmp->e.brick = NULL;
 	return (tmp);
 }
 
@@ -73,4 +75,23 @@ void		entity_merge(t_entity *entity, void *obj, t_entity_type type)
 		entity->e.object = (t_object *)obj;
 	else
 		entity->e.brick = NULL;
+}
+
+void		entity_set_void(t_entity *entity)
+{
+	entity->tex_id = 0;
+	entity->id = 0;
+	entity->crossable = 1;
+	entity->type = ENTITY_VOID;
+	entity->e.brick = NULL;
+}
+
+void		entity_set_wall(t_entity *entity, int tex_id, int id,
+				int crossable)
+{
+	entity->tex_id = tex_id;
+	entity->id = id;
+	entity->crossable = crossable;
+	entity->type = ENTITY_WALL;
+	entity->e.brick = NULL;
 }

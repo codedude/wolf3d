@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 14:12:47 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 17:35:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			load_objects(t_env *env)
 	}
 	return (SUCCESS);
 }
-
+/*
 static int	load_doors(t_map *map)
 {
 	int			y;
@@ -86,11 +86,11 @@ static int	load_doors(t_map *map)
 	}
 	return (error != 0 ? ERROR : SUCCESS);
 }
-
+*/
 static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 {
 	if (load_map(env, map, filename) == ERROR
-	|| load_doors(map) == ERROR)
+	/*|| load_doors(map) == ERROR*/)
 		return (ERROR);
 	map->is_skybox = 1;
 	map->skybox_anim = 0;
@@ -120,12 +120,13 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 	return (SUCCESS);
 }
 
-static void	wolf_destroy(t_map *map, t_cam *cam)
+static void	wolf_destroy(t_env *env, t_map *map, t_cam *cam)
 {
 	(void)cam;
 	map_destroy(map);
 	//free skybox
 	free(map->skybox.pixels);
+	free(env->objects);
 }
 
 int			env_init(t_env *env, char *filename)
@@ -154,5 +155,5 @@ void		env_destroy(t_env *env)
 {
 	tp_destroy(&env->tpool);
 	sdl_destroy(&env->sdl);
-	wolf_destroy(&env->map, &env->cam);
+	wolf_destroy(env, &env->map, &env->cam);
 }

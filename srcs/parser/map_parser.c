@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/09 16:46:14 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 17:20:17 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "libft.h"
 #include "env.h"
 #include "parser.h"
+#include "entity.h"
 
 static char		*file_get_content(char *filename)
 {
@@ -103,8 +104,8 @@ static int		get_map_wh(t_map *map, char *content)
 
 static char		*convert_value(t_env *env, t_map *map, int i, char *start)
 {
-	int		j;
-	int		value;
+	int			j;
+	int			value;
 
 	j = 0;
 	while (j < map->width)
@@ -115,11 +116,9 @@ static char		*convert_value(t_env *env, t_map *map, int i, char *start)
 		if ((value < 0 || value > env->sdl.tex_wall_nb + 1) && value != 99)
 			return (NULL);
 		if (value == 0 || value == 99)
-			map->data[i][j] = 0;
+			entity_set_void(&map->data[i][j]);
 		else
-		{
-			map->data[i][j] = value;
-		}
+			entity_set_wall(&map->data[i][j], value, value, 1);
 		if (value == 99)
 		{
 			if (map->spawn.x == -1)
@@ -142,7 +141,8 @@ static int		parse_map(t_env *env, t_map *map, char *content)
 
 	if (get_map_wh(map, content) == ERROR)
 		return (parse_failed(map, content, "map format error"));
-	if (!(map->data = (int **)ft_memalloc(sizeof(int *) * (size_t)map->height)))
+	if (!(map->data = (t_entity **)ft_memalloc(
+		sizeof(t_entity *) * (size_t)map->height)))
 		return (parse_failed(map, content, strerror(errno)));
 	i = 0;
 	dummy = content;
@@ -151,7 +151,7 @@ static int		parse_map(t_env *env, t_map *map, char *content)
 	{
 		while (*dummy == '\n')
 			dummy++;
-		if (!(map->data[i] = (int *)malloc(sizeof(int) * (size_t)map->width)))
+		if (!(map->data[i] = (t_entity *)ft_memalloc(sizeof(t_entity) * (size_t)map->width)))
 			return (parse_failed(map, content, strerror(errno)));
 		if (!(dummy = convert_value(env, map, i++, dummy)))
 			return (parse_failed(map, content, "invalid texture identifier"));
@@ -175,15 +175,22 @@ static int		is_valid_filename(char *filename)
 
 void			map_destroy(t_map *map)
 {
-	int			i;
+	int		i;
+	int		j;
 
 	if (map->data)
 	{
 		i = 0;
 		while (i < map->height)
 		{
-			ft_memdel((void**)&map->data[i]);
-			i++;
+			j = 0;
+			while (j < map->width)
+			{
+				free(map->data[i][j].e.brick);
+				++j;
+			}
+			free(map->data[i]);
+			++i;
 		}
 		free(map->data);
 		map->data = NULL;

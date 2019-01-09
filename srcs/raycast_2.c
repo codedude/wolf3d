@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/02 16:22:12 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 17:10:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void		get_wall_xz(t_hit_infos *infos, t_vec2 dir, t_vec2 dist_step)
 	infos->wall_x = wall_x - floor(wall_x);
 	infos->z = z;
 }
-
+/*
 int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 							t_doorz *door)
 {
@@ -183,16 +183,17 @@ int				thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 	infos->tex_off_x = door->open_offset;
 	return (1);
 }
-
+*/
 static int		get_hit_value(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 								t_ivec2	map_pos)
 {
-	t_doorz	*door;
+	/*t_doorz	*door;*/
 	int		hit;
 
 	hit = 0;
-	if (map->data[map_pos.y][map_pos.x] > 0)
+	if (map->data[map_pos.y][map_pos.x].id > 0)
 	{
+		/*
 		door = &map->doors[map_pos.y][map_pos.x];
 		if (door->is_door == False)
 			hit = 1;
@@ -200,6 +201,8 @@ static int		get_hit_value(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 			hit = thin_wall_ew(dist, infos, map, door);
 		else if (door->orientation == 1)
 			hit = thin_wall_ns(dist, infos, map, door);
+		*/
+		hit = 1;
 	}
 	return (hit);
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 16:39:37 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 17:08:05 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ typedef struct s_object		t_object;
 typedef enum e_entity_type	t_entity_type;
 
 enum e_entity_type {
-	ENTITY_WALL, ENTITY_BRICK, ENTITY_DOOR, ENTITY_OBJECT, ENTITY_NONE
+	ENTITY_VOID, ENTITY_WALL, ENTITY_BRICK, ENTITY_DOOR, ENTITY_OBJECT,
+	ENTITY_NONE
 };
 
 /*
@@ -78,10 +79,13 @@ struct		s_object {
 	int		collectable;
 };
 
-t_entity	*entity_new(int tex_id, int crossable, int id);
+t_entity	*entity_new(int tex_id, int id, int crossable);
 t_brick		*entity_new_brick(int max_hp);
 t_door		*entity_new_door(int orientation);
 t_object	*entity_new_object(t_vec3 pos, t_vec3 size, int collectable);
-void		entity_new_merge(t_entity *entity, void *obj, t_entity_type type);
+void		entity_merge(t_entity *entity, void *obj, t_entity_type type);
+void		entity_set_void(t_entity *entity);
+void		entity_set_wall(t_entity *entity, int tex_id, int id,
+				int crossable);
 
 #endif

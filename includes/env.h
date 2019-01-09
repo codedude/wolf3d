@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 14:12:51 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 16:53:07 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "libtpool.h"
 # include "sdl_m.h"
 # include "types.h"
+# include "entity.h"
 
 # define THREADS		0
 # define TASKS			32
@@ -92,7 +93,7 @@ typedef struct		s_doorz {
 }					t_doorz;
 
 typedef struct		s_map {
-	int				**data;
+	t_entity		**data;
 	t_doorz			**doors;
 	t_tex			skybox;
 	int				skybox_offset;

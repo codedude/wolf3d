@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/09 16:19:18 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/09 17:39:15 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,8 +48,8 @@ OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD) -g3 -Wextra -Wall -Wno-unused-result \
-				-Wconversion -O3 -flto #-fsanitize=address
-LDFLAGS		+=	-flto -O3 #-fsanitize=address
+				-Wconversion -O2 #-fsanitize=address
+LDFLAGS		+=	-O2 #-fsanitize=address
 
 
 HEADER		= 	env.h sdl_m.h raycast.h types.h list.h texture.h entity.h

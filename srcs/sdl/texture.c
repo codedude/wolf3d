@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 16:41:50 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/08 17:34:38 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 17:38:17 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ static int		tex_load_file_content(t_stack **stack, t_tex *tex, int n)
 		if ((tmp = ft_stackpop(stack)) == NULL)
 			return (ERROR);
 		if ((line_split = ft_strsplit_whitespaces(tmp)) == NULL)
+		{
+			free(tmp);
 			return (ERROR);
+		}
+		free(tmp);
 		if (line_split[0] == NULL)
 		{
 			ft_strsplit_free(line_split);
@@ -64,11 +68,10 @@ static int		tex_load_file_content(t_stack **stack, t_tex *tex, int n)
 		}
 		if (tex_load(&tex[i], line_split[0], param) == ERROR)
 		{
-			free(tmp);
 			ft_strsplit_free(line_split);
 			return (ERROR);
 		}
-		free(tmp);
+		ft_strsplit_free(line_split);
 		++i;
 	}
 	return (SUCCESS);

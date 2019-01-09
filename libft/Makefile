@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/02 12:57:07 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/09 17:15:31 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,7 +87,7 @@ LIBFT_SRCS	+= $(INPUTD)/ft_gnl.c
 
 OBJS		= $(patsubst %.c, %.o, $(LIBFT_SRCS))
 LDFLAGS		+= -Werror -Wall -Wextra -Wno-unused-result -ansi -pedantic
-CFLAGS		+= -I$(INCD) -O3 -flto
+CFLAGS		+= -I$(INCD) -O2 -g3
 
 HEADER		=	$(INCD)/libft.h $(INCD)/ft_type.h $(INCD)/ft_list.h \
 				$(INCD)/ft_input.h $(INCD)/ft_math.h

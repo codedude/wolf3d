@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/08 22:58:51 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 16:56:31 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void			rc_render(t_sdl *sdl, t_cam *cam, t_map *map,
 
 	if (infos->hit == 1)
 	{
-		text_id = map->data[(int)infos->map.y][(int)infos->map.x] - 1;
+		text_id = map->data[(int)infos->map.y][(int)infos->map.x].tex_id - 1;
 		text = tex_get_wall(sdl, text_id);
 		draw_wall(sdl, infos, cam, text);
 	}
