@@ -70,7 +70,7 @@ static void		get_wall_xz(t_hit_infos *infos, t_vec2 dir, t_vec2 dist_step)
 }
 
 int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
-							t_door *door)
+							t_doorz *door)
 {
 	t_ivec2	map_pos;
 	t_vec2	dist_side;
@@ -126,7 +126,7 @@ int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 }
 
 int				thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
-							t_door *door)
+							t_doorz *door)
 {
 	t_ivec2	map_pos;
 	t_vec2	dist_side;
@@ -187,7 +187,7 @@ int				thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 static int		get_hit_value(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 								t_ivec2	map_pos)
 {
-	t_door	*door;
+	t_doorz	*door;
 	int		hit;
 
 	hit = 0;

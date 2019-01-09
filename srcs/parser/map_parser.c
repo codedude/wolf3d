@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/08 23:07:30 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 16:46:14 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,23 +103,29 @@ static int		get_map_wh(t_map *map, char *content)
 
 static char		*convert_value(t_env *env, t_map *map, int i, char *start)
 {
-	int			j;
+	int		j;
+	int		value;
 
 	j = 0;
 	while (j < map->width)
 	{
 		while (*start == ' ')
 			start++;
-		if ((map->data[i][j] = ft_atoi(start)) > env->sdl.tex_wall_nb + 1
-			&& map->data[i][j] != 99)
+		value = ft_atoi(start);
+		if ((value < 0 || value > env->sdl.tex_wall_nb + 1) && value != 99)
 			return (NULL);
-		else if (map->data[i][j] == 99)
+		if (value == 0 || value == 99)
+			map->data[i][j] = 0;
+		else
+		{
+			map->data[i][j] = value;
+		}
+		if (value == 99)
 		{
 			if (map->spawn.x == -1)
 				map->spawn = IVEC2_INIT(j, i);
 			else
 				return (NULL);
-			map->data[i][j] = 0;
 		}
 		j++;
 		while (ft_isdigit(*start))

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/08 16:06:05 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 14:12:47 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "sdl_m.h"
 #include "raycast.h"
 #include "texture.h"
+#include "entity.h"
 
 void	prepare_threads(t_env *env, t_algo **pack)
 {
@@ -47,7 +48,7 @@ void	calc_player(t_env *env)
 	player_set_z(&env->cam);
 }
 
-void	update_door(t_door *door)
+void	update_door(t_doorz *door)
 {
 	t_u32		cmp;
 	t_float		cmp_val;

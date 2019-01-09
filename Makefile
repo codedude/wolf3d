@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/08 23:07:05 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/09 16:19:18 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ endif
 
 FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
 				manage_binds.c types.c depth_filters.c vector.c \
-				raycast_sprites.c list.c \
+				raycast_sprites.c list.c entity.c \
 				color_filters.c move_1.c move_2.c move_3.c raycast_4.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
 				$(SDLD)/sdl_load_image.c $(SDLD)/texture.c
@@ -52,7 +52,7 @@ CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 LDFLAGS		+=	-flto -O3 #-fsanitize=address
 
 
-HEADER		= 	env.h sdl_m.h raycast.h types.h list.h texture.h
+HEADER		= 	env.h sdl_m.h raycast.h types.h list.h texture.h entity.h
 HEADERS		=	$(addprefix $(INCD)/, $(HEADER))
 
 .PHONY: clean fclean re rer valg

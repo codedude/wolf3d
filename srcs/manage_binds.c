@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/02 17:17:48 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 14:12:45 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void		switch_effect(t_cam *cam, void *new, int type)
 void		binds_open_door(t_env *env)
 {
 	t_ivec2		i;
-	t_door		*door;
+	t_doorz		*door;
 
 	i.y = 0;
 	while (i.y < (int)env->map.height)

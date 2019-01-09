@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/08 23:05:06 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 14:12:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@
 **	OPTI : s*t > 0 ? check perf
 */
 
-int				sort_object(t_object *a, t_object *b)
+int				sort_object(t_objectz *a, t_objectz *b)
 {
 	if (a->z < b->z)
 		return (-1);
@@ -113,7 +113,7 @@ static t_klist	*new_object_lst(t_env *env, int i, t_vec2 obj_dir,
 {
 	int			half_width;
 	int			x;
-	t_object	*obj;
+	t_objectz	*obj;
 
 	obj = &env->objects[i];
 	obj->z = vec_len(obj_dir) * vec_dot(vec_norm(obj_dir), env->cam.dir);
@@ -158,7 +158,7 @@ int				precompute_sprites(t_env *env, t_klist **lst)
 	return (SUCCESS);
 }
 
-void			render_sprite(t_env *env, t_object *obj)
+void			render_sprite(t_env *env, t_objectz *obj)
 {
 	t_ivec2	tex;
 	t_color	color;
@@ -193,7 +193,7 @@ void			compute_sprites(t_env *env)
 {
 	t_klist		*lst;
 	t_klist		*iter;
-	t_object	*obj;
+	t_objectz	*obj;
 
 	lst = NULL;
 	if (precompute_sprites(env, &lst) == ERROR)

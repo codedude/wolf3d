@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/08 23:06:40 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 16:27:14 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # include "SDL.h"
 # include "types.h"
 # include "texture.h"
+
+/*
+** forward declaration
+*/
+
+typedef struct s_tex	t_tex;
 
 # define KEY_ESCAPE		SDLK_ESCAPE
 # define KEY_FPS		SDLK_1

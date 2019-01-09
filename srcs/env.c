@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/08 23:02:34 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 14:12:47 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			load_objects(t_env *env)
 	int		i;
 
 	env->objects_nb = 3;
-	env->objects = (t_object *)malloc(sizeof(*env->objects)
+	env->objects = (t_objectz *)malloc(sizeof(*env->objects)
 		* (size_t)env->objects_nb);
 	if (env->objects == NULL)
 		return (ERROR);
@@ -54,15 +54,15 @@ static int	load_doors(t_map *map)
 	int			y;
 	int			error;
 
-	if (!(map->doors = (t_door **)malloc(
-		sizeof(t_door *) * (size_t)map->height)))
+	if (!(map->doors = (t_doorz **)malloc(
+		sizeof(t_doorz *) * (size_t)map->height)))
 		return (ERROR);
 	error = 0;
 	y = 0;
 	while (y < map->height)
 	{
-		map->doors[y] = (t_door*)ft_memalloc(
-			sizeof(t_door) * (size_t)map->width);
+		map->doors[y] = (t_doorz*)ft_memalloc(
+			sizeof(t_doorz) * (size_t)map->width);
 		error |= (map->doors == NULL);
 		// TMP
 		for (int x = 0; x < map->width; x++) {
