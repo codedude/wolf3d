@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 17:35:02 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 23:16:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,49 +48,10 @@ int			load_objects(t_env *env)
 	}
 	return (SUCCESS);
 }
-/*
-static int	load_doors(t_map *map)
-{
-	int			y;
-	int			error;
 
-	if (!(map->doors = (t_doorz **)malloc(
-		sizeof(t_doorz *) * (size_t)map->height)))
-		return (ERROR);
-	error = 0;
-	y = 0;
-	while (y < map->height)
-	{
-		map->doors[y] = (t_doorz*)ft_memalloc(
-			sizeof(t_doorz) * (size_t)map->width);
-		error |= (map->doors == NULL);
-		// TMP
-		for (int x = 0; x < map->width; x++) {
-			if (map->data[y][x] == 8)
-			{
-				map->doors[y][x].open_offset = 1.0;
-				map->doors[y][x].is_door = True;
-				map->doors[y][x].orientation = 0;
-				map->doors[y][x].is_open = False;
-			}
-			if (map->data[y][x] == 5)
-			{
-				map->doors[y][x].open_offset = 1.0;
-				map->doors[y][x].is_door = True;
-				map->doors[y][x].orientation = 1;
-				map->doors[y][x].is_open = False;
-			}
-		}
-		// END TMP
-		y++;
-	}
-	return (error != 0 ? ERROR : SUCCESS);
-}
-*/
 static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 {
-	if (load_map(env, map, filename) == ERROR
-	/*|| load_doors(map) == ERROR*/)
+	if (load_map(env, map, filename) == ERROR)
 		return (ERROR);
 	map->is_skybox = 1;
 	map->skybox_anim = 0;
@@ -124,7 +85,6 @@ static void	wolf_destroy(t_env *env, t_map *map, t_cam *cam)
 {
 	(void)cam;
 	map_destroy(map);
-	//free skybox
 	free(map->skybox.pixels);
 	free(env->objects);
 }

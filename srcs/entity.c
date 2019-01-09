@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 16:19:00 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 17:07:42 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 23:18:11 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void		entity_set_void(t_entity *entity)
 	entity->e.brick = NULL;
 }
 
-void		entity_set_wall(t_entity *entity, int tex_id, int id,
+void		entity_set_entity(t_entity *entity, int tex_id, int id,
 				int crossable)
 {
 	entity->tex_id = tex_id;

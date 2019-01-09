@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 16:53:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 23:32:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,17 +84,8 @@ typedef struct		s_cam {
 	int				side_filter;
 }					t_cam;
 
-typedef struct		s_doorz {
-	t_float			open_offset;
-	t_bool			is_door;
-	t_bool			is_active;
-	t_u32			orientation;
-	t_bool			is_open;
-}					t_doorz;
-
 typedef struct		s_map {
 	t_entity		**data;
-	t_doorz			**doors;
 	t_tex			skybox;
 	int				skybox_offset;
 	int				skybox_anim;

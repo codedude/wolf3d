@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/09 17:11:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 23:22:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	calc_player(t_env *env)
 	player_set_z(&env->cam);
 }
 
-void	update_door(t_doorz *door)
+void	update_door(t_door *door)
 {
 	t_u32		cmp;
 	t_float		cmp_val;
@@ -70,7 +70,6 @@ void	update_door(t_doorz *door)
 	if (cmp)
 	{
 		door->open_offset = cmp_val;
-		// door->is_open = (!door->is_open);
 		door->is_active = False;
 	}
 }
@@ -87,8 +86,9 @@ void	calc_doors(t_env *env)
 		i.x = 0;
 		while (i.x < map->width)
 		{
-			/*if (map->doors[i.y][i.x].is_door && map->doors[i.y][i.x].is_active)
-				update_door(&map->doors[i.y][i.x]);*/
+			if (map->data[i.y][i.x].type == ENTITY_DOOR
+				&& map->data[i.y][i.x].e.door->is_active)
+				update_door(map->data[i.y][i.x].e.door);
 			i.x++;
 		}
 		i.y++;
@@ -114,7 +114,7 @@ void	loop(t_env *env)
 		if (loop != 1)
 			break ;
 		calc_player(env);
-		//calc_doors(env);
+		calc_doors(env);
 		sdl_update_texture(&env->sdl);
 		tp_wait_for_queue(env->tpool);
 		compute_sprites(env);

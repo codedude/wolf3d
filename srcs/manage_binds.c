@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/09 14:12:45 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 23:33:06 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "sdl_m.h"
 #include "raycast.h"
 #include "types.h"
+#include "entity.h"
 
 void		manage_down(const Uint8 *state, t_env *env)
 {
@@ -110,7 +111,7 @@ void		switch_effect(t_cam *cam, void *new, int type)
 void		binds_open_door(t_env *env)
 {
 	t_ivec2		i;
-	t_doorz		*door;
+	t_door		*door;
 
 	i.y = 0;
 	while (i.y < (int)env->map.height)
@@ -118,8 +119,8 @@ void		binds_open_door(t_env *env)
 		i.x = 0;
 		while (i.x < (int)env->map.width)
 		{
-			door = &env->map.doors[i.y][i.x];
-			if (door->is_door == True)
+			door = env->map.data[i.y][i.x].e.door;
+			if (env->map.data[i.y][i.x].type == ENTITY_DOOR)
 			{
 				door->is_open = !door->is_open;
 				door->is_active = True;

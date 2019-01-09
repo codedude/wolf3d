@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 17:08:05 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/09 23:14:38 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "types.h"
 # include "texture.h"
+
+# define DOOR_NS	1
+# define DOOR_EW	0
 
 typedef struct s_entity		t_entity;
 typedef struct s_entity		t_wall;
@@ -85,7 +88,7 @@ t_door		*entity_new_door(int orientation);
 t_object	*entity_new_object(t_vec3 pos, t_vec3 size, int collectable);
 void		entity_merge(t_entity *entity, void *obj, t_entity_type type);
 void		entity_set_void(t_entity *entity);
-void		entity_set_wall(t_entity *entity, int tex_id, int id,
+void		entity_set_entity(t_entity *entity, int tex_id, int id,
 				int crossable);
 
 #endif
