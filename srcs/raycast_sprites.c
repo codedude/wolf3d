@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 14:12:50 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 00:12:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@
 **	OPTI : s*t > 0 ? check perf
 */
 
-int				sort_object(t_objectz *a, t_objectz *b)
+int				sort_object(t_entity *a, t_entity *b)
 {
-	if (a->z < b->z)
+	if (a->e.object->z_buffer < b->e.object->z_buffer)
 		return (-1);
-	if (b->z < a->z)
+	if (b->e.object->z_buffer < a->e.object->z_buffer)
 		return (1);
 	return (0);
 }
@@ -113,15 +113,16 @@ static t_klist	*new_object_lst(t_env *env, int i, t_vec2 obj_dir,
 {
 	int			half_width;
 	int			x;
-	t_objectz	*obj;
+	t_object	*obj;
 
-	obj = &env->objects[i];
-	obj->z = vec_len(obj_dir) * vec_dot(vec_norm(obj_dir), env->cam.dir);
+	obj = env->objects[i].e.object;
+	obj->z_buffer = vec_len(obj_dir) * vec_dot(vec_norm(obj_dir), env->cam.dir);
 	x = clamp_int((int)(obj_x * env->sdl.canvas_w), 0, env->sdl.width);
-	obj->size.y = env->sdl.canvas_h / obj->z;
+	obj->size.y = env->sdl.canvas_h / obj->z_buffer;
 	obj->size.x = obj->size.y / env->sdl.canvas_h * env->sdl.canvas_w / 2.0;
 	obj->y_start = (int)((env->sdl.half_canvas_h - obj->size.y / 2.0)
-		- ((env->sdl.half_canvas_h - env->cam.z) / obj->z) + env->cam.height);
+		- ((env->sdl.half_canvas_h - env->cam.z) / obj->z_buffer)
+		+ env->cam.height);
 	obj->y_end = obj->y_start + (int)obj->size.y;
 	half_width = (int)obj->size.x;
 	half_width = half_width & 0x01 ? (half_width - 1) / 2 : half_width / 2;
@@ -143,7 +144,7 @@ int				precompute_sprites(t_env *env, t_klist **lst)
 	i = 0;
 	while (i < env->objects_nb)
 	{
-		obj_dir = env->objects[i].pos - env->cam.pos;
+		obj_dir = env->objects[i].e.object->pos - env->cam.pos;
 		if ((obj_x = vec_is_in_front(dir[0], dir[1], obj_dir)) >= 0.0)
 		{
 			if ((tmp = new_object_lst(env, i, obj_dir, obj_x)) == NULL)
@@ -158,30 +159,31 @@ int				precompute_sprites(t_env *env, t_klist **lst)
 	return (SUCCESS);
 }
 
-void			render_sprite(t_env *env, t_objectz *obj)
+void			render_sprite(t_env *env, t_entity *obj)
 {
 	t_ivec2	tex;
 	t_color	color;
 	t_ivec2	it;
 	t_tex	*text;
 
-	text = tex_get_sprite(&env->sdl, obj->sprite);
-	it.x = obj->x_start < 0 ? 0 : obj->x_start;
-	while (it.x < obj->x_end && it.x < env->sdl.width)
+	text = tex_get_sprite(&env->sdl, obj->tex_id);
+	it.x = obj->e.object->x_start < 0 ? 0 : obj->e.object->x_start;
+	while (it.x < obj->e.object->x_end && it.x < env->sdl.width)
 	{
-		if (obj->z < env->sdl.z_buffer[it.x])
+		if (obj->e.object->z_buffer < env->sdl.z_buffer[it.x])
 		{
-			it.y = obj->y_start < 0 ? 0 : obj->y_start;
+			it.y = obj->e.object->y_start < 0 ? 0 : obj->e.object->y_start;
 			tex.x = (int)(
-				(it.x - obj->x_start) / obj->size.x * text->w);
-			while (it.y < obj->y_end && it.y < env->sdl.height)
+				(it.x - obj->e.object->x_start) / obj->e.object->size.x * text->w);
+			while (it.y < obj->e.object->y_end && it.y < env->sdl.height)
 			{
-				tex.y = (int)((it.y - obj->y_start)
-					/ obj->size.y * text->h);
+				tex.y = (int)((it.y - obj->e.object->y_start)
+					/ obj->e.object->size.y * text->h);
 				color = sdl_get_pixel(text, tex.x, tex.y);
 				if (color.rgba > 0)
 					sdl_put_pixel(&env->sdl, it.x, it.y,
-						dark_color(color, &env->cam, 0, obj->z));
+						dark_color(color, &env->cam, 0,
+							obj->e.object->z_buffer));
 				it.y++;
 			}
 		}
@@ -193,7 +195,7 @@ void			compute_sprites(t_env *env)
 {
 	t_klist		*lst;
 	t_klist		*iter;
-	t_objectz	*obj;
+	t_entity	*obj;
 
 	lst = NULL;
 	if (precompute_sprites(env, &lst) == ERROR)

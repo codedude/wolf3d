@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 14:12:54 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 00:08:38 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "env.h"
 
-# define KLIST_TYPE		t_objectz*
+# define KLIST_TYPE		t_entity*
 # define INIT_KLIST(l)	{(l), (l)}
 
 typedef struct s_klist	t_klist;

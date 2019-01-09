@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 16:19:00 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 23:18:11 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 00:12:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,22 @@ t_door		*entity_new_door(int orientation)
 	return (tmp);
 }
 
-t_object	*entity_new_object(t_vec3 pos, t_vec3 size, int collectable)
+t_object	*entity_new_object(t_vec2 pos, t_vec2 size, t_float z,
+				int collectable)
 {
 	t_object	*tmp;
 
 	if ((tmp = (t_object *)malloc(sizeof(t_object))) == NULL)
 		return (NULL);
 	tmp->pos = pos;
+	tmp->z = z;
 	tmp->size = size;
 	tmp->collectable = collectable;
+	tmp->z_buffer = 0.0;
+	tmp->y_start = 0;
+	tmp->y_end = 0;
+	tmp->x_end = 0;
+	tmp->x_start = 0;
 	return (tmp);
 }
 
@@ -86,7 +93,7 @@ void		entity_set_void(t_entity *entity)
 	entity->e.brick = NULL;
 }
 
-void		entity_set_entity(t_entity *entity, int tex_id, int id,
+void		entity_set(t_entity *entity, int tex_id, int id,
 				int crossable)
 {
 	entity->tex_id = tex_id;

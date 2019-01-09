@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/09 23:16:17 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 00:13:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,11 @@ static char		*convert_value(t_env *env, t_map *map, int i, char *start)
 		else if (value == 5 || value == 8)
 		{
 			door = entity_new_door(value == 8 ? DOOR_EW : DOOR_NS);
-			entity_set_entity(&map->data[i][j], value, value, 1);
+			entity_set(&map->data[i][j], value, value, 1);
 			entity_merge(&map->data[i][j], (void *)door, ENTITY_DOOR);
 		}
 		else
-			entity_set_entity(&map->data[i][j], value, value, 1);
+			entity_set(&map->data[i][j], value, value, 1);
 		if (value == 99)
 		{
 			if (map->spawn.x == -1)

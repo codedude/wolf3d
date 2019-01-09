@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 23:16:43 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 00:07:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "libtpool.h"
 #include "sdl_m.h"
 #include "env.h"
+#include "types.h"
 #include "raycast.h"
 #include "parser.h"
 #include "texture.h"
@@ -30,20 +31,21 @@ void		update_skybox_offset(t_cam *cam, t_sdl *sdl, t_map *map)
 
 int			load_objects(t_env *env)
 {
-	int		i;
+	int			i;
+	t_object	*obj;
 
 	env->objects_nb = 3;
-	env->objects = (t_objectz *)malloc(sizeof(*env->objects)
+	env->objects = (t_entity *)malloc(sizeof(*env->objects)
 		* (size_t)env->objects_nb);
 	if (env->objects == NULL)
 		return (ERROR);
 	i = 0;
 	while (i < env->objects_nb)
 	{
-		env->objects[i].walkthrough = !(i > 0);
-		env->objects[i].sprite = i;
-		env->objects[i].pos = VEC2_INIT(6.0, 10.0 + i * 2.0) + 0.5;
-		env->objects[i].z = 0.0;
+		obj = entity_new_object(VEC2_INIT(6.0, 10.0 + i * 2.0),
+			VEC2_INIT(1.0, 1.0), 0.0, 0);
+		entity_set(&env->objects[i], i, i, 0);
+		entity_merge(&env->objects[i], (void *)obj, ENTITY_OBJECT);
 		i++;
 	}
 	return (SUCCESS);
@@ -83,9 +85,16 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 
 static void	wolf_destroy(t_env *env, t_map *map, t_cam *cam)
 {
+	int	i;
 	(void)cam;
 	map_destroy(map);
 	free(map->skybox.pixels);
+	i = 0;
+	while (i < env->objects_nb)
+	{
+		free(env->objects[i].e.object);
+		++i;
+	}
 	free(env->objects);
 }
 
