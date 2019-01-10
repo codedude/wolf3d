@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 00:12:09 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 18:28:57 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ static t_klist	*new_object_lst(t_env *env, int i, t_vec2 obj_dir,
 	half_width = half_width & 0x01 ? (half_width - 1) / 2 : half_width / 2;
 	obj->x_start = x - half_width;
 	obj->x_end = x + half_width;
-	return (list_new(env->objects + i));
+	return (klist_new(env->objects + i));
 }
 
 int				precompute_sprites(t_env *env, t_klist **lst)
@@ -149,10 +149,10 @@ int				precompute_sprites(t_env *env, t_klist **lst)
 		{
 			if ((tmp = new_object_lst(env, i, obj_dir, obj_x)) == NULL)
 			{
-				list_clear(lst);
+				klist_clear(lst);
 				return (ERROR);
 			}
-			list_add_sort(lst, tmp, sort_object);
+			klist_add_sort(lst, tmp, sort_object);
 		}
 		i++;
 	}
@@ -179,7 +179,7 @@ void			render_sprite(t_env *env, t_entity *obj)
 			{
 				tex.y = (int)((it.y - obj->e.object->y_start)
 					/ obj->e.object->size.y * text->h);
-				color = sdl_get_pixel(text, tex.x, tex.y);
+				color = sdl_get_pixel(text, tex.x, tex.y, obj->tex_key);
 				if (color.rgba > 0)
 					sdl_put_pixel(&env->sdl, it.x, it.y,
 						dark_color(color, &env->cam, 0,
@@ -207,5 +207,5 @@ void			compute_sprites(t_env *env)
 		render_sprite(env, obj);
 		iter = iter->next;
 	}
-	list_clear(&lst);
+	klist_clear(&lst);
 }

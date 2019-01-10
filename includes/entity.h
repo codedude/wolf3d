@@ -6,13 +6,14 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 00:06:24 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 16:42:45 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENTITY_H
 # define ENTITY_H
 
+# include "ft_type.h"
 # include "types.h"
 # include "texture.h"
 
@@ -38,6 +39,7 @@ enum e_entity_type {
 
 struct					s_entity {
 	int					tex_id;
+	int					tex_key;
 	int					crossable;
 	int					id;
 	t_entity_type		type;
@@ -89,12 +91,15 @@ struct		s_object {
 };
 
 t_entity	*entity_new(int tex_id, int id, int crossable);
+void		entity_destroy(t_entity *entity);
 t_brick		*entity_new_brick(int max_hp);
 t_door		*entity_new_door(int orientation);
 t_object	*entity_new_object(t_vec2 pos, t_vec2 size, t_float z,
 				int collectable);
 void		entity_merge(t_entity *entity, void *obj, t_entity_type type);
 void		entity_set_void(t_entity *entity);
+void		entity_set_wall(t_entity *entity, int tex_id, int id,
+				int crossable);
 void		entity_set(t_entity *entity, int tex_id, int id,
 				int crossable);
 

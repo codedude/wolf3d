@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 00:08:38 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 16:31:25 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ struct					s_klist {
 	t_klist				*next;
 };
 
-t_klist					*list_new(KLIST_TYPE value);
-void					list_append(t_klist **head, t_klist *entry);
-void					list_clear(t_klist **head);
-void					list_del(t_klist **head, t_klist *entry);
-void					list_add_sort(t_klist **head, t_klist *entry,
+t_klist					*klist_new(KLIST_TYPE value);
+void					klist_append(t_klist **head, t_klist *entry);
+void					klist_clear(t_klist **head);
+void					klist_del(t_klist **head, t_klist *entry);
+void					klist_add_sort(t_klist **head, t_klist *entry,
 							int (*compare)(KLIST_TYPE a, KLIST_TYPE b));
 
 #endif

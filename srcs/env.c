@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 00:07:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 18:13:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ int			load_objects(t_env *env)
 	int			i;
 	t_object	*obj;
 
-	env->objects_nb = 3;
+	env->objects_nb = 4;
 	env->objects = (t_entity *)malloc(sizeof(*env->objects)
-		* (size_t)env->objects_nb);
+		* (size_t)(env->objects_nb));
 	if (env->objects == NULL)
 		return (ERROR);
 	i = 0;
 	while (i < env->objects_nb)
 	{
-		obj = entity_new_object(VEC2_INIT(6.0, 10.0 + i * 2.0),
+		obj = entity_new_object(VEC2_INIT(5.0, 8.0 + i * 2.0),
 			VEC2_INIT(1.0, 1.0), 0.0, 0);
 		entity_set(&env->objects[i], i, i, 0);
 		entity_merge(&env->objects[i], (void *)obj, ENTITY_OBJECT);
@@ -57,7 +57,7 @@ static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
 		return (ERROR);
 	map->is_skybox = 1;
 	map->skybox_anim = 0;
-	if (tex_load(&map->skybox, "skybox/skybox_day.png", 1) == ERROR)
+	if (tex_load(&map->skybox, "skybox/skybox_day.png", 1, 1) == ERROR)
 		return (ERROR);
 	if (load_objects(env) == ERROR)
 		return (ERROR);
@@ -117,6 +117,7 @@ int			env_init(t_env *env, char *filename)
 		return (ERROR);
 	}
 	env->show_fps = 0;
+	env->anims = NULL;
 	return (SUCCESS);
 }
 

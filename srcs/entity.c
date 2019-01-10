@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 16:19:00 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 00:12:37 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 17:45:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_entity	*entity_new(int tex_id, int id, int crossable)
 	if ((tmp = (t_entity *)malloc(sizeof(t_entity))) == NULL)
 		return (NULL);
 	tmp->tex_id = tex_id;
+	tmp->tex_key = 0;
 	tmp->id = id;
 	tmp->crossable = crossable;
 	tmp->type = ENTITY_NONE;
@@ -93,12 +94,28 @@ void		entity_set_void(t_entity *entity)
 	entity->e.brick = NULL;
 }
 
+void		entity_set_wall(t_entity *entity, int tex_id, int id,
+				int crossable)
+{
+	entity_set(entity, tex_id, id, crossable);
+	entity->type = ENTITY_WALL;
+	entity->e.brick = NULL;
+}
+
 void		entity_set(t_entity *entity, int tex_id, int id,
 				int crossable)
 {
 	entity->tex_id = tex_id;
+	entity->tex_key = 0;
 	entity->id = id;
 	entity->crossable = crossable;
-	entity->type = ENTITY_WALL;
-	entity->e.brick = NULL;
+}
+
+void		entity_destroy(t_entity *entity)
+{
+	free(entity->e.brick);
+	if (entity->type == ENTITY_OBJECT)
+		free(entity);
+	else
+		entity_set_void(entity);
 }

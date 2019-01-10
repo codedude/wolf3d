@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/09 23:33:06 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 17:50:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void		binds_open_door(t_env *env)
 {
 	t_ivec2		i;
 	t_door		*door;
+	t_anim		*anim;
 
 	i.y = 0;
 	while (i.y < (int)env->map.height)
@@ -120,10 +121,13 @@ void		binds_open_door(t_env *env)
 		while (i.x < (int)env->map.width)
 		{
 			door = env->map.data[i.y][i.x].e.door;
-			if (env->map.data[i.y][i.x].type == ENTITY_DOOR)
+			if (env->map.data[i.y][i.x].type == ENTITY_DOOR
+				&& door->is_active == False)
 			{
-				door->is_open = !door->is_open;
-				door->is_active = True;
+				anim = anim_new(&env->map.data[i.y][i.x], ANIM_ONCE,
+					ANIM_DOOR_SPEED);
+				if (alist_push(&env->anims, anim) == ERROR)
+					return ;
 			}
 			i.x++;
 		}

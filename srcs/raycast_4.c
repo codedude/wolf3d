@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/08 22:58:36 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 18:28:41 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static t_color		get_cf_color(t_tex *text, t_vec2 curr_cf, t_cam *cam,
 
 	tex.x = (int)fabs(curr_cf.x * text->w) % text->w;
 	tex.y = (int)fabs(curr_cf.y * text->h) % text->h;
-	color = dark_color(sdl_get_pixel(text, tex.x, tex.y), cam, 0, z);
+	color = dark_color(sdl_get_pixel(text, tex.x, tex.y, 0),
+		cam, 0, z);
 	return (color);
 }
 
@@ -118,8 +119,6 @@ void				draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	t_color			color;
 	t_float			half_height;
 
-	// if (infos->tex_off_x > infos->wall_x)
-	// 	infos->tex_off_x = infos->wall_x;
 	tex.x = (int)fmod((fabs(infos->wall_x - infos->tex_off_x) * text->w), text->w);
 	if (infos->side == 0 && infos->ray.dir.x > 0)
 		tex.x = text->w - tex.x - 1;
@@ -132,7 +131,7 @@ void				draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	{
 		tex.y = (int)fabs(text->h * ((y - cam->height + half_height)
 			/ (t_float)(infos->line_height)));
-		color = dark_color(sdl_get_pixel(text, tex.x, tex.y),
+		color = dark_color(sdl_get_pixel(text, tex.x, tex.y, 0),
 			cam, infos->side & cam->side_filter, infos->z);
 		sdl_put_pixel(sdl, infos->x, y, color);
 		y++;

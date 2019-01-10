@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 16:27:14 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 18:29:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int					sdl_resize(t_sdl *sdl, int width, int height);
 int					sdl_update_texture(t_sdl *sdl);
 int					sdl_render(t_sdl *sdl);
 void				sdl_put_pixel(t_sdl *sdl, int x, int y, t_color color);
-t_color				sdl_get_pixel(t_tex *text, int x, int y);
+t_color				sdl_get_pixel(t_tex *text, int x, int y, int key);
 void				sdl_get_fps(int show_fps);
 
 /*

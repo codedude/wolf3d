@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:20:25 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/08 22:02:57 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 18:26:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,15 @@ void		sdl_put_pixel(t_sdl *sdl, int x, int y, t_color color)
 	img[pos + 2] = color.c.r;
 }
 
-t_color		sdl_get_pixel(t_tex *text, int x, int y)
+t_color		sdl_get_pixel(t_tex *text, int x, int y, int key)
 {
 	t_color	pixel;
+	int		pos;
 
-	pixel.rgba = text->pixels[x + y * text->w];
+	pos = x + (key % text->n_cols * text->w)
+		+ (y + key / text->n_cols * text->h)
+		* text->w * text->n_cols;
+	pixel.rgba = text->pixels[pos];
 	return (pixel);
 }
 

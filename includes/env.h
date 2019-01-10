@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 23:52:37 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 17:33:14 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "sdl_m.h"
 # include "types.h"
 # include "entity.h"
+# include "anim.h"
 
 # define THREADS		0
 # define TASKS			32
@@ -63,8 +64,6 @@
 
 # define ANIM_CROUCH_SPEED	25.0
 
-# define ANIM_DOOR_OFFSET	0.01
-
 typedef struct		s_cam {
 	t_vec3			(*depth_filter)(t_vec3 color, t_float depth);
 	t_vec3			(*color_filter)(t_vec3 color);
@@ -98,6 +97,7 @@ typedef struct		s_map {
 typedef struct		s_env {
 	t_tpool			*tpool;
 	t_entity		*objects;
+	t_list_anim		*anims;
 	int				objects_nb;
 	t_sdl			sdl;
 	t_map			map;

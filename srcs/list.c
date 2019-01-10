@@ -6,14 +6,14 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:04:53 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/17 13:19:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 16:32:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "list.h"
 
-t_klist			*list_new(KLIST_TYPE value)
+t_klist			*klist_new(KLIST_TYPE value)
 {
 	t_klist	*tmp;
 
@@ -25,7 +25,7 @@ t_klist			*list_new(KLIST_TYPE value)
 	return (tmp);
 }
 
-void			list_del(t_klist **head, t_klist *entry)
+void			klist_del(t_klist **head, t_klist *entry)
 {
 	while (*head != entry)
 		head = &(*head)->next;
@@ -33,13 +33,13 @@ void			list_del(t_klist **head, t_klist *entry)
 	free(entry);
 }
 
-void			list_clear(t_klist **head)
+void			klist_clear(t_klist **head)
 {
 	while (*head)
-		list_del(head, *head);
+		klist_del(head, *head);
 }
 
-void			list_add_sort(t_klist **head, t_klist *entry,
+void			klist_add_sort(t_klist **head, t_klist *entry,
 					int (*compare)(KLIST_TYPE a, KLIST_TYPE b))
 {
 	t_klist	*last;
@@ -60,7 +60,7 @@ void			list_add_sort(t_klist **head, t_klist *entry,
 	*head = entry;
 }
 
-void			list_append(t_klist **head, t_klist *entry)
+void			klist_append(t_klist **head, t_klist *entry)
 {
 	while (*head != NULL)
 		head = &(*head)->next;

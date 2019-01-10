@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/09 23:22:44 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 18:53:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "raycast.h"
 #include "texture.h"
 #include "entity.h"
+#include "anim.h"
 
 void	prepare_threads(t_env *env, t_algo **pack)
 {
@@ -48,51 +49,13 @@ void	calc_player(t_env *env)
 	player_set_z(&env->cam);
 }
 
-void	update_door(t_door *door)
+void	new_explo(t_env *env)
 {
-	t_u32		cmp;
-	t_float		cmp_val;
-	t_float		off;
+	t_anim	*anim;
 
-	if (door->is_open == True)
-	{
-		cmp = (door->open_offset < 0.0);
-		cmp_val = 0.0;
-		off = -ANIM_DOOR_OFFSET;
-	}
-	else
-	{
-		cmp = (door->open_offset > 1.0);
-		cmp_val = 1.0;
-		off = ANIM_DOOR_OFFSET;
-	}
-	door->open_offset += off;
-	if (cmp)
-	{
-		door->open_offset = cmp_val;
-		door->is_active = False;
-	}
-}
-
-void	calc_doors(t_env *env)
-{
-	t_ivec2		i;
-	t_map		*map;
-
-	map = &env->map;
-	i.y = 0;
-	while (i.y < map->height)
-	{
-		i.x = 0;
-		while (i.x < map->width)
-		{
-			if (map->data[i.y][i.x].type == ENTITY_DOOR
-				&& map->data[i.y][i.x].e.door->is_active)
-				update_door(map->data[i.y][i.x].e.door);
-			i.x++;
-		}
-		i.y++;
-	}
+	anim = anim_new(&env->objects[0], ANIM_LOOP, 2);
+	if (alist_push(&env->anims, anim) == ERROR)
+		return ;
 }
 
 void	loop(t_env *env)
@@ -102,6 +65,7 @@ void	loop(t_env *env)
 	const Uint8	*state;
 	t_algo		*pack;
 
+	new_explo(env);
 	prepare_threads(env, &pack);
 	loop = 1;
 	while (loop == 1)
@@ -114,7 +78,7 @@ void	loop(t_env *env)
 		if (loop != 1)
 			break ;
 		calc_player(env);
-		calc_doors(env);
+		anim_compute(&env->sdl, &env->anims);
 		sdl_update_texture(&env->sdl);
 		tp_wait_for_queue(env->tpool);
 		compute_sprites(env);
