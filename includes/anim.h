@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 18:47:25 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 23:53:51 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ void				alist_clear(t_list_anim **head);
 void				anim_compute(t_sdl *sdl, t_list_anim **head);
 t_bool				anim_door(t_anim *anim);
 t_bool				anim_object(t_sdl *sdl, t_anim *anim);
+t_bool				anim_skybox(t_sdl *sdl, t_anim *anim);
 
 #endif

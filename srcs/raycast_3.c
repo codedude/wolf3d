@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/10 18:29:46 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 00:04:46 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void			draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	t_ivec2		pos;
 	t_tex		*text;
 
-	text = &map->skybox;
+	text = tex_get_wall(sdl, map->skybox->tex_id);
 	y = infos->draw_start;
 	while (y < infos->draw_end)
 	{
-		pos.x = (int)((infos->x + map->skybox_offset) / sdl->canvas_w
-			* text->w) + (map->skybox_anim / 2);
+		pos.x = (int)((infos->x + map->skybox->tex_key) / sdl->canvas_w
+			* text->w) + (map->skybox->id / 2);
 		lerp = clamp_float(y - cam->height, 0.0, sdl->canvas_h - 1.0);
 		pos.y = (int)(lerp / sdl->canvas_h * text->h);
 		color = sdl_get_pixel(text, pos.x % text->w, pos.y, 0);
@@ -87,8 +87,7 @@ void			draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 	}
 }
 
-void			rc_render(t_sdl *sdl, t_cam *cam, t_map *map,
-					t_hit_infos *infos)
+void			rc_render(t_env *env, t_hit_infos *infos)
 {
 	t_tex		*text;
 	int			text_id;
@@ -96,21 +95,21 @@ void			rc_render(t_sdl *sdl, t_cam *cam, t_map *map,
 
 	if (infos->hit == 1)
 	{
-		text_id = map->data[(int)infos->map.y][(int)infos->map.x].tex_id - 1;
-		text = tex_get_wall(sdl, text_id);
-		draw_wall(sdl, infos, cam, text);
+		text_id = env->map.data[(int)infos->map.y][(int)infos->map.x].tex_id - 1;
+		text = tex_get_wall(&env->sdl, text_id);
+		draw_wall(&env->sdl, infos, &env->cam, text);
 	}
 	texel = get_wall_texel(infos);
-	draw_floor(sdl, cam, infos, texel);
-	if (map->is_skybox == 0)
-		draw_ceil(sdl, cam, infos, texel);
-	if (map->is_skybox == 0 && infos->hit == 0)
-		draw_skybox(sdl, infos, cam, map);
-	else if (map->is_skybox == 1)
+	draw_floor(env, &env->sdl, infos, texel);
+	if (env->map.is_skybox == 0)
+		draw_ceil(env, &env->sdl, infos, texel);
+	if (env->map.is_skybox == 0 && infos->hit == 0)
+		draw_skybox(&env->sdl, infos, &env->cam, &env->map);
+	else if (env->map.is_skybox == 1)
 	{
 		if (infos->hit == 1)
 			infos->draw_end = infos->draw_start;
 		infos->draw_start = 0;
-		draw_skybox(sdl, infos, cam, map);
+		draw_skybox(&env->sdl, infos, &env->cam, &env->map);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 17:33:14 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 00:13:46 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@
 # define THREADS		0
 # define TASKS			32
 # define WINDOW_NAME	"DAT Wolf3D"
-
-# define DEFAULT_CEIL	1
-# define DEFAULT_FLOOR	4
 
 # define MAX_OFFSET		600
 # define MAX_DEPTH		30.0
@@ -85,9 +82,9 @@ typedef struct		s_cam {
 
 typedef struct		s_map {
 	t_entity		**data;
-	t_tex			skybox;
-	int				skybox_offset;
-	int				skybox_anim;
+	t_entity		*skybox;
+	int				floor_id;
+	int				ceil_id;
 	t_ivec2			spawn;
 	int				width;
 	int				height;

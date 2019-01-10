@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/08 23:00:03 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 00:04:17 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,11 @@ t_color					dark_color(t_color color, t_cam *cam, int side,
 void					compute_sprites(t_env *env);
 void					draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 							t_tex *text);
-void					draw_ceil(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
+void					draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 							t_vec2 texel);
-void					draw_floor(t_sdl *sdl, t_cam *cam, t_hit_infos *infos,
+void					draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 							t_vec2 texel);
-void					rc_render(t_sdl *sdl, t_cam *cam, t_map *map,
-							t_hit_infos *infos);
+void					rc_render(t_env *env, t_hit_infos *infos);
 int						raycast(t_hit_infos *infos, t_map *map, t_env *env,
 							int x);
 void					render(t_env *env, int start, int end, int step);

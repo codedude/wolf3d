@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 16:42:45 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 23:58:10 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef enum e_entity_type	t_entity_type;
 
 enum e_entity_type {
 	ENTITY_VOID, ENTITY_WALL, ENTITY_BRICK, ENTITY_DOOR, ENTITY_OBJECT,
-	ENTITY_NONE
+	ENTITY_SKYBOX, ENTITY_NONE
 };
 
 /*

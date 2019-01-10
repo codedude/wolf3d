@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/11 18:01:43 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 23:59:26 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	render(t_env *env, int start, int end, int step)
 		infos.ray.dir = cam->dir + -cam->plane *
 			((t_float)(x << 1) / env->sdl.canvas_w - 1.0);
 		raycast(&infos, &env->map, env, x);
-		rc_render(&env->sdl, &env->cam, &env->map, &infos);
+		rc_render(env, &infos);
 		x += step;
 	}
 }

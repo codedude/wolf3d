@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/10 18:53:52 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 23:54:07 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	prepare_threads(t_env *env, t_algo **pack)
 
 void	calc_player(t_env *env)
 {
-	env->map.skybox_anim = (env->map.skybox_anim + 1)
-						% (env->map.skybox.w * 2);
 	player_set_acceleration(&env->cam);
 	player_set_anim(&env->cam);
 	player_set_z(&env->cam);
@@ -58,6 +56,14 @@ void	new_explo(t_env *env)
 		return ;
 }
 
+void	skybox_anim(t_env *env)
+{
+	t_anim		*anim;
+
+	anim = anim_new(env->map.skybox, ANIM_LOOP, 1);
+	alist_push(&env->anims, anim);
+}
+
 void	loop(t_env *env)
 {
 	int			loop;
@@ -66,6 +72,7 @@ void	loop(t_env *env)
 	t_algo		*pack;
 
 	new_explo(env);
+	skybox_anim(env);
 	prepare_threads(env, &pack);
 	loop = 1;
 	while (loop == 1)

@@ -6,15 +6,17 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:32:48 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 18:53:35 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/10 23:53:59 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "ft_type.h"
+#include "ft_math.h"
 #include "anim.h"
 #include "entity.h"
 #include "texture.h"
+#include "env.h"
 
 t_anim			*anim_new(t_entity *entity, t_anim_type type, int key_speed)
 {
@@ -87,7 +89,7 @@ void			alist_clear(t_list_anim **head)
 void			anim_compute(t_sdl *sdl, t_list_anim **head)
 {
 	t_anim	*anim;
-	int		r;
+	t_bool	r;
 
 	while (*head != NULL)
 	{
@@ -97,11 +99,26 @@ void			anim_compute(t_sdl *sdl, t_list_anim **head)
 			r = anim_door(anim);
 		else if (anim->entity->type == ENTITY_OBJECT)
 			r = anim_object(sdl, anim);
+		else if (anim->entity->type == ENTITY_SKYBOX)
+			r = anim_skybox(sdl, anim);
 		if (r && anim->type != ANIM_LOOP)
 			alist_del_elem(head);
 		else
 			head = &(*head)->next;
 	}
+}
+
+t_bool			anim_skybox(t_sdl *sdl, t_anim *anim)
+{
+	if (anim->key.counter % anim->key.speed == 0)
+		++anim->entity->id;
+	if (anim->entity->id == tex_get_wall(sdl, anim->entity->tex_id)->w * 2)
+	{
+		anim->entity->id = 0;
+		anim->key.counter = 0;
+		return (True);
+	}
+	return (False);
 }
 
 t_bool			anim_object(t_sdl *sdl, t_anim *anim)
