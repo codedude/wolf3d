@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 10:21:21 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 14:49:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ void					draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 void					rc_render(t_env *env, t_hit_infos *infos);
 int						raycast(t_hit_infos *infos, t_map *map, t_env *env,
 							int x);
-void					render(t_env *env, int start, int end, int step);
-int						start_render(void *data);
 
 t_vec3					color_filter_baw(t_vec3 c);
 t_vec3					color_filter_sepia(t_vec3 c);
@@ -80,5 +78,7 @@ t_vec3					color_filter_sepia(t_vec3 c);
 t_vec3					depth_filter_depth(t_vec3 color, t_float depth);
 t_vec3					depth_filter_fog(t_vec3 c, t_float depth);
 t_vec3					depth_filter_water(t_vec3 c, t_float depth);
+
+void					render(t_env *env, int start, int end, int step);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 23:58:10 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 15:55:58 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_object		t_object;
 
 typedef enum e_entity_type	t_entity_type;
 
-enum e_entity_type {
+enum				e_entity_type {
 	ENTITY_VOID, ENTITY_WALL, ENTITY_BRICK, ENTITY_DOOR, ENTITY_OBJECT,
 	ENTITY_SKYBOX, ENTITY_NONE
 };
@@ -37,17 +37,17 @@ enum e_entity_type {
 ** Represent a bloc (aka wall)
 */
 
-struct					s_entity {
-	int					tex_id;
-	int					tex_key;
-	int					crossable;
-	int					id;
-	t_entity_type		type;
+struct				s_entity {
+	int				tex_id;
+	int				tex_key;
+	int				crossable;
+	int				id;
+	t_entity_type	type;
 	union {
-		t_brick			*brick;
-		t_door			*door;
-		t_object		*object;
-	}					e;
+		t_brick		*brick;
+		t_door		*door;
+		t_object	*object;
+	}				e;
 };
 
 /*
@@ -56,9 +56,9 @@ struct					s_entity {
 ** hp = life of the wall before it breaks
 */
 
-struct		s_brick {
-	int		current_hp;
-	int		max_hp;
+struct				s_brick {
+	int				current_hp;
+	int				max_hp;
 };
 
 /*
@@ -66,11 +66,11 @@ struct		s_brick {
 ** tex = sprites -> 0 = door, 1 = side
 */
 
-struct		s_door {
-	int			orientation;
-	t_float		open_offset;
-	t_bool		is_active;
-	t_bool		is_open;
+struct				s_door {
+	int				orientation;
+	t_float			open_offset;
+	t_bool			is_active;
+	t_bool			is_open;
 };
 
 /*
@@ -78,29 +78,30 @@ struct		s_door {
 ** tex = sprite of the object
 */
 
-struct		s_object {
-	t_vec2	pos;
-	t_vec2	size;
-	t_float	z;
-	t_float	z_buffer;
-	int		collectable;
-	int		y_start;
-	int		y_end;
-	int		x_end;
-	int		x_start;
+struct				s_object {
+	t_vec2			pos;
+	t_vec2			size;
+	t_float			z;
+	t_float			z_buffer;
+	int				collectable;
+	int				y_start;
+	int				y_end;
+	int				x_end;
+	int				x_start;
 };
 
-t_entity	*entity_new(int tex_id, int id, int crossable);
-void		entity_destroy(t_entity *entity);
-t_brick		*entity_new_brick(int max_hp);
-t_door		*entity_new_door(int orientation);
-t_object	*entity_new_object(t_vec2 pos, t_vec2 size, t_float z,
-				int collectable);
-void		entity_merge(t_entity *entity, void *obj, t_entity_type type);
-void		entity_set_void(t_entity *entity);
-void		entity_set_wall(t_entity *entity, int tex_id, int id,
-				int crossable);
-void		entity_set(t_entity *entity, int tex_id, int id,
-				int crossable);
+t_entity			*entity_new(int tex_id, int id, int crossable);
+void				entity_destroy(t_entity *entity);
+t_brick				*entity_new_brick(int max_hp);
+t_door				*entity_new_door(int orientation);
+t_object			*entity_new_object(t_vec2 pos, t_vec2 size, t_float z,
+						int collectable);
+void				entity_merge(t_entity *entity, void *obj,
+						t_entity_type type);
+void				entity_set_void(t_entity *entity);
+void				entity_set_wall(t_entity *entity, int tex_id, int id,
+						int crossable);
+void				entity_set(t_entity *entity, int tex_id, int id,
+						int crossable);
 
 #endif

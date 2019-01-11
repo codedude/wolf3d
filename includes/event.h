@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 10:30:38 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 14:38:08 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ void					player_set_anim(t_cam *player);
 void					player_set_acceleration(t_cam *player);
 void					player_jump(t_cam *player);
 void					player_fall(t_cam *player);
+void					update_player(t_env *env);
 
 #endif

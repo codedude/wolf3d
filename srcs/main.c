@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/11 10:26:34 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 14:50:55 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,35 +20,7 @@
 #include "anim.h"
 #include "event.h"
 
-void	prepare_threads(t_env *env, t_algo **pack)
-{
-	int			i;
-	int			tasks;
-
-	tasks = th_getnbr_proc();
-	if ((*pack = (t_algo *)malloc((size_t)(tasks) * sizeof(t_algo)))
-		== NULL)
-		return ;
-	i = 0;
-	while (i < tasks)
-	{
-		(*pack)[i].env = env;
-		(*pack)[i].start = i;
-		(*pack)[i].end = env->sdl.width;
-		(*pack)[i].step = tasks;
-		tp_add_task(env->tpool, &start_render, &(*pack)[i]);
-		i++;
-	}
-}
-
-void	calc_player(t_env *env)
-{
-	player_set_acceleration(&env->cam);
-	player_set_anim(&env->cam);
-	player_set_z(&env->cam);
-}
-
-void	new_explo(t_env *env)
+void		new_explo(t_env *env)
 {
 	t_anim	*anim;
 
@@ -57,24 +29,15 @@ void	new_explo(t_env *env)
 		return ;
 }
 
-void	skybox_anim(t_env *env)
-{
-	t_anim		*anim;
-
-	anim = anim_new(env->map.skybox, ANIM_LOOP, 1);
-	alist_push(&env->anims, anim);
-}
-
-void	loop(t_env *env)
+static int	loop(t_env *env)
 {
 	int			loop;
 	SDL_Event	event;
 	const Uint8	*state;
-	t_algo		*pack;
 
 	new_explo(env);
-	skybox_anim(env);
-	prepare_threads(env, &pack);
+	if (render_prepare(env) == ERROR)
+		return (ERROR);
 	loop = 1;
 	while (loop == 1)
 	{
@@ -85,7 +48,7 @@ void	loop(t_env *env)
 		manage_down(state, env);
 		if (loop != 1)
 			break ;
-		calc_player(env);
+		update_player(env);
 		anim_compute(&env->sdl, &env->anims);
 		sdl_update_texture(&env->sdl);
 		tp_wait_for_queue(env->tpool);
@@ -93,10 +56,11 @@ void	loop(t_env *env)
 		sdl_render(&env->sdl);
 		sdl_get_fps(env->show_fps);
 	}
-	free(pack);
+	render_clean(env);
+	return (SUCCESS);
 }
 
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
 	t_env	env;
 

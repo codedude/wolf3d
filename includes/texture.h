@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 18:10:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 15:20:11 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,5 @@ int				tex_load_all(t_sdl *sdl);
 void			tex_destroy_all(t_sdl *sdl);
 t_tex			*tex_get_wall(t_sdl *sdl, int id);
 t_tex			*tex_get_sprite(t_sdl *sdl, int id);
-
 
 #endif

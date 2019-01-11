@@ -6,12 +6,12 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 16:43:13 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 11:41:23 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 15:19:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BMP_H
-# define BMP_H
+#ifndef EXPORT_BMP_H
+# define EXPORT_BMP_H
 
 # include "sdl_m.h"
 # include "types.h"

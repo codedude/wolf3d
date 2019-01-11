@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 10:30:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 15:20:07 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,12 @@
 # define FOG_AMBIENT	VEC3_INIT(153.0, 211.0, 137.0)
 # define WATER_AMBIENT	VEC3_INIT(136.0, 210.0, 208.0)
 
-typedef struct		s_cam {
+typedef struct s_cam	t_cam;
+typedef struct s_map	t_map;
+typedef struct s_algo	t_algo;
+typedef struct s_env	t_env;
+
+struct				s_cam {
 	t_vec3			(*depth_filter)(t_vec3 color, t_float depth);
 	t_vec3			(*color_filter)(t_vec3 color);
 	t_vec2			pos;
@@ -58,9 +63,9 @@ typedef struct		s_cam {
 	t_float			walk_anim;
 	int				action_state;
 	int				side_filter;
-}					t_cam;
+};
 
-typedef struct		s_map {
+struct				s_map {
 	t_entity		**data;
 	t_entity		*skybox;
 	int				floor_id;
@@ -69,27 +74,30 @@ typedef struct		s_map {
 	int				width;
 	int				height;
 	int				is_skybox;
-}					t_map;
+};
 
-typedef struct		s_env {
+struct				s_algo {
+	t_env			*env;
+	int				start;
+	int				end;
+	int				step;
+};
+
+struct				s_env {
 	t_tpool			*tpool;
 	t_entity		*objects;
 	t_list_anim		*anims;
+	t_algo			*packs;
 	int				objects_nb;
 	t_sdl			sdl;
 	t_map			map;
 	t_cam			cam;
 	int				show_fps;
-}					t_env;
-
-typedef struct		s_algo {
-	t_env			*env;
-	int				start;
-	int				end;
-	int				step;
-}					t_algo;
+};
 
 int					env_init(t_env *env, char *filename);
 void				env_destroy(t_env *env);
+int					render_prepare(t_env *env);
+void				render_clean(t_env *env);
 
 #endif

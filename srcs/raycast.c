@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 23:59:26 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 14:49:58 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,52 @@
 #include "raycast.h"
 #include "types.h"
 
-/*
-** TODO: lookup table infos.ray.dir
-*/
-
-void	render(t_env *env, int start, int end, int step)
-{
-	int			x;
-	t_cam		*cam;
-	t_hit_infos	infos;
-
-	cam = &env->cam;
-	infos.ray.pos = cam->pos;
-	x = start;
-	while (x < end)
-	{
-		infos.map = VEC2_INIT(floor(cam->pos.x), floor(cam->pos.y));
-		infos.ray.dir = cam->dir + -cam->plane *
-			((t_float)(x << 1) / env->sdl.canvas_w - 1.0);
-		raycast(&infos, &env->map, env, x);
-		rc_render(env, &infos);
-		x += step;
-	}
-}
-
-int		start_render(void *data)
+static int	_start_render(void *data)
 {
 	t_algo		*algo;
 
 	algo = (t_algo *)data;
 	render(algo->env, algo->start, algo->end, algo->step);
 	return (SUCCESS);
+}
+
+static int	_make_skybox_anim(t_env *env)
+{
+	t_anim		*anim;
+
+	if ((anim = anim_new(env->map.skybox, ANIM_LOOP, 1)) == NULL)
+		return (ERROR);
+	alist_push(&env->anims, anim);
+	return (SUCCESS);
+}
+
+
+int			render_prepare(t_env *env)
+{
+	int			i;
+	int			tasks;
+
+	tasks = th_getnbr_proc();
+	if ((env->packs = (t_algo *)malloc((size_t)(tasks) * sizeof(t_algo)))
+		== NULL)
+		return (ERROR);
+	i = 0;
+	while (i < tasks)
+	{
+		env->packs[i].env = env;
+		env->packs[i].start = i;
+		env->packs[i].end = env->sdl.width;
+		env->packs[i].step = tasks;
+		tp_add_task(env->tpool, &_start_render, &env->packs[i]);
+		i++;
+	}
+	if (_make_skybox_anim(env) == ERROR)
+		ft_putstr_fd("Skybox animation can't be set !\n", 2);
+	return (SUCCESS);
+}
+
+void		render_clean(t_env *env)
+{
+	free(env->packs);
+	env->packs = NULL;
 }
