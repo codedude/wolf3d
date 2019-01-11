@@ -6,13 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 15:51:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 10:28:03 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include "env.h"
-#include "raycast.h"
+#include "event.h"
 
 int			is_inside(t_float x, t_float min, t_float max)
 {

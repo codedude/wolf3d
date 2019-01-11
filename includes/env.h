@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 00:13:46 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 10:30:07 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,6 @@
 
 # define FOG_AMBIENT	VEC3_INIT(153.0, 211.0, 137.0)
 # define WATER_AMBIENT	VEC3_INIT(136.0, 210.0, 208.0)
-
-# define ACTION_NONE		0b0
-# define ACTION_GROUNDED	0b00001
-# define ACTION_WALKING		0b00010
-# define ACTION_CROUCHING	0b00100
-# define ACTION_FALLING		0b01000
-# define ACTION_JUMPING		0b10000
-# define ACTION_FLY_MODE	(0x1000)
-
-# define ACTION_MAX_JUMP_TIME	2.5
-# define ACTION_JUMP_FORCE		25.0
-# define ACTION_FALL_SPEED		25.0
-
-# define ANIM_WALK_UP		(0b0001 << 8)
-# define ANIM_WALK_DOWN		(0b0010 << 8)
-# define ANIM_WALK			(0b0011 << 8)
-# define ANIM_WALK_SPEED	2.2
-# define ANIM_WALK_HEIGHT	12
-
-# define ANIM_CROUCH_SPEED	25.0
 
 typedef struct		s_cam {
 	t_vec3			(*depth_filter)(t_vec3 color, t_float depth);
@@ -111,8 +91,5 @@ typedef struct		s_algo {
 
 int					env_init(t_env *env, char *filename);
 void				env_destroy(t_env *env);
-
-int					manage_binds(SDL_Event *event, t_env *env);
-void				manage_down(const Uint8	*state, t_env *env);
 
 #endif

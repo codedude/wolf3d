@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 12:59:23 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 16:31:57 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 10:23:47 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,8 @@ t_vec2					clamp_vec2(t_vec2 clamp, t_vec2 min, t_vec2 max);
 t_ivec2					clamp_ivec2(t_ivec2 clamp, t_ivec2 min, t_ivec2 max);
 
 t_vec2					vec_rotate(t_vec2 dir, t_float speed);
+t_float					vec_dot(t_vec2 v1, t_vec2 v2);
 t_float					vec_len(t_vec2 v1);
 t_vec2					vec_norm(t_vec2 v1);
-
-t_float					vec_dot(t_vec2 v1, t_vec2 v2);
-t_float					vec_ang(t_vec2 v1, t_vec2 v2);
-t_vec2					vec_cross(t_vec2 v1, t_vec2 v2);
 
 #endif

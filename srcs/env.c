@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 00:16:08 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 10:28:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "env.h"
 #include "types.h"
 #include "raycast.h"
+#include "event.h"
 #include "parser.h"
 #include "texture.h"
 

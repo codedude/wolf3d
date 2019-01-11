@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   manage_binds.c                                     :+:      :+:    :+:   */
+/*   bind.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/10 23:52:51 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 11:37:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "env.h"
 #include "sdl_m.h"
 #include "raycast.h"
 #include "types.h"
 #include "entity.h"
+#include "event.h"
+#include "export_bmp.h"
 
 void		update_skybox_offset(t_cam *cam, t_sdl *sdl, t_map *map)
 {
@@ -23,6 +24,22 @@ void		update_skybox_offset(t_cam *cam, t_sdl *sdl, t_map *map)
 
 	motion = atan2(cam->dir.y, cam->dir.x) + M_PI;
 	map->skybox->tex_key = (int)(motion * (sdl->canvas_w * 2.0) / M_PI);
+}
+
+void		switch_effect(t_cam *cam, void *new, int type)
+{
+	void	**current;
+
+	if (type == EFFECT_MASK_DEPTH)
+		current = (void **)&cam->depth_filter;
+	else if (type == EFFECT_MASK_COLOR)
+		current = (void **)&cam->color_filter;
+	else
+		current = NULL;
+	if (*current == new)
+		*current = NULL;
+	else
+		*current = new;
 }
 
 void		manage_down(const Uint8 *state, t_env *env)
@@ -65,18 +82,6 @@ void		manage_down(const Uint8 *state, t_env *env)
 		env->cam.action_state |= ACTION_WALKING;
 	else
 		env->cam.action_state &= ~ACTION_WALKING;
-	if (state[SDL_SCANCODE_Q])
-	{
-		cam->dir = vec_rotate(cam->dir, cam->rot_speed * 5.0);
-		cam->plane = vec_rotate(cam->plane, cam->rot_speed * 5.0);
-		update_skybox_offset(&env->cam, &env->sdl, &env->map);
-	}
-	if (state[SDL_SCANCODE_E])
-	{
-		cam->dir = vec_rotate(cam->dir, cam->rot_speed * -5.0);
-		cam->plane = vec_rotate(cam->plane, cam->rot_speed * -5.0);
-		update_skybox_offset(&env->cam, &env->sdl, &env->map);
-	}
 	if (state[SDL_SCANCODE_LCTRL])
 	{
 		if (cam->action_state & ACTION_GROUNDED)
@@ -84,6 +89,8 @@ void		manage_down(const Uint8 *state, t_env *env)
 	}
 	else
 		cam->action_state &= ~ACTION_CROUCHING;
+	if (state[SDL_SCANCODE_LSHIFT] && env->cam.acceleration == 0.0)
+		env->cam.acceleration = 0.25;
 	if (state[SDL_SCANCODE_SPACE])
 	{
 		if (cam->action_state & ACTION_FLY_MODE)
@@ -98,22 +105,6 @@ void		manage_down(const Uint8 *state, t_env *env)
 			cam->jump_time = ACTION_MAX_JUMP_TIME;
 		}
 	}
-}
-
-void		switch_effect(t_cam *cam, void *new, int type)
-{
-	void	**current;
-
-	if (type == EFFECT_MASK_DEPTH)
-		current = (void **)&cam->depth_filter;
-	else if (type == EFFECT_MASK_COLOR)
-		current = (void **)&cam->color_filter;
-	else
-		current = NULL;
-	if (*current == new)
-		*current = NULL;
-	else
-		*current = new;
 }
 
 void		binds_open_door(t_env *env)
@@ -155,13 +146,7 @@ int			manage_binds(SDL_Event *event, t_env *env)
 	{
 		if (event->key.keysym.sym == SDLK_ESCAPE)
 			return (0);
-	}
-	else if (event->type == SDL_KEYDOWN)
-	{
-		if (event->key.keysym.sym == SDLK_LSHIFT
-			&& env->cam.acceleration == 0.0)
-			env->cam.acceleration = 0.25;
-		if (event->key.keysym.sym == SDLK_f)
+		else if (event->key.keysym.sym == SDLK_f)
 			env->show_fps = !env->show_fps;
 		else if (event->key.keysym.sym == SDLK_1)
 			env->cam.side_filter ^= EFFECT_SIDE;
@@ -200,8 +185,10 @@ int			manage_binds(SDL_Event *event, t_env *env)
 			else
 				env->cam.action_state |= ACTION_FLY_MODE;
 		}
-		else if (event->key.keysym.sym == SDLK_k)
+		else if (event->key.keysym.sym == SDLK_e)
 			binds_open_door(env);
+		else if (event->key.keysym.sym == SDLK_y)
+			save_img(&env->sdl);
 	}
 	else if (event->type == SDL_MOUSEMOTION)
 	{

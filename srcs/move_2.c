@@ -6,13 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/11 16:07:43 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 10:27:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include "env.h"
-#include "raycast.h"
+#include "event.h"
 
 void	player_set_walk_anim(t_cam *player)
 {

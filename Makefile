@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/10 16:42:12 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/11 10:44:35 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,9 +35,10 @@ else
 endif
 
 FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
-				manage_binds.c types.c depth_filters.c vector.c \
+				bind.c types.c depth_filters.c vector.c \
 				raycast_sprites.c list.c entity.c anim.c \
-				color_filters.c move_1.c move_2.c move_3.c raycast_4.c
+				color_filters.c move_1.c move_2.c move_3.c raycast_4.c \
+				export_bmp_1.c export_bmp_2.c
 FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
 				$(SDLD)/sdl_load_image.c $(SDLD)/texture.c
 FILES		+=	$(PARSERD)/map_parser.c $(PARSERD)/stack.c \
@@ -53,7 +54,7 @@ LDFLAGS		+=	-O2 #-fsanitize=address
 
 
 HEADER		= 	env.h sdl_m.h raycast.h types.h list.h texture.h entity.h \
-				anim.h
+				anim.h event.h export_bmp.h
 HEADERS		=	$(addprefix $(INCD)/, $(HEADER))
 
 .PHONY: clean fclean re rer valg

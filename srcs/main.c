@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/10 23:54:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 10:26:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "texture.h"
 #include "entity.h"
 #include "anim.h"
+#include "event.h"
 
 void	prepare_threads(t_env *env, t_algo **pack)
 {

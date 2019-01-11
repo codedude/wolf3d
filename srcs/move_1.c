@@ -6,13 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:45:59 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/09 17:19:44 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 10:28:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include "env.h"
-#include "raycast.h"
+#include "event.h"
 
 void		player_jump(t_cam *player)
 {
