@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 23:02:03 by vparis            #+#    #+#              #
-#    Updated: 2019/01/09 17:15:41 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/11 23:01:52 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,9 @@ else
 	AR		= llvm-ar
 endif
 
+CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -O2 -g3 \
+			-Wall -Wextra -Werror -Wno-unused-result -ansi -pedantic
+
 SRCD		=	srcs
 INCD		=	includes
 LIBFTD		=	../libft
@@ -28,13 +31,9 @@ SRCS		=	$(SRCD)/tp_queue.c $(SRCD)/tp_thread.c $(SRCD)/tp_thread2.c \
 				$(SRCD)/tp_pool.c $(SRCD)/tp_pool2.c
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
-CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -O2 -g3
-LDFLAGS		+=	-Wall -Wextra -Werror -Wno-unused-result -ansi -pedantic
-LDLIBS		+=
+HEADERS		=	$(INCD)/libtpool.h
 
-HEADER		=	$(INCD)/libtpool.h
-
-.PHONY: clean fclean re showlib
+.PHONY: all clean fclean __fclean re showlib
 
 all: $(NAME)
 
@@ -43,7 +42,7 @@ $(NAME): $(OBJS)
 	@echo "libtpool - compiled"
 
 %.o: %.c $(HEADER)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $< $(LDLIBS)
+	@$(CC) $(CFLAGS) -o $@ -c $< $(LDLIBS)
 
 showlib: $(NAME)
 	@$(AR) -t $(NAME)

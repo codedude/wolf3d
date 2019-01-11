@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/11 10:44:35 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/11 23:02:23 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,9 @@ LIBFTD		=	libft
 LIBTPOOLD	=	libtpool
 SDLD		=	sdl
 PARSERD		=	parser
+EVENTD		=	event
+RENDERD		=	render
+UTILSD		=	utils
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image \
@@ -34,37 +37,38 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-FILES		=	main.c env.c raycast.c raycast_2.c raycast_3.c raycast_3.c \
-				bind.c types.c depth_filters.c vector.c \
-				raycast_sprites.c list.c entity.c anim.c \
-				color_filters.c move_1.c move_2.c move_3.c raycast_4.c \
-				export_bmp_1.c export_bmp_2.c
-FILES		+=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
-				$(SDLD)/sdl_load_image.c $(SDLD)/texture.c
-FILES		+=	$(PARSERD)/map_parser.c $(PARSERD)/stack.c \
-				$(PARSERD)/reader.c
-
-SRCS		=	$(addprefix $(SRCD)/, $(FILES))
-OBJS		=	$(patsubst %.c, %.o, $(SRCS))
-
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD) -g3 -Wextra -Wall -Wno-unused-result \
 				-Wconversion -O2 #-fsanitize=address
 LDFLAGS		+=	-O2 #-fsanitize=address
 
+SRCS_F		=	main env
+SRCS_F		+=	$(RENDERD)/raycast $(RENDERD)/raycast_2 $(RENDERD)/raycast_3 \
+				$(RENDERD)/raycast_4 $(RENDERD)/entity $(RENDERD)/list \
+				$(RENDERD)/depth_filters $(RENDERD)/color_filters \
+				$(RENDERD)/raycast_sprites $(RENDERD)/list $(RENDERD)/anim
+SRCS_F		+=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
+				$(SDLD)/texture $(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2
+SRCS_F		+=	$(PARSERD)/map_parser $(PARSERD)/stack $(PARSERD)/reader
+SRCS_F		+=	$(EVENTD)/move_1 $(EVENTD)/move_2 $(EVENTD)/move_3 \
+				$(EVENTD)/event
+SRCS_F		+=	$(UTILSD)/vector $(UTILSD)/types
 
-HEADER		= 	env.h sdl_m.h raycast.h types.h list.h texture.h entity.h \
-				anim.h event.h export_bmp.h
-HEADERS		=	$(addprefix $(INCD)/, $(HEADER))
+HEADERS_F	= 	env sdl_m raycast types list texture entity anim event \
+				export_bmp
 
-.PHONY: clean fclean re rer valg
+SRCS		=	$(addprefix $(SRCD)/, $(addsuffix .c, $(SRCS_F)))
+HEADERS		=	$(addprefix $(INCD)/, $(addsuffix .h, $(HEADERS_F)))
+OBJS		=	$(patsubst %.c, %.o, $(SRCS))
+
+.PHONY: all clean fclean re rer valg
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	make -C $(LIBFTD)
 	make -C $(LIBTPOOLD)
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $(NAME)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	@echo "$(NAME) - compiled"
 
 %.o: %.c $(HEADERS)

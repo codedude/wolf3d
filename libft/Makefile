@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/09 17:15:31 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/11 23:02:04 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,16 +20,19 @@ else
 	AR		= llvm-ar
 endif
 
+CFLAGS		+= -I$(INCD) -Werror -Wall -Wextra -Wno-unused-result -ansi \
+			-pedantic -O2 -g3
+
 SRCD		= srcs
 INCD		= includes
-OUTPUTD		= $(SRCD)/output
-MATHD		= $(SRCD)/math
-MEMORYD		= $(SRCD)/memory
-STRINGD		= $(SRCD)/string
-ASCIID		= $(SRCD)/ascii
-CONVERTD	= $(SRCD)/convert
-LISTD		= $(SRCD)/list
-INPUTD		= $(SRCD)/input
+OUTPUTD		= output
+MATHD		= math
+MEMORYD		= memory
+STRINGD		= string
+ASCIID		= ascii
+CONVERTD	= convert
+LISTD		= list
+INPUTD		= input
 
 LIBFT_SRCS	= $(OUTPUTD)/ft_putchar_fd.c $(OUTPUTD)/ft_putrevendl_fd.c \
 			$(OUTPUTD)/ft_putchar_nonprint.c $(OUTPUTD)/ft_putendl_fd.c \
@@ -85,14 +88,13 @@ LIBFT_SRCS	+= $(LISTD)/ft_lstnew.c $(LISTD)/ft_lstdelone.c \
 			$(LISTD)/ft_lstdel_raw.c
 LIBFT_SRCS	+= $(INPUTD)/ft_gnl.c
 
-OBJS		= $(patsubst %.c, %.o, $(LIBFT_SRCS))
-LDFLAGS		+= -Werror -Wall -Wextra -Wno-unused-result -ansi -pedantic
-CFLAGS		+= -I$(INCD) -O2 -g3
+SRCS		= $(addprefix $(SRCD)/, $(LIBFT_SRCS))
+OBJS		= $(patsubst %.c, %.o, $(SRCS))
 
-HEADER		=	$(INCD)/libft.h $(INCD)/ft_type.h $(INCD)/ft_list.h \
-				$(INCD)/ft_input.h $(INCD)/ft_math.h
+HEADER		= libft.h ft_type.h ft_list.h ft_input.h ft_math.h
+HEADERS		= $(addprefix $(INCD)/, $(HEADER))
 
-.PHONY: clean fclean re showlib
+.PHONY: all clean fclean __fclean re showlib
 
 all: $(NAME)
 
@@ -100,8 +102,8 @@ $(NAME): $(OBJS)
 	@$(AR) rs $@ $(OBJS)
 	@echo "libft - compiled"
 
-%.o: %.c $(HEADER)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $<
+%.o: %.c $(HEADERS)
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 showlib: $(NAME)
 	@$(AR) -t $(NAME)
