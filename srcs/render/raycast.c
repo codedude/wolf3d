@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 14:49:58 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 17:21:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "raycast.h"
 #include "types.h"
 
-static int	_start_render(void *data)
+static int	start_render(void *data)
 {
 	t_algo		*algo;
 
@@ -28,7 +28,7 @@ static int	_start_render(void *data)
 	return (SUCCESS);
 }
 
-static int	_make_skybox_anim(t_env *env)
+static int	make_skybox_anim(t_env *env)
 {
 	t_anim		*anim;
 
@@ -55,10 +55,10 @@ int			render_prepare(t_env *env)
 		env->packs[i].start = i;
 		env->packs[i].end = env->sdl.width;
 		env->packs[i].step = tasks;
-		tp_add_task(env->tpool, &_start_render, &env->packs[i]);
+		tp_add_task(env->tpool, &start_render, &env->packs[i]);
 		i++;
 	}
-	if (_make_skybox_anim(env) == ERROR)
+	if (make_skybox_anim(env) == ERROR)
 		ft_putstr_fd("Skybox animation can't be set !\n", 2);
 	return (SUCCESS);
 }

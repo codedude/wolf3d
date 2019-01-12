@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 02:28:11 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 17:52:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ struct				s_object {
 	int				y_end;
 	int				x_end;
 	int				x_start;
+	int				x_offset;
 	int				y_offset;
 };
 

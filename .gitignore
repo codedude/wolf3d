@@ -54,7 +54,7 @@ dkms.conf
 # Program name
 wolf3d
 
-.DS_Store
+*.DS_Store
 map_generator/w3d_generator
 *.dSYM
 screenshots/*.bmp

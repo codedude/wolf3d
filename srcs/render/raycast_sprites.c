@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 02:43:22 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 18:16:57 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,10 @@ static t_float	vec_is_in_front(t_vec2 left, t_vec2 right, t_vec2 p)
 
 	s = (right.y * p.x + -right.x * p.y);
 	t = (-left.y * p.x + left.x * p.y);
-	if (s * t > 0.0)
-		return (s / (s + t));
-	return (-1.0);
+	return (s / (s + t));
 }
 
-static t_klist	*new_object_lst(t_env *env, int i, t_vec2 obj_dir,
+static t_bool	prepare_object(t_env *env, int i, t_vec2 obj_dir,
 					t_float obj_x)
 {
 	int			half_width;
@@ -117,7 +115,7 @@ static t_klist	*new_object_lst(t_env *env, int i, t_vec2 obj_dir,
 
 	obj = env->objects[i].e.object;
 	obj->z_buffer = vec_len(obj_dir) * vec_dot(vec_norm(obj_dir), env->cam.dir);
-	x = clamp_int((int)(obj_x * env->sdl.canvas_w), 0, env->sdl.width);
+	x = (int)(obj_x * env->sdl.canvas_w);
 	obj->size.y = env->sdl.canvas_h / obj->z_buffer;
 	obj->size.x = obj->size.y / env->sdl.canvas_h * env->sdl.canvas_w / 2.0;
 	obj->y_offset = (int)(obj->size.y * obj->z);
@@ -131,9 +129,15 @@ static t_klist	*new_object_lst(t_env *env, int i, t_vec2 obj_dir,
 		obj->y_start -= obj->y_offset;
 	half_width = (int)obj->size.x;
 	half_width = half_width & 0x01 ? (half_width - 1) / 2 : half_width / 2;
+	obj->x_offset = (int)(obj_x - clamp_float(obj_x, 0.0, env->sdl.canvas_w));
+	if (abs(obj->x_offset) >= obj->size.x)
+		return (False);
 	obj->x_start = x - half_width;
-	obj->x_end = x + half_width;
-	return (klist_new(env->objects + i));
+	if (obj->x_offset < 0)
+		obj->x_end = x + half_width + obj->x_offset;
+	else
+		obj->x_end = x + half_width - obj->x_offset;
+	return (True);
 }
 
 int				precompute_sprites(t_env *env, t_klist **lst)
@@ -141,7 +145,6 @@ int				precompute_sprites(t_env *env, t_klist **lst)
 	t_vec2	dir[2];
 	t_vec2	obj_dir;
 	t_klist	*tmp;
-	t_float	obj_x;
 	int		i;
 
 	dir[0] = env->cam.dir - env->cam.plane;
@@ -150,14 +153,18 @@ int				precompute_sprites(t_env *env, t_klist **lst)
 	while (i < env->objects_nb)
 	{
 		obj_dir = env->objects[i].e.object->pos - env->cam.pos;
-		if ((obj_x = vec_is_in_front(dir[0], dir[1], obj_dir)) >= 0.0)
+		if (vec_is_in_front(-env->cam.plane, env->cam.plane, obj_dir) >= 0.0)
 		{
-			if ((tmp = new_object_lst(env, i, obj_dir, obj_x)) == NULL)
+			if (prepare_object(env, i, obj_dir, vec_is_in_front(dir[0], dir[1],
+				obj_dir)) == True)
 			{
-				klist_clear(lst);
-				return (ERROR);
+				if ((tmp = klist_new(env->objects + i)) == NULL)
+				{
+					klist_clear(lst);
+					return (ERROR);
+				}
+				klist_add_sort(lst, tmp, sort_object);
 			}
-			klist_add_sort(lst, tmp, sort_object);
 		}
 		i++;
 	}
@@ -179,7 +186,9 @@ void			render_sprite(t_env *env, t_entity *obj)
 		{
 			it.y = obj->e.object->y_start < 0 ? 0 : obj->e.object->y_start;
 			tex.x = (int)(
-				(it.x - obj->e.object->x_start) / obj->e.object->size.x * text->w);
+				(it.x - obj->e.object->x_start +
+					((obj->e.object->x_offset < 0) ? -obj->e.object->x_offset : 0))
+				/ obj->e.object->size.x * text->w);
 			while (it.y < obj->e.object->y_end && it.y < env->sdl.height)
 			{
 				tex.y = (int)((it.y - obj->e.object->y_start

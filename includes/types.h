@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 12:59:23 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 00:56:14 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 17:09:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef t_float			t_vec4 __attribute__((ext_vector_type(4)));
 typedef union			u_color {
 	unsigned int		rgba;
 	struct {
-		unsigned char			r;
+		unsigned char	r;
 		unsigned char	g;
 		unsigned char	b;
 		unsigned char	a;

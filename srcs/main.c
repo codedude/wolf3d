@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 00:43:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 17:16:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ static int	loop(t_env *env)
 	new_explo(env);
 	if (render_prepare(env) == ERROR)
 		return (ERROR);
-	while (True)
+	while (compute_event(env) == True)
 	{
-		if (compute_event(env) == False)
-			break ;
 		compute_player(env);
 		compute_anim(&env->sdl, &env->anims);
 		sdl_update_texture(&env->sdl);
