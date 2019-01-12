@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 01:17:18 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 19:59:54 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ void			rc_render(t_env *env, t_hit_infos *infos)
 
 	if (infos->hit == 1)
 	{
-		text_id = env->map.data[(int)infos->map.y][(int)infos->map.x].tex_id - 1;
+		text_id = env->map.data[(int)infos->map.y][(int)infos->map.x].tex_id
+			- 1;
 		text = tex_get_wall(&env->sdl, text_id);
 		draw_wall(&env->sdl, infos, &env->cam, text);
 	}

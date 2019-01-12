@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 13:44:22 by valentin          #+#    #+#             */
-/*   Updated: 2019/01/11 11:59:09 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 20:02:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,12 @@ void		write_int(int fd, int n, int bytes)
 	write(fd, buff, (size_t)bytes);
 }
 
-int			write_img(t_sdl *sdl, int fd)
+void		write_img(t_sdl *sdl, int fd)
 {
 	int		i;
 	int		j;
 	size_t	n;
 	char	buff[BMP_BUFF];
-	int		*buff_tmp;
 
 	n = 0;
 	i = sdl->height - 1;
@@ -47,8 +46,8 @@ int			write_img(t_sdl *sdl, int fd)
 		j = 0;
 		while (j < sdl->width)
 		{
-			buff_tmp = (int *)&sdl->image[i * sdl->pitch + j * sdl->bpp];
-			get_int(*buff_tmp, (char *)&buff[n], 4);
+			get_int(*((int *)&sdl->image[i * sdl->pitch + j * sdl->bpp]),
+				(char *)&buff[n], 4);
 			if ((n += 4) == BMP_BUFF)
 			{
 				write(fd, buff, BMP_BUFF);
@@ -60,5 +59,4 @@ int			write_img(t_sdl *sdl, int fd)
 	}
 	if (n > 0)
 		write(fd, buff, n);
-	return (SUCCESS);
 }

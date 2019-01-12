@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 18:16:57 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 18:47:51 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,9 +185,8 @@ void			render_sprite(t_env *env, t_entity *obj)
 		if (obj->e.object->z_buffer < env->sdl.z_buffer[it.x])
 		{
 			it.y = obj->e.object->y_start < 0 ? 0 : obj->e.object->y_start;
-			tex.x = (int)(
-				(it.x - obj->e.object->x_start +
-					((obj->e.object->x_offset < 0) ? -obj->e.object->x_offset : 0))
+			tex.x = (int)((it.x - obj->e.object->x_start
+				+ ((obj->e.object->x_offset < 0) ? -obj->e.object->x_offset : 0))
 				/ obj->e.object->size.x * text->w);
 			while (it.y < obj->e.object->y_end && it.y < env->sdl.height)
 			{

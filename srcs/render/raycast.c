@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 17:21:24 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 19:59:32 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static int	make_skybox_anim(t_env *env)
 	alist_push(&env->anims, anim);
 	return (SUCCESS);
 }
-
 
 int			render_prepare(t_env *env)
 {

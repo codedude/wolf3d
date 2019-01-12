@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 16:41:50 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 01:22:53 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 19:50:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static int		tex_load_file_content(t_stack **stack, t_tex *tex, int n)
 }
 
 int				tex_load_file(char *filename, t_tex **tex,
-					int	*tex_nb)
+					int *tex_nb)
 {
 	t_stack		*stack;
 	int			n;

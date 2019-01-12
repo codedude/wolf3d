@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 23:59:28 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 18:46:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,17 @@ struct				s_cam {
 	t_vec2			pos;
 	t_vec2			dir;
 	t_vec2			plane;
-	t_float			mov_speed;
-	t_float			acceleration;
-	t_float			rot_speed;
 	t_float			height;
 	t_float			z;
 	t_float			z_pos;
 	t_float			z_default;
+	int				side_filter;
+	t_float			mov_speed;
+	t_float			acceleration;
+	t_float			rot_speed;
 	t_float			jump_time;
 	t_float			walk_anim;
 	int				action_state;
-	int				side_filter;
 };
 
 struct				s_map {

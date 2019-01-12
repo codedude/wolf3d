@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:46:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 23:48:22 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 19:58:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,23 @@ t_bool			anim_object(t_sdl *sdl, t_anim *anim)
 	return (False);
 }
 
+static t_bool	anim_door_2(t_door *door, int cmp, t_float cmp_val)
+{
+	if (cmp)
+	{
+		door->open_offset = cmp_val;
+		door->is_open = !door->is_open;
+		door->is_active = False;
+		return (True);
+	}
+	else
+		door->is_active = True;
+	return (False);
+}
+
 t_bool			anim_door(t_anim *anim)
 {
-	t_u32		cmp;
+	int			cmp;
 	t_float		cmp_val;
 	t_float		off;
 	t_door		*door;
@@ -70,14 +84,5 @@ t_bool			anim_door(t_anim *anim)
 		off = ANIM_DOOR_OFFSET;
 	}
 	door->open_offset += off;
-	if (cmp)
-	{
-		door->open_offset = cmp_val;
-		door->is_open = !door->is_open;
-		door->is_active = False;
-		return (True);
-	}
-	else
-		door->is_active = True;
-	return (False);
+	return (anim_door_2(door, cmp, cmp_val));
 }

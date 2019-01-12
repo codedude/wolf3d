@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 23:55:56 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 20:01:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_color				dark_color(t_color color, t_cam *cam, int side, t_float z)
 }
 
 static t_color		get_cf_color(t_tex *text, t_vec2 curr_cf, t_cam *cam,
-					t_float z)
+						t_float z)
 {
 	t_ivec2			tex;
 	t_color			color;
@@ -49,7 +49,7 @@ static t_color		get_cf_color(t_tex *text, t_vec2 curr_cf, t_cam *cam,
 }
 
 void				draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,
-					t_vec2 texel)
+						t_vec2 texel)
 {
 	t_vec2		curr_cf;
 	t_float		lookup;
@@ -78,7 +78,7 @@ void				draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 }
 
 void				draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos,
-					t_vec2 texel)
+						t_vec2 texel)
 {
 	t_vec2		curr_cf;
 	t_float		weight;
@@ -108,14 +108,15 @@ void				draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 }
 
 void				draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
-					t_tex *text)
+						t_tex *text)
 {
 	t_ivec2			tex;
 	int				y;
 	t_color			color;
 	t_float			half_height;
 
-	tex.x = (int)fmod((fabs(infos->wall_x - infos->tex_off_x) * text->w), text->w);
+	tex.x = (int)fmod(fabs(infos->wall_x - infos->tex_off_x) * text->w,
+		text->w);
 	if (infos->side == 0 && infos->ray.dir.x > 0)
 		tex.x = text->w - tex.x - 1;
 	else if (infos->side == 1 && infos->ray.dir.y < 0)
