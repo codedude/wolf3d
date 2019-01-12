@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/11 00:04:46 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 01:17:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,6 @@ static t_vec2	get_wall_texel(t_hit_infos *infos)
 	}
 	return (texel);
 }
-
-/*
-void			draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
-					t_map *map)
-{
-	int		y;
-	t_float	lerp;
-	t_float	ratio;
-	t_color	color;
-
-	color.rgba = 0x00;
-	y = infos->draw_start;
-	while (y < infos->draw_end)
-	{
-		lerp = clamp_float(y - cam->height, 0.0, sdl->canvas_h);
-		ratio = 1.0 - (lerp / sdl->canvas_h);
-		color.c.r = (unsigned char)(255.0 * ratio);
-		color.c.g = (unsigned char)(255.0 * ratio);
-		color.c.b = (unsigned char)(255.0 * ratio);
-		sdl_put_pixel(sdl, infos->x, y, color);
-		y++;
-	}
-}
-*/
 
 void			draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 					t_map *map)
@@ -101,11 +77,11 @@ void			rc_render(t_env *env, t_hit_infos *infos)
 	}
 	texel = get_wall_texel(infos);
 	draw_floor(env, &env->sdl, infos, texel);
-	if (env->map.is_skybox == 0)
+	if (env->map.show_ceil == 1)
 		draw_ceil(env, &env->sdl, infos, texel);
-	if (env->map.is_skybox == 0 && infos->hit == 0)
+	if (env->map.show_ceil == 1 && infos->hit == 0)
 		draw_skybox(&env->sdl, infos, &env->cam, &env->map);
-	else if (env->map.is_skybox == 1)
+	else if (env->map.show_ceil == 0)
 	{
 		if (infos->hit == 1)
 			infos->draw_end = infos->draw_start;

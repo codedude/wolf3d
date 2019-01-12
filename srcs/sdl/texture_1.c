@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture.c                                          :+:      :+:    :+:   */
+/*   texture_1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 16:41:50 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 18:21:28 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 01:22:53 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,36 +123,4 @@ int				tex_load_all(t_sdl *sdl)
 			&sdl->tex_sprite_nb) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
-}
-
-t_tex			*tex_get_wall(t_sdl *sdl, int id)
-{
-	return (&sdl->tex_walls[id]);
-}
-
-t_tex			*tex_get_sprite(t_sdl *sdl, int id)
-{
-	return (&sdl->tex_sprites[id]);
-}
-
-void			tex_destroy_all(t_sdl *sdl)
-{
-	int	i;
-
-	i = 0;
-	while (i < sdl->tex_wall_nb)
-	{
-		free(sdl->tex_walls[i].pixels);
-		++i;
-	}
-	i = 0;
-	while (i < sdl->tex_sprite_nb)
-	{
-		free(sdl->tex_sprites[i].pixels);
-		++i;
-	}
-	free(sdl->tex_walls);
-	free(sdl->tex_sprites);
-	sdl->tex_walls = NULL;
-	sdl->tex_sprites = NULL;
 }

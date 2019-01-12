@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 15:20:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 23:59:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,10 @@ struct				s_map {
 	t_entity		*skybox;
 	int				floor_id;
 	int				ceil_id;
+	int				show_ceil;
 	t_ivec2			spawn;
 	int				width;
 	int				height;
-	int				is_skybox;
 };
 
 struct				s_algo {

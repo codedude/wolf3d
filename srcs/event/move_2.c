@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 14:38:17 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 00:44:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	player_set_anim(t_cam *player)
 	}
 }
 
-void	update_player(t_env *env)
+void	compute_player(t_env *env)
 {
 	player_set_acceleration(&env->cam);
 	player_set_anim(&env->cam);

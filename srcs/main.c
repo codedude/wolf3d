@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/11 14:50:55 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 00:43:07 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,15 @@ void		new_explo(t_env *env)
 
 static int	loop(t_env *env)
 {
-	int			loop;
-	SDL_Event	event;
-	const Uint8	*state;
-
 	new_explo(env);
 	if (render_prepare(env) == ERROR)
 		return (ERROR);
-	loop = 1;
-	while (loop == 1)
+	while (True)
 	{
-		SDL_PumpEvents();
-		state = SDL_GetKeyboardState(NULL);
-		while (SDL_PollEvent(&event))
-			loop = manage_binds(&event, env);
-		manage_down(state, env);
-		if (loop != 1)
+		if (compute_event(env) == False)
 			break ;
-		update_player(env);
-		anim_compute(&env->sdl, &env->anims);
+		compute_player(env);
+		compute_anim(&env->sdl, &env->anims);
 		sdl_update_texture(&env->sdl);
 		tp_wait_for_queue(env->tpool);
 		compute_sprites(env);

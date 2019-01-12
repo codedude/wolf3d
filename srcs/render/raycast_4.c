@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 00:13:03 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 23:55:56 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,6 @@ static t_color		get_cf_color(t_tex *text, t_vec2 curr_cf, t_cam *cam,
 		cam, 0, z);
 	return (color);
 }
-
-/*
-** Enelver le check le check cam->z
-*/
 
 void				draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 					t_vec2 texel)

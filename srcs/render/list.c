@@ -6,14 +6,15 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:04:53 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 16:32:34 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/11 23:11:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "list.h"
+#include "entity.h"
 
-t_klist			*klist_new(KLIST_TYPE value)
+t_klist			*klist_new(t_entity *value)
 {
 	t_klist	*tmp;
 
@@ -40,7 +41,7 @@ void			klist_clear(t_klist **head)
 }
 
 void			klist_add_sort(t_klist **head, t_klist *entry,
-					int (*compare)(KLIST_TYPE a, KLIST_TYPE b))
+					int (*compare)(t_entity *a, t_entity *b))
 {
 	t_klist	*last;
 

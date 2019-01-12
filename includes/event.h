@@ -6,13 +6,14 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 14:38:08 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 00:42:20 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EVENT_H
 # define EVENT_H
 
+# include "ft_type.h"
 # include "types.h"
 # include "sdl_m.h"
 # include "env.h"
@@ -37,11 +38,14 @@
 
 # define ANIM_CROUCH_SPEED	25.0
 
-int						manage_binds(SDL_Event *event, t_env *env);
-void					manage_down(const Uint8	*state, t_env *env);
-
+t_bool					compute_event(t_env *env);
+t_bool					event_kb_poll(SDL_Event *event, t_env *env);
+void					event_kb_state(const Uint8	*state, t_env *env);
+void					switch_effect(t_cam *cam, void *new, int type);
+void					binds_open_door(t_env *env);
 void					update_skybox_offset(t_cam *cam, t_sdl *sdl,
 							t_map *map);
+
 t_vec2					vec_rotate(t_vec2 dir, t_float speed);
 t_vec2					move_forward(t_env *env, t_vec2 from, t_vec2 to,
 							t_float speed);
@@ -54,6 +58,6 @@ void					player_set_anim(t_cam *player);
 void					player_set_acceleration(t_cam *player);
 void					player_jump(t_cam *player);
 void					player_fall(t_cam *player);
-void					update_player(t_env *env);
+void					compute_player(t_env *env);
 
 #endif

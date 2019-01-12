@@ -6,20 +6,20 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:41:23 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 10:23:29 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 00:57:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "types.h"
 
-t_vec2		vec_rotate(t_vec2 dir, t_float speed)
+t_vec2		vec_rotate(t_vec2 dir, t_float angle)
 {
 	t_float old_x;
 
 	old_x = dir.x;
-	dir.x = dir.x * cos(-speed) - dir.y * sin(-speed);
-	dir.y = old_x * sin(-speed) + dir.y * cos(-speed);
+	dir.x = dir.x * cos(-angle) - dir.y * sin(-angle);
+	dir.y = old_x * sin(-angle) + dir.y * cos(-angle);
 	return (dir);
 }
 

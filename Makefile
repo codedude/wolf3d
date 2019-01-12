@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/11 23:02:23 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/12 01:21:46 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ UTILSD		=	utils
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image \
-				libft/libft.a libtpool/libtpool.a libft/libft.a
+				$(LIBFTD)/libft.a $(LIBTPOOLD)/libtpool.a $(LIBFTD)/libft.a
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
@@ -44,13 +44,17 @@ LDFLAGS		+=	-O2 #-fsanitize=address
 
 SRCS_F		=	main env
 SRCS_F		+=	$(RENDERD)/raycast $(RENDERD)/raycast_2 $(RENDERD)/raycast_3 \
-				$(RENDERD)/raycast_4 $(RENDERD)/entity $(RENDERD)/list \
+				$(RENDERD)/raycast_4 $(RENDERD)/entity $(RENDERD)/entity_new \
+				$(RENDERD)/list \
 				$(RENDERD)/depth_filters $(RENDERD)/color_filters \
-				$(RENDERD)/raycast_sprites $(RENDERD)/list $(RENDERD)/anim
+				$(RENDERD)/raycast_sprites $(RENDERD)/list $(RENDERD)/anim \
+				$(RENDERD)/anim_spec $(RENDERD)/anim_list
 SRCS_F		+=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
-				$(SDLD)/texture $(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2
+				$(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2 \
+				$(SDLD)/texture_1 $(SDLD)/texture_2
 SRCS_F		+=	$(PARSERD)/map_parser $(PARSERD)/stack $(PARSERD)/reader
 SRCS_F		+=	$(EVENTD)/move_1 $(EVENTD)/move_2 $(EVENTD)/move_3 \
+				$(EVENTD)/event_1 $(EVENTD)/event_2 $(EVENTD)/event_3 \
 				$(EVENTD)/event
 SRCS_F		+=	$(UTILSD)/vector $(UTILSD)/types
 
