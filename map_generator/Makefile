@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/04 13:55:48 by jbulant          ###   ########.fr        #
+#    Updated: 2019/01/11 04:21:16 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ FILES		=	env_destroy.c main.c manage_binds.c map.c \
 				save_file.c algo.c
 FILES		+=	env_tools.c tools.c mouse_tools.c mouse_track.c
 FILES		+=	panel.c panel_tex.c panel_draw.c panel_tools.c
-FILES		+=	buttons.c env_create_buttons.c
+FILES		+=	buttons.c
 FILES		+=	slider.c checkbox.c
 FILES		+=	env_init.c inspector_init.c map_props_init.c \
 				obj_prevbox_init.c wall_prevbox_init.c
@@ -48,7 +48,7 @@ FILES		+=	texdata_draw.c
 FILES		+=	draw_grid_lines.c draw_grid.c draw_node.c \
 				draw_line.c draw_player_radar.c draw_map.c
 FILES		+=	paint_bucket_tools.c brushes.c objects.c \
-				toolset.c
+				toolset.c editmod.c
 
 PARENT_FILES	=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
 					$(SDLD)/sdl_load_image.c $(SDLD)/sdl_sprites.c \
@@ -66,9 +66,9 @@ OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD) -I$(PARENT_INCD) -g3 -Wextra -Wall \
 				-Wno-unused-result -Wconversion -O3 -flto \
-				#-fsanitize=address
+				# -fsanitize=address
 
-LDFLAGS		+=	-flto -O3
+LDFLAGS		+=	-flto -O3 #-fsanitize=address
 
 HEADER			=	$(INCD)/gen_env.h $(INCD)/algo.h $(PARENT_HEADER)
 

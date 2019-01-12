@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:05:14 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/22 21:45:29 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/06 19:30:22 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,25 @@ void			ft_bresenham(t_bresenham *data)
 {
 	t_ivec2 orientation;
 	t_ivec2 direction;
-	t_ivec2 error;
+	int 	error[2];
 
 	direction = IVEC2_INIT(abs(data->v1.x - data->v2.x),
 					abs(data->v1.y - data->v2.y));
 	orientation = IVEC2_INIT(((data->v1.x < data->v2.x) ? 1 : -1),
 					((data->v1.y < data->v2.y) ? 1 : -1));
-	error.x = ((direction.x > direction.y) ? direction.x : -direction.y) / 2;
+	error[0] = ((direction.x > direction.y) ? direction.x : -direction.y) / 2;
 	while (!(data->v1.x == data->v2.x && data->v1.y == data->v2.y))
 	{
 		data->call(data->param, data->v1);
-		error.y = error.x;
-		if (error.y > -direction.x)
+		error[1] = error[0];
+		if (error[1] > -direction.x)
 		{
-			error.x -= direction.y;
+			error[0] -= direction.y;
 			data->v1.x += orientation.x;
 		}
-		if (error.y < direction.y)
+		if (error[1] < direction.y)
 		{
-			error.x += direction.x;
+			error[0] += direction.x;
 			data->v1.y += orientation.y;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 19:20:39 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 05:56:33 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/11 00:02:38 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,70 +167,11 @@ static void 	init_brush_fx(t_palette *palette)
 	palette->b_fx[Paint_Bucket] = compute_bucket_filler;
 }
 
-static void			change_brush(void *v_env)
-{
-	t_env		*env;
-	t_button	*b;
-	t_b_select	*selector;
-	t_u32		i;
-
-	env = (t_env*)v_env;
-	selector = &env->inspector.b_select;
-	i = 0;
-	while (i < Max_brush_type)
-	{
-		b = selector->type_select[i];
-		b->is_active = (env->mouse.button_index == i);
-		i++;
-	}
-	selector->type = (int)env->mouse.button_index;
-}
-
-static void			init_xy(t_sdl *sdl, int x[2], int y[2])
-{
-	x[0] = ipercent_of(sdl->width, B_TYPE_B_POS_X);
-	x[1] = ipercent_of(sdl->width, B_TYPE_B_POS_X2);
-	y[0] = ipercent_of(sdl->height, B_TYPE_B_POS_Y);
-	y[1] = ipercent_of(sdl->height, B_TYPE_B_OFF_Y);
-}
-
-static int 			init_type_selectors(t_env *env, t_b_select *selector)
-{
-	t_canvas	anchor;
-	int			x[2];
-	int			y[2];
-	t_u32		i;
-
-	i = 0;
-	anchor.size.x = ipercent_of(env->sdl.width, B_TYPE_B_SIZE_X);
-	anchor.size.y = ipercent_of(env->sdl.height, B_TYPE_B_SIZE_Y);
-	init_xy(&env->sdl, x, y);
-	while (i < Max_brush_type)
-	{
-		anchor.pos = IVEC2_INIT(x[i % 2], y[0] + y[1] * ((int)i / 2));
-		selector->type_select[i] = button_new(anchor, NULL, env, change_brush);
-		if (!selector->type_select[i])
-			return (ERROR);
-		/* TMP */
-		t_canvas c = selector->type_select[i]->anchor;
-		c.pos = 0;
-		texdata_fill_rect(selector->type_select[i]->tex,
-						selector->type_select[i]->anchor.size,
-						c, 0xffffff);
-		i++;
-	}
-	selector->type_select[0]->is_active = True;
-	selector->type = Pencil;
-	return (SUCCESS);
-}
-
 void 			palette_init(t_env *env)
 {
 	t_palette	*palette;
 
 	palette = &env->palette;
 	palette->brush = 0;
-	init_wall_pbox(&palette->b_pan, &env->sdl);
 	init_brush_fx(palette);
-	init_type_selectors(env, &env->inspector.b_select);
 }

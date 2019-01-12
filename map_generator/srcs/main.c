@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/04 14:02:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/11 04:50:29 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void		update_actions(t_env *env)
 
 	area = env->mouse.area;
 	if (env->mouse.b1 == False || area == Not_On_Window)
+	{
+		env->map_info.map->data[env->spawn.y][env->spawn.x] = 0;
 		return ;
+	}
 	update_mouse_pos(env);
 	env->mouse.b1_status = Mouse_Hold;
 	env->mouse.update[area](env);

@@ -6,20 +6,18 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 01:22:45 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 18:59:14 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/12 04:27:42 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gen_env.h"
 #include "libft.h"
 
-static int		create_map_boxes(t_objects_tools *otools, t_sdl *sdl)
+static int		create_map_boxes(t_panel *p, t_objects_tools *otools, t_sdl *sdl)
 {
-	t_panel		*p;
 	int			size;
 	t_u32		i;
 
-	p = otools->pan;
 	otools->map_boxes = (t_color**)ft_memalloc(sizeof(t_color*) * p->nb_elem);
 	if (!otools->map_boxes)
 		return (ERROR);
@@ -124,15 +122,50 @@ int				init_cbox_solid(t_objects_tools *otools, t_sdl *sdl, t_env *env)
 	return (SUCCESS);
 }
 
+int			gstate_obj_collect(void *v_env)
+{
+	t_env *env;
+
+	env = (t_env*)v_env;
+	if (env->obj.edit.selected == -1)
+		return (Unavailable);
+	return ((int)env->obj.list[env->obj.edit.selected]->collectible);
+}
+
+void		rstate_obj_collect(void *v_env)
+{
+	t_env 		*env;
+	t_object	*o;
+
+	env = (t_env*)v_env;
+	if (env->obj.edit.selected == -1)
+		return ;
+	o = env->obj.list[env->obj.edit.selected];
+	o->collectible = !o->collectible;
+}
+
+int			init_cbox_collect(t_objects_tools *otools, t_env *env)
+{
+	t_canvas	anchor;
+
+	anchor = otools->cbox_solid->anchor;
+	anchor.pos.y -= (int)(anchor.size.y * 1.5);
+	if (!(otools->cbox_collect = checkbox_new(anchor, NULL)))
+		return (ERROR);
+	checkbox_setup(otools->cbox_collect, env,
+			rstate_obj_collect, gstate_obj_collect);
+	return (SUCCESS);
+}
+
 int				init_objects_tools(t_objects_tools *otools, t_sdl *sdl,
 								t_env *env)
 {
 	otools->count = 0;
 	otools->edit.selected = -1;
-	if (init_object_pbox(&otools->pan, sdl) == ERROR
-	|| create_map_boxes(otools, sdl) == ERROR
+	if (create_map_boxes(env->rpan.p[Object_Panel], otools, sdl) == ERROR
 	|| init_grid_snap(otools, sdl) == ERROR
-	|| init_cbox_solid(otools, sdl, env) == ERROR)
+	|| init_cbox_solid(otools, sdl, env) == ERROR
+	|| init_cbox_collect(otools, env) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
 }

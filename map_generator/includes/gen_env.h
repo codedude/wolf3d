@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/31 01:52:30 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/12 04:37:00 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@
 **	GRID
 */
 
-# define GRID_OFF_X			5
+# define GRID_OFF_X			1
 # define GRID_OFF_Y			5
-# define GRID_PERC_X		70
+# define GRID_PERC_X		74
 
 # define GRID_SIZE_X		(GRID_PERC_X - (GRID_OFF_X * 2))
 # define GRID_SIZE_Y		(100 - (GRID_OFF_Y * 2))
@@ -52,25 +52,14 @@
 
 # define PREV_BOX_PERC		10
 
-# define BRUSH_PAN_SIZE_X	(int)(BRUSH_C_SIZE * 1.5)
-# define BRUSH_PAN_SIZE_Y	75
-
-# define BRUSH_PAN_OFF_X	68
-# define BRUSH_PAN_OFF_Y	7
-
 # define BRUSH_C_SIZE		10
 # define BRUSH_OFF_X		(GRID_PERC_X + GRID_OFF_X)
 # define BRUSH_OFF_Y		95
 
-# define OBJ_OFF_X			(92)
+# define OBJ_OFF_X			(91)
 # define OBJ_OFF_Y			GRID_OFF_Y
 # define OBJ_SIZE_X			7
 # define OBJ_SIZE_Y			GRID_SIZE_Y
-
-# define WTEX_OFF_X			(OBJ_OFF_X - (OBJ_SIZE_X + 2))
-# define WTEX_OFF_Y			OBJ_OFF_Y
-# define WTEX_SIZE_X		OBJ_SIZE_X
-# define WTEX_SIZE_Y		OBJ_SIZE_Y
 
 /*
 **	MPROPS
@@ -78,8 +67,8 @@
 
 # define MPROPS_SIZE_X			(MPROPS_B_SIZE_X + MPROPS_B_OFF_X * 2 + 2)
 # define MPROPS_SIZE_Y			(MPROPS_B_SIZE_Y + MPROPS_B_OFF_Y * 2 + 6)
-# define MPROPS_TOP_POS_Y		WTEX_OFF_Y
-# define MPROPS_TOP_POS_X		(WTEX_OFF_X - (MPROPS_SIZE_X + 1))
+# define MPROPS_TOP_POS_Y		OBJ_OFF_Y
+# define MPROPS_TOP_POS_X		(OBJ_OFF_X - (MPROPS_SIZE_X + 1))
 
 # define MPROPS_B_SIZE_X		4
 # define MPROPS_B_SIZE_Y		4
@@ -113,15 +102,35 @@
 
 # define INSPECTOR_SIZE_X		(BUTTON_SIZE + BUTTON_OFFSET * 2 + 2)
 # define INSPECTOR_SIZE_Y		(BUTTON_TOP_POS_Y - (MPROPS_TOP_POS_Y + MPROPS_SIZE_Y + 4))
-// # define INSPECTOR_SIZE_Y		(WTEX_SIZE_Y - (MPROPS_SIZE_Y + 2) - (BUTTON_SIZE + 1))
 # define INSPECTOR_TOP_POS_Y	(MPROPS_TOP_POS_Y + (MPROPS_SIZE_Y + 2))
-# define INSPECTOR_TOP_POS_X	(WTEX_OFF_X - (INSPECTOR_SIZE_X + 1))
+# define INSPECTOR_TOP_POS_X	(OBJ_OFF_X - (INSPECTOR_SIZE_X + 1))
 # define INSPECTOR_MID_POS_X	(INSPECTOR_TOP_POS_X + INSPECTOR_SIZE_X / 2)
 
+/*
+**	EDITMOD
+*/
+
+# define EDITMOD_SIZE_X			INSPECTOR_SIZE_X
+# define EDITMOD_SIZE_Y			((GRID_OFF_Y + GRID_SIZE_Y) - EDITMOD_POS_Y)
+# define EDITMOD_POS_X			INSPECTOR_TOP_POS_X
+# define EDITMOD_POS_Y			(INSPECTOR_TOP_POS_Y + INSPECTOR_SIZE_Y + 1)
+# define EDITMOD_MID_POS_X		(EDITMOD_POS_X + EDITMOD_SIZE_X / 2)
+# define EDITMOD_MID_POS_Y		(EDITMOD_POS_Y + EDITMOD_SIZE_Y / 2)
+
+# define EM_B_POS_X				(EDITMOD_MID_POS_X - (EM_B_SIZE_X + 1))
+# define EM_B_POS_Y				(EDITMOD_MID_POS_Y - (EM_B_SIZE_Y + 1))
+# define EM_B_POS2_X			(EDITMOD_MID_POS_X + 1)
+# define EM_B_POS2_Y			(EDITMOD_MID_POS_Y + 1)
+
+# define EM_B_SIZE_X			5
+# define EM_B_SIZE_Y			3
+
+// OLD !
 # define BUTTON_SIZE			4
 # define BUTTON_OFFSET			(BUTTON_SIZE + 1)
-# define BUTTON_TOP_POS_X		(WTEX_OFF_X - (BUTTON_SIZE + 2))
-# define BUTTON_TOP_POS_Y		(WTEX_OFF_Y + WTEX_SIZE_Y - (BUTTON_SIZE * 2) - 1)
+# define BUTTON_TOP_POS_X		(OBJ_OFF_X - (BUTTON_SIZE + 2))
+# define BUTTON_TOP_POS_Y		(OBJ_OFF_Y + OBJ_SIZE_Y - (BUTTON_SIZE * 2) - 1)
+
 
 /*
 **	GRID_SNAP_SLIDER
@@ -239,12 +248,15 @@ typedef struct s_object_edit	t_object_edit;
 typedef struct s_objects_tools	t_objects_tools;
 typedef struct s_slider			t_slider;
 typedef struct s_object			t_object;
+typedef struct s_world_i		t_world_i;
 typedef struct s_inspector		t_inspector;
 typedef struct s_palette		t_palette;
 typedef struct s_map_info		t_map_info;
 typedef struct s_toolset		t_toolset;
+typedef struct s_rpanel			t_rpanel;
 typedef struct s_radar			t_radar;
 typedef struct s_b_select		t_b_select;
+typedef struct s_editmod		t_editmod;
 typedef struct s_env			t_env;
 
 struct			s_mprops {
@@ -259,8 +271,7 @@ enum			e_win_area {
 	Map_properties_buttons,
 	Inspector,
 	Tools_buttons,
-	Wall_Textures_Menu,
-	Object_Textures_Menu,
+	Right_Panel,
 	Max_Win_Area,
 	Not_On_Window = Max_Win_Area
 };
@@ -300,7 +311,7 @@ struct			s_color_pick {
 	t_color		ignore_c;
 };
 
-enum			e_brush_type {
+enum			e_brush_Buttons {
 	Pencil,
 	Line,
 	Horizontal_line,
@@ -308,7 +319,10 @@ enum			e_brush_type {
 	Square,
 	Circle,
 	Paint_Bucket,
-	Max_brush_type
+	Max_brush_type,
+	Brush_Mode = Max_brush_type,
+	Eraser_Mode,
+	Max_Brush_Buttons
 };
 
 # define MAX_OBJECTS		150
@@ -317,6 +331,7 @@ struct			s_object {
 	t_vec2		pos;
 	t_float		y_pos;
 	t_bool		is_solid;
+	t_bool		collectible;
 	t_u32		id;
 };
 
@@ -380,6 +395,7 @@ void			checkbox_destroy(t_checkbox **cbox);
 enum			e_otools_button {
 	Grid_Snap,
 	Box_Is_Solid,
+	Box_Collectible,
 	Obj_Preview,
 	Otools_No_Button
 };
@@ -395,10 +411,11 @@ struct			s_objects_tools {
 	t_object_edit	edit;
 	t_slider		*g_snap;
 	t_checkbox		*cbox_solid;
-	t_panel			*pan;
+	t_checkbox		*cbox_collect;
 	t_color			**map_boxes;
 	t_ivec2			mb_size;
 	t_object		*list[MAX_OBJECTS];
+	t_bool			holding;
 	t_u32			count;
 };
 
@@ -420,14 +437,30 @@ struct			s_radar {
 };
 
 struct			s_b_select {
-	t_button	*type_select[Max_brush_type];
+	t_button	*type_select[Max_Brush_Buttons];
 	t_ivec2		anchor;
 	int			type;
 	int			type_save;
 };
 
-struct			s_inspector {
+enum			e_world_button {
+	WButton_Ceil,
+	WButton_Floor,
+	Max_WButton_Prev,
+	WButton_Radar = Max_WButton_Prev,
+	WButton_Draw_Ceil
+};
+
+struct			s_world_i {
 	t_radar		radar;
+	t_canvas	prev[Max_WButton_Prev];
+	t_u32		id[Max_WButton_Prev];
+	t_bool		draw_ceil;
+	t_checkbox	*cbox_ceil;
+};
+
+struct			s_inspector {
+	t_world_i	world;
 	t_b_select	b_select;
 	void		(*draw[Max_Inspector_mod])(t_env *);
 	t_bool		(*get_button[Max_Inspector_mod])(t_env *);
@@ -437,7 +470,6 @@ struct			s_inspector {
 
 struct			s_palette {
 	void		(*b_fx[Max_brush_type])(t_env *, t_canvas);
-	t_panel		*b_pan;
 	int			brush;
 };
 
@@ -466,10 +498,11 @@ void			mprops_act_size_y_down(void *v_env);
 
 enum			e_tooltype {
 	Brush,
-	SpawnSetter,
 	Eraser,
+	SpawnSetter,
 	Picker,
-	Hand,
+	Max_ToolType_Painter,
+	Hand = Max_ToolType_Painter,
 	ZoomIn,
 	ZoomOut,
 	Max_ToolType
@@ -485,7 +518,35 @@ struct			s_toolset {
 void			init_toolset(t_toolset *toolset);
 void			toolset_set_type(t_toolset *toolset, t_u32 type);
 void			toolset_set_tmp_type(t_toolset *toolset, t_u32 type);
+t_u32			toolset_get_type(t_toolset *toolset);
 void			toolset_use_fx(t_env *env);
+
+enum			e_rpan_type {
+	Texture_Panel,
+	Object_Panel,
+	Max_RPan_Type
+};
+
+struct			s_rpanel {
+	t_panel		*p[Max_RPan_Type];
+	t_u32		type;
+};
+
+enum			e_editmod_type {
+	Painter,
+	World,
+	Door,
+	Object,
+	Max_EditMod_type
+};
+
+struct			s_editmod {
+	t_canvas	anchor;
+	t_button	*switch_b[Max_EditMod_type];
+	t_u32		type;
+};
+
+int				init_editmod(t_env *env, t_sdl *sdl, t_editmod *editmod);
 
 struct			s_env {
 	t_sdl			sdl;
@@ -497,19 +558,16 @@ struct			s_env {
 	t_inspector		inspector;
 	t_palette		palette;
 	t_mprops		map_properties;
+	t_rpanel		rpan;
+	t_editmod		editmod;
 	t_ivec2			spawn;
-	t_button		*act_buttons[Max_action];
 	int				ed_map_value;
 	t_bool			erasing;
-	int				user_action;
 	int				spawn_rotation;
 	t_canvas		grid;
 	int				space;
 	int				alt;
 	int				ctrl;
-	int				mouse1;
-	int				mouse2;
-	int				spawner_id;
 	char			*save_file;
 	int				saved;
 };
@@ -523,11 +581,10 @@ int				init_wall_pbox(t_panel **pan, t_sdl *sdl);
 int				init_objects_tools(t_objects_tools *obj_tools, t_sdl *sdl,
 							t_env *env);
 int				init_object_pbox(t_panel **pan, t_sdl *sdl);
-int				env_create_buttons(t_env *env);
 int				env_create_inspect(t_env *env);
 int				env_create_mprops(t_env *env);
 void			env_destroy(t_env *env);
-t_map			*create_new_map(t_ivec2 size);
+t_map			*map_new(t_ivec2 size);
 void			clear_map(t_map *map);
 void			destroy_map(t_map *map);
 int				sdl_clear_color(t_sdl *sdl, unsigned int color);
@@ -543,7 +600,7 @@ void			manage_down(const Uint8	*state, t_env *env);
 void			draw_grid(t_env *env, t_sdl *sdl);
 // void			draw_grid_lines(t_env *env, t_sdl *sdl);
 void			draw_map(t_env *env, t_sdl *sdl);
-void			draw_player_radar(t_env *env);
+void			draw_player_radar(t_env *env, t_radar *radar);
 void			draw_node(t_env *env, t_sdl *sdl, t_map_info *minf, t_ivec2 i);
 void			draw_on_map(t_env *env, int brush);
 

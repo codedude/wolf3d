@@ -9,7 +9,7 @@ static void			action_brush_select(void *v_env)
 
 	env = (t_env*)v_env;
 	selector = &env->inspector.b_select;
-	button_trigger(selector->type_select[selector->type]);
+	button_trigger(selector->type_select[env->mouse.button_index]);
 }
 
 static void			draw_brush_select(t_env *env)
@@ -20,7 +20,7 @@ static void			draw_brush_select(t_env *env)
 
 	selector = &env->inspector.b_select;
 	i = 0;
-	while (i < Max_brush_type)
+	while (i < Max_Brush_Buttons)
 	{
 		b = selector->type_select[i];
 		button_draw(env, b);
@@ -36,7 +36,7 @@ static t_bool		gb_brush_select(t_env *env)
 
 	selector = &env->inspector.b_select;
 	i = 0;
-	while (i < Max_brush_type)
+	while (i < Max_Brush_Buttons)
 	{
 		b = selector->type_select[i];
 		if (button_hover(b, env->mouse.pos))
@@ -50,11 +50,115 @@ static t_bool		gb_brush_select(t_env *env)
 	return (False);
 }
 
+static void			change_brush(void *v_env)
+{
+	t_env		*env;
+	t_button	*b;
+	t_b_select	*selector;
+	t_u32		i;
+
+	env = (t_env*)v_env;
+	selector = &env->inspector.b_select;
+	i = 0;
+	while (i < Max_brush_type)
+	{
+		b = selector->type_select[i];
+		b->is_active = (env->mouse.button_index == i);
+		i++;
+	}
+	selector->type = (int)env->mouse.button_index;
+}
+
+static void			init_xy(t_sdl *sdl, int x[2], int y[2])
+{
+	x[0] = ipercent_of(sdl->width, B_TYPE_B_POS_X);
+	x[1] = ipercent_of(sdl->width, B_TYPE_B_POS_X2);
+	y[0] = ipercent_of(sdl->height, B_TYPE_B_POS_Y);
+	y[1] = ipercent_of(sdl->height, B_TYPE_B_OFF_Y);
+}
+
+static int 			init_type_selectors(t_env *env, t_b_select *selector)
+{
+	t_button	*b;
+	t_canvas	anchor;
+	int			x[2];
+	int			y[2];
+	t_u32		i;
+
+	i = 0;
+	anchor.size.x = ipercent_of(env->sdl.width, B_TYPE_B_SIZE_X);
+	anchor.size.y = ipercent_of(env->sdl.height, B_TYPE_B_SIZE_Y);
+	init_xy(&env->sdl, x, y);
+	while (i < Max_brush_type)
+	{
+		anchor.pos = IVEC2_INIT(x[i % 2], y[0] + y[1] * ((int)i / 2));
+		b = button_new(anchor, NULL, env, change_brush);
+		if (!b)
+			return (ERROR);
+		anchor.pos = 0;
+		texdata_fill_rect(b->tex, anchor.size, anchor, 0xffffff);
+		selector->type_select[i] = b;
+		i++;
+	}
+	selector->type_select[0]->is_active = True;
+	selector->type = Pencil;
+	return (SUCCESS);
+}
+
+static void			selector_set_mode(void *v_env)
+{
+	t_env		*env;
+	t_b_select	*selector;
+
+	env = (t_env*)v_env;
+	selector = &env->inspector.b_select;
+	if (env->mouse.button_index == Brush_Mode)
+	{
+		toolset_set_type(&env->toolset, Brush);
+		selector->type_select[Brush_Mode]->is_active = True;
+		selector->type_select[Eraser_Mode]->is_active = False;
+	}
+	else if (env->mouse.button_index == Eraser_Mode)
+	{
+		toolset_set_type(&env->toolset, Eraser);
+		selector->type_select[Brush_Mode]->is_active = False;
+		selector->type_select[Eraser_Mode]->is_active = True;
+	}
+}
+
+static int 			init_mode_selectors(t_env *env, t_b_select *selector,
+						t_canvas i_anch)
+{
+	t_canvas	anchor;
+	t_ivec2		ref;
+	t_button	*b;
+
+	ref = i_anch.pos + i_anch.size / 2;
+	anchor = selector->type_select[0]->anchor;
+	anchor.pos.y = (ref.y + (ref.y - anchor.pos.y)) - anchor.size.y;
+	anchor.pos.x = selector->type_select[0]->anchor.pos.x;
+	if (!(b = button_new(anchor, NULL, env, selector_set_mode)))
+		return (ERROR);
+	selector->type_select[Brush_Mode] = b;
+	texdata_fill_rect(b->tex, anchor.size,
+			CANVAS_INIT(0, anchor.size), 0xffffff);
+	b->is_active = True;
+	anchor.pos.x = selector->type_select[1]->anchor.pos.x;
+	if (!(b = button_new(anchor, NULL, env, selector_set_mode)))
+		return (ERROR);
+	selector->type_select[Eraser_Mode] = b;
+	texdata_fill_rect(b->tex, anchor.size,
+			CANVAS_INIT(0, anchor.size), 0xffffff);
+	return (SUCCESS);
+}
+
 static int			create_brush_select_inpector(t_env *env, t_canvas i_anch)
 {
 	t_button	*b;
 
-	if (!(b = button_new(i_anch, NULL, env, action_brush_select)))
+	if (init_type_selectors(env, &env->inspector.b_select) == ERROR
+		|| init_mode_selectors(env, &env->inspector.b_select, i_anch) == ERROR
+		|| !(b = button_new(i_anch, NULL, env, action_brush_select)))
 		return (ERROR);
 	texdata_fill_rect(b->tex, i_anch.size,
 					CANVAS_INIT(0, i_anch.size), 0xacacac);
@@ -64,54 +168,184 @@ static int			create_brush_select_inpector(t_env *env, t_canvas i_anch)
 	return (SUCCESS);
 }
 
-static void			action_player_radar(void *v_env)
+static void			draw_cf_prev(t_env *env, t_world_i *w_inf)
+{
+	t_u32		id;
+
+	id = w_inf->id[WButton_Ceil];
+	draw_tex(env, env->rpan.p[Texture_Panel]->elem_tex[id],
+		False, w_inf->prev[WButton_Ceil]);
+	id = w_inf->id[WButton_Floor];
+	draw_tex(env, env->rpan.p[Texture_Panel]->elem_tex[id],
+		False, w_inf->prev[WButton_Floor]);
+}
+
+static void			draw_world(t_env *env)
+{
+	t_world_i	*w_inf;
+
+	w_inf = &env->inspector.world;
+	draw_player_radar(env, &w_inf->radar);
+	draw_cf_prev(env, w_inf);
+	checkbox_draw(env, w_inf->cbox_ceil);
+}
+
+static void			action_player_radar(t_env *env, t_radar *radar)
 {
 	t_ivec2		mpos;
-	t_radar		*radar;
-	t_env		*env;
 	t_button	*b;
 
-	env = (t_env*)v_env;
-	radar = &env->inspector.radar;
 	b = env->inspector.action[Player_Radar];
 	mpos = env->mouse.pos - radar->center;
 	env->spawn_rotation = (int)(atan2(mpos.y, mpos.x) * 180.0 / M_PI) + 180;
 }
 
-static t_bool		gb_player_radar(t_env *env)
+static void			action_world(void *v_env)
 {
-	t_radar		*radar;
+	t_env		*env;
+	t_world_i	*w_inf;
+	t_u32		b_index;
+
+	env = (t_env*)v_env;
+	w_inf = &env->inspector.world;
+	b_index = env->mouse.button_index;
+	if (b_index == WButton_Radar)
+		action_player_radar(env, &w_inf->radar);
+	else if (env->mouse.b1_status == Mouse_Release)
+	{
+		if (b_index == WButton_Ceil)
+			w_inf->id[WButton_Ceil] = env->rpan.p[Texture_Panel]->cursor;
+		else if (b_index == WButton_Floor)
+			w_inf->id[WButton_Floor] = env->rpan.p[Texture_Panel]->cursor;
+		else if (b_index == WButton_Draw_Ceil)
+			checkbox_clic(w_inf->cbox_ceil);
+	}
+}
+
+static t_bool		gb_player_radar(t_env *env, t_radar *radar)
+{
 	t_ivec2		rpos;
 
-	radar = &env->inspector.radar;
 	rpos = env->mouse.record_pos_b - radar->center;
 	return (rpos.x * rpos.x + rpos.y * rpos.y < radar->squ_radius);
 }
 
-static int			create_player_radar_inpector(t_env *env, t_canvas i_anch)
+static t_bool		gb_world(t_env *env)
+{
+	t_world_i	*w_inf;
+	int			button;
+
+	w_inf = &env->inspector.world;
+	button = -1;
+	if (is_bounded(env->mouse.pos, w_inf->prev[WButton_Ceil]))
+		button = WButton_Ceil;
+	else if (is_bounded(env->mouse.pos, w_inf->prev[WButton_Floor]))
+		button = WButton_Floor;
+	else if (gb_player_radar(env, &w_inf->radar) == True)
+		button = WButton_Radar;
+	else if (checkbox_hover(w_inf->cbox_ceil, env->mouse.pos))
+		button = WButton_Draw_Ceil;
+	else
+		return (False);
+	env->mouse.button_index = (t_u32)button;
+	return (True);
+}
+
+static void			init_radar(t_env *env, t_radar *radar, t_canvas i_anch)
 {
 	t_button	*b;
-	t_radar		*radar;
 
-	radar = &env->inspector.radar;
-	if (!(b = button_new(i_anch, NULL, env, action_player_radar)))
-		return (ERROR);
+	b = env->inspector.action[Player_Radar];
 	texdata_fill_rect(b->tex, i_anch.size, CANVAS_INIT(0, i_anch.size),
-					0x424242);
-	radar->f_radius = (t_float)i_anch.size.x / 2.0;
-	radar->center = (int)radar->f_radius;
+					0xacacac);
+	radar->f_radius = (t_float)ipercent_of(i_anch.size.x, 95) / 2.0;
+	radar->center = (int)i_anch.size.x / 2;
 	radar->center.y += (int)(radar->f_radius * 0.2);
 	texdata_draw_circle_filled(b->tex, CANVAS_INIT(radar->center, i_anch.size)
-					, (t_float)i_anch.size.x / 2.0, 0xababab);
+					, radar->f_radius, 0x757575);
 	radar->center += i_anch.pos;
 	radar->radius = (int)radar->f_radius;
-	radar->vlines_height = (t_float)i_anch.size.x * 0.51;
+	radar->vlines_height = radar->f_radius + 2.0;
 	radar->squ_radius = radar->radius * radar->radius;
-	radar->triangle_cdist = (t_float)i_anch.size.x * 0.25;
-	radar->gizmo_rad = (int)((i_anch.size.x + 1) / 2.0);
+	radar->triangle_cdist = radar->vlines_height / 2.0;
+	radar->gizmo_rad = (int)round(radar->f_radius);
+}
+
+static void			init_cf_prev(t_env *env, t_world_i *w_inf, t_canvas i_anch)
+{
+	t_canvas	anchor;
+	int			offset;
+	t_button	*b;
+
+	b = env->inspector.action[Player_Radar];
+	anchor.size = env->rpan.p[Texture_Panel]->elem_anchor.size;
+	offset = (int)((t_float)anchor.size.x * 0.1);
+	anchor.pos.y = w_inf->radar.center.y + (int)(w_inf->radar.f_radius * 1.5);
+	anchor.pos.x = w_inf->radar.center.x - (anchor.size.x + offset);
+	w_inf->prev[WButton_Ceil] = anchor;
+	anchor.pos.x = w_inf->radar.center.x + offset;
+	w_inf->prev[WButton_Floor] = anchor;
+	anchor.pos -= i_anch.pos;
+	texdata_fill_rect(b->tex, i_anch.size, anchor, 0x757575);
+	anchor.pos.x = (w_inf->radar.center.x - (anchor.size.x + offset))
+			- i_anch.pos.x;
+	texdata_fill_rect(b->tex, i_anch.size, anchor, 0x757575);
+	w_inf->id[WButton_Ceil] = 0;
+	w_inf->id[WButton_Floor] = 0;
+}
+
+int			gstate_draw_ceil(void *v_env)
+{
+	t_env		*env;
+
+	env = (t_env*)v_env;
+	return ((int)env->inspector.world.draw_ceil);
+}
+
+void		rstate_draw_ceil(void *v_env)
+{
+	t_env 		*env;
+	t_world_i	*w_inf;
+
+	env = (t_env*)v_env;
+	w_inf = &env->inspector.world;
+	w_inf->draw_ceil = !w_inf->draw_ceil;
+}
+
+int				init_cbox_draw_ceil(t_env *env, t_sdl *sdl,
+					t_world_i *w_inf, t_canvas i_anch)
+{
+	t_canvas	anchor;
+
+	if (sdl->width < sdl->height)
+		anchor.size = ipercent_of(sdl->width, CB_SOL_S_SIZE);
+	else
+		anchor.size = ipercent_of(sdl->height, CB_SOL_S_SIZE);
+	anchor.pos.x = i_anch.pos.x + i_anch.size.x;
+	anchor.pos.x -= (int)(anchor.size.x * 1.5);
+	anchor.pos.y = w_inf->prev[WButton_Ceil].pos.y
+				+ w_inf->prev[WButton_Ceil].size.y;
+	anchor.pos.y += (int)(anchor.size.y * 0.5);
+	if (!(w_inf->cbox_ceil = checkbox_new(anchor, NULL)))
+		return (ERROR);
+	checkbox_setup(w_inf->cbox_ceil, env, rstate_draw_ceil, gstate_draw_ceil);
+	return (SUCCESS);
+}
+
+static int			create_world_inpector(t_env *env, t_canvas i_anch)
+{
+	t_world_i	*w_inf;
+	t_button	*b;
+
+	w_inf = &env->inspector.world;
+	if (!(b = button_new(i_anch, NULL, env, action_world)))
+		return (ERROR);
 	env->inspector.action[Player_Radar] = b;
-	env->inspector.draw[Player_Radar] = draw_player_radar;
-	env->inspector.get_button[Player_Radar] = gb_player_radar;
+	env->inspector.draw[Player_Radar] = draw_world;
+	env->inspector.get_button[Player_Radar] = gb_world;
+	init_radar(env, &w_inf->radar, i_anch);
+	init_cf_prev(env, w_inf, i_anch);
+	init_cbox_draw_ceil(env, &env->sdl, w_inf, i_anch);
 	return (SUCCESS);
 }
 
@@ -141,13 +375,18 @@ static void			action_object_edit(void *v_env)
 		slider_update_bypos(env->obj.g_snap, env->mouse.pos);
 	else if (env->mouse.button_index == Obj_Preview)
 		update_obj_y(env);
-	else if (env->mouse.b1_status == Mouse_Release
-		&& env->mouse.button_index == Box_Is_Solid
-		&& checkbox_hover(env->obj.cbox_solid, env->mouse.pos))
-		checkbox_clic(env->obj.cbox_solid);
+	else if (env->mouse.b1_status == Mouse_Release)
+	{
+		if (env->mouse.button_index == Box_Is_Solid
+			&& checkbox_hover(env->obj.cbox_solid, env->mouse.pos))
+			checkbox_clic(env->obj.cbox_solid);
+		else if (env->mouse.button_index == Box_Collectible
+			&& checkbox_hover(env->obj.cbox_collect, env->mouse.pos))
+			checkbox_clic(env->obj.cbox_collect);
+	}
 }
 
-static void			draw_y_line(t_env *env, t_object *obj, int y)
+static void			draw_y_line(t_env *env, int y)
 {
 	t_color		c;
 	t_ivec2		px1;
@@ -171,16 +410,18 @@ static void			draw_obj_selected(t_env *env)
 {
 	t_object	*obj;
 	t_canvas	tex_anchor;
+	t_panel		*p;
 
 	obj = env->obj.list[env->obj.edit.selected];
+	p = env->rpan.p[Object_Panel];
 	tex_anchor = env->obj.edit.tex_prev;
 	tex_anchor.pos.y -= (int)((env->obj.edit.bg_prev.size.y - tex_anchor.size.y)
 					/ 2.0 * obj->y_pos);
 	if (env->mouse.b1 == True && env->mouse.area == Inspector
 	&& env->mouse.button_index == Obj_Preview)
-		draw_y_line(env, obj, tex_anchor.pos.y + tex_anchor.size.y / 2);
+		draw_y_line(env, tex_anchor.pos.y + tex_anchor.size.y / 2);
 	env_set_transparency(env, 0x0);
-	draw_tex(env, env->obj.pan->elem_tex[obj->id], False, tex_anchor);
+	draw_tex(env, p->elem_tex[obj->id], False, tex_anchor);
 	env_unset_transparency(env);
 }
 
@@ -189,33 +430,32 @@ static void			draw_object_edit(t_env *env)
 	if (env->obj.edit.selected != -1)
 		draw_obj_selected(env);
 	checkbox_draw(env, env->obj.cbox_solid);
+	checkbox_draw(env, env->obj.cbox_collect);
 	slider_draw(env, env->obj.g_snap);
 }
 
 static t_bool		gb_object_edit(t_env *env)
 {
 	if (slider_hover(env->obj.g_snap, env->mouse.pos))
-	{
 		env->mouse.button_index = Grid_Snap;
-		return (True);
-	}
 	else if (checkbox_hover(env->obj.cbox_solid, env->mouse.pos))
-	{
 		env->mouse.button_index = Box_Is_Solid;
-		return (True);
-	}
+	else if (checkbox_hover(env->obj.cbox_collect, env->mouse.pos))
+		env->mouse.button_index = Box_Collectible;
 	else if (env->obj.edit.selected != -1
 		&& is_bounded(env->mouse.pos, env->obj.edit.bg_prev))
-	{
 		env->mouse.button_index = Obj_Preview;
-		return (True);
-	}
-	return (False);
+	else
+		return (False);
+	return (True);
 }
 
 static void			init_object_edit(t_env *env, t_object_edit *oedit,
 								t_button *b, t_canvas i_anch)
 {
+	t_panel		*p;
+
+	p = env->rpan.p[Object_Panel];
 	oedit->bg_prev.size.x = ipercent_of(i_anch.size.x, 95);
 	oedit->bg_prev.size.y = ipercent_of(i_anch.size.y, 45);
 	oedit->bg_prev.pos.x = i_anch.size.x / 2 - oedit->bg_prev.size.x / 2;
@@ -223,7 +463,7 @@ static void			init_object_edit(t_env *env, t_object_edit *oedit,
 	texdata_fill_rect(b->tex, i_anch.size, env->obj.edit.bg_prev,
 				0x484848);
 	oedit->bg_prev.pos += i_anch.pos;
-	oedit->tex_prev.size = env->obj.pan->elem_anchor.size;
+	oedit->tex_prev.size = p->elem_anchor.size;
 	oedit->tex_prev.pos = oedit->bg_prev.size / 2 - oedit->tex_prev.size / 2;
 	oedit->tex_prev.pos += oedit->bg_prev.pos;
 }
@@ -251,7 +491,7 @@ int					env_create_inspect(t_env *env)
 	anchor.pos.y = ipercent_of(env->sdl.height, INSPECTOR_TOP_POS_Y);
 	anchor.pos.x = ipercent_of(env->sdl.width, INSPECTOR_TOP_POS_X);
 	if (create_brush_select_inpector(env, anchor) == ERROR
-	|| create_player_radar_inpector(env, anchor) == ERROR
+	|| create_world_inpector(env, anchor) == ERROR
 	|| create_object_edit_inpector(env, anchor) == ERROR)
 		return (ERROR);
 	env->inspector.mod = Brush_Select;

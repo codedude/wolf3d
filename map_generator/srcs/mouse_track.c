@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 01:30:18 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/31 02:03:26 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/12 04:17:18 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,38 @@ static int		find_selected_obj(t_env *env)
 	return (-1);
 }
 
-static t_bool	g_area_mw(t_env *env)
+static t_bool	g_area_mw_objects(t_env *env)
 {
 	int		obj;
 
-	if (env->user_action != Edit_Obj)
+	obj = find_selected_obj(env);
+	if (obj != -1)
 	{
-		if (is_bounded(env->mouse.pos, env->grid))
-		{
-			env->mouse.is_editing = True;
-			env->mouse.b2_cancel_b1 = True;
-			clear_map(env->map_info.map_mask);
-			return (True);
-		}
+		env->obj.holding = True;
+		env->obj.edit.selected = obj;
+		env->mouse.button_index = (t_u32)obj;
+		return (True);
 	}
-	else
+	else if (is_bounded(env->mouse.pos, env->grid))
+		env->obj.edit.selected = -1;
+	return (False);
+}
+
+static t_bool	g_area_mw(t_env *env)
+{
+	t_u32		type;
+
+	type = toolset_get_type(&env->toolset);
+	env->obj.holding = False;
+	if (type < Max_ToolType_Painter
+			&& env->editmod.type == Object)
+		return (g_area_mw_objects(env));
+	if (is_bounded(env->mouse.pos, env->grid))
 	{
-		obj = find_selected_obj(env);
-		if (obj != -1)
-		{
-			env->obj.edit.selected = obj;
-			env->mouse.button_index = (t_u32)obj;
-			return (True);
-		}
-		else if (is_bounded(env->mouse.pos, env->grid))
-			env->obj.edit.selected = -1;
+		env->mouse.is_editing = True;
+		env->mouse.b2_cancel_b1 = True;
+		clear_map(env->map_info.map_mask);
+		return (True);
 	}
 	return (False);
 }
@@ -106,9 +113,9 @@ static t_bool	g_area_tb(t_env *env)
 	t_button	*b;
 
 	i = 0;
-	while (i < Max_action)
+	while (i < Max_EditMod_type)
 	{
-		b = env->act_buttons[i];
+		b = env->editmod.switch_b[i];
 		if (is_bounded(env->mouse.pos, b->anchor))
 		{
 			env->mouse.b2_cancel_b1 = True;
@@ -120,23 +127,11 @@ static t_bool	g_area_tb(t_env *env)
 	return (False);
 }
 
-static t_bool	g_area_wtm(t_env *env)
+static t_bool	g_area_rpan(t_env *env)
 {
 	int		i;
 
-	i = panel_get_index_by_pos(env->palette.b_pan, env->mouse.pos);
-	if (i == -1)
-		return (False);
-	env->mouse.b2_cancel_b1 = True;
-	env->mouse.button_index = (t_u32)i;
-	return (True);
-}
-
-static t_bool	g_area_otm(t_env *env)
-{
-	int		i;
-
-	i = panel_get_index_by_pos(env->obj.pan, env->mouse.pos);
+	i = panel_get_index_by_pos(env->rpan.p[env->rpan.type], env->mouse.pos);
 	if (i == -1)
 		return (False);
 	env->mouse.b2_cancel_b1 = True;
@@ -150,8 +145,7 @@ static void		init_get_area(t_mousetrack *mtrack)
 	mtrack->get_area[Map_properties_buttons] = g_area_mpb;
 	mtrack->get_area[Inspector] = g_area_i;
 	mtrack->get_area[Tools_buttons] = g_area_tb;
-	mtrack->get_area[Wall_Textures_Menu] = g_area_wtm;
-	mtrack->get_area[Object_Textures_Menu] = g_area_otm;
+	mtrack->get_area[Right_Panel] = g_area_rpan;
 }
 
 void			TMP_debug_mouse_area(t_u32 i, t_u32 i2)
@@ -161,8 +155,7 @@ void			TMP_debug_mouse_area(t_u32 i, t_u32 i2)
 			"Map_properties_buttons",
 			"Inspector",
 			"Tools_buttons",
-			"Wall_Textures_Menu",
-			"Object_Textures_Menu",
+			"Right_Panel",
 			"Not_On_Window"
 	};
 	printf("Mouse pos: %s\nButton   : %d\n", str[i], i2);
@@ -206,7 +199,7 @@ void			mouse_button_setstate(t_env *env, int button, t_bool state)
 		tracker->b2 = state;
 		if (state == False && tracker->b2_cancel_b1)
 		{
-			if (env->mouse.area == Inspector && env->user_action != Set_Spawn)
+			if (env->mouse.area == Inspector && env->editmod.type == Painter)
 				env->inspector.b_select.type = env->inspector.b_select.type_save;
 			tracker->is_editing = False;
 			tracker->b1 = False;
@@ -237,7 +230,7 @@ static void		t_area_mw(t_env *env)
 	t_map		*map;
 	t_map		*mask;
 
-	if (env->user_action != Edit_Obj)
+	if (toolset_get_type(&env->toolset) != Object)
 	{
 		env->mouse.is_editing = False;
 		map = env->map_info.map;
@@ -254,11 +247,9 @@ static void		t_area_mw(t_env *env)
 			i.y++;
 		}
 	}
-	else
-	{
-		if (!is_bounded(env->mouse.pos, get_map_boundaries(env)))
-			object_destroy(&env->obj, env->mouse.button_index);
-	}
+	else if (env->obj.holding == True
+	&& !is_bounded(env->mouse.pos, get_map_boundaries(env)))
+		object_destroy(&env->obj, env->mouse.button_index);
 }
 
 static void		t_area_mpb(t_env *env)
@@ -285,23 +276,25 @@ static void		t_area_tb(t_env *env)
 	t_u32				b_index;
 
 	b_index = env->mouse.button_index;
-	if (button_hover(env->act_buttons[b_index], env->mouse.pos) == True)
-		button_setactive(env->act_buttons[b_index], True);
+	if (button_hover(env->editmod.switch_b[b_index], env->mouse.pos) == True)
+		button_setactive(env->editmod.switch_b[b_index], True);
 }
 
 static void		t_area_wtm(t_env *env)
 {
 	t_mousetrack	*tracker;
+	t_panel			*p;
 	int				y_dist;
 
 	tracker = &env->mouse;
+	p = env->rpan.p[Texture_Panel];
 	y_dist = tracker->record_pos_b.y - tracker->pos.y;
 	if (y_dist < 0)
 		y_dist = -y_dist;
 	if (y_dist < 15)
 	{
-		panel_update_cursor(env->palette.b_pan, tracker->button_index);
-		env->palette.brush = (int)env->palette.b_pan->cursor;
+		panel_update_cursor(p, tracker->button_index);
+		env->palette.brush = (int)p->cursor;
 	}
 }
 
@@ -310,7 +303,7 @@ static void		t_area_otm(t_env *env)
 	t_vec2		mpos;
 	t_canvas	mbounds;
 
-	if (env->user_action == Edit_Obj)
+	if (env->editmod.type == Object)
 	{
 		if (env->obj.edit.selected != -1
 		&& is_bounded(env->mouse.pos, env->obj.edit.bg_prev))
@@ -328,14 +321,22 @@ static void		t_area_otm(t_env *env)
 	add_new_object(&env->obj, mpos, 1, env->mouse.button_index);
 }
 
+static void		t_area_rpan(t_env *env)
+{
+	static void	(*pan_trigger[Max_RPan_Type])(t_env *) = {
+		t_area_wtm, t_area_otm
+	};
+
+	return (pan_trigger[env->rpan.type](env));
+}
+
 static void		init_trigger_area(t_mousetrack *mtrack)
 {
 	mtrack->trigger[Map_window] = t_area_mw;
 	mtrack->trigger[Map_properties_buttons] = t_area_mpb;
 	mtrack->trigger[Inspector] = t_area_i;
 	mtrack->trigger[Tools_buttons] = t_area_tb;
-	mtrack->trigger[Wall_Textures_Menu] = t_area_wtm;
-	mtrack->trigger[Object_Textures_Menu] = t_area_otm;
+	mtrack->trigger[Right_Panel] = t_area_rpan;
 }
 
 t_float			snap_f(t_float snap, t_float height)
@@ -368,12 +369,17 @@ static void		mw_object_edit(t_env *env)
 
 static void		u_area_mw(t_env *env)
 {
-	if (env->user_action == Edit_Obj)
-		return (mw_object_edit(env));
+	t_u32		type;
+
+	type = toolset_get_type(&env->toolset);
+	if (env->editmod.type == Object)
+	{
+		if (env->obj.holding == True)
+			return (mw_object_edit(env));
+		else if (type < Max_ToolType_Painter)
+			return ;
+	}
 	toolset_use_fx(env);
-	// if (env->inspector.b_select.type != Pencil)
-	// 	clear_map(env->map_info.map_mask);
-	// draw_on_map(env, (int)(env->palette.brush + 1));
 }
 
 static void		u_area_mpb(t_env *env)
@@ -404,12 +410,7 @@ static void		u_area_tb(t_env *env)
 	(void)env;
 }
 
-static void		u_area_wtm(t_env *env)
-{
-	(void)env;
-}
-
-static void		u_area_otm(t_env *env)
+static void		u_area_rpan(t_env *env)
 {
 	(void)env;
 }
@@ -420,8 +421,7 @@ static void		init_update_area(t_mousetrack *mtrack)
 	mtrack->update[Map_properties_buttons] = u_area_mpb;
 	mtrack->update[Inspector] = u_area_i;
 	mtrack->update[Tools_buttons] = u_area_tb;
-	mtrack->update[Wall_Textures_Menu] = u_area_wtm;
-	mtrack->update[Object_Textures_Menu] = u_area_otm;
+	mtrack->update[Right_Panel] = u_area_rpan;
 }
 
 void			mouse_track_init(t_env *env)

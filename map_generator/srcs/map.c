@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/24 19:44:59 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/11 04:35:55 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void 		clear_map(t_map *map)
 	}
 }
 
-t_map		*create_new_map(t_ivec2 size)
+t_map		*map_new(t_ivec2 size)
 {
 	t_map	*map;
 	int		i;
@@ -77,15 +77,18 @@ void		destroy_map(t_map *map)
 void		draw_on_map(t_env *env, int brush)
 {
 	int			old_brush;
+	t_u32		type;
 	t_canvas	bounds;
 
 	bounds = get_map_boundaries(env);
 	if (is_bounded(env->mouse.pos, env->grid)
 	&& is_bounded(env->mouse.pos, bounds))
 	{
+		type = (env->toolset.use_tmp == True) ?
+			env->toolset.tmp_type : env->toolset.type;
 		old_brush = env->palette.brush;
-		env->palette.brush = env->user_action == Erase_Wall ? -1 : brush;
-		if (env->user_action == Set_Spawn)
+		env->palette.brush = type == Eraser ? -1 : brush;
+		if (type == SpawnSetter)
 			env->spawn = mpos_to_map_index(bounds, env->mouse.pos, env);
 		else
 			env->palette.b_fx[env->inspector.b_select.type](env, bounds);

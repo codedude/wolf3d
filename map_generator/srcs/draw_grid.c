@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 18:02:14 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/11 04:29:35 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,27 @@ static void			draw_mprops(t_env *env, t_mprops *props)
 	}
 }
 
-static void			draw_ui(t_env *env, t_sdl *sdl)
+static void			draw_editmod(t_env *env)
 {
 	t_u32		i;
 
-	panel_draw(env, sdl, env->obj.pan);
-	panel_draw(env, sdl, env->palette.b_pan);
+	draw_canvas_fill(&env->sdl, env->editmod.anchor,
+				CANVAS_INIT(0, 0), 0x222222);
 	i = 0;
-	while (i < Max_action)
+	while (i < Max_EditMod_type)
 	{
-		button_draw(env, env->act_buttons[i]);
+		button_draw(env, env->editmod.switch_b[i]);
 		i++;
 	}
+}
+
+static void			draw_ui(t_env *env, t_sdl *sdl)
+{
+	panel_draw(env, sdl, env->rpan.p[env->rpan.type]);
 	button_draw(env, env->inspector.action[env->inspector.mod]);
 	env->inspector.draw[env->inspector.mod](env);
 	draw_mprops(env, &env->map_properties);
+	draw_editmod(env);
 }
 
 static void			draw_obj_prev_on_mouse(t_env *env)
@@ -51,7 +57,7 @@ static void			draw_obj_prev_on_mouse(t_env *env)
 	t_canvas		anchor;
 	t_panel			*p;
 
-	p = env->obj.pan;
+	p = env->rpan.p[Object_Panel];
 	anchor.size = env->obj.mb_size;
 	anchor.pos = env->mouse.pos - anchor.size / 2;
 	draw_tex(env, env->obj.map_boxes[env->mouse.button_index], False, anchor);
@@ -112,7 +118,7 @@ static void			draw_map_obj(t_env *env)
 		{
 			anchor.pos -= anchor.size / 2;
 			draw_tex(env, env->obj.map_boxes[obj->id], False, anchor);
-			if (env->user_action == Edit_Obj
+			if (env->editmod.type == Object
 				&& (int)i == env->obj.edit.selected)
 				sdl_draw_rect(env, anchor, 3);
 		}
@@ -126,9 +132,9 @@ void				draw_grid(t_env *env, t_sdl *sdl)
 	sdl_clear_color(sdl, 0x101010);
 	draw_canvas_fill(sdl, env->grid, CANVAS_INIT(0, 0), 0x252525);
 	draw_map(env, sdl);
-	// draw_grid_lines(env, sdl);
 	draw_ui(env, sdl);
-	if (env->mouse.b1 == True && env->mouse.area == Object_Textures_Menu)
+	if (env->editmod.type == Object && env->mouse.area == Right_Panel
+		&& env->mouse.b1 == True)
 		draw_obj_prev_on_mouse(env);
 	draw_map_obj(env);
 }

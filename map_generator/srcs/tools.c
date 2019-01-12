@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 16:34:58 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/11 05:42:39 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_color			sdl_pixel_pick_from_img(t_sdl *sdl, int x, int y)
 	c.c.b = img[pos];
 	c.c.g = img[pos + 1];
 	c.c.r = img[pos + 2];
+	c.c.a = 0;
 	return (c);
 }
 

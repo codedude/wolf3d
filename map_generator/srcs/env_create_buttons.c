@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 22:59:30 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/27 01:28:15 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/11 04:29:54 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void			buttact_draw_wall(void *v_env)
 	button_setactive(env->act_buttons[Erase_Wall], False);
 	button_setactive(env->act_buttons[Edit_Obj], False);
 	env->inspector.mod = Brush_Select;
+	env->rpan.type = Texture_Panel;
 	toggle_action(env, Draw_Wall);
 }
 
@@ -61,6 +62,7 @@ static void			buttact_set_spawn(void *v_env)
 	button_setactive(env->act_buttons[Erase_Wall], False);
 	button_setactive(env->act_buttons[Edit_Obj], False);
 	env->inspector.mod = Player_Radar;
+	env->rpan.type = Texture_Panel;
 	toggle_action(env, Set_Spawn);
 }
 
@@ -73,6 +75,7 @@ static void			buttact_erase_wall(void *v_env)
 	button_setactive(env->act_buttons[Set_Spawn], False);
 	button_setactive(env->act_buttons[Edit_Obj], False);
 	env->inspector.mod = Brush_Select;
+	env->rpan.type = Texture_Panel;
 	toggle_action(env, Erase_Wall);
 }
 
@@ -85,6 +88,7 @@ static void			buttact_edit_obj(void *v_env)
 	button_setactive(env->act_buttons[Set_Spawn], False);
 	button_setactive(env->act_buttons[Erase_Wall], False);
 	env->inspector.mod = Object_Edit;
+	env->rpan.type = Object_Panel;
 	toggle_action(env, Edit_Obj);
 }
 

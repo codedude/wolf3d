@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:14:56 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/31 02:32:09 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/11 06:04:10 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ static void			fill_view_triangle(t_env *env, t_radar *radar, t_u32 t_col)
 	t_vec2		dir;
 	t_ivec2		px;
 
-	dir = vec_rotate(VEC2_INIT(-1, 0),
+	if (env->spawn_rotation)
+		dir = vec_rotate(VEC2_INIT(-1, 0),
 			(-env->spawn_rotation) / 180.0 * M_PI);
+	else
+		dir = VEC2_INIT(-1, 0);
 	dir *= radar->triangle_cdist;
 	px = radar->center;
 	px.x += (int)dir.x;
@@ -68,19 +71,17 @@ static void			draw_radar_gizmos(t_env *env, t_radar *radar)
 static t_u32		get_triangle_color(t_env *env)
 {
 	if (is_bounded(env->spawn, CANVAS_INIT(0, env->map_info.map->size)))
-		return (0x2BD929);
+		return (0x2BB929);
 	return (0x292BD9);
 }
 
-void				draw_player_radar(t_env *env)
+void				draw_player_radar(t_env *env, t_radar *radar)
 {
-	t_radar			*radar;
 	t_u32			t_col;
 	t_vec2			dir;
 	t_ivec2			px2;
 	t_ivec2			px1;
 
-	radar = &env->inspector.radar;
 	t_col = get_triangle_color(env);
 	draw_view_lines(env, radar, t_col);
 	fill_view_triangle(env, radar, t_col);

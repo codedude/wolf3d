@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 05:52:51 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/12 04:20:26 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ static void		destroy_buttons(t_button **buttons, t_u32 count)
 	}
 }
 
-void			destroy_objets_tools(t_objects_tools *otools)
+void			destroy_objets_tools(t_objects_tools *otools, t_panel *o_pan)
 {
 	t_u32		i;
 
 	if (otools->map_boxes)
 	{
 		i = 0;
-		while (i < (t_u32)otools->pan->nb_elem)
+		while (i < (t_u32)o_pan->nb_elem)
 		{
 			free(otools->map_boxes[i]);
 			i++;
@@ -73,8 +73,19 @@ void			destroy_objets_tools(t_objects_tools *otools)
 		i++;
 	}
 	slider_destroy(&otools->g_snap);
-	panel_destroy(&otools->pan);
 	checkbox_destroy(&otools->cbox_solid);
+}
+
+void			destroy_rpanels(t_env *env)
+{
+	t_u32		i;
+
+	i = 0;
+	while (i < Max_RPan_Type)
+	{
+		panel_destroy(&env->rpan.p[i]);
+		i++;
+	}
 }
 
 void			env_destroy(t_env *env)
@@ -85,10 +96,10 @@ void			env_destroy(t_env *env)
 		ask_saving(env);
 	destroy_map(env->map_info.map);
 	destroy_map(env->map_info.map_mask);
-	panel_destroy(&env->palette.b_pan);
-	destroy_objets_tools(&env->obj);
-	destroy_buttons(env->act_buttons, Max_action);
+	destroy_objets_tools(&env->obj, env->rpan.p[Object_Panel]);
+	destroy_buttons(env->editmod.switch_b, Max_EditMod_type);
 	destroy_buttons(env->inspector.action, Max_Inspector_mod);
 	destroy_buttons(env->map_properties.actions, Max_editor_action);
 	destroy_buttons(env->inspector.b_select.type_select, Max_brush_type);
+	checkbox_destroy(&env->inspector.world.cbox_ceil);
 }

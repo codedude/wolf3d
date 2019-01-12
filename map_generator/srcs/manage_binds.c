@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/31 02:23:52 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/12 04:02:29 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,8 @@
 #include "gen_env.h"
 #include "libft.h"
 
-void		toggle_action(t_env *env, int action)
-{
-	env->user_action = action;
-}
-
-void		toggle_key_action(t_env *env, t_u32 action)
-{
-	toggle_action(env, (int)action);
-	button_setactive(env->act_buttons[action], True);
-}
-
 void		manage_down(const Uint8	*state, t_env *env)
 {
-	if (env->mouse.b1 == False)
-		return ;
 	if (state[SDL_SCANCODE_X])
 		toolset_set_tmp_type(&env->toolset, ZoomIn);
 	if (state[SDL_SCANCODE_Z])
@@ -65,7 +52,7 @@ int			on_key_press(SDL_Event *event, t_env *env)
 {
 	if (event->key.keysym.sym == SDLK_SPACE)
 	{
-		if (env->mouse1 == 1)
+		if (env->mouse.b1 == True)
 			SDL_SetRelativeMouseMode(SDL_TRUE);
 		env->space = True;
 	}
@@ -88,14 +75,14 @@ int			on_key_press(SDL_Event *event, t_env *env)
 		if (env->ctrl == True)
 			save_file(env);
 	}
-	else if (event->key.keysym.sym == SDLK_b)
-		toggle_key_action(env, Draw_Wall);
-	else if (event->key.keysym.sym == SDLK_v)
-		toggle_key_action(env, Set_Spawn);
 	else if (event->key.keysym.sym == SDLK_c)
-		toggle_key_action(env, Erase_Wall);
+		button_setactive(env->editmod.switch_b[Painter], True);
+	else if (event->key.keysym.sym == SDLK_v)
+		button_setactive(env->editmod.switch_b[World], True);
+	else if (event->key.keysym.sym == SDLK_b)
+		button_setactive(env->editmod.switch_b[Door], True);
 	else if (event->key.keysym.sym == SDLK_n)
-		toggle_key_action(env, Edit_Obj);
+		button_setactive(env->editmod.switch_b[Object], True);
 	else if (event->key.keysym.sym == SDLK_1)
 		button_trigger(env->inspector.b_select.type_select[Pencil]);
 	else if (event->key.keysym.sym == SDLK_2)
@@ -113,16 +100,17 @@ int			on_key_press(SDL_Event *event, t_env *env)
 	else if (event->key.keysym.sym == SDLK_p)
 		printf("%f\n", env->map_info.zoom);
 	else if (event->key.keysym.sym == SDLK_DELETE
-		&& env->obj.edit.selected != -1 && env->user_action == Edit_Obj)
+		&& env->obj.edit.selected != -1 && env->editmod.type == Object)
 		object_destroy(&env->obj, (t_u32)env->obj.edit.selected);
 	return (1);
 }
+
 int			on_mouse_motion(SDL_Event *event, t_env *env)
 {
 	t_map_info	*minf;
 
 	minf = &env->map_info;
-	if (env->space && env->mouse1)
+	if (env->space && env->mouse.b1 && env->mouse.area == Map_window)
 	{
 		minf->pos.x += event->motion.xrel * (1.5 / env->map_info.zoom);
 		minf->pos.y += event->motion.yrel * (1.5 / env->map_info.zoom);
@@ -141,51 +129,22 @@ int			on_mbutton_press(SDL_Event *event, t_env *env)
 	{
 		if (env->space == 1)
 				SDL_SetRelativeMouseMode(SDL_TRUE);
-			env->mouse1 = True;
 		mouse_button_setstate(env, 1, True);
 	}
 	else if (event->button.button == SDL_BUTTON_RIGHT)
-	{
-		env->mouse2 = True;
 		mouse_button_setstate(env, 2, True);
-	}
 	return (1);
-}
-
-int			check_act_buttons(t_env *env, t_ivec2 mpos)
-{
-	t_u32		i;
-
-	i = 0;
-	while (i < Max_action)
-	{
-		if (button_hover(env->act_buttons[i], mpos) == True)
-		{
-			button_setactive(env->act_buttons[i], True);
-			return (SUCCESS);
-		}
-		i++;
-	}
-	return (ERROR);
 }
 
 int			on_mbutton_release(SDL_Event *event, t_env *env)
 {
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
-		t_ivec2	mpos;
-
-		mpos = get_mouse_pos();
-		env->map_info.map->data[env->spawn.y][env->spawn.x] = 0;
 		SDL_SetRelativeMouseMode(SDL_FALSE);
-		env->mouse1 = False;
 		mouse_button_setstate(env, 1, False);
 	}
 	else if (event->button.button == SDL_BUTTON_RIGHT)
-	{
-		env->mouse2 = False;
 		mouse_button_setstate(env, 2, False);
-	}
 	return (1);
 }
 
@@ -193,19 +152,18 @@ int			on_mouse_wheel(SDL_Event *event, t_env *env)
 {
 	t_ivec2	mpos;
 	int		dir;
+	t_panel	*p;
 
 	mpos = get_mouse_pos();
-	dir = -event->wheel.y;
+	dir = event->wheel.y < 0 ? 1 : -1;
 	env->mouse.wheel = event->wheel.y;
-	if (panel_isinside(env->palette.b_pan, mpos))
-	panel_change_view(env->palette.b_pan, dir);
-	else if (panel_isinside(env->obj.pan, mpos))
-		panel_change_view(env->palette.b_pan, dir);
-	else
+	p = env->rpan.p[env->rpan.type];
+	if (panel_isinside(p, mpos))
+		panel_change_view(p, dir);
+	else if (env->rpan.type == Texture_Panel)
 	{
-		panel_update_cursor(env->palette.b_pan,
-			(t_u32)((int)env->palette.b_pan->cursor + dir));
-		env->palette.brush = (int)env->palette.b_pan->cursor;
+		panel_update_cursor(p, (t_u32)((int)p->cursor + dir));
+		env->palette.brush = (int)p->cursor;
 	}
 	return (1);
 }

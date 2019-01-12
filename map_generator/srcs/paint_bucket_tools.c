@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:14:25 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/22 00:15:29 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/11 05:54:06 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void				paint_bucket_tools(t_env *env, t_ivec2 pos, t_u32 color)
 
 	env_pick_color_replace(env, pos);
 	env_set_color(env, color);
+	if (env->cpick.current.rgba == env->cpick.replace.rgba)
+		return ;
 	fl_data = FLOOD_D_INIT(pbucket_flood_cond, pbucket_flood_act, env);
 	ft_flood(&fl_data, pos);
 }

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 00:47:18 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/31 02:03:24 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/12 04:01:59 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void			map_fx_picker(t_env *env)
 	map_b = env->map_info.map->data[map_pos.y][map_pos.x];
 	if (map_b != 0 )
 	{
-		panel_update_cursor(env->palette.b_pan, (t_u32)(map_b - 1));
+		panel_update_cursor(env->rpan.p[Texture_Panel], (t_u32)(map_b - 1));
 		env->palette.brush = map_b - 1;
 	}
 }
@@ -69,6 +69,7 @@ void			map_fx_zoomin(t_env *env)
 	t_float		old_zoom;
 
 	old_zoom = env->map_info.zoom;
+	env->map_properties.tick = 25;
 	mprops_act_scale_up(env);
 	if (old_zoom == env->map_info.zoom)
 		return ;
@@ -84,6 +85,7 @@ void			map_fx_zoomout(t_env *env)
 	t_float		old_zoom;
 
 	old_zoom = env->map_info.zoom;
+	env->map_properties.tick = 25;
 	mprops_act_scale_down(env);
 	if (old_zoom == env->map_info.zoom)
 		return ;
@@ -131,7 +133,9 @@ void			toolset_set_tmp_type(t_toolset *toolset, t_u32 type)
 	toolset->use_tmp = True;
 }
 
-void			toolset_unset_tmp_type(t_toolset *toolset)
+t_u32			toolset_get_type(t_toolset *toolset)
 {
-	toolset->use_tmp = False;
+	if (toolset->use_tmp == True)
+		return (toolset->tmp_type);
+	return (toolset->type);
 }
