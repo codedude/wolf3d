@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 00:43:29 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 20:23:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,25 @@ static void		event_kb_state_move(const Uint8 *state, t_env *env, t_cam *cam,
 	{
 		*is_walking = True;
 		cam->pos = straf(env, cam->pos, cam->dir, player_speed(
-			cam->action_state, cam->mov_speed, cam->acceleration, 0.75));
+			cam->action_state, cam->mov_speed, cam->acceleration, SPEED_F));
 	}
 	if (state[SDL_SCANCODE_D])
 	{
 		*is_walking = True;
 		cam->pos = straf(env, cam->pos, cam->dir, player_speed(
-			cam->action_state, cam->mov_speed, cam->acceleration, -0.75));
+			cam->action_state, cam->mov_speed, cam->acceleration, -SPEED_F));
 	}
 	if (state[SDL_SCANCODE_W])
 	{
 		*is_walking = True;
 		cam->pos = move_forward(env, cam->pos, cam->dir, player_speed(
-			cam->action_state, cam->mov_speed, cam->acceleration, 1.0));
+			cam->action_state, cam->mov_speed, cam->acceleration, SPEED_F));
 	}
 	if (state[SDL_SCANCODE_S])
 	{
 		*is_walking = True;
 		cam->pos = move_forward(env, cam->pos, cam->dir, player_speed(
-			cam->action_state, cam->mov_speed, cam->acceleration, -0.75));
+			cam->action_state, cam->mov_speed, cam->acceleration, -SPEED_B));
 	}
 }
 

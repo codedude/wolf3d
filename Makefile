@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/12 18:22:34 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/12 22:33:26 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,8 @@ endif
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-I$(INCD) -g3 -Wextra -Wall -Wno-unused-result \
-				-Wconversion -O2 #-fsanitize=address
-LDFLAGS		+=	-O2 #-fsanitize=address
+				-Wconversion -O3 -flto #-fsanitize=address
+LDFLAGS		+=	-O3 -flto #-fsanitize=address
 
 SRCS_F		=	main env
 SRCS_F		+=	$(RENDERD)/raycast $(RENDERD)/raycast_2 $(RENDERD)/raycast_3 \

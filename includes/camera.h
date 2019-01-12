@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 20:41:57 by vparis           ###   ########.fr       */
+/*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
+/*   Updated: 2019/01/12 20:15:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#ifndef CAMERA_H
+# define CAMERA_H
 
-# include <stdlib.h>
-# include "libft.h"
-# include "libtpool.h"
-# include "sdl_m.h"
 # include "types.h"
-# include "entity.h"
-# include "anim.h"
-
-# define THREADS		0
-# define TASKS			32
-# define WINDOW_NAME	"DAT Wolf3D"
 
 # define MAX_OFFSET		600
-# define MAX_DEPTH		16.0
+# define MAX_DEPTH		30.0
 # define EFFECT_MASK			0xff
 # define EFFECT_MASK_DEPTH		0xff00
 # define EFFECT_MASK_COLOR		0xff0000
@@ -42,9 +32,6 @@
 # define WATER_AMBIENT	VEC3_INIT(136.0, 210.0, 208.0)
 
 typedef struct s_cam	t_cam;
-typedef struct s_map	t_map;
-typedef struct s_algo	t_algo;
-typedef struct s_env	t_env;
 
 struct				s_cam {
 	t_vec3			(*depth_filter)(t_vec3 color, t_float depth);
@@ -57,47 +44,6 @@ struct				s_cam {
 	t_float			z_pos;
 	t_float			z_default;
 	int				side_filter;
-	t_float			mov_speed;
-	t_float			acceleration;
-	t_float			rot_speed;
-	t_float			jump_time;
-	t_float			walk_anim;
-	int				action_state;
 };
-
-struct				s_map {
-	t_entity		**data;
-	t_entity		*skybox;
-	int				floor_id;
-	int				ceil_id;
-	int				show_ceil;
-	t_ivec2			spawn;
-	int				width;
-	int				height;
-};
-
-struct				s_algo {
-	t_env			*env;
-	int				start;
-	int				end;
-	int				step;
-};
-
-struct				s_env {
-	t_tpool			*tpool;
-	t_entity		*objects;
-	t_list_anim		*anims;
-	t_algo			*packs;
-	int				objects_nb;
-	t_sdl			sdl;
-	t_map			map;
-	t_cam			cam;
-	int				show_fps;
-};
-
-int					env_init(t_env *env, char *filename);
-void				env_destroy(t_env *env);
-int					render_prepare(t_env *env);
-void				render_clean(t_env *env);
 
 #endif

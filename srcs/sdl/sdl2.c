@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 12:02:20 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 22:55:55 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			sdl_create_buffer(t_sdl *sdl)
 	ft_bzero(sdl->image, sdl->size_buffer);
 	SDL_UnlockTexture(sdl->texture);
 	if ((sdl->z_buffer = (t_float *)malloc(
-		(size_t)sdl->width * sizeof(t_float))) == NULL)
+		(size_t)sdl->width * (size_t)sdl->height * sizeof(t_float))) == NULL)
 	{
 		ft_putendl("Z buffer cannot be created !");
 		return (ERROR);

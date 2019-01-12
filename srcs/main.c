@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 17:16:43 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 22:54:32 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,8 @@
 #include "anim.h"
 #include "event.h"
 
-void		new_explo(t_env *env)
-{
-	t_anim	*anim;
-
-	anim = anim_new(&env->objects[0], ANIM_LOOP, 2);
-	if (alist_push(&env->anims, anim) == ERROR)
-		return ;
-}
-
 static int	loop(t_env *env)
 {
-	new_explo(env);
 	if (render_prepare(env) == ERROR)
 		return (ERROR);
 	while (compute_event(env) == True)
@@ -61,6 +51,7 @@ int			main(int ac, char **av)
 	}
 	if (env_init(&env, av[1]) == SUCCESS)
 	{
+		//sdl_print_infos(&env.sdl);
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		loop(&env);
 	}

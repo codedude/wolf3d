@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 23:02:03 by vparis            #+#    #+#              #
-#    Updated: 2019/01/11 23:01:52 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/12 22:33:53 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ else
 	AR		= llvm-ar
 endif
 
-CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -O2 -g3 \
+CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -O3 -flto -g3 \
 			-Wall -Wextra -Werror -Wno-unused-result -ansi -pedantic
 
 SRCD		=	srcs

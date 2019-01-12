@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 19:59:54 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 20:47:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void			draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
 			* text->w) + (map->skybox->id / 2);
 		lerp = clamp_float(y - cam->height, 0.0, sdl->canvas_h - 1.0);
 		pos.y = (int)(lerp / sdl->canvas_h * text->h);
-		color = sdl_get_pixel(text, pos.x % text->w, pos.y, 0);
+		color = dark_color(sdl_get_pixel(text, pos.x % text->w, pos.y, 0),
+			cam, 0, 0.0);
 		sdl_put_pixel(sdl, infos->x, y, color);
 		y++;
 	}

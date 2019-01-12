@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 21:37:23 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/01 14:41:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 20:44:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 static t_float	compute_depth(t_float z)
 {
 	if (z > MAX_DEPTH)
-		return (0.0);
+		return (0.05);
 	else
 		return (1.0 - (z / MAX_DEPTH));
 }

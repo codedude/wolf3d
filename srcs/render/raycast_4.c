@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 20:01:24 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 21:57:17 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_color				dark_color(t_color color, t_cam *cam, int side, t_float z)
 
 	c = VEC3_INIT((t_float)color.c.r, (t_float)color.c.g, (t_float)color.c.b);
 	if (side)
-		c *= 0.66;
+		c *= 0.80;
 	if (cam->depth_filter)
 		c = cam->depth_filter(c, z);
 	if (cam->color_filter)
@@ -73,7 +73,7 @@ void				draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 		}
 		else
 			sdl->image[infos->x + y * sdl->width] = 0;
-		y++;
+		++y;
 	}
 }
 
@@ -103,7 +103,7 @@ void				draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 		}
 		else
 			sdl->image[infos->x + y * sdl->width] = 0x0;
-		y++;
+		++y;
 	}
 }
 

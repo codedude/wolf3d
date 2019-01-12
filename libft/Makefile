@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/11 23:02:04 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/12 22:33:37 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ else
 endif
 
 CFLAGS		+= -I$(INCD) -Werror -Wall -Wextra -Wno-unused-result -ansi \
-			-pedantic -O2 -g3
+			-pedantic -O3 -flto -g3
 
 SRCD		= srcs
 INCD		= includes
