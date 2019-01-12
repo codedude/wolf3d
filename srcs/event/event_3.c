@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:46 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 00:08:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 01:43:03 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,26 @@ void		switch_effect(t_cam *cam, void *new, int type)
 
 void		binds_open_door(t_env *env)
 {
-	t_ivec2		i;
+	t_ivec2		cam_pos;
+	t_ivec2		look_pos;
 	t_door		*door;
 	t_anim		*anim;
 
-	i.y = 0;
-	while (i.y < (int)env->map.height)
+	cam_pos.x = (int)env->cam.pos.x;
+	cam_pos.y = (int)env->cam.pos.y;
+	look_pos.x = (int)(env->cam.pos.x + env->cam.dir.x * 0.5);
+	look_pos.y = (int)(env->cam.pos.y + env->cam.dir.y * 0.5);
+	if ((cam_pos.x == look_pos.x && cam_pos.y == look_pos.y)
+		|| 0 > look_pos.y || look_pos.y >= env->map.height
+		|| 0 > look_pos.x || look_pos.x >= env->map.width)
+		return ;
+	door = env->map.data[look_pos.y][look_pos.x].e.door;
+	if (env->map.data[look_pos.y][look_pos.x].type == ENTITY_DOOR
+		&& door->is_active == False)
 	{
-		i.x = 0;
-		while (i.x < (int)env->map.width)
-		{
-			door = env->map.data[i.y][i.x].e.door;
-			if (env->map.data[i.y][i.x].type == ENTITY_DOOR
-				&& door->is_active == False)
-			{
-				anim = anim_new(&env->map.data[i.y][i.x], ANIM_ONCE,
-					ANIM_DOOR_SPEED);
-				if (alist_push(&env->anims, anim) == ERROR)
-					return ;
-			}
-			i.x++;
-		}
-		i.y++;
+		anim = anim_new(&env->map.data[look_pos.y][look_pos.x], ANIM_ONCE,
+			ANIM_DOOR_SPEED);
+		if (alist_push(&env->anims, anim) == ERROR)
+			return ;
 	}
 }
