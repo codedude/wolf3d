@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/10 18:28:57 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/12 02:43:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,15 @@ static t_klist	*new_object_lst(t_env *env, int i, t_vec2 obj_dir,
 	x = clamp_int((int)(obj_x * env->sdl.canvas_w), 0, env->sdl.width);
 	obj->size.y = env->sdl.canvas_h / obj->z_buffer;
 	obj->size.x = obj->size.y / env->sdl.canvas_h * env->sdl.canvas_w / 2.0;
+	obj->y_offset = (int)(obj->size.y * obj->z);
 	obj->y_start = (int)((env->sdl.half_canvas_h - obj->size.y / 2.0)
 		- ((env->sdl.half_canvas_h - env->cam.z) / obj->z_buffer)
 		+ env->cam.height);
 	obj->y_end = obj->y_start + (int)obj->size.y;
+	if (obj->z > 0)
+		obj->y_end -= obj->y_offset;
+	else
+		obj->y_start -= obj->y_offset;
 	half_width = (int)obj->size.x;
 	half_width = half_width & 0x01 ? (half_width - 1) / 2 : half_width / 2;
 	obj->x_start = x - half_width;
@@ -177,13 +182,17 @@ void			render_sprite(t_env *env, t_entity *obj)
 				(it.x - obj->e.object->x_start) / obj->e.object->size.x * text->w);
 			while (it.y < obj->e.object->y_end && it.y < env->sdl.height)
 			{
-				tex.y = (int)((it.y - obj->e.object->y_start)
+				tex.y = (int)((it.y - obj->e.object->y_start
+					+ ((obj->e.object->z > 0) ? obj->e.object->y_offset : 0))
 					/ obj->e.object->size.y * text->h);
-				color = sdl_get_pixel(text, tex.x, tex.y, obj->tex_key);
-				if (color.rgba > 0)
-					sdl_put_pixel(&env->sdl, it.x, it.y,
-						dark_color(color, &env->cam, 0,
-							obj->e.object->z_buffer));
+				if (tex.y >= 0 && tex.y < text->h)
+				{
+					color = sdl_get_pixel(text, tex.x, tex.y, obj->tex_key);
+					if (color.rgba > 0)
+						sdl_put_pixel(&env->sdl, it.x, it.y,
+							dark_color(color, &env->cam, 0,
+								obj->e.object->z_buffer));
+				}
 				it.y++;
 			}
 		}

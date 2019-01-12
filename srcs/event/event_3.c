@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:46 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 01:43:03 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/12 01:54:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void		binds_open_door(t_env *env)
 
 	cam_pos.x = (int)env->cam.pos.x;
 	cam_pos.y = (int)env->cam.pos.y;
-	look_pos.x = (int)(env->cam.pos.x + env->cam.dir.x * 0.5);
-	look_pos.y = (int)(env->cam.pos.y + env->cam.dir.y * 0.5);
+	look_pos.x = (int)(env->cam.pos.x + env->cam.dir.x * 0.8);
+	look_pos.y = (int)(env->cam.pos.y + env->cam.dir.y * 0.8);
 	if ((cam_pos.x == look_pos.x && cam_pos.y == look_pos.y)
 		|| 0 > look_pos.y || look_pos.y >= env->map.height
 		|| 0 > look_pos.x || look_pos.x >= env->map.width)
