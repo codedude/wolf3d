@@ -1,17 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast_4.c                                        :+:      :+:    :+:   */
+/*   raycast_draw.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 21:57:17 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 16:41:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "libft.h"
 #include "sdl_m.h"
 #include "SDL.h"
@@ -19,37 +17,30 @@
 #include "raycast.h"
 #include "types.h"
 
-t_color				dark_color(t_color color, t_cam *cam, int side, t_float z)
+void	draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam, t_map *map)
 {
-	t_vec3		c;
+	int			y;
+	t_float		lerp;
+	t_color		color;
+	t_ivec2		pos;
+	t_tex		*text;
 
-	c = VEC3_INIT((t_float)color.c.r, (t_float)color.c.g, (t_float)color.c.b);
-	if (side)
-		c *= 0.80;
-	if (cam->depth_filter)
-		c = cam->depth_filter(c, z);
-	if (cam->color_filter)
-		c = cam->color_filter(c);
-	color.rgba = (unsigned int)c[0] | (unsigned int)c[1] << 8
-		| (unsigned int)c[2] << 16;
-	return (color);
+	text = tex_get_wall(sdl, map->skybox->tex_id);
+	y = infos->draw_start;
+	while (y < infos->draw_end)
+	{
+		pos.x = (int)((infos->x + map->skybox->tex_key) / sdl->canvas_w
+			* text->w) + (map->skybox->id / 2);
+		lerp = clamp_float(y - cam->height, 0.0, sdl->canvas_h - 1.0);
+		pos.y = (int)(lerp / sdl->canvas_h * text->h);
+		color = dark_color(sdl_get_pixel(text, pos.x % text->w, pos.y, 0),
+			cam, 0, 0.0);
+		sdl_put_pixel(sdl, infos->x, y, color);
+		y++;
+	}
 }
 
-static t_color		get_cf_color(t_tex *text, t_vec2 curr_cf, t_cam *cam,
-						t_float z)
-{
-	t_ivec2			tex;
-	t_color			color;
-
-	tex.x = (int)fabs(curr_cf.x * text->w) % text->w;
-	tex.y = (int)fabs(curr_cf.y * text->h) % text->h;
-	color = dark_color(sdl_get_pixel(text, tex.x, tex.y, 0),
-		cam, 0, z);
-	return (color);
-}
-
-void				draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,
-						t_vec2 texel)
+void	draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos, t_vec2 texel)
 {
 	t_vec2		curr_cf;
 	t_float		lookup;
@@ -77,8 +68,7 @@ void				draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 	}
 }
 
-void				draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos,
-						t_vec2 texel)
+void	draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos, t_vec2 texel)
 {
 	t_vec2		curr_cf;
 	t_float		weight;
@@ -107,8 +97,7 @@ void				draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 	}
 }
 
-void				draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
-						t_tex *text)
+void	draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam, t_tex *text)
 {
 	t_ivec2			tex;
 	int				y;

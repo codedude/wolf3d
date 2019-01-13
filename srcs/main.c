@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 22:54:32 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 16:49:04 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	loop(t_env *env)
 		compute_anim(&env->sdl, &env->anims);
 		sdl_update_texture(&env->sdl);
 		tp_wait_for_queue(env->tpool);
-		compute_sprites(env);
+		compute_sprite(env);
 		sdl_render(&env->sdl);
 		sdl_get_fps(env->show_fps);
 	}

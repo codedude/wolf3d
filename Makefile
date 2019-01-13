@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/13 13:16:06 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/13 16:43:27 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,11 +51,13 @@ CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 LDFLAGS		+=	$(FLAGS_OPT)
 
 SRCS_F		=	main env
-SRCS_F		+=	$(RENDERD)/raycast $(RENDERD)/raycast_2 $(RENDERD)/raycast_3 \
-				$(RENDERD)/raycast_4 $(RENDERD)/entity $(RENDERD)/entity_new \
-				$(RENDERD)/list \
+SRCS_F		+=	$(RENDERD)/render $(RENDERD)/raycast_1 $(RENDERD)/raycast_2 \
+				$(RENDERD)/raycast_color $(RENDERD)/raycast_draw \
+				$(RENDERD)/raycast_door_1 $(RENDERD)/raycast_door_2 \
+				$(RENDERD)/raycast_sprite_1 $(RENDERD)/raycast_sprite_2 \
+				$(RENDERD)/entity $(RENDERD)/entity_new $(RENDERD)/list \
 				$(RENDERD)/depth_filters $(RENDERD)/color_filters \
-				$(RENDERD)/raycast_sprites $(RENDERD)/list $(RENDERD)/anim \
+				$(RENDERD)/list $(RENDERD)/anim \
 				$(RENDERD)/anim_spec $(RENDERD)/anim_list
 SRCS_F		+=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
 				$(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2 \
