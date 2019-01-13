@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 22:40:17 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 15:14:30 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,19 @@ static t_bool	prepare_object(t_env *env, int i, t_vec2 obj_dir,
 	int			half_width;
 	int			x;
 	t_object	*obj;
+	t_vec2		old_size;
 
 	obj = env->objects[i].e.object;
 	obj->z_buffer = vec_len(obj_dir) * vec_dot(vec_norm(obj_dir), env->cam.dir);
 	x = (int)(obj_x * env->sdl.canvas_w);
 	obj->size.y = env->sdl.canvas_h / obj->z_buffer;
 	obj->size.x = obj->size.y / env->sdl.canvas_h * env->sdl.canvas_w / 2.0;
+	old_size = obj->size;
+	if (obj->scale != 1.0)
+	{
+		obj->size.y *= obj->scale;
+		obj->size.x *= obj->scale;
+	}
 	obj->x_offset = (int)(obj_x - clamp_float(obj_x, 0.0, env->sdl.canvas_w));
 	if (abs(obj->x_offset) >= obj->size.x)
 		return (False);
@@ -129,6 +136,8 @@ static t_bool	prepare_object(t_env *env, int i, t_vec2 obj_dir,
 	obj->y_start = (int)((env->sdl.half_canvas_h - obj->size.y / 2.0)
 		- ((env->sdl.half_canvas_h - env->cam.z) / obj->z_buffer)
 		+ env->cam.height);
+	if (obj->scale != 1.0)
+		obj->y_start += (old_size.y - obj->size.y) / 2.0;
 	obj->y_end = obj->y_start + (int)obj->size.y;
 	if (obj->z > 0)
 		obj->y_end -= obj->y_offset;

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 13:23:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 15:15:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int			load_objects(t_env *env)
 	while (i < env->objects_nb)
 	{
 		obj = entity_new_object(VEC2_INIT(5.0, 8.0 + i * 2.0),
-			VEC2_INIT(1.0, 1.0), 0.0, 0);
+			VEC2_INIT(1.0, 1.0), VEC2_INIT(1.0, 0.0), 0);
 		entity_set(&env->objects[i], i, i, 0);
 		entity_merge(&env->objects[i], (void *)obj, ENTITY_OBJECT);
 		i++;

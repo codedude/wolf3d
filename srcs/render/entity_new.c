@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:52:51 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 23:53:47 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 14:53:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_door		*entity_new_door(int orientation)
 	return (tmp);
 }
 
-t_object	*entity_new_object(t_vec2 pos, t_vec2 size, t_float z,
+t_object	*entity_new_object(t_vec2 pos, t_vec2 size, t_vec2 scale_z,
 				int collectable)
 {
 	t_object	*tmp;
@@ -60,7 +60,8 @@ t_object	*entity_new_object(t_vec2 pos, t_vec2 size, t_float z,
 	if ((tmp = (t_object *)malloc(sizeof(t_object))) == NULL)
 		return (NULL);
 	tmp->pos = pos;
-	tmp->z = z;
+	tmp->scale = scale_z[0];
+	tmp->z = scale_z[1];
 	tmp->size = size;
 	tmp->collectable = collectable;
 	tmp->z_buffer = 0.0;

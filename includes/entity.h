@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 17:52:22 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 14:53:47 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ struct				s_door {
 struct				s_object {
 	t_vec2			pos;
 	t_vec2			size;
+	t_float			scale;
 	t_float			z;
 	t_float			z_buffer;
 	int				collectable;
@@ -96,7 +97,7 @@ t_entity			*entity_new(int tex_id, int id, int crossable);
 void				entity_destroy(t_entity *entity);
 t_brick				*entity_new_brick(int max_hp);
 t_door				*entity_new_door(int orientation);
-t_object			*entity_new_object(t_vec2 pos, t_vec2 size, t_float z,
+t_object			*entity_new_object(t_vec2 pos, t_vec2 size, t_vec2 scale_z,
 						int collectable);
 void				entity_merge(t_entity *entity, void *obj,
 						t_entity_type type);
