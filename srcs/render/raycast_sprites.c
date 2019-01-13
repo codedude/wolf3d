@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 15:14:30 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 15:17:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,7 @@ static t_bool	prepare_object(t_env *env, int i, t_vec2 obj_dir,
 	obj->size.x = obj->size.y / env->sdl.canvas_h * env->sdl.canvas_w / 2.0;
 	old_size = obj->size;
 	if (obj->scale != 1.0)
-	{
-		obj->size.y *= obj->scale;
-		obj->size.x *= obj->scale;
-	}
+		obj->size *= obj->scale;
 	obj->x_offset = (int)(obj_x - clamp_float(obj_x, 0.0, env->sdl.canvas_w));
 	if (abs(obj->x_offset) >= obj->size.x)
 		return (False);
