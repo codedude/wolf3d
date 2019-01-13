@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 15:20:11 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 13:11:08 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "sdl_m.h"
 # include "types.h"
 
-# define TEX_WALL_FILE		"textures/textures.conf"
-# define TEX_SPRITE_FILE	"sprites/sprites.conf"
+# define TEX_WALL_FILE		"data/texture/textures.conf"
+# define TEX_SPRITE_FILE	"data/sprite/sprites.conf"
 
 /*
 ** forward declaration
