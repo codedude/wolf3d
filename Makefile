@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/12 22:33:26 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/13 12:26:42 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,10 +37,17 @@ else
 	LDLIBS		+=	-pthread
 endif
 
+DEBUG	?=	1
+ifeq ($(DEBUG),1)
+	FLAGS_OPT	=	-g3 -O2 #-fsanitize=address
+else
+	FLAGS_OPT	=	-O3 -flto
+endif
+
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-				-I$(INCD) -g3 -Wextra -Wall -Wno-unused-result \
-				-Wconversion -O3 -flto #-fsanitize=address
-LDFLAGS		+=	-O3 -flto #-fsanitize=address
+				-I$(INCD) -Wextra -Wall -Wno-unused-result \
+				-Wconversion $(FLAGS_OPT)
+LDFLAGS		+=	$(FLAGS_OPT)
 
 SRCS_F		=	main env
 SRCS_F		+=	$(RENDERD)/raycast $(RENDERD)/raycast_2 $(RENDERD)/raycast_3 \
@@ -70,8 +77,8 @@ OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make -C $(LIBFTD)
-	make -C $(LIBTPOOLD)
+	make -C $(LIBFTD) DEBUG=$(DEBUG)
+	make -C $(LIBTPOOLD) DEBUG=$(DEBUG)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	@echo "$(NAME) - compiled"
 

@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 23:02:03 by vparis            #+#    #+#              #
-#    Updated: 2019/01/12 22:33:53 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/13 12:27:28 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,15 @@ else
 	AR		= llvm-ar
 endif
 
-CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -O3 -flto -g3 \
-			-Wall -Wextra -Werror -Wno-unused-result -ansi -pedantic
+DEBUG	?=	1
+ifeq ($(DEBUG),1)
+	FLAGS_OPT	=	-g3 -O2 #-fsanitize=address
+else
+	FLAGS_OPT	=	-O3 -flto
+endif
+
+CFLAGS		+=	-I$(LIBFTD)/includes -I$(INCD) -pthread -Wall -Wextra -Werror \
+				 -Wno-unused-result -ansi -pedantic $(FLAGS_OPT)
 
 SRCD		=	srcs
 INCD		=	includes
@@ -42,7 +49,7 @@ $(NAME): $(OBJS)
 	@echo "libtpool - compiled"
 
 %.o: %.c $(HEADER)
-	@$(CC) $(CFLAGS) -o $@ -c $< $(LDLIBS)
+	$(CC) $(CFLAGS) -o $@ -c $< $(LDLIBS)
 
 showlib: $(NAME)
 	@$(AR) -t $(NAME)

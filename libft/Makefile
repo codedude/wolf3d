@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/12 22:33:37 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/13 12:26:32 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,15 @@ else
 	AR		= llvm-ar
 endif
 
+DEBUG	?=	1
+ifeq ($(DEBUG),1)
+	FLAGS_OPT	=	-g3 -O2 #-fsanitize=address
+else
+	FLAGS_OPT	=	-O3 -flto
+endif
+
 CFLAGS		+= -I$(INCD) -Werror -Wall -Wextra -Wno-unused-result -ansi \
-			-pedantic -O3 -flto -g3
+			-pedantic $(FLAGS_OPT)
 
 SRCD		= srcs
 INCD		= includes
