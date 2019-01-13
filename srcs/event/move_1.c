@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:45:59 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 10:28:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 12:59:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include "env.h"
 #include "event.h"
 
-void		player_jump(t_cam *player)
+void		player_jump(t_cam *cam, t_player *player)
 {
 	if (player->jump_time > 0.001)
 	{
-		player->z_pos += ACTION_JUMP_FORCE * player->jump_time;
+		cam->z_pos += ACTION_JUMP_FORCE * player->jump_time;
 		player->jump_time -= (ACTION_MAX_JUMP_TIME / 10.0);
 	}
 	else
@@ -28,21 +28,21 @@ void		player_jump(t_cam *player)
 	}
 }
 
-void		player_fall(t_cam *player)
+void		player_fall(t_cam *cam, t_player *player)
 {
-	if (player->z_pos < player->z_default)
+	if (cam->z_pos < cam->z_default)
 	{
 		player->action_state |= ACTION_GROUNDED;
 		player->action_state &= ~ACTION_FALLING;
 	}
 	else
 	{
-		player->z_pos -= ACTION_FALL_SPEED * player->jump_time;
+		cam->z_pos -= ACTION_FALL_SPEED * player->jump_time;
 		player->jump_time += 0.15;
 	}
 }
 
-void		player_set_acceleration(t_cam *player)
+void		player_set_acceleration(t_player *player)
 {
 	if (player->acceleration > 0)
 	{
@@ -58,9 +58,9 @@ void		player_set_acceleration(t_cam *player)
 	}
 }
 
-void		player_set_z(t_cam *player)
+void		player_set_z(t_cam *cam, t_player *player)
 {
-	player->z = player->walk_anim + player->z_pos;
+	cam->z = player->walk_anim + cam->z_pos;
 }
 
 t_float		player_speed(int action_state, t_float speed,

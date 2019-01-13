@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 20:13:25 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 12:52:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include "event.h"
 #include "parser.h"
 #include "texture.h"
+#include "camera.h"
+#include "player.h"
 
 int			load_objects(t_env *env)
 {
@@ -44,35 +46,46 @@ int			load_objects(t_env *env)
 	return (SUCCESS);
 }
 
-static int	wolf_init(t_env *env, t_map *map, t_cam *cam, char *filename)
+void		init_player(t_player *player)
 {
-	if (load_map(env, map, filename) == ERROR)
-		return (ERROR);
-	map->show_ceil = 1;
-	map->skybox = entity_new(env->sdl.tex_wall_nb - 1, 0, 0);
-	entity_merge(map->skybox, NULL, ENTITY_SKYBOX);
-	map->ceil_id = 1;
-	map->floor_id = 4;
-	if (load_objects(env) == ERROR)
-		return (ERROR);
-	cam->pos = VEC2_INIT((t_float)map->spawn.x, (t_float)map->spawn.y) + 0.5;
-	cam->z = env->sdl.canvas_h * 40.0 / 100.0;
+	player->mov_speed = 0.05;
+	player->rot_speed = 0.016;
+	player->acceleration = 0.0;
+	player->walk_anim = 0.0;
+	player->jump_time = 0.0;
+	player->action_state = ACTION_GROUNDED;
+}
+
+void		init_cam(t_cam *cam, t_sdl *sdl, t_map *map)
+{
+	cam->pos = VEC2_INIT((t_float)map->spawn.x,
+		(t_float)map->spawn.y) + 0.5;
+	cam->z = sdl->canvas_h * 40.0 / 100.0;
 	cam->z_default = cam->z;
 	cam->z_pos = cam->z_default;
 	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
 	cam->plane = VEC2_INIT(0.0, 0.88);
 	cam->dir = vec_rotate(cam->dir, 270.0 * DEG_TO_RAD);
 	cam->plane = vec_rotate(cam->plane, 270.0 * DEG_TO_RAD);
-	cam->mov_speed = 0.05;
-	cam->rot_speed = 0.016;
-	cam->acceleration = 0.0;
 	cam->height = 0.0;
-	cam->action_state = ACTION_GROUNDED;
-	cam->jump_time = 0.0;
-	cam->walk_anim = 0.0;
 	cam->side_filter = EFFECT_SIDE;
 	cam->depth_filter = &depth_filter_depth;
 	cam->color_filter = NULL;
+}
+
+static int	wolf_init(t_env *env, char *filename)
+{
+	if (load_map(env, &env->map, filename) == ERROR)
+		return (ERROR);
+	env->map.show_ceil = 1;
+	env->map.skybox = entity_new(env->sdl.tex_wall_nb - 1, 0, 0);
+	entity_merge(env->map.skybox, NULL, ENTITY_SKYBOX);
+	env->map.ceil_id = 1;
+	env->map.floor_id = 4;
+	if (load_objects(env) == ERROR)
+		return (ERROR);
+	init_cam(&env->cam, &env->sdl, &env->map);
+	init_player(&env->player);
 	return (SUCCESS);
 }
 
@@ -106,7 +119,7 @@ int			env_init(t_env *env, char *filename)
 		ft_putstr_fd("Thread pool can't start\n", 2);
 		return (ERROR);
 	}
-	if (wolf_init(env, &env->map, &env->cam, filename) == ERROR)
+	if (wolf_init(env, filename) == ERROR)
 	{
 		ft_putstr_fd("Can't init wolf\n", 2);
 		return (ERROR);

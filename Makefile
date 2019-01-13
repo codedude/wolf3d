@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/13 12:26:42 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/13 13:02:32 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ else
 endif
 
 DEBUG	?=	1
+FLAGS_OPT		=
 ifeq ($(DEBUG),1)
 	FLAGS_OPT	=	-g3 -O2 #-fsanitize=address
 else

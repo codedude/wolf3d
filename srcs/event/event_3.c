@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:46 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 01:54:18 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 12:50:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include "entity.h"
 #include "event.h"
 #include "anim.h"
+#include "camera.h"
+#include "player.h"
 
 void		update_skybox_offset(t_cam *cam, t_sdl *sdl, t_map *map)
 {
@@ -42,26 +44,26 @@ void		switch_effect(t_cam *cam, void *new, int type)
 		*current = new;
 }
 
-void		binds_open_door(t_env *env)
+void		binds_open_door(t_env *env, t_cam *cam, t_map *map)
 {
 	t_ivec2		cam_pos;
 	t_ivec2		look_pos;
 	t_door		*door;
 	t_anim		*anim;
 
-	cam_pos.x = (int)env->cam.pos.x;
-	cam_pos.y = (int)env->cam.pos.y;
-	look_pos.x = (int)(env->cam.pos.x + env->cam.dir.x * 0.8);
-	look_pos.y = (int)(env->cam.pos.y + env->cam.dir.y * 0.8);
+	cam_pos.x = (int)cam->pos.x;
+	cam_pos.y = (int)cam->pos.y;
+	look_pos.x = (int)(cam->pos.x + cam->dir.x * 0.8);
+	look_pos.y = (int)(cam->pos.y + cam->dir.y * 0.8);
 	if ((cam_pos.x == look_pos.x && cam_pos.y == look_pos.y)
-		|| 0 > look_pos.y || look_pos.y >= env->map.height
-		|| 0 > look_pos.x || look_pos.x >= env->map.width)
+		|| 0 > look_pos.y || look_pos.y >= map->height
+		|| 0 > look_pos.x || look_pos.x >= map->width)
 		return ;
-	door = env->map.data[look_pos.y][look_pos.x].e.door;
-	if (env->map.data[look_pos.y][look_pos.x].type == ENTITY_DOOR
+	door = map->data[look_pos.y][look_pos.x].e.door;
+	if (map->data[look_pos.y][look_pos.x].type == ENTITY_DOOR
 		&& door->is_active == False)
 	{
-		anim = anim_new(&env->map.data[look_pos.y][look_pos.x], ANIM_ONCE,
+		anim = anim_new(&map->data[look_pos.y][look_pos.x], ANIM_ONCE,
 			ANIM_DOOR_SPEED);
 		if (alist_push(&env->anims, anim) == ERROR)
 			return ;

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 20:29:09 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 12:58:41 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "types.h"
 # include "sdl_m.h"
 # include "env.h"
+#include "camera.h"
+#include "player.h"
 
 # define ACTION_NONE		0b0
 # define ACTION_GROUNDED	0b00001
@@ -44,7 +46,7 @@ t_bool					compute_event(t_env *env);
 t_bool					event_kb_poll(SDL_Event *event, t_env *env);
 void					event_kb_state(const Uint8	*state, t_env *env);
 void					switch_effect(t_cam *cam, void *new, int type);
-void					binds_open_door(t_env *env);
+void					binds_open_door(t_env *env, t_cam *cam, t_map *map);
 void					update_skybox_offset(t_cam *cam, t_sdl *sdl,
 							t_map *map);
 
@@ -55,11 +57,11 @@ t_vec2					straf(t_env *env, t_vec2 from, t_vec2 to,
 							t_float speed);
 t_float					player_speed(int action_state, t_float speed,
 							t_float acceleration, t_float factor);
-void					player_set_z(t_cam *player);
-void					player_set_anim(t_cam *player);
-void					player_set_acceleration(t_cam *player);
-void					player_jump(t_cam *player);
-void					player_fall(t_cam *player);
 void					compute_player(t_env *env);
+void					player_set_anim(t_cam *cam, t_player *player);
+void					player_jump(t_cam *cam, t_player *player);
+void					player_fall(t_cam *cam, t_player *player);
+void					player_set_acceleration(t_player *player);
+void					player_set_z(t_cam *cam, t_player *player);
 
 #endif
