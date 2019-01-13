@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:43:56 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 23:45:32 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 13:21:05 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,23 @@ void			alist_del_elem(t_list_anim **head)
 	t_list_anim *next;
 
 	next = (*head)->next;
-	anim_destroy((*head)->value);
+	anim_destroy((*head)->value, False);
 	free(*head);
 	*head = next;
 }
 
-void			alist_del(t_list_anim **head, t_list_anim *entry)
+void			alist_del(t_list_anim **head, t_list_anim *entry,
+					t_bool force_destroy)
 {
 	while (*head != entry)
 		head = &(*head)->next;
 	*head = entry->next;
-	anim_destroy(entry->value);
+	anim_destroy(entry->value, force_destroy);
 	free(entry);
 }
 
-void			alist_clear(t_list_anim **head)
+void			alist_clear(t_list_anim **head, t_bool force_destroy)
 {
 	while (*head)
-		alist_del(head, *head);
+		alist_del(head, *head, force_destroy);
 }

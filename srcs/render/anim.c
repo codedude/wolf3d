@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:32:48 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 00:42:43 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 13:19:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ t_anim			*anim_new(t_entity *entity, t_anim_type type, int key_speed)
 	return (tmp);
 }
 
-void			anim_destroy(t_anim *anim)
+void			anim_destroy(t_anim *anim, t_bool force_destroy)
 {
-	if (anim->type == ANIM_DESTROY)
+	if (anim->type == ANIM_DESTROY || force_destroy)
 		entity_destroy(anim->entity);
 	free(anim);
 }

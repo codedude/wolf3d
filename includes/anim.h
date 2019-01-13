@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 17:22:45 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/13 13:21:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ struct				s_list_anim {
 
 t_anim				*anim_new(t_entity *entity, t_anim_type type,
 						int key_speed);
-void				anim_destroy(t_anim *anim);
+void				anim_destroy(t_anim *anim, t_bool force_destroy);
 
 t_list_anim			*alist_new(t_anim *value);
 int					alist_push(t_list_anim **head, t_anim *entry);
-void				alist_del(t_list_anim **head, t_list_anim *entry);
 void				alist_del_elem(t_list_anim **head);
-void				alist_clear(t_list_anim **head);
+void				alist_del(t_list_anim **head, t_list_anim *entry,
+						t_bool force_destroy);
+void				alist_clear(t_list_anim **head, t_bool force_destroy);
 
 void				compute_anim(t_sdl *sdl, t_list_anim **head);
 t_bool				anim_door(t_anim *anim);

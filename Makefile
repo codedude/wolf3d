@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/13 13:02:32 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/13 13:16:06 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,7 +107,7 @@ rer:
 
 valg:
 	valgrind --show-leak-kinds=all --leak-resolution=high --track-origins=yes \
-	./$(NAME) map.w3d
+	./$(NAME) data/map/map.w3d
 
 bench:
 	valgrind --tool=callgrind ./$(NAME) map.w3d
