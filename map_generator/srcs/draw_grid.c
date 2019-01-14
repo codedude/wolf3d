@@ -29,16 +29,16 @@ static void			draw_mprops(t_env *env, t_mprops *props)
 	}
 }
 
-static void			draw_editmod(t_env *env)
+static void			draw_editor(t_env *env)
 {
 	t_u32		i;
 
-	draw_canvas_fill(&env->sdl, env->editmod.anchor,
+	draw_canvas_fill(&env->sdl, env->editor.anchor,
 				CANVAS_INIT(0, 0), 0x222222);
 	i = 0;
 	while (i < Max_EditMod_type)
 	{
-		button_draw(env, env->editmod.switch_b[i]);
+		button_draw(env, env->editor.switch_b[i]);
 		i++;
 	}
 }
@@ -46,10 +46,10 @@ static void			draw_editmod(t_env *env)
 static void			draw_ui(t_env *env, t_sdl *sdl)
 {
 	panel_draw(env, sdl, env->rpan.p[env->rpan.type]);
-	button_draw(env, env->inspector.action[env->inspector.mod]);
-	env->inspector.draw[env->inspector.mod](env);
+	button_draw(env, env->inspector.action[env->editor.mode]);
+	env->inspector.draw[env->editor.mode](env);
 	draw_mprops(env, &env->map_properties);
-	draw_editmod(env);
+	draw_editor(env);
 }
 
 static void			draw_obj_prev_on_mouse(t_env *env)
@@ -118,7 +118,7 @@ static void			draw_map_obj(t_env *env)
 		{
 			anchor.pos -= anchor.size / 2;
 			draw_tex(env, env->obj.map_boxes[obj->id], False, anchor);
-			if (env->editmod.type == Object
+			if (env->editor.mode == Object_Edit
 				&& (int)i == env->obj.edit.selected)
 				sdl_draw_rect(env, anchor, 3);
 		}
@@ -133,7 +133,7 @@ void				draw_grid(t_env *env, t_sdl *sdl)
 	draw_canvas_fill(sdl, env->grid, CANVAS_INIT(0, 0), 0x252525);
 	draw_map(env, sdl);
 	draw_ui(env, sdl);
-	if (env->editmod.type == Object && env->mouse.area == Right_Panel
+	if (env->editor.mode == Object_Edit && env->mouse.area == Right_Panel
 		&& env->mouse.b1 == True)
 		draw_obj_prev_on_mouse(env);
 	draw_map_obj(env);

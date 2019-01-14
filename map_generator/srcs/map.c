@@ -89,7 +89,7 @@ void		draw_on_map(t_env *env, int brush)
 		old_brush = env->palette.brush;
 		env->palette.brush = type == Eraser ? -1 : brush;
 		if (type == SpawnSetter)
-			env->spawn = mpos_to_map_index(bounds, env->mouse.pos, env);
+			env->spawn = mpos_to_map_index(bounds, env);
 		else
 			env->palette.b_fx[env->inspector.b_select.type](env, bounds);
 		env->palette.brush = old_brush;

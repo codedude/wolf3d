@@ -60,7 +60,7 @@ void			slider_setup(t_slider *slider,
 {
 	slider->direction = direction;
 	slider->range = range.y - range.x;
-	if (direction == Slide_Horizontal)
+	if (direction == Dir_Horizontal)
 		slider->size = slider->slid_img_size.x;
 	else
 		slider->size = slider->slid_img_size.y;
@@ -84,7 +84,7 @@ void			slider_draw(t_env *env, t_slider *slider)
 	anch.size = slider->curs_img_size;
 	stepped = (int)((slider->val - slider->min_val)
 				/ slider->range * (t_float)slider->size);
-	if (slider->direction == Slide_Horizontal)
+	if (slider->direction == Dir_Horizontal)
 	{
 		anch.pos.x += stepped - anch.size.x / 2;
 		anch.pos.y -= (anch.size.y - slider->slid_img_size.y) / 2;
@@ -103,7 +103,7 @@ t_bool			slider_hover(t_slider *slider, t_ivec2 pos)
 
 	anch.size = slider->slid_img_size;
 	anch.pos = slider->pos;
-	if (slider->direction == Slide_Horizontal)
+	if (slider->direction == Dir_Horizontal)
 	{
 		anch.size.y = slider->curs_img_size.y;
 		anch.pos.y -= (slider->curs_img_size.y - slider->slid_img_size.y) / 2;
@@ -121,7 +121,7 @@ void			slider_update_bypos(t_slider *slider, t_ivec2 pos)
 	int			tmp;
 	t_float		diff;
 
-	if (slider->direction == Slide_Horizontal)
+	if (slider->direction == Dir_Horizontal)
 	{
 		tmp = pos.x - slider->pos.x;
 		tmp = clamp_int(tmp, 0, slider->slid_img_size.x);

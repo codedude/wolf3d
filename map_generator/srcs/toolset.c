@@ -26,7 +26,7 @@ void			map_fx_spawnsetter(t_env *env)
 	t_ivec2		map_pos;
 
 	bounds = get_map_boundaries(env);
-	map_pos = mpos_to_map_index(bounds, env->mouse.pos, env);
+	map_pos = mpos_to_map_index(bounds, env);
 	env->spawn = clamp_ivec2(map_pos, 0, env->map_info.map->size - 1);
 }
 
@@ -44,7 +44,7 @@ void			map_fx_picker(t_env *env)
 	int			map_b;
 
 	bounds = get_map_boundaries(env);
-	map_pos = mpos_to_map_index(bounds, env->mouse.pos, env);
+	map_pos = mpos_to_map_index(bounds, env);
 	map_pos = clamp_ivec2(map_pos, 0, env->map_info.map->size - 1);
 	map_b = env->map_info.map->data[map_pos.y][map_pos.x];
 	if (map_b != 0 )

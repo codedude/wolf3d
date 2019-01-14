@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 04:40:20 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/14 04:17:38 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int			env_init2(t_env *env, char *filename)
 	env->spawn = IVEC2_INIT(map->size.x / 2, map->size.y / 2);
 	env->spawn_rotation = 0;
 	env->saved = True;
-	button_setactive(env->editmod.switch_b[Painter], True);
+	button_setactive(env->editor.switch_b[Painter], True);
 	mouse_track_init(env);
 	palette_init(env);
 	init_map_info(env, &env->map_info);
@@ -123,7 +123,7 @@ int					env_init(t_env *env, char *filename)
 		|| !(env->map_info.map = map_new(IVEC2_INIT(DEF_SIZE_X, DEF_SIZE_Y)))
 		|| init_rpanels(env, &env->rpan) == ERROR
 		|| env_create_inspect(env) == ERROR
-		|| init_editmod(env, &env->sdl, &env->editmod) == ERROR)
+		|| init_editor(env, &env->sdl, &env->editor) == ERROR)
 	{
 		perror("W3dEditor");
 		return (ERROR);

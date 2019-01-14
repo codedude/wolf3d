@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/11 04:21:16 by jbulant          ###   ########.fr        #
+#    Updated: 2019/01/14 07:33:01 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ FILES		+=	texdata_draw.c
 FILES		+=	draw_grid_lines.c draw_grid.c draw_node.c \
 				draw_line.c draw_player_radar.c draw_map.c
 FILES		+=	paint_bucket_tools.c brushes.c objects.c \
-				toolset.c editmod.c
+				toolset.c editor.c doors.c
 
 PARENT_FILES	=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
 					$(SDLD)/sdl_load_image.c $(SDLD)/sdl_sprites.c \

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 01:30:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 04:17:18 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/14 08:09:59 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,8 @@ static t_bool	g_area_mw_objects(t_env *env)
 	return (False);
 }
 
-static t_bool	g_area_mw(t_env *env)
+static t_bool	g_mw_painter(t_env *env)
 {
-	t_u32		type;
-
-	type = toolset_get_type(&env->toolset);
-	env->obj.holding = False;
-	if (type < Max_ToolType_Painter
-			&& env->editmod.type == Object)
-		return (g_area_mw_objects(env));
 	if (is_bounded(env->mouse.pos, env->grid))
 	{
 		env->mouse.is_editing = True;
@@ -70,6 +63,52 @@ static t_bool	g_area_mw(t_env *env)
 		clear_map(env->map_info.map_mask);
 		return (True);
 	}
+	return (False);
+
+}
+
+static t_bool	g_mw_object_edit(t_env *env)
+{
+	t_u32		type;
+
+	type = toolset_get_type(&env->toolset);
+	if (type < Max_ToolType_Painter)
+		return (g_area_mw_objects(env));
+	return (g_mw_painter(env));
+
+}
+
+static t_bool	g_mw_door(t_env *env)
+{
+	t_ivec2			mpos;
+	t_door			*door;
+	t_door_edit		*dedit;
+
+	dedit = &env->inspector.door_edit;
+	if (!door_valid_mouse_coord(env))
+		return (False);
+	mpos = mpos_to_map_index(get_map_boundaries(env), env);
+	door = dedit->list;
+	while (door)
+	{
+		if (door->pos.x == mpos.x && door->pos.y == mpos.y)
+			break ;
+		door = door->next;
+	}
+	dedit->selected = door;
+	return (True);
+}
+
+
+static t_bool	g_area_mw(t_env *env)
+{
+	env->obj.holding = False;
+	if (env->editor.mode == Painter || env->editor.mode == World)
+		return (g_mw_painter(env));
+	else if (env->editor.mode == Object_Edit)
+		return (g_mw_object_edit(env));
+	else if (env->editor.mode == Door)
+		return (g_mw_door(env));
 	return (False);
 }
 
@@ -99,7 +138,7 @@ static t_bool	g_area_mpb(t_env *env)
 
 static t_bool	g_area_i(t_env *env)
 {
-	if (env->inspector.get_button[env->inspector.mod](env))
+	if (env->inspector.get_button[env->editor.mode](env))
 	{
 		env->mouse.b2_cancel_b1 = True;
 		return (True);
@@ -115,7 +154,7 @@ static t_bool	g_area_tb(t_env *env)
 	i = 0;
 	while (i < Max_EditMod_type)
 	{
-		b = env->editmod.switch_b[i];
+		b = env->editor.switch_b[i];
 		if (is_bounded(env->mouse.pos, b->anchor))
 		{
 			env->mouse.b2_cancel_b1 = True;
@@ -199,7 +238,7 @@ void			mouse_button_setstate(t_env *env, int button, t_bool state)
 		tracker->b2 = state;
 		if (state == False && tracker->b2_cancel_b1)
 		{
-			if (env->mouse.area == Inspector && env->editmod.type == Painter)
+			if (env->mouse.area == Inspector && env->editor.mode == Painter)
 				env->inspector.b_select.type = env->inspector.b_select.type_save;
 			tracker->is_editing = False;
 			tracker->b1 = False;
@@ -224,32 +263,63 @@ static void		mw_update_map(t_env *env, t_map *map, t_map *mask, t_ivec2 i)
 	}
 }
 
-static void		t_area_mw(t_env *env)
+static void		t_mw_painter(t_env *env)
 {
 	t_ivec2		i;
 	t_map		*map;
 	t_map		*mask;
 
-	if (toolset_get_type(&env->toolset) != Object)
+	env->mouse.is_editing = False;
+	map = env->map_info.map;
+	mask = env->map_info.map_mask;
+	i.y = 0;
+	while (i.y < map->size.y)
 	{
-		env->mouse.is_editing = False;
-		map = env->map_info.map;
-		mask = env->map_info.map_mask;
-		i.y = 0;
-		while (i.y < map->size.y)
+		i.x = 0;
+		while (i.x < map->size.x)
 		{
-			i.x = 0;
-			while (i.x < map->size.x)
-			{
-				mw_update_map(env, map, mask, i);
-				i.x++;
-			}
-			i.y++;
+			mw_update_map(env, map, mask, i);
+			i.x++;
 		}
+		i.y++;
 	}
-	else if (env->obj.holding == True
-	&& !is_bounded(env->mouse.pos, get_map_boundaries(env)))
+}
+
+static void		t_mw_object_edit(t_env *env)
+{
+	if (env->obj.holding == True
+		&& !is_bounded(env->mouse.pos, get_map_boundaries(env)))
 		object_destroy(&env->obj, env->mouse.button_index);
+}
+
+static void		t_mw_door(t_env *env)
+{
+	t_door_edit	*dedit;
+	t_door		*door;
+
+	dedit = &env->inspector.door_edit;
+	dedit->door_pos = mpos_to_map_index(get_map_boundaries(env), env);
+	if (door_valid_mouse_coord(env))
+	{
+		if (dedit->selected)
+			dedit->selected->pos = dedit->door_pos;
+		else
+			door_create(env, dedit);
+		door = dedit->selected;
+		env->map_info.map->data[door->pos.y][door->pos.x] = 0;
+	}
+	else
+		door_destroy_selected(dedit);
+}
+
+static void		t_area_mw(t_env *env)
+{
+	if (env->editor.mode == Painter || env->editor.mode == World)
+		t_mw_painter(env);
+	else if (env->editor.mode == Object_Edit)
+		t_mw_object_edit(env);
+	else if (env->editor.mode == Door)
+		t_mw_door(env);
 }
 
 static void		t_area_mpb(t_env *env)
@@ -268,7 +338,7 @@ static void		t_area_mpb(t_env *env)
 
 static void		t_area_i(t_env *env)
 {
-	button_trigger(env->inspector.action[env->inspector.mod]);
+	button_trigger(env->inspector.action[env->editor.mode]);
 }
 
 static void		t_area_tb(t_env *env)
@@ -276,8 +346,8 @@ static void		t_area_tb(t_env *env)
 	t_u32				b_index;
 
 	b_index = env->mouse.button_index;
-	if (button_hover(env->editmod.switch_b[b_index], env->mouse.pos) == True)
-		button_setactive(env->editmod.switch_b[b_index], True);
+	if (button_hover(env->editor.switch_b[b_index], env->mouse.pos) == True)
+		button_setactive(env->editor.switch_b[b_index], True);
 }
 
 static void		t_area_wtm(t_env *env)
@@ -303,7 +373,7 @@ static void		t_area_otm(t_env *env)
 	t_vec2		mpos;
 	t_canvas	mbounds;
 
-	if (env->editmod.type == Object)
+	if (env->editor.mode == Object_Edit)
 	{
 		if (env->obj.edit.selected != -1
 		&& is_bounded(env->mouse.pos, env->obj.edit.bg_prev))
@@ -367,19 +437,39 @@ static void		mw_object_edit(t_env *env)
 	env->obj.list[env->mouse.button_index]->pos = coords;
 }
 
-static void		u_area_mw(t_env *env)
+static void		u_mw_painter(t_env *env)
+{
+	toolset_use_fx(env);
+}
+
+static void		u_mw_object_edit(t_env *env)
 {
 	t_u32		type;
 
 	type = toolset_get_type(&env->toolset);
-	if (env->editmod.type == Object)
-	{
-		if (env->obj.holding == True)
-			return (mw_object_edit(env));
-		else if (type < Max_ToolType_Painter)
-			return ;
-	}
-	toolset_use_fx(env);
+	if (env->obj.holding == True)
+		return (mw_object_edit(env));
+	else if (type < Max_ToolType_Painter)
+		toolset_use_fx(env);
+}
+
+static void		u_mw_door(t_env *env)
+{
+	t_door_edit	*dedit;
+
+	dedit = &env->inspector.door_edit;
+	dedit->door_pos = mpos_to_map_index(get_map_boundaries(env), env);
+}
+
+static void		u_area_mw(t_env *env)
+{
+
+	if (env->editor.mode == Painter || env->editor.mode == World)
+		u_mw_painter(env);
+	else if (env->editor.mode == Object_Edit)
+		u_mw_object_edit(env);
+	else if (env->editor.mode == Door)
+		u_mw_door(env);
 }
 
 static void		u_area_mpb(t_env *env)
@@ -402,7 +492,7 @@ static void		u_area_mpb(t_env *env)
 
 static void		u_area_i(t_env *env)
 {
-	button_trigger(env->inspector.action[env->inspector.mod]);
+	button_trigger(env->inspector.action[env->editor.mode]);
 }
 
 static void		u_area_tb(t_env *env)

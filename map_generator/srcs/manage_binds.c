@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 04:02:29 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/14 04:18:39 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ int			on_key_press(SDL_Event *event, t_env *env)
 			save_file(env);
 	}
 	else if (event->key.keysym.sym == SDLK_c)
-		button_setactive(env->editmod.switch_b[Painter], True);
+		button_setactive(env->editor.switch_b[Painter], True);
 	else if (event->key.keysym.sym == SDLK_v)
-		button_setactive(env->editmod.switch_b[World], True);
+		button_setactive(env->editor.switch_b[World], True);
 	else if (event->key.keysym.sym == SDLK_b)
-		button_setactive(env->editmod.switch_b[Door], True);
+		button_setactive(env->editor.switch_b[Door], True);
 	else if (event->key.keysym.sym == SDLK_n)
-		button_setactive(env->editmod.switch_b[Object], True);
+		button_setactive(env->editor.switch_b[Object_Edit], True);
 	else if (event->key.keysym.sym == SDLK_1)
 		button_trigger(env->inspector.b_select.type_select[Pencil]);
 	else if (event->key.keysym.sym == SDLK_2)
@@ -100,7 +100,7 @@ int			on_key_press(SDL_Event *event, t_env *env)
 	else if (event->key.keysym.sym == SDLK_p)
 		printf("%f\n", env->map_info.zoom);
 	else if (event->key.keysym.sym == SDLK_DELETE
-		&& env->obj.edit.selected != -1 && env->editmod.type == Object)
+		&& env->obj.edit.selected != -1 && env->editor.mode == Object_Edit)
 		object_destroy(&env->obj, (t_u32)env->obj.edit.selected);
 	return (1);
 }

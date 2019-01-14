@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/12 04:37:00 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/14 07:33:24 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,8 @@ typedef struct s_objects_tools	t_objects_tools;
 typedef struct s_slider			t_slider;
 typedef struct s_object			t_object;
 typedef struct s_world_i		t_world_i;
+typedef struct s_door			t_door;
+typedef struct s_door_edit		t_door_edit;
 typedef struct s_inspector		t_inspector;
 typedef struct s_palette		t_palette;
 typedef struct s_map_info		t_map_info;
@@ -256,7 +258,7 @@ typedef struct s_toolset		t_toolset;
 typedef struct s_rpanel			t_rpanel;
 typedef struct s_radar			t_radar;
 typedef struct s_b_select		t_b_select;
-typedef struct s_editmod		t_editmod;
+typedef struct s_editor		t_editor;
 typedef struct s_env			t_env;
 
 struct			s_mprops {
@@ -341,9 +343,9 @@ void			object_destroy(t_objects_tools *otools, t_u32 obj_i);
 
 # define MAP_BOXES_SIZE		6
 
-enum			e_slide_dir {
-	Slide_Horizontal,
-	Slide_Vertical
+enum			e_direction {
+	Dir_Horizontal,
+	Dir_Vertical
 };
 
 struct			s_slider {
@@ -419,12 +421,21 @@ struct			s_objects_tools {
 	t_u32			count;
 };
 
-enum			e_inspector_mod {
-	Brush_Select,
-	Player_Radar,
+enum			e_editor_type {
+	Painter,
+	World,
+	Door,
 	Object_Edit,
-	Max_Inspector_mod
+	Max_EditMod_type
 };
+
+struct			s_editor {
+	t_canvas	anchor;
+	t_button	*switch_b[Max_EditMod_type];
+	t_u32		mode;
+};
+
+int				init_editor(t_env *env, t_sdl *sdl, t_editor *editor);
 
 struct			s_radar {
 	t_float		vlines_height;
@@ -443,7 +454,7 @@ struct			s_b_select {
 	int			type_save;
 };
 
-enum			e_world_button {
+enum			e_world_buttons {
 	WButton_Ceil,
 	WButton_Floor,
 	Max_WButton_Prev,
@@ -459,13 +470,43 @@ struct			s_world_i {
 	t_checkbox	*cbox_ceil;
 };
 
+enum			e_door_edit_area {
+	Door_Tex,
+	Side_Tex,
+	Max_Door_Tex,
+	Door_Prev = Max_Door_Tex,
+	Max_Door_Area
+};
+
+struct			s_door {
+	t_door		*next;
+	t_door		*prev;
+	t_ivec2		pos;
+	t_u32		tex_id[Max_Door_Tex];
+	t_u32		direction;
+};
+
+t_bool		door_valid_mouse_coord(t_env *env);
+void		door_destroy_selected(t_door_edit *dedit);
+int			door_create(t_env *env, t_door_edit *dedit);
+
+t_bool			door_valid_mouse_coord(t_env *env);
+
+struct			s_door_edit {
+	t_canvas	prev[Max_Door_Area];
+	t_door		*list;
+	t_u32		count;
+	t_door		*selected;
+	t_ivec2		door_pos;
+};
+
 struct			s_inspector {
 	t_world_i	world;
 	t_b_select	b_select;
-	void		(*draw[Max_Inspector_mod])(t_env *);
-	t_bool		(*get_button[Max_Inspector_mod])(t_env *);
-	t_button	*action[Max_Inspector_mod];
-	t_u32		mod;
+	t_door_edit	door_edit;
+	void		(*draw[Max_EditMod_type])(t_env *);
+	t_bool		(*get_button[Max_EditMod_type])(t_env *);
+	t_button	*action[Max_EditMod_type];
 };
 
 struct			s_palette {
@@ -532,22 +573,6 @@ struct			s_rpanel {
 	t_u32		type;
 };
 
-enum			e_editmod_type {
-	Painter,
-	World,
-	Door,
-	Object,
-	Max_EditMod_type
-};
-
-struct			s_editmod {
-	t_canvas	anchor;
-	t_button	*switch_b[Max_EditMod_type];
-	t_u32		type;
-};
-
-int				init_editmod(t_env *env, t_sdl *sdl, t_editmod *editmod);
-
 struct			s_env {
 	t_sdl			sdl;
 	t_color_pick	cpick;
@@ -559,7 +584,7 @@ struct			s_env {
 	t_palette		palette;
 	t_mprops		map_properties;
 	t_rpanel		rpan;
-	t_editmod		editmod;
+	t_editor		editor;
 	t_ivec2			spawn;
 	int				ed_map_value;
 	t_bool			erasing;
@@ -608,7 +633,7 @@ int				ipercent_of(int of, int percent);
 t_bool			is_bounded(t_ivec2 pos, t_canvas canvas);
 t_canvas		get_map_boundaries(t_env *env);
 t_vec2			map_to_center(t_env *env);
-t_ivec2			mpos_to_map_index(t_canvas bounds, t_ivec2 mpos, t_env *env);
+t_ivec2			mpos_to_map_index(t_canvas bounds, t_env *env);
 t_vec2			mpos_to_map_coord(t_canvas bounds, t_ivec2 mpos, t_env *env);
 t_ivec2			map_coord_to_screen(t_env *env, t_vec2 v2);
 t_ivec2			get_mouse_pos(void);
