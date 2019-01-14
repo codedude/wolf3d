@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/14 16:54:31 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/14 18:15:23 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ endif
 DEBUG	?=	1
 FLAGS_OPT		=
 ifeq ($(DEBUG),1)
-	FLAGS_OPT	=	-g3 -O2 #-fsanitize=address
+	FLAGS_OPT	=	-g3 -O2 -fsanitize=address
 else
 	FLAGS_OPT	=	-O3 -flto
 endif
@@ -66,8 +66,7 @@ SRCS_F		+=	$(PARSERD)/map_parser $(PARSERD)/stack $(PARSERD)/reader \
 				$(PARSERD)/ent_analyze $(PARSERD)/load_map $(PARSERD)/tools \
 				$(PARSERD)/tools_2 $(PARSERD)/tools_3 $(PARSERD)/tools_4 \
 				$(PARSERD)/map_content $(PARSERD)/object_content \
-				$(PARSERD)/texture_content $(PARSERD)/sprite_content \
-				$(PARSERD)/spaw_content $(PARSERD)/parser_map
+				$(PARSERD)/spawn_content $(PARSERD)/parse_map
 SRCS_F		+=	$(EVENTD)/move_1 $(EVENTD)/move_2 $(EVENTD)/move_3 \
 				$(EVENTD)/event_1 $(EVENTD)/event_2 $(EVENTD)/event_3 \
 				$(EVENTD)/event

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:32:48 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 13:19:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 17:24:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_anim			*anim_new(t_entity *entity, t_anim_type type, int key_speed)
 
 void			anim_destroy(t_anim *anim, t_bool force_destroy)
 {
-	if (anim->type == ANIM_DESTROY || force_destroy)
+	if (anim->type == ANIM_DESTROY || force_destroy == True)
 		entity_destroy(anim->entity);
 	free(anim);
 }

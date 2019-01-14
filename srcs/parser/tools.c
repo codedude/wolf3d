@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/15 22:26:33 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/15 22:41:00 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/14 17:50:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 #include "parser.h"
+#include "entity.h"
 
 int		ft_iswhitespace(int c)
 {
@@ -26,39 +27,52 @@ char	*skip_whitespace(char *str)
 	return (str);
 }
 
-void	del_int_2d_array(int **ar, int h)
+void	destroy_map_data(t_map *map)
 {
 	int		i;
+	int		j;
 
-	if (!ar)
-		return ;
-	i = 0;
-	while (i < h)
+	if (map->data)
 	{
-		free(ar[i]);
-		i++;
-	}
-	free(ar);
+		i = 0;
+		while (i < map->height)
+		{
+			if (map->data[i])
+			{
+				j = 0;
+				while (j < map->width)
+				{
+					free(map->data[i][j].e.brick);
+					++j;
+				}
+				free(map->data[i]);
+			}
+			++i;
+		}
+		free(map->data);
+		map->data = NULL;
+}
 }
 
-int		**int_new_2darray(int x, int y)
+int		new_map_data(t_map *map)
 {
-	int		**ar;
-	int		i;
+	int			i;
 
-	if (!(ar = (int**)ft_memalloc(sizeof(int *) * (unsigned int) y)))
-		return (NULL);
+	if (!(map->data
+		= (t_entity **)ft_memalloc(sizeof(t_entity *) * (size_t)map->height)))
+		return (0);
 	i = 0;
-	while (i < y)
+	while (i < map->height)
 	{
-		if (!(ar[i] = (int *)malloc(sizeof(int) * (unsigned int) x)))
+		if (!(map->data[i]
+			= (t_entity *)ft_memalloc(sizeof(t_entity) * (size_t)map->width)))
 		{
-			del_int_2d_array(ar, y);
-			return (NULL);
+			destroy_map_data(map);
+			return (0);
 		}
 		i++;
 	}
-	return (ar);
+	return (1);
 }
 
 int		is_filechar(int c)

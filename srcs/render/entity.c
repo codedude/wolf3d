@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 16:19:00 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 23:54:41 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 17:25:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void		entity_set(t_entity *entity, int tex_id, int id,
 void		entity_destroy(t_entity *entity)
 {
 	free(entity->e.brick);
+	entity->e.brick = NULL;
 	if (entity->type == ENTITY_OBJECT)
 		free(entity);
 	else

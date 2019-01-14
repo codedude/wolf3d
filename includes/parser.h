@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 14:48:58 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/16 19:19:49 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/14 18:10:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,22 @@
 # define PARSER_H
 
 # include "env.h"
+# include "entity.h"
 
 enum parsing_states {
 	Parse_error = -1,
-	Name_entity = 0,
-	Map_parsing = 1,
-	Texture_parsing = 2,
-	Spawn_parsing = 3,
-	Sprite_parsing = 4,
-	Object_parsing = 5,
+	Name_entity,
+	Map_parsing,
+	Spawn_parsing,
+	Object_parsing,
 	Parse_end
 };
 
 enum parsing_actions {
 	Parse_action_default = 0,
 	Parse_action_map = (1 << 0),
-	Parse_action_texture = (1 << 1),
-	Parse_action_spawn = (1 << 2),
-	Parse_action_sprite = (1 << 3),
-	Parse_action_object = (1 << 4)
+	Parse_action_spawn = (1 << 1),
+	Parse_action_object = (1 << 2)
 };
 
 # define TYPE_LIST_HELP	"types supported:\n" TYPE_NAMES_LIST
@@ -118,35 +115,27 @@ typedef struct		s_parser {
 # define P_ENT_NAME_0_1		map_ent_analyze
 # define P_ENT_NAME_0_2		map_content_analyze
 
-# define P_ENT_NAME_1_0		"Texture"
-# define P_ENT_NAME_1_1		texture_ent_analyze
-# define P_ENT_NAME_1_2		texture_content_analyze
+# define P_ENT_NAME_1_0		"Spawn"
+# define P_ENT_NAME_1_1		spawn_ent_analyze
+# define P_ENT_NAME_1_2		spawn_content_analyze
 
-# define P_ENT_NAME_2_0		"Spawn"
-# define P_ENT_NAME_2_1		spawn_ent_analyze
-# define P_ENT_NAME_2_2		spawn_content_analyze
-
-# define P_ENT_NAME_3_0		"Sprite"
-# define P_ENT_NAME_3_1		sprite_ent_analyze
-# define P_ENT_NAME_3_2		sprite_content_analyze
-
-# define P_ENT_NAME_4_0		"Object"
-# define P_ENT_NAME_4_1		object_ent_analyze
-# define P_ENT_NAME_4_2		object_content_analyze
+# define P_ENT_NAME_2_0		"Object"
+# define P_ENT_NAME_2_1		object_ent_analyze
+# define P_ENT_NAME_2_2		object_content_analyze
 
 # define P_ENT_TOSTRING1	P_ENT_NAME_0_0, P_ENT_NAME_1_0, P_ENT_NAME_2_0
-# define P_ENT_TOSTRING2	P_ENT_NAME_3_0, P_ENT_NAME_4_0
+# define P_ENT_TOSTRING2
 # define P_ENT_TOSTRING		P_ENT_TOSTRING1, P_ENT_TOSTRING2
 
 # define P_ENT_FUNCT1		P_ENT_NAME_0_1, P_ENT_NAME_1_1, P_ENT_NAME_2_1
-# define P_ENT_FUNCT2		P_ENT_NAME_3_1, P_ENT_NAME_4_1
+# define P_ENT_FUNCT2
 # define P_ENT_FUNCT		P_ENT_FUNCT1, P_ENT_FUNCT2
 
 # define P_CONTENT_FUNCT1	name_ent_analyze, P_ENT_NAME_0_2, P_ENT_NAME_1_2
-# define P_CONTENT_FUNCT2	P_ENT_NAME_2_2, P_ENT_NAME_3_2, P_ENT_NAME_4_2
+# define P_CONTENT_FUNCT2	P_ENT_NAME_2_2
 # define P_CONTENT_FUNCT	P_CONTENT_FUNCT1, P_CONTENT_FUNCT2
 
-# define P_ENT_COUNT		5
+# define P_ENT_COUNT		3
 
 char				*ft_stackpop(t_stack **stack);
 int					ft_stackpush(t_stack **stack, char *str);
@@ -186,8 +175,8 @@ int					object_ent_analyze(t_env *env, t_parser *parser);
 
 int					ft_iswhitespace(int c);
 char				*skip_whitespace(char *str);
-void				del_int_2d_array(int **ar, int h);
-int					**int_new_2darray(int x, int y);
+void				destroy_map_data(t_map *map);
+int					new_map_data(t_map *map);
 int					is_filechar(int c);
 
 /*

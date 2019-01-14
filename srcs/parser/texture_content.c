@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_content.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:04:55 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/16 17:44:26 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/14 18:03:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "env.h"
 #include "libft.h"
 #include "parser.h"
+#include "sdl_m.h"
+#include "texture.h"
 
 static int	fill_buffer(char *buff, t_parser *parser)
 {
@@ -37,7 +39,7 @@ int			load_textures(t_env *env, t_parser *parser)
 	while (i < env->textures_nb)
 	{
 		if ((fill_buffer(buff, parser)) == ERROR
-		|| sdl_load_texture(env->textures + i, buff) == ERROR)
+		|| tex_load(env->textures + i, buff, 1, 1) == ERROR)
 			return (ERROR);
 		i++;
 	}
@@ -47,7 +49,7 @@ int			load_textures(t_env *env, t_parser *parser)
 int			texture_content_analyze(t_env *env, t_parser *parser)
 {
 	env->textures =
-		(t_texture *)ft_memalloc((size_t)env->textures_nb * sizeof(t_texture));
+		(t_tex *)ft_memalloc((size_t)env->textures_nb * sizeof(t_tex));
 	if (env->textures == NULL || load_textures(env, parser) == ERROR)
 	{
 		parser->err_no = ETGET;

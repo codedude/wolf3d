@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 16:55:19 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 16:55:27 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 18:12:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,6 @@ int				map_ent_analyze(t_env *env, t_parser *parser)
 	return (Map_parsing);
 }
 
-static int		sprite_ent_paramaters(t_env *env, t_parser *parser)
-{
-	if (parser->a_state & Parse_action_sprite)
-	{
-		parser->err_no = ESPRDEF;
-		return (ERROR);
-	}
-	if (get_and_skipdigit(parser, &env->objects_nb) == ERROR)
-	{
-		parser->err_no = ESPRPAR;
-		return (ERROR);
-	}
-	return (SUCCESS);
-}
-
-int				sprite_ent_analyze(t_env *env, t_parser *parser)
-{
-	if (sprite_ent_paramaters(env, parser) == ERROR
-	|| get_next_opbracket(parser) == ERROR)
-		return (Parse_error);
-	parser->a_state |= Parse_action_sprite;
-	return (Sprite_parsing);
-}
-
 static int		object_ent_paramaters(t_env *env, t_parser *parser)
 {
 	if (parser->a_state & Parse_action_object)
@@ -85,30 +61,6 @@ int				object_ent_analyze(t_env *env, t_parser *parser)
 		return (Parse_error);
 	parser->a_state |= Parse_action_object;
 	return (Object_parsing);
-}
-
-static int		tex_ent_paramaters(t_env *env, t_parser *parser)
-{
-	if (parser->a_state & Parse_action_texture)
-	{
-		parser->err_no = ETDEF;
-		return (ERROR);
-	}
-	if (get_and_skipdigit(parser, &env->textures_nb) == ERROR)
-	{
-		parser->err_no = ETPAR;
-		return (ERROR);
-	}
-	return (SUCCESS);
-}
-
-int				texture_ent_analyze(t_env *env, t_parser *parser)
-{
-	if (tex_ent_paramaters(env, parser) == ERROR
-		|| get_next_opbracket(parser) == ERROR)
-		return (Parse_error);
-	parser->a_state |= Parse_action_texture;
-	return (Texture_parsing);
 }
 
 static int		get_obj_type_name(t_parser *parser, size_t wlen)

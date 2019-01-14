@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sprite_content.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:18:08 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/16 17:44:16 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/14 18:05:35 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ int			load_sprites(t_env *env, t_parser *parser)
 	int			i;
 
 	i = 0;
-	while (i < env->sprites_nb)
+	while (i < env->objects_nb)
 	{
 		if ((fill_buffer(buff, parser)) == ERROR
-		|| sdl_load_texture(&env->sprites[i].texture, buff) == ERROR)
+		|| tex_load(NULL, buff, 1, 1) == ERROR)
 			return (ERROR);
 		i++;
 	}
@@ -46,9 +46,9 @@ int			load_sprites(t_env *env, t_parser *parser)
 
 int			sprite_content_analyze(t_env *env, t_parser *parser)
 {
-	env->sprites =
-		(t_sprite *)ft_memalloc((size_t)env->sprites_nb * sizeof(t_sprite));
-	if (env->sprites == NULL || load_sprites(env, parser) == ERROR)
+	env->objects =
+		(t_entity *)ft_memalloc((size_t)env->objects_nb * sizeof(t_entity));
+	if (env->objects == NULL || load_sprites(env, parser) == ERROR)
 	{
 		parser->err_no = ESPRGET;
 		return (Parse_error);

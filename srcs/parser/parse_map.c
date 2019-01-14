@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:02:08 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/02 13:10:35 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/14 18:13:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "libft.h"
 #include "parser.h"
+#include "entity.h"
 
 static void		init_parser(t_parser *parser, int conf_fd)
 {
@@ -49,7 +50,7 @@ static int		check_spawn(t_map *map, t_parser *parser)
 	if (map->spawn.x < 0 || map->spawn.x >= map->width
 	|| map->spawn.y < 0 || map->spawn.y >= map->height)
 		check = 1;
-	else if (map->data[map->spawn.y][map->spawn.x] != 0)
+	else if (map->data[map->spawn.y][map->spawn.x].type != ENTITY_VOID)
 		check = 2;
 	else
 		return (SUCCESS);
@@ -61,10 +62,8 @@ static int		check_spawn(t_map *map, t_parser *parser)
 static int		clean_info(t_env *env, t_parser *parser)
 {
 	if (!(parser->a_state & Parse_action_map)
-		|| !(parser->a_state & Parse_action_texture)
 		|| !(parser->a_state & Parse_action_spawn)
-		|| (!(parser->a_state & Parse_action_sprite)
-			&& (parser->a_state & Parse_action_object)))
+		|| !(parser->a_state & Parse_action_object))
 	{
 		parser->err_no = EBTYPE;
 		return (Parse_error);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/14 16:41:56 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 18:43:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,6 @@
 #include "texture.h"
 #include "camera.h"
 #include "player.h"
-
-int			load_objects(t_env *env)
-{
-	int			i;
-	t_object	*obj;
-
-	env->objects_nb = 4;
-	env->objects = (t_entity *)malloc(sizeof(*env->objects)
-		* (size_t)(env->objects_nb));
-	if (env->objects == NULL)
-		return (ERROR);
-	i = 0;
-	while (i < env->objects_nb)
-	{
-		obj = entity_new_object(VEC2_INIT(5.0, 8.0 + i * 2.0),
-			VEC2_INIT(1.0, 1.0), VEC2_INIT(1.0, 0.0), 0);
-		entity_set(&env->objects[i], i, i, 0);
-		entity_merge(&env->objects[i], (void *)obj, ENTITY_OBJECT);
-		i++;
-	}
-	return (SUCCESS);
-}
 
 void		init_player(t_player *player)
 {
@@ -82,8 +60,6 @@ static int	wolf_init(t_env *env, char *filename)
 	entity_merge(env->map.skybox, NULL, ENTITY_SKYBOX);
 	env->map.ceil_id = 1;
 	env->map.floor_id = 4;
-	if (load_objects(env) == ERROR)
-		return (ERROR);
 	init_cam(&env->cam, &env->sdl, &env->map);
 	init_player(&env->player);
 	return (SUCCESS);
@@ -102,7 +78,6 @@ static void	wolf_destroy(t_env *env, t_map *map, t_cam *cam)
 		++i;
 	}
 	free(env->objects);
-	entity_destroy(map->skybox);
 	alist_clear(&env->anims, True);
 }
 
