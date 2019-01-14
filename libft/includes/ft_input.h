@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 19:13:38 by valentin          #+#    #+#             */
-/*   Updated: 2019/01/11 23:12:11 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 16:37:38 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ typedef	struct		s_fd_l {
 }					t_fd_list;
 
 int					ft_gnl(int const fd, char **line);
+int					get_next_line(int fd, char **line);
 
 #endif

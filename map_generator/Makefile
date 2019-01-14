@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/02 15:49:20 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/14 16:38:11 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,9 @@ INCD		=	includes
 PARENT_INCD	=	../includes
 LIBFTD		=	../libft
 LIBTPOOLD	=	../libtpool
-SDLD		=	../srcs/sdl
-PARSERD		=	../srcs/parser
+PARENT_SD	=	../srcs
+SDLD		=	$(PARENT_SD)/sdl
+PARSERD		=	$(PARENT_SD)/parser
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image \
@@ -35,13 +36,25 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-FILES		=	brush_utilities.c draw_grid_lines.c draw_grid.c draw_node.c \
-				env_destroy.c env_init.c main.c manage_binds.c map.c \
-				tex_previewbox.c tools.c save_file.c
+FILES		=	env_destroy.c main.c manage_binds.c map.c \
+				save_file.c algo.c
+FILES		+=	env_tools.c tools.c mouse_tools.c mouse_track.c
+FILES		+=	panel.c panel_tex.c panel_draw.c panel_tools.c
+FILES		+=	buttons.c
+FILES		+=	slider.c checkbox.c
+FILES		+=	env_init.c inspector_init.c map_props_init.c \
+				obj_prevbox_init.c wall_prevbox_init.c
+FILES		+=	texdata_draw.c
+FILES		+=	draw_grid_lines.c draw_grid.c draw_node.c \
+				draw_line.c draw_player_radar.c draw_map.c
+FILES		+=	paint_bucket_tools.c brushes.c objects.c \
+				toolset.c editor.c doors.c
 
-PARENT_FILES	=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl4.c
+PARENT_FILES	=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
+					$(SDLD)/sdl_load_image.c $(SDLD)/sdl_sprites.c \
+					$(SDLD)/sdl_textures.c
 PARENT_FILES	+=	$(PARSERD)/stack.c $(PARSERD)/reader.c
-
+PARENT_FILES	+=	$(PARENT_SD)/types.c
 
 MGEN_FILES	=	$(MGEND)/main.c
 
@@ -51,10 +64,13 @@ SRCS		+=	$(PARENT_FILES)
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-				-I$(INCD) -I$(PARENT_INCD) -O3 -g3 #-fsanitize=address
-LDFLAGS		+=	-Wextra -Wall -Wno-unused-result -Wconversion
+				-I$(INCD) -I$(PARENT_INCD) -g3 -Wextra -Wall \
+				-Wno-unused-result -Wconversion -O3 -flto \
+				# -fsanitize=address
 
-HEADER			=	$(INCD)/gen_env.h $(PARENT_HEADER)
+LDFLAGS		+=	-flto -O3 #-fsanitize=address
+
+HEADER			=	$(INCD)/gen_env.h $(INCD)/algo.h $(PARENT_HEADER)
 
 PARENT_HEADER	= 	$(PARENT_INCD)/env.h $(PARENT_INCD)/sdl_m.h \
 					$(PARENT_INCD)/types.h
@@ -66,11 +82,11 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make -C $(LIBFTD)
 	make -C $(LIBTPOOLD)
-	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $(NAME)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $(NAME)
 	@echo "$(NAME) - compiled"
 
 %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
 	make -C $(LIBFTD) clean

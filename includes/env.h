@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 12:51:10 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 16:44:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ struct				s_map {
 	int				ceil_id;
 	int				show_ceil;
 	t_ivec2			spawn;
+	t_float			spawn_rotation;
 	int				width;
 	int				height;
 };
@@ -56,6 +57,8 @@ struct				s_env {
 	t_algo			*packs;
 	int				objects_nb;
 	t_sdl			sdl;
+	t_tex			*textures;
+	int				textures_nb;
 	t_map			map;
 	t_cam			cam;
 	t_player		player;

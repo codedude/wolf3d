@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/13 13:02:22 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/14 16:37:44 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ LIBFT_SRCS	+= $(STRINGD)/ft_strncpy.c $(STRINGD)/ft_strsub.c \
 			$(STRINGD)/ft_strchr.c $(STRINGD)/ft_strsplit_whitespaces.c \
 			$(STRINGD)/ft_strequ.c $(STRINGD)/ft_strncat.c \
 			$(STRINGD)/ft_strrev.c $(STRINGD)/ft_strdup.c \
-			$(STRINGD)/ft_strnew_fast.c $(STRINGD)/ft_strjoin.c \
+			$(STRINGD)/ft_strnew_fast.c \
 			$(STRINGD)/ft_strcmp.c $(STRINGD)/ft_strrchr.c \
 			$(STRINGD)/ft_strcpy.c $(STRINGD)/ft_strsplit_free.c \
 			$(STRINGD)/ft_strdel.c $(STRINGD)/ft_strtrim.c \
@@ -94,7 +94,7 @@ LIBFT_SRCS	+= $(LISTD)/ft_lstnew.c $(LISTD)/ft_lstdelone.c \
 			$(LISTD)/ft_lstdel.c $(LISTD)/ft_lstadd.c \
 			$(LISTD)/ft_lstiter.c $(LISTD)/ft_lstmap.c $(LISTD)/ft_lstshift.c \
 			$(LISTD)/ft_lstdel_raw.c
-LIBFT_SRCS	+= $(INPUTD)/ft_gnl.c
+LIBFT_SRCS	+= $(INPUTD)/ft_gnl.c $(INPUTD)/get_next_line.c
 
 SRCS		= $(addprefix $(SRCD)/, $(LIBFT_SRCS))
 OBJS		= $(patsubst %.c, %.o, $(SRCS))

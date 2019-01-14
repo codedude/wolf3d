@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tex_previewbox.c                                   :+:      :+:    :+:   */
+/*   panel_tex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 17:30:56 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/05 16:55:33 by jbulant          ###   ########.fr       */
+/*   Updated: 2018/12/19 19:28:06 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 #include "types.h"
 #include "gen_env.h"
 
-static t_color	*new_texdata(t_texture *tex, t_ivec2 size)
+t_color			*new_texdata(t_texture *tex, t_ivec2 size)
 {
 	t_color		*tdata;
 	t_ivec2		i;
 	t_ivec2		transpo;
 	size_t		msize;
 
-	msize = sizeof(t_color) * (size_t)size.y * (size_t)size.y;
+	msize = sizeof(t_color) * (size_t)size.x * (size_t)size.y;
 	if (!(tdata = (t_color*)ft_memalloc(msize)))
 		return (NULL);
 	i.y = 0;
@@ -44,39 +44,41 @@ static t_color	*new_texdata(t_texture *tex, t_ivec2 size)
 	return (tdata);
 }
 
-t_tex_pbox			*new_tex_previewbox(t_sdl *sdl, t_texture *tex, int id)
+void			destroy_panel_tex(t_color ***pbox_src, t_u32 nb)
 {
-	t_tex_pbox	*tbox;
-	t_canvas	psize;
+	t_u32	i;
+	t_color	**box;
 
-	if (!(tbox = (t_tex_pbox *)malloc(sizeof(*tbox))))
-		return (NULL);
-	psize.pos = 0;
-	psize.size = ipercent_of(sdl->height, PREV_BOX_PERC);
-	tbox->tex_id = id;
-	tbox->canvas = psize;
-	tbox->next = NULL;
-	if (!(tbox->tex_data = new_texdata(tex, psize.size)))
-	{
-		free(tbox);
-		return (NULL);
-	}
-	return (tbox);
-}
-
-void				tex_previewbox_add(t_tex_pbox **abox, t_tex_pbox *add)
-{
-	if (add)
-		add->next = *abox;
-	*abox = add;
-}
-
-void				destroy_tex_previewbox(t_tex_pbox *pbox)
-{
-	if (!pbox)
+	box = *pbox_src;
+	if (!box)
 		return ;
-	destroy_tex_previewbox(pbox->next);
-	if (pbox->tex_data)
-		free(pbox->tex_data);
-	free(pbox);
+	i = 0;
+	while (i < nb)
+	{
+		free(box[i]);
+		i++;
+	}
+	free(box);
+	*pbox_src = NULL;
+}
+
+t_color			**new_panel_tex(t_sdl *sdl, t_u32 nb, t_ivec2 size,
+								t_texture *(*tex_src)(t_sdl*, int))
+{
+	t_color		**tex;
+	t_u32		i;
+
+	if (!(tex = (t_color**)ft_memalloc(sizeof(*tex) * nb)))
+		return (NULL);
+	i = 0;
+	while (i < nb)
+	{
+		if (!(tex[i] = new_texdata(tex_src(sdl, (int)i), size)))
+		{
+			destroy_panel_tex(&tex, nb);
+			return (NULL);
+		}
+		i++;
+	}
+	return (tex);
 }

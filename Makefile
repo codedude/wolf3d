@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/14 16:13:51 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/14 16:54:31 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,12 @@ SRCS_F		+=	$(RENDERD)/render $(RENDERD)/raycast_1 $(RENDERD)/raycast_2 \
 SRCS_F		+=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
 				$(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2 \
 				$(SDLD)/texture_1 $(SDLD)/texture_2
-SRCS_F		+=	$(PARSERD)/map_parser $(PARSERD)/stack $(PARSERD)/reader
+SRCS_F		+=	$(PARSERD)/map_parser $(PARSERD)/stack $(PARSERD)/reader \
+				$(PARSERD)/ent_analyze $(PARSERD)/load_map $(PARSERD)/tools \
+				$(PARSERD)/tools_2 $(PARSERD)/tools_3 $(PARSERD)/tools_4 \
+				$(PARSERD)/map_content $(PARSERD)/object_content \
+				$(PARSERD)/texture_content $(PARSERD)/sprite_content \
+				$(PARSERD)/spaw_content $(PARSERD)/parser_map
 SRCS_F		+=	$(EVENTD)/move_1 $(EVENTD)/move_2 $(EVENTD)/move_3 \
 				$(EVENTD)/event_1 $(EVENTD)/event_2 $(EVENTD)/event_3 \
 				$(EVENTD)/event
