@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 17:01:12 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 16:08:41 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static t_float	vec_is_in_front(t_vec2 left, t_vec2 right, t_vec2 p)
 	t = (-left.y * p.x + left.x * p.y);
 	return (s / (s + t));
 }
-
 
 int				prepare_sprite(t_env *env, t_klist **lst)
 {

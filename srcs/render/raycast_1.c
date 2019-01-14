@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 15:54:28 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 16:08:56 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam,
 }
 
 static int		get_hit_value(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
-								t_ivec2	map_pos)
+					t_ivec2 map_pos)
 {
 	t_door	*door;
 	int		hit;

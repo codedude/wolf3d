@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/13 16:49:04 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 16:06:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int			main(int ac, char **av)
 	}
 	if (env_init(&env, av[1]) == SUCCESS)
 	{
-		//sdl_print_infos(&env.sdl);
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		loop(&env);
 	}

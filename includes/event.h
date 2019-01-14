@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 12:58:41 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 16:06:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include "types.h"
 # include "sdl_m.h"
 # include "env.h"
-#include "camera.h"
-#include "player.h"
+# include "camera.h"
+# include "player.h"
 
 # define ACTION_NONE		0b0
 # define ACTION_GROUNDED	0b00001

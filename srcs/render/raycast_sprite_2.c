@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:40:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 17:10:08 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 16:09:23 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void		prepare_object_x_and_opti(t_env *env, t_object *obj,
 		obj->x_end = x + half_width + obj->x_offset;
 	else
 		obj->x_end = x + half_width - obj->x_offset;
-
 	if (obj->x_end >= env->sdl.width)
 		obj->x_end = env->sdl.width - 1;
 	if (obj->y_end >= env->sdl.height)
