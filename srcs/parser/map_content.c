@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_content.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:04:01 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 17:57:23 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/14 22:14:39 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ static int		get_map_content(t_map *map, t_parser *parser)
 {
 	t_ivec2		it;
 	int			val;
+	int			id;
 
 	it.y = 0;
+	id = 0;
 	while (it.y < map->height)
 	{
 		it.x = 0;
@@ -28,7 +30,11 @@ static int		get_map_content(t_map *map, t_parser *parser)
 		{
 			if (get_and_skipdigit(parser, &val) == ERROR)
 				return (ERROR);
-			entity_set(&map->data[it.y][it.x], val, val, 0);
+			if (val != 0)
+				entity_set_wall(&map->data[it.y][it.x], val, id, 0);
+			else
+				entity_set(&map->data[it.y][it.x], val, id, 0);
+			++id;
 			++it.x;
 		}
 		it.y++;
