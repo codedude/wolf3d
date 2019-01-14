@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/14 18:15:23 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/14 18:51:32 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ endif
 DEBUG	?=	1
 FLAGS_OPT		=
 ifeq ($(DEBUG),1)
-	FLAGS_OPT	=	-g3 -O2 -fsanitize=address
+	FLAGS_OPT	=	-g3 -O2 #-fsanitize=address
 else
 	FLAGS_OPT	=	-O3 -flto
 endif
