@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:52:51 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 02:09:58 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/15 13:04:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_entity	*entity_new(int tex_id, int id, int crossable)
 		return (NULL);
 	tmp->tex_id = tex_id;
 	tmp->tex_key = 0;
+	tmp->tex_calc = IVEC3_ZERO;
 	tmp->id = id;
 	tmp->crossable = crossable;
 	tmp->type = ENTITY_NONE;

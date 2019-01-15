@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 16:06:24 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 12:50:30 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,19 @@
 #include "anim.h"
 #include "event.h"
 
+static void test(t_env *env)
+{
+	t_anim *anim;
+
+	anim = anim_new(&env->objects[0], ANIM_LOOP, False, 1);
+	alist_push(&env->anims, anim);
+}
+
 static int	loop(t_env *env)
 {
 	if (render_prepare(env) == ERROR)
 		return (ERROR);
+	test(env);
 	while (compute_event(env) == True)
 	{
 		compute_player(env);

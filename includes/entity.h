@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 03:15:09 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/15 13:03:08 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ enum				e_entity_type {
 struct				s_entity {
 	int				tex_id;
 	int				tex_key;
+	t_ivec3			tex_calc;
 	int				crossable;
 	int				id;
 	t_entity_type	type;
