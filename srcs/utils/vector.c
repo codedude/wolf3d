@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:41:23 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 00:57:01 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 19:35:03 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,12 @@ t_vec2		vec_norm(t_vec2 v1)
 		v1 *= len;
 	}
 	return (v1);
+}
+
+t_vec2		vec_rotate_vec(t_vec2 v1, t_vec2 v2)
+{
+	t_float	angle;
+
+	angle = acos(vec_dot(v1, v2));
+	return (vec_rotate(v1, angle));
 }

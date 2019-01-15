@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:20:25 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 16:42:44 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:50:17 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,15 @@ t_color		sdl_get_pixel(t_tex *text, int x, int y, int key)
 	return (pixel);
 }
 
-void		sdl_get_fps(int show_fps)
+void		sdl_get_fps(t_sdl *sdl)
 {
 	static struct timeval	last = {0, 0};
 	static int				sum_fps = 60;
 	struct timeval			new;
 
-	if (show_fps == 0)
-		return ;
 	gettimeofday(&new, NULL);
+	sdl->deltatime = (t_float)(new.tv_sec - last.tv_sec)
+						+ (new.tv_usec - last.tv_usec) / 1e6f;
 	sum_fps += 1;
 	if (new.tv_sec - last.tv_sec >= 1)
 	{
@@ -49,8 +49,8 @@ void		sdl_get_fps(int show_fps)
 		ft_putnbr(sum_fps);
 		sum_fps = 0;
 	}
-	last.tv_usec = new.tv_usec;
 	last.tv_sec = new.tv_sec;
+	last.tv_usec = new.tv_usec;
 }
 
 int			sdl_update_texture(t_sdl *sdl)

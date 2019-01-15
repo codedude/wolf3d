@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 12:59:48 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 19:39:06 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,50 @@ void		player_set_anim(t_cam *cam, t_player *player)
 	}
 }
 
+# define PLAYER_SPEED	4.0
+
+static void	decelerate(t_player *player)
+{
+	t_float		factor;
+
+	if (player->velocity.x > 0.0)
+	{
+		player->velocity.x -= 0.1;
+		if (player->velocity.x < 0.0)
+			player->velocity.x = 0.0;
+	}
+	else if (player->velocity.x < 0.0)
+	{
+		player->velocity.x += 0.1;
+		if (player->velocity.x > 0.0)
+			player->velocity.x = 0.0;
+	}
+	if (player->velocity.y > 0.0)
+	{
+		player->velocity.y -= 0.1;
+		if (player->velocity.y < 0.0)
+			player->velocity.y = 0.0;
+	}
+	else if (player->velocity.y < 0.0)
+	{
+		player->velocity.y += 0.1;
+		if (player->velocity.y > 0.0)
+			player->velocity.y = 0.0;
+	}
+}
+
 void		compute_player(t_env *env)
 {
-	player_set_acceleration(&env->player);
-	player_set_anim(&env->cam, &env->player);
-	player_set_z(&env->cam, &env->player);
+	t_vec2		dir;
+	t_player	*player;
+
+	player = &env->player;
+	dir = vec_rotate_vec(player->velocity, env->cam.dir);
+	//printf("%f %f\n", dir.x, dir.y);
+	env->cam.pos = move_forward(env, env->cam.pos, dir, env->sdl.deltatime * PLAYER_SPEED);
+	if ((player->action_state & ACTION_WALKING) == 0)
+		decelerate(player);
+	player_set_acceleration(player);
+	player_set_anim(&env->cam, player);
+	player_set_z(&env->cam, player);
 }

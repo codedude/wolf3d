@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 16:14:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:44:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct		s_sdl {
 	int				bpp;
 	t_float			*z_buffer;
 	t_float			canvas_w;
+	t_float			deltatime;
 	int				width;
 	int				height;
 	size_t			size_buffer;
@@ -80,7 +81,7 @@ int					sdl_update_texture(t_sdl *sdl);
 int					sdl_render(t_sdl *sdl);
 void				sdl_put_pixel(t_sdl *sdl, int x, int y, t_color color);
 t_color				sdl_get_pixel(t_tex *text, int x, int y, int key);
-void				sdl_get_fps(int show_fps);
+void				sdl_get_fps(t_sdl *sdl);
 
 /*
 ** sdl_load_image.c
