@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:02:08 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 18:13:09 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 03:40:12 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,90 @@ static int		check_spawn(t_map *map, t_parser *parser)
 	return (ERROR);
 }
 
+static int		check_tex_id(t_parser *parser, t_sdl *sdl, int tex_id)
+{
+	if (tex_id < 0 || tex_id >= sdl->tex_wall_nb)
+	{
+		parser->line_nb = 0;
+		parser->err_no = EBTEX;
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
+static int		check_door_pos(t_parser *parser, t_map *map, t_ivec2 pos)
+{
+	if ((pos.x == 0 || pos.x == map->width - 1
+		|| pos.y == 0 || pos.y == map->height - 1))
+	{
+		parser->line_nb = 0;
+		parser->err_no = EDBOR;
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
+static t_bool	ent_is_wall(t_map *map, t_ivec2 pos)
+{
+	if (map->data[pos.y][pos.x].type == ENTITY_WALL)
+		return (True);
+	return (False);
+}
+
+static int		check_door(t_parser *parser, t_sdl *sdl,
+					t_map *map, t_ivec2 pos)
+{
+	t_door		*door;
+	t_ivec2		pchk[2];
+
+	door = map->data[pos.y][pos.x].e.door;
+	if (check_tex_id(parser, sdl, door->tex_wall_id) == ERROR
+	|| check_door_pos(parser, map, pos) == ERROR)
+		return (ERROR);
+	if (door->orientation == 1)
+	{
+		pchk[0] = IVEC2_INIT(0, 1);
+		pchk[1] = IVEC2_INIT(1, 0);
+	}
+	else
+	{
+		pchk[0] = IVEC2_INIT(1, 0);
+		pchk[1] = IVEC2_INIT(0, 1);
+	}
+	if (!ent_is_wall(map, pos - pchk[0]) || !ent_is_wall(map, pos + pchk[0])
+	|| (ent_is_wall(map, pos - pchk[1]) && ent_is_wall(map, pos + pchk[1])))
+	{
+		parser->line_nb = 0;
+		parser->err_no = EDWALL;
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
+static int		check_map_entities(t_sdl *sdl, t_map *map, t_parser *parser)
+{
+	t_ivec2		it;
+	t_entity	*ent;
+
+	it.y = 0;
+	while (it.y < map->height)
+	{
+		it.x = 0;
+		while (it.x < map->width)
+		{
+			ent = &map->data[it.y][it.x];
+			if (ent->type != ENTITY_VOID
+				&& (check_tex_id(parser, sdl, ent->tex_id)
+				|| (ent->type == ENTITY_DOOR
+				&& check_door(parser, sdl, map, it) == ERROR)))
+				return (ERROR);
+			it.x++;
+		}
+		it.y++;
+	}
+	return (SUCCESS);
+}
+
 static int		clean_info(t_env *env, t_parser *parser)
 {
 	if (!(parser->a_state & Parse_action_map)
@@ -68,7 +152,8 @@ static int		clean_info(t_env *env, t_parser *parser)
 		parser->err_no = EBTYPE;
 		return (Parse_error);
 	}
-	if (check_spawn(&env->map, parser) == ERROR)
+	if (check_map_entities(&env->sdl, &env->map, parser) == ERROR
+		|| check_spawn(&env->map, parser) == ERROR)
 		return (Parse_error);
 	return (SUCCESS);
 }

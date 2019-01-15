@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:52:51 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 14:53:37 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 02:09:58 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ t_brick		*entity_new_brick(int max_hp)
 	return (tmp);
 }
 
-t_door		*entity_new_door(int orientation)
+t_door		*entity_new_door(int orientation, int tex_wall_id)
 {
 	t_door	*tmp;
 
 	if ((tmp = (t_door *)malloc(sizeof(t_door))) == NULL)
 		return (NULL);
 	tmp->orientation = orientation;
+	tmp->tex_wall_id = tex_wall_id;
 	tmp->open_offset = 1.0;
 	tmp->is_open = False;
 	tmp->is_active = False;

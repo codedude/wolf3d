@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/15 22:26:33 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/16 19:46:55 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/15 02:24:08 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,23 @@ static char		*skip_digit(char *str)
 	return (str);
 }
 
+int				get_and_skipivec2(t_parser *parser, t_ivec2 *get)
+{
+	int		x;
+	int		y;
+
+	if (get_and_skipsdigit(parser, &x) == ERROR
+	|| get_and_skipsdigit(parser, &y) == ERROR)
+		return (ERROR);
+	*get = IVEC2_INIT(x, y);
+	return (SUCCESS);
+}
+
 int				get_and_skipdigit(t_parser *parser, int *get)
 {
 	char	*line;
 
-	if (!(line = get_next_word(parser, is_sdigit))
+	if (!(line = get_next_word(parser, ft_isdigit))
 	|| (*get = ft_atoi(line)) < 0)
 		return (ERROR);
 	parser->line = skip_digit(line);
@@ -52,7 +64,7 @@ int				get_and_skipsdigit(t_parser *parser, int *get)
 {
 	char	*line;
 
-	if (!(line = get_next_word(parser, ft_isdigit)))
+	if (!(line = get_next_word(parser, is_sdigit)))
 		return (ERROR);
 	*get = ft_atoi(line);
 	if (!(line = skip_sign(line)))

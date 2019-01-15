@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 06:54:43 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/15 03:08:30 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,6 @@ t_vec2 get_intersect_line(t_vec2 l1from, t_vec2 l1to,
             - j.y * l1from.x + j.y * l2from.x) / div;
     }
 	return (l2from + m * j);
-    //return (l1from + k * i);
 }
 
 t_canvas	get_map_boundaries(t_env *env)
@@ -209,16 +208,6 @@ t_canvas	get_map_boundaries(t_env *env)
 	bounds.size.y = (int)(env->map_info.map->size.y * env->map_info.zoom);
 	return (bounds);
 }
-
-// t_vec2		mpos_to_map_coord(t_canvas bounds, t_ivec2 mpos, t_env *env)
-// {
-// 	t_vec2		v2;
-//
-// 	mpos -= bounds.pos;
-// 	v2.x = ((t_float)mpos.x / ((t_float)env->node_size * env->zoom));
-// 	v2.y = ((t_float)mpos.y / ((t_float)env->node_size * env->zoom));
-// 	return (v2);
-// }
 
 t_vec2		mpos_to_map_coord(t_canvas bounds, t_ivec2 mpos, t_env *env)
 {

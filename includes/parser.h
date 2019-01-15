@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 14:48:58 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/14 18:10:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 03:37:04 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,19 @@ enum parsing_actions {
 # define EOGET_STR		"error: object content"
 # define EODEF			20
 # define EODEF_STR		"error: object already definded"
+# define EBTEX			21
+# define EBTEX_STR		"error: bad texture ID"
+# define EDBOR			22
+# define EDBOR_STR		"error: map: door on map border"
+# define EDWALL			23
+# define EDWALL_STR		"error: door: not enough or too many wall neighbours"
 
-# define ERRMSG_CNT		21
+# define ERRMSG_CNT		24
 # define ERRMSG_STR1	ENOBR_STR, EBTYPE_STR, EUNKST_STR, EMPAR_STR, EMGET_STR
 # define ERRMSG_STR2	ETPAR_STR, ETGET_STR, EMDEF_STR, ETDEF_STR, ESPAR_STR
 # define ERRMSG_STR3	ESGET_STR, ESDEF_STR, ESOOR_STR, ESONW_STR, ENCBR_STR
 # define ERRMSG_STR4	ESPRPAR_STR, ESPRGET_STR, ESPRDEF_STR, EOPAR_STR
-# define ERRMSG_STR5	EOGET_STR, EODEF_STR
+# define ERRMSG_STR5	EOGET_STR, EODEF_STR, EBTEX_STR, EDBOR_STR, EDWALL_STR
 # define ERRMSG_STR1_1	ERRMSG_STR1, ERRMSG_STR2, ERRMSG_STR3, ERRMSG_STR4
 # define ERRMSG_STR1_2	ERRMSG_STR5
 # define ERRMSG_STR		ERRMSG_STR1_1, ERRMSG_STR1_2
@@ -183,6 +189,7 @@ int					is_filechar(int c);
 **	tools_2.c
 */
 
+int					get_and_skipivec2(t_parser *parser, t_ivec2 *get);
 int					get_and_skipdigit(t_parser *parser, int *get);
 int					get_and_skipsdigit(t_parser *parser, int *get);
 int					get_and_skipvec2(t_parser *parser, t_vec2 *get);

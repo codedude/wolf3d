@@ -23,13 +23,16 @@ Spawn {
 }
 
 ## Map __Size_x__ __Size_y__
+##   field: Door position, orientation wall_tex door_tex
 ##   field: content
 ##  	 each row must be separated by a comma
 
 Map 9 9
 {
-	 0  0  0  0  0  0  0  0  0,
-	 0  1  4  5  0  0  0  0  0,
+	Door	1 1		0	5	2
+
+	 1  1  1  0  0  0  0  0  0,
+	 1  0  4  5  0  0  0  0  0,
 	 0  0  0  0  0  0  0  0  0,
 	 0  0  0  0  0  0  0  0  0,
 	 0  0  0  0  0  0  0  0  0,
