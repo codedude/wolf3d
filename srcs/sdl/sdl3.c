@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:20:25 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 13:19:18 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 16:42:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void		sdl_put_pixel(t_sdl *sdl, int x, int y, t_color color)
 	unsigned int	*img;
 	int				pos;
 
-	pos = x * sdl->bpp + y * sdl->pitch;
+	pos = x * 4 + y * sdl->pitch;
 	img = (unsigned int *)(sdl->image + pos);
 	*img = color.rgba;
 }
@@ -28,12 +28,8 @@ void		sdl_put_pixel(t_sdl *sdl, int x, int y, t_color color)
 t_color		sdl_get_pixel(t_tex *text, int x, int y, int key)
 {
 	t_color	pixel;
-	int		pos;
 
-	pos = x + (key % text->n_cols) * text->w
-		+ (y + key / text->n_cols * text->h)
-		* text->n_cols * text->w;
-	pixel.rgba = text->pixels[pos];
+	pixel.rgba = text->pixels[key][x + y * text->w];
 	return (pixel);
 }
 

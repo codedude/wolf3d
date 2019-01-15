@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:46:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 19:58:24 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:15:00 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,26 @@ t_bool			anim_skybox(t_sdl *sdl, t_anim *anim)
 
 t_bool			anim_object(t_sdl *sdl, t_anim *anim)
 {
-	t_object	*obj;
 	t_tex		*tex;
 
-	obj = anim->entity->e.object;
 	tex = tex_get_sprite(sdl, anim->entity->tex_id);
+	if (anim->key.counter % anim->key.speed == 0)
+		++anim->entity->tex_key;
+	if (anim->entity->tex_key == tex->n_sprites)
+	{
+		anim->entity->tex_key = 0;
+		anim->key.counter = 0;
+		return (True);
+	}
+	++anim->key.counter;
+	return (False);
+}
+
+t_bool			anim_wall(t_sdl *sdl, t_anim *anim)
+{
+	t_tex		*tex;
+
+	tex = tex_get_wall(sdl, anim->entity->tex_id - 1);
 	if (anim->key.counter % anim->key.speed == 0)
 		++anim->entity->tex_key;
 	if (anim->entity->tex_key == tex->n_sprites)

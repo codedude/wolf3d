@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 16:09:11 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:04:32 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,12 @@ static t_vec2	get_wall_texel(t_hit_infos *infos)
 
 void			rc_render(t_env *env, t_hit_infos *infos)
 {
-	t_tex		*text;
-	int			text_id;
 	t_vec2		texel;
 
 	if (infos->hit == 1)
 	{
-		text_id = env->map.data[(int)infos->map.y][(int)infos->map.x].tex_id
-			- 1;
-		text = tex_get_wall(&env->sdl, text_id);
-		draw_wall(&env->sdl, infos, &env->cam, text);
+		draw_wall(&env->sdl, infos, &env->cam,
+			&env->map.data[(int)infos->map.y][(int)infos->map.x]);
 	}
 	texel = get_wall_texel(infos);
 	draw_floor(env, &env->sdl, infos, texel);

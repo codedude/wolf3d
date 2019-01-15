@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 13:07:22 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/14 16:43:15 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 16:43:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "sdl_m.h"
 #include "env.h"
 #include "parser.h"
+#include "texture.h"
 
 SDL_Surface				*sdl_load_image(char *filename)
 {
@@ -33,30 +34,39 @@ SDL_Surface				*sdl_load_image(char *filename)
 	return (surf);
 }
 
-t_pixel					*sdl_convert_data(SDL_Surface *surf)
+int						sdl_convert_data(t_tex *tex, SDL_Surface *surf)
 {
 	Uint8		*pixels;
 	Uint8		*p;
-	t_pixel		*data;
 	int			x;
 	int			y;
+	int			i;
 
-	data = (t_pixel *)malloc(sizeof(*data) * (size_t)(surf->w * surf->h));
-	if (data == NULL)
-		return (NULL);
+	if ((tex->pixels = (t_pixel **)malloc(sizeof(t_pixel *)
+		* (size_t)tex->n_sprites)) == NULL)
+		return (ERROR);
 	pixels = (Uint8 *)surf->pixels;
-	y = 0;
-	while (y < surf->h)
+	i = 0;
+	while (i < tex->n_sprites)
 	{
-		x = 0;
-		while (x < surf->w)
+		if ((tex->pixels[i] = (t_pixel *)malloc(sizeof(t_pixel)
+			* (size_t)(tex->h * tex->w))) == NULL)
+			return (ERROR);
+		y = 0;
+		while (y < tex->h)
 		{
-			p = pixels + y * surf->pitch + x * surf->format->BytesPerPixel;
-			data[x + y * surf->w] =
-					(t_pixel)(p[0] << 16 | p[1] << 8 | p[2]);
-			x++;
+			x = 0;
+			while (x < tex->w)
+			{
+				p = pixels + (y + i / tex->n_cols * tex->h) * surf->pitch
+				+ (x + i % tex->n_cols * tex->w) * surf->format->BytesPerPixel;
+				tex->pixels[i][x + y * tex->w] =
+						(t_pixel)(p[0] << 16 | p[1] << 8 | p[2]);
+				++x;
+			}
+			++y;
 		}
-		y++;
+		++i;
 	}
-	return (data);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 13:20:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:04:57 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,15 @@ void	draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos, t_vec2 texel)
 	}
 }
 
-void	draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam, t_tex *text)
+void	draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam, t_entity *e)
 {
 	t_ivec2			tex;
 	int				y;
 	t_color			color;
 	t_float			half_height;
+	t_tex			*text;
 
+	text = tex_get_wall(sdl, e->tex_id - 1);
 	tex.x = (int)fmod(fabs(infos->wall_x - infos->tex_off_x) * text->w,
 		text->w);
 	if (infos->side == 0 && infos->ray.dir.x > 0)
@@ -117,7 +119,7 @@ void	draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam, t_tex *text)
 	{
 		tex.y = (int)fabs(text->h * ((y - cam->height + half_height)
 			/ (t_float)(infos->line_height)));
-		color = dark_color(sdl_get_pixel(text, tex.x, tex.y, 0),
+		color = dark_color(sdl_get_pixel(text, tex.x, tex.y, e->tex_key),
 			cam, infos->side & cam->side_filter, infos->z);
 		sdl_put_pixel(sdl, infos->x, y, color);
 		y++;

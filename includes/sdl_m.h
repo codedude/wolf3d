@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 13:19:26 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 16:14:07 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ void				sdl_get_fps(int show_fps);
 */
 
 SDL_Surface			*sdl_load_image(char *filename);
-t_pixel				*sdl_convert_data(SDL_Surface *surf);
+int					sdl_convert_data(t_tex *tex, SDL_Surface *surf);
 
 #endif

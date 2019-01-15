@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_content.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:04:01 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/15 02:54:21 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/15 16:56:56 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static int		get_map_content(t_map *map, t_parser *parser)
 			if (get_and_skipdigit(parser, &val) == ERROR)
 				return (ERROR);
 			if (val != 0 && map->data[it.y][it.x].type == ENTITY_VOID)
+			{
 				entity_set_wall(&map->data[it.y][it.x], val, id, 0);
+			}
 			++id;
 			++it.x;
 		}

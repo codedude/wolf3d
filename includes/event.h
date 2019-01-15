@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/14 16:06:01 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 14:57:41 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,11 @@ void					switch_effect(t_cam *cam, void *new, int type);
 void					binds_open_door(t_env *env, t_cam *cam, t_map *map);
 void					update_skybox_offset(t_cam *cam, t_sdl *sdl,
 							t_map *map);
-
 t_vec2					vec_rotate(t_vec2 dir, t_float speed);
 t_vec2					move_forward(t_env *env, t_vec2 from, t_vec2 to,
 							t_float speed);
+int						is_inside(t_float x, t_float min, t_float max);
+int						is_close_objects(t_env *env, t_vec2 pos);
 t_vec2					straf(t_env *env, t_vec2 from, t_vec2 to,
 							t_float speed);
 t_float					player_speed(int action_state, t_float speed,

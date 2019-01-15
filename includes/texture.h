@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 13:11:08 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 16:09:59 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_tex	t_tex;
 */
 
 struct			s_tex {
-	t_pixel		*pixels;
+	t_pixel		**pixels;
 	int			w;
 	int			h;
 	int			n_sprites;

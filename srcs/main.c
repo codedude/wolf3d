@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/15 12:50:30 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 15:27:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include "anim.h"
 #include "event.h"
 
-static void test(t_env *env)
+static void	test(t_env *env)
 {
 	t_anim *anim;
 

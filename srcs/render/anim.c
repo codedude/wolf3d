@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:32:48 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 11:04:48 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:00:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void			compute_anim(t_sdl *sdl, t_list_anim **head)
 			r = anim_object(sdl, anim);
 		else if (anim->entity->type == ENTITY_SKYBOX)
 			r = anim_skybox(sdl, anim);
+		else if (anim->entity->type == ENTITY_WALL)
+			r = anim_wall(sdl, anim);
 		if (r && anim->type != ANIM_LOOP)
 			alist_del_elem(head);
 		else

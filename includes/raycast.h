@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 17:00:50 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:02:42 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int						thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos,
 							t_map *map, t_door *door);
 
 void					draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
-							t_tex *text);
+							t_entity *e);
 void					draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 							t_vec2 texel);
 void					draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,

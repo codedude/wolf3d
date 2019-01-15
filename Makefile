@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/15 11:12:17 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/15 14:55:05 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,11 +73,11 @@ SRCS_F		+=	$(PARSERD)/map_parser $(PARSERD)/stack $(PARSERD)/reader \
 				$(PARSERD)/spawn_content $(PARSERD)/parse_map
 SRCS_F		+=	$(EVENTD)/move_1 $(EVENTD)/move_2 $(EVENTD)/move_3 \
 				$(EVENTD)/event_1 $(EVENTD)/event_2 $(EVENTD)/event_3 \
-				$(EVENTD)/event
+				$(EVENTD)/event $(EVENTD)/move_4
 SRCS_F		+=	$(UTILSD)/vector $(UTILSD)/types
 
 HEADERS_F	= 	env sdl_m raycast types list texture entity anim event \
-				export_bmp
+				export_bmp parser
 
 SRCS		=	$(addprefix $(SRCD)/, $(addsuffix .c, $(SRCS_F)))
 HEADERS		=	$(addprefix $(INCD)/, $(addsuffix .h, $(HEADERS_F)))

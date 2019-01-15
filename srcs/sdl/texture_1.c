@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 16:41:50 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 19:50:34 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:20:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int				tex_load(t_tex *tex, char *filename, int n_sprites, int n_cols)
 {
 	SDL_Surface	*surf;
 	SDL_Surface	*tmp;
+	int			r;
 
 	if ((tmp = sdl_load_image(filename)) == NULL)
 		return (ERROR);
@@ -32,9 +33,32 @@ int				tex_load(t_tex *tex, char *filename, int n_sprites, int n_cols)
 		+ (n_sprites % n_cols != 0 ? 1 : 0));
 	tex->n_sprites = n_sprites;
 	tex->n_cols = n_cols;
-	if ((tex->pixels = sdl_convert_data(surf)) == NULL)
-		return (ERROR);
+	r = sdl_convert_data(tex, surf);
 	SDL_FreeSurface(surf);
+	return (r);
+}
+
+static int		tex_parse_line(char **line_split, t_tex *tex)
+{
+	int			params[2];
+
+	if (line_split[0] == NULL)
+		return (ERROR);
+	if (line_split[1] == NULL)
+		params[0] = 1;
+	else if (ft_atoi_s(line_split[1], &params[0]) == ERROR || params[0] < 1)
+		return (ERROR);
+	if (line_split[1] != NULL)
+	{
+		if (line_split[2] == NULL)
+			params[1] = 1;
+		else if (ft_atoi_s(line_split[2], &params[1]) == ERROR || params[1] < 1)
+			return (ERROR);
+	}
+	else
+		params[1] = 1;
+	if (tex_load(tex, line_split[0], params[0], params[1]) == ERROR)
+		return (ERROR);
 	return (SUCCESS);
 }
 
@@ -43,49 +67,21 @@ static int		tex_load_file_content(t_stack **stack, t_tex *tex, int n)
 	char		*tmp;
 	char		**line_split;
 	int			i;
-	int			param;
-	int			param2;
+	int			r;
 
 	i = 0;
 	while (i < n)
 	{
 		if ((tmp = ft_stackpop(stack)) == NULL)
 			return (ERROR);
-		if ((line_split = ft_strsplit_whitespaces(tmp)) == NULL)
-		{
-			free(tmp);
-			return (ERROR);
-		}
+		line_split = ft_strsplit_whitespaces(tmp);
 		free(tmp);
-		if (line_split[0] == NULL)
-		{
-			ft_strsplit_free(line_split);
+		if (line_split == NULL)
 			return (ERROR);
-		}
-		param2 = 1;
-		if (line_split[1] == NULL)
-			param = 1;
-		else if (ft_atoi_s(line_split[1], &param) == ERROR || param < 1)
-		{
-			ft_strsplit_free(line_split);
-			return (ERROR);
-		}
-		if (line_split[1] != NULL)
-		{
-			if (line_split[2] == NULL)
-				param2 = 1;
-			else if (ft_atoi_s(line_split[2], &param2) == ERROR || param < 1)
-			{
-				ft_strsplit_free(line_split);
-				return (ERROR);
-			}
-		}
-		if (tex_load(&tex[i], line_split[0], param, param2) == ERROR)
-		{
-			ft_strsplit_free(line_split);
-			return (ERROR);
-		}
+		r = tex_parse_line(line_split, &tex[i]);
 		ft_strsplit_free(line_split);
+		if (r == ERROR)
+			return (ERROR);
 		++i;
 	}
 	return (SUCCESS);

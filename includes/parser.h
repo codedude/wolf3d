@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 14:48:58 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 03:37:04 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/15 14:39:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "env.h"
 # include "entity.h"
 
-enum parsing_states {
+enum			e_parsing_states {
 	Parse_error = -1,
 	Name_entity,
 	Map_parsing,
@@ -25,7 +25,7 @@ enum parsing_states {
 	Parse_end
 };
 
-enum parsing_actions {
+enum			e_parsing_actions {
 	Parse_action_default = 0,
 	Parse_action_map = (1 << 0),
 	Parse_action_spawn = (1 << 1),
@@ -162,7 +162,6 @@ int					map_content_analyze(t_env *env, t_parser *parser);
 int					spawn_content_analyze(t_env *env, t_parser *parser);
 int					sprite_content_analyze(t_env *env, t_parser *parser);
 int					object_content_analyze(t_env *env, t_parser *parser);
-
 
 /*
 **	ent_analyze.c

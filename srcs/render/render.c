@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 11:06:56 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:15:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ static int	make_skybox_anim(t_env *env)
 	t_anim		*anim;
 
 	if ((anim = anim_new(env->map.skybox, ANIM_LOOP, False, 1)) == NULL)
+		return (ERROR);
+	alist_push(&env->anims, anim);
+	if ((anim = anim_new(&env->map.data[4][1], ANIM_LOOP, False, 3)) == NULL)
 		return (ERROR);
 	alist_push(&env->anims, anim);
 	return (SUCCESS);

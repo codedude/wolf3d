@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 11:07:08 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 17:00:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ void				compute_anim(t_sdl *sdl, t_list_anim **head);
 t_bool				anim_door(t_anim *anim);
 t_bool				anim_object(t_sdl *sdl, t_anim *anim);
 t_bool				anim_skybox(t_sdl *sdl, t_anim *anim);
+t_bool				anim_wall(t_sdl *sdl, t_anim *anim);
 
 #endif
