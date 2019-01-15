@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/14 22:05:20 by jbulant          ###   ########.fr        #
+#    Updated: 2019/01/15 11:12:17 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,12 +37,16 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-DEBUG	?=	1
+DEBUG			?=	1
 FLAGS_OPT		=
-ifeq ($(DEBUG),1)
-	FLAGS_OPT	=	-g3 -O2 #-fsanitize=address
-else
+ifeq ($(DEBUG),0)
 	FLAGS_OPT	=	-O3 -flto
+else ifeq ($(DEBUG),1)
+	FLAGS_OPT	=	-g3 -O2
+else ifeq ($(DEBUG),2)
+	FLAGS_OPT	=	-g3 -fsanitize=address
+else ifeq ($(DEBUG),3)
+	FLAGS_OPT	=	-g3
 endif
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
@@ -113,7 +117,7 @@ rer:
 
 valg:
 	valgrind --show-leak-kinds=all --leak-resolution=high --track-origins=yes \
-	./$(NAME) data/map/t.w3d
+	./$(NAME) data/map/demo.w3d
 
 bench:
-	valgrind --tool=callgrind ./$(NAME) map.w3d
+	valgrind --tool=callgrind ./$(NAME) data/map/demo.w3d

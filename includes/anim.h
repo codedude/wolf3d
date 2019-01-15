@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 13:21:36 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 11:07:08 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ enum				e_anim_type {
 struct				s_anim {
 	t_entity		*entity;
 	t_anim_type		type;
+	t_bool			to_del;
 	struct {
 		int			speed;
 		int			counter;
@@ -43,16 +44,15 @@ struct				s_list_anim {
 	t_list_anim		*next;
 };
 
-t_anim				*anim_new(t_entity *entity, t_anim_type type,
+t_anim				*anim_new(t_entity *entity, t_anim_type type, t_bool to_del,
 						int key_speed);
-void				anim_destroy(t_anim *anim, t_bool force_destroy);
+void				anim_destroy(t_anim *anim);
 
 t_list_anim			*alist_new(t_anim *value);
 int					alist_push(t_list_anim **head, t_anim *entry);
 void				alist_del_elem(t_list_anim **head);
-void				alist_del(t_list_anim **head, t_list_anim *entry,
-						t_bool force_destroy);
-void				alist_clear(t_list_anim **head, t_bool force_destroy);
+void				alist_del(t_list_anim **head, t_list_anim *entry);
+void				alist_clear(t_list_anim **head);
 
 void				compute_anim(t_sdl *sdl, t_list_anim **head);
 t_bool				anim_door(t_anim *anim);

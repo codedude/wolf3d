@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/14 16:37:44 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/15 11:12:31 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,16 @@ else
 	AR		= llvm-ar
 endif
 
-DEBUG	?=	1
+DEBUG			?=	1
 FLAGS_OPT		=
-ifeq ($(DEBUG),1)
-	FLAGS_OPT	=	-g3 -O2 #-fsanitize=address
-else
+ifeq ($(DEBUG),0)
 	FLAGS_OPT	=	-O3 -flto
+else ifeq ($(DEBUG),1)
+	FLAGS_OPT	=	-g3 -O2
+else ifeq ($(DEBUG),2)
+	FLAGS_OPT	=	-g3 -fsanitize=address
+else ifeq ($(DEBUG),3)
+	FLAGS_OPT	=	-g3
 endif
 
 CFLAGS		+= -I$(INCD) -Werror -Wall -Wextra -Wno-unused-result -ansi \

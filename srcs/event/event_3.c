@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:46 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 12:50:34 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 11:06:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		binds_open_door(t_env *env, t_cam *cam, t_map *map)
 	if (map->data[look_pos.y][look_pos.x].type == ENTITY_DOOR
 		&& door->is_active == False)
 	{
-		anim = anim_new(&map->data[look_pos.y][look_pos.x], ANIM_ONCE,
+		anim = anim_new(&map->data[look_pos.y][look_pos.x], ANIM_ONCE, False,
 			ANIM_DOOR_SPEED);
 		if (alist_push(&env->anims, anim) == ERROR)
 			return ;

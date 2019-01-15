@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/14 18:43:52 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 11:06:03 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	wolf_destroy(t_env *env, t_map *map, t_cam *cam)
 		++i;
 	}
 	free(env->objects);
-	alist_clear(&env->anims, True);
+	alist_clear(&env->anims);
 }
 
 int			env_init(t_env *env, char *filename)
