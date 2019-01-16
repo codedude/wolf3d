@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 12:35:18 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 17:03:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "export_bmp.h"
 #include "camera.h"
 #include "player.h"
+#include "audio.h"
 
 static void	event_flymode(t_cam *cam, t_player *player, t_env *env)
 {
@@ -36,7 +37,7 @@ static void	event_flymode(t_cam *cam, t_player *player, t_env *env)
 	}
 }
 
-static void	event_kb_poll_up3(SDL_Event *event, t_cam *cam)
+static void	event_kb_poll_up3(SDL_Event *event, t_cam *cam, t_env *env)
 {
 	if (event->key.keysym.sym == SDLK_1)
 		cam->side_filter ^= EFFECT_SIDE;
@@ -50,6 +51,12 @@ static void	event_kb_poll_up3(SDL_Event *event, t_cam *cam)
 		switch_effect(cam, (void *)&color_filter_baw, EFFECT_MASK_COLOR);
 	else if (event->key.keysym.sym == SDLK_6)
 		switch_effect(cam, (void *)&color_filter_sepia, EFFECT_MASK_COLOR);
+	else if (event->key.keysym.sym == SDLK_8)
+		music_play(&env->audio, MUSIC_TITLE);
+	else if (event->key.keysym.sym == SDLK_9)
+		music_stop(&env->audio);
+	else if (event->key.keysym.sym == SDLK_o)
+		sound_play(&env->audio, SOUND_TEST);
 }
 
 static void	event_kb_poll_up2(SDL_Event *event, t_cam *cam, t_player *player,
@@ -69,7 +76,7 @@ static void	event_kb_poll_up2(SDL_Event *event, t_cam *cam, t_player *player,
 	else if (event->key.keysym.sym == SDLK_e)
 		binds_open_door(env, &env->cam, &env->map);
 	else
-		event_kb_poll_up3(event, cam);
+		event_kb_poll_up3(event, cam, env);
 }
 
 static void	event_kb_poll_up(SDL_Event *event, t_cam *cam, t_player *player,

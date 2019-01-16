@@ -6,14 +6,14 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 12:37:02 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 17:08:56 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "SDL.h"
-#include "ft_math.h"
 #include "libft.h"
+#include "ft_math.h"
 #include "sdl_m.h"
 
 int			sdl_create_renderer(t_sdl *sdl)
@@ -70,7 +70,7 @@ int			sdl_create_screen(t_sdl *sdl, int width, int height)
 	sdl->canvas_h = (t_float)height;
 	sdl->canvas_w = (t_float)width;
 	sdl->ratio_y = (sdl->canvas_w / sdl->canvas_h) / 2.0
-		* atan(DEG_TO_RAD * 90.0);
+		* atan(M_PI / 180.0 * 120.0);
 	sdl->half_canvas_h = sdl->canvas_h / 2.0;
 	if (sdl_create_renderer(sdl) == ERROR
 		|| sdl_create_texture(sdl) == ERROR

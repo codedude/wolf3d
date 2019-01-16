@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 11:57:18 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 15:37:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define SDL_M_H
 
 # include "SDL.h"
+# include "SDL_mixer.h"
+# include "SDL_image.h"
 # include "types.h"
 # include "texture.h"
 
