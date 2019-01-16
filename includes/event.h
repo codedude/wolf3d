@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 04:37:49 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 21:06:31 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,10 @@
 # define ACTION_DASHING		0b100000
 # define ACTION_FLY_MODE	(0x1000)
 
-# define ACTION_MAX_JUMP_TIME	2.5
-# define ACTION_JUMP_FORCE		21.0
-# define ACTION_FALL_SPEED		18.0
-
 # define SPEED_F			1.25
 # define SPEED_B			1.0
 
-# define ANIM_CROUCH_SPEED	18.0
+# define ANIM_CROUCH_SPEED	2.5
 
 t_bool					compute_event(t_env *env);
 t_bool					event_kb_poll(SDL_Event *event, t_env *env);
@@ -51,9 +47,5 @@ t_vec2					move_forward(t_env *env, t_vec2 from, t_vec2 to,
 int						is_inside(t_float x, t_float min, t_float max);
 int						is_close_objects(t_env *env, t_vec2 pos);
 void					compute_player(t_env *env);
-void					player_jump(t_cam *cam, t_player *player);
-void					player_fall(t_cam *cam, t_player *player);
-void					player_set_acceleration(t_player *player);
-void					player_set_z(t_cam *cam, t_player *player);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:45:59 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 17:51:12 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 21:01:00 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,40 @@
 #include "env.h"
 #include "event.h"
 
-void		player_jump(t_cam *cam, t_player *player)
+void		player_jump(t_sdl *sdl, t_cam *cam, t_player *player)
 {
-	if (player->jump_time > 0.001)
+	if (player->action_state & ACTION_JUMPING)
 	{
-		cam->z_pos += ACTION_JUMP_FORCE * player->jump_time;
-		player->jump_time -= (ACTION_MAX_JUMP_TIME / 10.0);
-	}
-	else
-	{
-		player->action_state |= ACTION_FALLING;
-		player->action_state &= ~ACTION_JUMPING;
+		if (player->jump_time > 0.001)
+		{
+			cam->z_pos += ACTION_JUMP_FORCE * player->jump_time * sdl->deltatime;
+			player->jump_time -= sdl->deltatime;
+		}
+		else
+		{
+			player->action_state |= ACTION_FALLING;
+			player->action_state &= ~ACTION_JUMPING;
+		}
 	}
 }
 
-void		player_fall(t_cam *cam, t_player *player)
+void		player_fall(t_sdl *sdl, t_cam *cam, t_player *player)
 {
+	if (player->action_state & ACTION_GROUNDED)
+		return ;
 	if (cam->z_pos < cam->z_default)
 	{
-		player->action_state |= ACTION_GROUNDED;
-		player->action_state &= ~ACTION_FALLING;
+		cam->z_pos = float_lerp(cam->z_pos, cam->z_default, 2.5);
+		if (fabs(cam->z_pos - cam->z_default) < 0.001)
+		{
+			player->action_state |= ACTION_GROUNDED;
+			player->action_state &= ~ACTION_FALLING;
+		}
 	}
 	else
 	{
-		cam->z_pos -= ACTION_FALL_SPEED * player->jump_time;
-		player->jump_time += 0.15;
+		cam->z_pos -= ACTION_FALL_SPEED * player->jump_time * sdl->deltatime;
+		player->jump_time += sdl->deltatime;
 	}
 }
 
@@ -58,15 +67,7 @@ void		player_set_acceleration(t_player *player)
 	}
 }
 
-void		player_set_z(t_cam *cam, t_player *player)
+void		player_set_z(t_sdl *sdl, t_cam *cam, t_player *player)
 {
-	cam->z = player->walk_anim + cam->z_pos;
-}
-
-t_float		player_speed(int action_state, t_float speed,
-					t_float acceleration, t_float factor)
-{
-	if (action_state & ACTION_CROUCHING)
-		factor *= 0.6;
-	return ((speed + acceleration) * factor);
+	cam->z = player->walk_anim + cam->z_pos * sdl->canvas_h;
 }

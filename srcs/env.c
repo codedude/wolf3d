@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 16:19:52 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 20:46:29 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void		init_cam(t_cam *cam, t_sdl *sdl, t_map *map)
 {
 	cam->pos = VEC2_INIT((t_float)map->spawn.x,
 		(t_float)map->spawn.y) + 0.5;
-	cam->z = sdl->canvas_h * 40.0 / 100.0;
+	cam->z = 40.0 / 100.0;
 	cam->z_default = cam->z;
 	cam->z_pos = cam->z_default;
 	cam->rot = map->spawn_rotation * DEG_TO_RAD;

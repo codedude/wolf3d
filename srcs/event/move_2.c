@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 17:55:50 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 21:21:39 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ static void	player_set_walk_anim(t_sdl *sdl, t_player *player)
 	}
 }
 
-static void	player_ground_anim(t_cam *cam, t_player *player)
+static void	player_ground_anim(t_sdl *sdl, t_cam *cam, t_player *player)
 {
 	if (player->action_state & ACTION_CROUCHING)
 	{
 		if (cam->z_pos > cam->z_default / 2.0)
-			cam->z_pos -= ANIM_CROUCH_SPEED;
+			cam->z_pos -= ANIM_CROUCH_SPEED * sdl->deltatime;
 	}
-	else if (cam->z < cam->z_default)
+	else if (cam->z_pos < cam->z_default)
 	{
-		cam->z_pos += ANIM_CROUCH_SPEED;
+		cam->z_pos += ANIM_CROUCH_SPEED * sdl->deltatime;
 		if (cam->z_pos > cam->z_default - 0.001)
 			cam->z_pos = cam->z_default;
 	}
@@ -74,13 +74,13 @@ void		player_set_anim(t_sdl *sdl, t_cam *cam, t_player *player)
 {
 	player_set_walk_anim(sdl, player);
 	if (player->action_state & ACTION_GROUNDED)
-		player_ground_anim(cam, player);
+		player_ground_anim(sdl, cam, player);
 	else
 	{
 		if (player->action_state & ACTION_FALLING)
-			player_fall(cam, player);
+			player_fall(sdl, cam, player);
 		else if (player->action_state & ACTION_JUMPING)
-			player_jump(cam, player);
+			player_jump(sdl, cam, player);
 	}
 }
 
@@ -112,17 +112,17 @@ t_float		calc_velocity(t_float old_val, t_axis_state axis, int direction)
 	return (old_val);
 }
 
-t_float		set_accel_dim(t_float controller_v, t_float old_v)
+t_float		set_accel_dim(t_float controller_v, t_float old_v, int is_grounded)
 {
 	t_float		new_v;
 
-	if (controller_v != 0.0)
+	if (is_grounded && controller_v != 0.0)
 		new_v = controller_v * PLAYER_ACCEL;
 	else if (old_v != 0.0)
 	{
 		new_v = -old_v;
 		if (fabs(old_v) > PLAYER_STOP_TRESHOLD)
-			new_v /= PLAYER_DECEL;
+			new_v /= PLAYER_DECEL * (is_grounded ? 1.0 : 7.0);
 	}
 	else
 		new_v = 0.0;
@@ -137,8 +137,10 @@ void		player_set_velocity(t_sdl *sdl, t_player *player)
 
 	if ((player->action_state & ACTION_DASHING) == 0)
 	{
-		accel.x = set_accel_dim(player->controller.x, player->velocity.x);
-		accel.y = set_accel_dim(player->controller.y, player->velocity.y);
+		accel.x = set_accel_dim(player->controller.x, player->velocity.x,
+			(player->action_state & ACTION_GROUNDED));
+		accel.y = set_accel_dim(player->controller.y, player->velocity.y,
+			(player->action_state & ACTION_GROUNDED));
 		player->velocity += accel;
 		max_v = vec_len(player->velocity);
 		if (max_v > PLAYER_MAXSPEED)
@@ -146,12 +148,12 @@ void		player_set_velocity(t_sdl *sdl, t_player *player)
 	}
 	else
 	{
-		player->velocity = player->dash * DASH_SPEED * player->dash_time;
+		player->velocity = player->dash * DASH_SPEED * (player->dash_time
+				+ (0.1));
 		player->dash_time -= sdl->deltatime;
 		if (player->dash_time <= 0.0)
 		{
 			player->action_state &= ~ACTION_DASHING;
-			player->velocity = VEC2_ZERO;
 		}
 	}
 }
@@ -186,5 +188,5 @@ void		compute_player(t_env *env)
 	dir = vec_rotate(player->velocity, env->cam.rot);
 	env->cam.pos = move_forward(env, env->cam.pos, dir, speed * env->sdl.deltatime);
 	player_set_anim(&env->sdl, &env->cam, player);
-	player_set_z(&env->cam, player);
+	player_set_z(&env->sdl, &env->cam, player);
 }

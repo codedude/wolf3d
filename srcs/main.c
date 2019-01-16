@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/16 11:23:00 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 19:47:16 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ static int	loop(t_env *env)
 	test(env);
 	while (compute_event(env) == True)
 	{
+		sdl_get_fps(&env->sdl);
 		compute_player(env);
 		compute_anim(&env->sdl, &env->anims);
 		sdl_update_texture(&env->sdl);
 		tp_wait_for_queue(env->tpool);
 		compute_sprite(env);
 		sdl_render(&env->sdl);
-		sdl_get_fps(&env->sdl);
 	}
 	render_clean(env);
 	return (SUCCESS);

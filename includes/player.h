@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 17:45:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 21:22:55 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PLAYER_H
 
 # include "types.h"
+# include "camera.h"
+# include "sdl_m.h"
 
 # define VEC2_FWD				VEC2_INIT(0.0, 1.0)
 # define VEC2_BACK				-VEC2_FWD
@@ -32,7 +34,11 @@ typedef enum e_axis_state	t_axis_state;
 # define WALKANIM_SPEED			75.0
 
 # define DASH_LIFETIME			0.25
-# define DASH_SPEED				80.0
+# define DASH_SPEED				65.0
+
+# define ACTION_MAX_JUMP_TIME	0.35
+# define ACTION_JUMP_FORCE		5.0
+# define ACTION_FALL_SPEED		5.0
 
 enum				e_axis_state {
 	Axis_None = 0,
@@ -65,5 +71,11 @@ struct				s_player {
 };
 
 void				player_set_dash(t_player *player);
+void				player_jump(t_sdl *sdl, t_cam *cam, t_player *player);
+void				player_fall(t_sdl *sdl, t_cam *cam, t_player *player);
+void				player_set_acceleration(t_player *player);
+void				player_set_z(t_sdl *sdl, t_cam *cam, t_player *player);
+
+t_float				float_lerp(t_float from, t_float to, t_float t);
 
 #endif
