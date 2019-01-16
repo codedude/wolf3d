@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 17:12:28 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 17:55:50 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,25 @@ t_vec2		vec_lerp(t_vec2 from, t_vec2 to, t_float t)
 static void	player_set_walk_anim(t_sdl *sdl, t_player *player)
 {
 	t_float		speed;
-	t_float		max_speed;
 
-	speed = WALKANIM_SPEED;
-	max_speed = WALKANIM_MAXHEIGHT * vec_len(player->velocity) / PLAYER_MAXSPEED;
-	if (player->velocity.x != 0.0 || player->velocity.y != 0.0)
+	speed = WALKANIM_SPEED * sdl->deltatime;
+	if ((player->controller.x != 0.0 || player->controller.y != 0.0)
+	&& !(player->action_state & ACTION_DASHING))
 	{
 		if (player->wanim_towards == 0.0)
 			player->wanim_towards = 1.0;
-		// player->walk_anim += player->wanim_towards * speed;
-		player->walk_anim += max_speed * player->wanim_towards / speed;
-		if (fabs(player->walk_anim) >= max_speed)
-			player->walk_anim = float_lerp(player->walk_anim, max_speed * player->wanim_towards,
-				speed);
-		printf("%f %f\n", max_speed, player->walk_anim);
-		if (max_speed - fabs(player->walk_anim) < 0.0)
+		player->walk_anim += player->wanim_towards * speed;
+		if (fabs(player->walk_anim) >= WALKANIM_MAXHEIGHT)
+		{
+			player->walk_anim = WALKANIM_MAXHEIGHT * player->wanim_towards;
 			player->wanim_towards = -player->wanim_towards;
+		}
 	}
 	else if (player->walk_anim != 0.0)
 	{
 		player->wanim_towards = 0.0;
 		player->walk_anim = float_lerp(player->walk_anim, 0.0,
-			speed * 0.3);
+			speed * 2.5);
 		if (fabs(player->walk_anim) < 0.01)
 			player->walk_anim = 0.0;
 	}
@@ -95,7 +92,7 @@ void		player_set_dash(t_player *player)
 	if (player->controller.x != 0.0 || player->controller.y != 0.0)
 		player->dash = player->controller;
 	else
-		player->dash = VEC2_FWD;
+		player->dash = VEC2_LEFT;
 	player->dash_time = DASH_LIFETIME;
 }
 
@@ -146,6 +143,16 @@ void		player_set_velocity(t_sdl *sdl, t_player *player)
 		max_v = vec_len(player->velocity);
 		if (max_v > PLAYER_MAXSPEED)
 			player->velocity *=  PLAYER_MAXSPEED / max_v;
+	}
+	else
+	{
+		player->velocity = player->dash * DASH_SPEED * player->dash_time;
+		player->dash_time -= sdl->deltatime;
+		if (player->dash_time <= 0.0)
+		{
+			player->action_state &= ~ACTION_DASHING;
+			player->velocity = VEC2_ZERO;
+		}
 	}
 }
 

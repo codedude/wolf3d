@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 16:12:18 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 17:45:47 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ typedef enum e_axis_state	t_axis_state;
 # define WALKANIM_MAXHEIGHT		15.0
 # define WALKANIM_SPEED			75.0
 
-# define DASH_LIFETIME			0.20
-# define DASH_ACCELTIME			(DASH_LIFETIME * 0.2)
-# define DASH_SPEED				10.0
+# define DASH_LIFETIME			0.25
+# define DASH_SPEED				80.0
 
 enum				e_axis_state {
 	Axis_None = 0,

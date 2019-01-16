@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 19:27:50 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 17:48:23 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,4 @@ t_vec2			move_forward(t_env *env, t_vec2 from, t_vec2 to, t_float speed)
 	}
 	ret = from + to * speed;
 	return (allow_move(env, from, to, ret));
-}
-
-t_vec2			straf(t_env *env, t_vec2 from, t_vec2 to, t_float speed)
-{
-	to = VEC2_INIT(to.y, -to.x);
-	return (move_forward(env, from, to, speed));
 }
