@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 12:35:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 16:19:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "ft_math.h"
 #include "libtpool.h"
 #include "sdl_m.h"
+#include "audio.h"
 #include "env.h"
 #include "types.h"
 #include "raycast.h"
@@ -93,6 +94,11 @@ int			env_init(t_env *env, char *filename)
 		ft_putstr_fd("SDL2 can't start\n", 2);
 		return (ERROR);
 	}
+	if (audio_init(&env->audio) == ERROR)
+	{
+		ft_putstr_fd("Sound system won't work\n", 2);
+		return (ERROR);
+	}
 	if ((env->tpool = tp_create(THREADS, TP_FPS_MODE)) == NULL)
 	{
 		ft_putstr_fd("Thread pool can't start\n", 2);
@@ -111,6 +117,7 @@ int			env_init(t_env *env, char *filename)
 void		env_destroy(t_env *env)
 {
 	tp_destroy(&env->tpool);
+	audio_destroy(&env->audio);
 	sdl_destroy(&env->sdl);
 	wolf_destroy(env, &env->map, &env->cam);
 }

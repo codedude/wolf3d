@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/14 16:44:50 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 15:50:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "libft.h"
 # include "libtpool.h"
 # include "sdl_m.h"
+# include "audio.h"
 # include "types.h"
 # include "entity.h"
 # include "anim.h"
@@ -62,6 +63,7 @@ struct				s_env {
 	t_map			map;
 	t_cam			cam;
 	t_player		player;
+	t_audio			audio;
 	int				show_fps;
 };
 

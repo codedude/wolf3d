@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/15 23:33:42 by jbulant          ###   ########.fr        #
+#    Updated: 2019/01/16 15:51:51 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ RENDERD		=	render
 UTILSD		=	utils
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
-				-lm -lSDL2 -lSDL2_image \
+				-lm -lSDL2 -lSDL2_image -lSDL2_mixer \
 				$(LIBFTD)/libft.a $(LIBTPOOLD)/libtpool.a $(LIBFTD)/libft.a
 
 UNAME_S := $(shell uname -s)
@@ -65,7 +65,8 @@ SRCS_F		+=	$(RENDERD)/render $(RENDERD)/raycast_1 $(RENDERD)/raycast_2 \
 				$(RENDERD)/anim_spec $(RENDERD)/anim_list
 SRCS_F		+=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
 				$(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2 \
-				$(SDLD)/texture_1 $(SDLD)/texture_2
+				$(SDLD)/texture_1 $(SDLD)/texture_2 $(SDLD)/sound \
+				$(SDLD)/music $(SDLD)/audio
 SRCS_F		+=	$(PARSERD)/map_parser $(PARSERD)/stack $(PARSERD)/reader \
 				$(PARSERD)/ent_analyze $(PARSERD)/load_map $(PARSERD)/tools \
 				$(PARSERD)/tools_2 $(PARSERD)/tools_3 $(PARSERD)/tools_4 \
@@ -77,7 +78,7 @@ SRCS_F		+=	$(EVENTD)/move_1 $(EVENTD)/move_2 $(EVENTD)/move_3 \
 SRCS_F		+=	$(UTILSD)/vector $(UTILSD)/types
 
 HEADERS_F	= 	env sdl_m raycast types list texture entity anim event \
-				export_bmp parser camera player
+				export_bmp parser camera player audio
 
 SRCS		=	$(addprefix $(SRCD)/, $(addsuffix .c, $(SRCS_F)))
 HEADERS		=	$(addprefix $(INCD)/, $(addsuffix .h, $(HEADERS_F)))
