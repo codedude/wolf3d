@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 03:57:50 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 17:45:47 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,16 @@
 typedef struct s_player		t_player;
 typedef enum e_axis_state	t_axis_state;
 
+# define PLAYER_MAXSPEED		3.5
+# define PLAYER_ACCEL			(PLAYER_MAXSPEED * 0.75)
+# define PLAYER_DECEL			(PLAYER_MAXSPEED * 2.0)
+# define PLAYER_STOP_TRESHOLD	0.01
+
+# define WALKANIM_MAXHEIGHT		15.0
+# define WALKANIM_SPEED			75.0
+
+# define DASH_LIFETIME			0.25
+# define DASH_SPEED				80.0
 
 enum				e_axis_state {
 	Axis_None = 0,
@@ -41,6 +51,7 @@ enum				e_axis_state {
 
 struct				s_player {
 	t_vec2			velocity;
+	t_vec2			controller;
 	t_vec2			dash;
 	t_float			dash_time;
 	t_axis_state	axis_state;
@@ -52,5 +63,7 @@ struct				s_player {
 	t_float			wanim_towards;
 	int				action_state;
 };
+
+void				player_set_dash(t_player *player);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/16 11:27:33 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 15:52:53 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,8 @@ void			event_kb_state(const Uint8 *state, t_env *env)
 	}
 	else
 		player->action_state &= ~ACTION_CROUCHING;
-	// if (state[SDL_SCANCODE_LSHIFT] && player->acceleration == 0.0)
-	// 	player->acceleration = 0.25;
-	// if (state[SDL_SCANCODE_LSHIFT] && !(player->action_state & ACTION_DASHING))
-	// {
-	// 	player->action_state |= ACTION_DASHING;
-	// 	player->dash = vec_norm(player->velocity);
-	// 	player->dash_time = 0.0;
-	// 	if (player->dash.x == 0.0 && player->dash.y == 0.0)
-	// 		player->dash = vec_rotate(VEC2_BACK, env->cam.rot);
-	// }
+	if (state[SDL_SCANCODE_LSHIFT])
+		player_set_dash(player);
 	if (state[SDL_SCANCODE_SPACE])
-		event_kb_state_jump(&env->sdl, &env->cam, player);
+		event_kb_state_jump(&env->sdl, &env->cam, &env->player);
 }
