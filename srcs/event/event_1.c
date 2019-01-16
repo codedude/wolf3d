@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/16 05:08:33 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 11:27:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,47 +35,7 @@ static void		event_kb_state_jump(t_sdl *sdl, t_cam *cam, t_player *player)
 	}
 }
 
-//
-// static void		event_kb_state_move(const Uint8 *state, t_env *env,
-// 					t_player *player, t_bool *is_walking)
-// {
-// 	if (state[SDL_SCANCODE_D] != 0)
-// 	{
-// 		*is_walking = True;
-// 		player->axis_state |= Axis_Right;
-// 		// player->velocity.y -= PLAYER_ACCEL_FWD;
-// 	}
-// 	else
-// 		player->axis_state &= ~Axis_Right;
-// 	if (state[SDL_SCANCODE_A] != 0)
-// 	{
-// 		*is_walking = True;
-// 		player->axis_state |= Axis_Left;
-// 		// player->velocity.y += PLAYER_ACCEL_FWD;
-// 	}
-// 	else
-// 		player->axis_state &= ~Axis_Left;
-// 	if (state[SDL_SCANCODE_W] != 0)
-// 	{
-// 		*is_walking = True;
-// 		player->axis_state |= Axis_Up;
-// 		// player->velocity.x -= PLAYER_ACCEL_FWD;
-// 	}
-// 	else
-// 		player->axis_state &= ~Axis_Up;
-// 	if (state[SDL_SCANCODE_S] != 0)
-// 	{
-// 		*is_walking = True;
-// 		player->axis_state |= Axis_Down;
-// 		// player->velocity.x += PLAYER_ACCEL_FWD;
-// 	}
-// 	else
-// 		player->axis_state &= ~Axis_Down;
-// 	player_set_velocity(player);
-// }
-
-static void		event_kb_state_move(const Uint8 *state, t_env *env,
-					t_player *player)
+static void		event_kb_state_move(const Uint8 *state, t_player *player)
 {
 	if (state[SDL_SCANCODE_D] == 0)
 		player->axis_state &= Axis_NOT_Right;
@@ -100,7 +60,7 @@ void			event_kb_state(const Uint8 *state, t_env *env)
 	t_player	*player;
 
 	player = &env->player;
-	event_kb_state_move(state, env, player);
+	event_kb_state_move(state, player);
 	if (state[SDL_SCANCODE_LCTRL])
 	{
 		if (player->action_state & ACTION_GROUNDED)

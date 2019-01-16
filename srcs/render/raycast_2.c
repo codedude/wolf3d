@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/15 17:04:32 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 11:05:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,13 @@ static t_vec2	get_wall_texel(t_hit_infos *infos)
 void			rc_render(t_env *env, t_hit_infos *infos)
 {
 	t_vec2		texel;
+	t_entity	*e;
 
 	if (infos->hit == 1)
 	{
+		e = &env->map.data[(int)env->cam.pos.y][(int)env->cam.pos.x];
+		if (e->type == ENTITY_DOOR)
+			infos->e_door = e;
 		draw_wall(&env->sdl, infos, &env->cam,
 			&env->map.data[(int)infos->map.y][(int)infos->map.x]);
 	}

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:32:48 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 17:00:22 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 11:24:21 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "entity.h"
 #include "anim.h"
 
-t_anim			*anim_new(t_entity *entity, t_anim_type type, t_bool to_del,
+t_anim			*anim_new(t_entity *entity, int type, t_bool to_del,
 					int key_speed)
 {
 	t_anim	*tmp;
@@ -47,15 +47,13 @@ void			compute_anim(t_sdl *sdl, t_list_anim **head)
 	{
 		r = False;
 		anim = (*head)->value;
-		if (anim->entity->type == ENTITY_DOOR)
+		if ((anim->type & ANIM_MASK_TYPE) == ANIM_TEXTURE)
+			r = anim_texture(sdl, anim);
+		else if ((anim->type & ANIM_MASK_TYPE) == ANIM_DOOR)
 			r = anim_door(anim);
-		else if (anim->entity->type == ENTITY_OBJECT)
-			r = anim_object(sdl, anim);
-		else if (anim->entity->type == ENTITY_SKYBOX)
+		else if ((anim->type  & ANIM_MASK_TYPE)== ANIM_SKYBOX)
 			r = anim_skybox(sdl, anim);
-		else if (anim->entity->type == ENTITY_WALL)
-			r = anim_wall(sdl, anim);
-		if (r && anim->type != ANIM_LOOP)
+		if (r && (anim->type & ANIM_MASK_LOOP) != ANIM_LOOP)
 			alist_del_elem(head);
 		else
 			head = &(*head)->next;

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 17:02:42 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 10:43:21 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct			s_hit_info {
 	t_float				z;
 	t_float				wall_x;
 	t_float				tex_off_x;
+	t_entity			*e_door;
 	int					offset;
 	int					line_height;
 	int					draw_start;

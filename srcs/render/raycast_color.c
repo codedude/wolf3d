@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:37:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 13:22:55 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 00:47:57 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ t_color				dark_color(t_color color, t_cam *cam, int side, t_float z)
 t_color				get_cf_color(t_tex *text, t_vec2 curr_cf, t_cam *cam,
 						t_float z)
 {
-	t_ivec2			tex;
+	int				tex[2];
 	t_color			color;
 
-	tex.x = (int)fabs(curr_cf.x * text->w) % text->w;
-	tex.y = (int)fabs(curr_cf.y * text->h) % text->h;
-	color = dark_color(sdl_get_pixel(text, tex.x, tex.y, 0),
+	tex[0] = (int)fabs(curr_cf.x * text->w) % text->w;
+	tex[1] = (int)fabs(curr_cf.y * text->h) % text->h;
+	color = dark_color(sdl_get_pixel(text, tex[0], tex[1], 0),
 		cam, 0, z);
 	return (color);
 }

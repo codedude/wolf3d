@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/14 16:08:56 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 10:43:08 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,18 @@ static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam,
 static int		get_hit_value(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 					t_ivec2 map_pos)
 {
-	t_door	*door;
 	int		hit;
 
 	hit = 0;
 	if (map->data[map_pos.y][map_pos.x].type != ENTITY_VOID)
 	{
-		door = map->data[map_pos.y][map_pos.x].e.door;
 		if (map->data[map_pos.y][map_pos.x].type != ENTITY_DOOR)
-			hit = 1;
-		else if (door->orientation == DOOR_EW)
-			hit = thin_wall_ew(dist, infos, map, door);
-		else if (door->orientation == DOOR_NS)
-			hit = thin_wall_ns(dist, infos, map, door);
+			return (1);
+		infos->e_door = &map->data[map_pos.y][map_pos.x];
+		if (infos->e_door->e.door->orientation == DOOR_EW)
+			hit = thin_wall_ew(dist, infos, map, infos->e_door->e.door);
+		else
+			hit = thin_wall_ns(dist, infos, map, infos->e_door->e.door);
 	}
 	return (hit);
 }
@@ -119,6 +118,7 @@ int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 	raycast_init(dist, infos);
 	infos->is_thin = 0;
 	infos->tex_off_x = 0.0;
+	infos->e_door = NULL;
 	infos->hit = raycast_compute(dist, infos, map);
 	get_wall_xz(infos, dir, dist[STEP]);
 	infos->line_height = (int)(env->sdl.canvas_h / infos->z);

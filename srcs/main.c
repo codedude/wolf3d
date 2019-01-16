@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/15 17:44:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 11:23:00 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	test(t_env *env)
 {
 	t_anim *anim;
 
-	anim = anim_new(&env->objects[0], ANIM_LOOP, False, 1);
+	anim = anim_new(&env->objects[0], ANIM_TEXTURE | ANIM_LOOP, False, 1);
 	alist_push(&env->anims, anim);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 17:04:57 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 11:01:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,29 +99,41 @@ void	draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos, t_vec2 texel)
 
 void	draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam, t_entity *e)
 {
-	t_ivec2			tex;
+	int				tex[2];
 	int				y;
 	t_color			color;
 	t_float			half_height;
 	t_tex			*text;
 
-	text = tex_get_wall(sdl, e->tex_id - 1);
-	tex.x = (int)fmod(fabs(infos->wall_x - infos->tex_off_x) * text->w,
+	int key;
+	if (infos->e_door != NULL && infos->is_thin == 0
+		&& ((infos->side == 0 && infos->e_door->e.door->orientation == DOOR_EW)
+		|| (infos->side == 1 && infos->e_door->e.door->orientation == DOOR_NS)))
+	{
+		key = 0;
+		text = tex_get_wall(sdl, infos->e_door->e.door->tex_wall_id - 1);
+	}
+	else
+	{
+		key = e->tex_key;
+		text = tex_get_wall(sdl, e->tex_id - 1);
+	}
+	tex[0] = (int)fmod(fabs(infos->wall_x - infos->tex_off_x) * text->w,
 		text->w);
 	if (infos->side == 0 && infos->ray.dir.x > 0)
-		tex.x = text->w - tex.x - 1;
+		tex[0] = text->w - tex[0] - 1;
 	else if (infos->side == 1 && infos->ray.dir.y < 0)
-		tex.x = text->w - tex.x - 1;
+		tex[0] = text->w - tex[0] - 1;
 	half_height = -sdl->half_canvas_h + infos->line_height / 2.0
 		+ ((sdl->half_canvas_h - cam->z) / infos->z);
 	y = infos->draw_start;
 	while (y < infos->draw_end)
 	{
-		tex.y = (int)fabs(text->h * ((y - cam->height + half_height)
+		tex[1] = (int)fabs(text->h * ((y - cam->height + half_height)
 			/ (t_float)(infos->line_height)));
-		color = dark_color(sdl_get_pixel(text, tex.x, tex.y, e->tex_key),
+		color = dark_color(sdl_get_pixel(text, tex[0], tex[1], key),
 			cam, infos->side & cam->side_filter, infos->z);
 		sdl_put_pixel(sdl, infos->x, y, color);
-		y++;
+		++y;
 	}
 }

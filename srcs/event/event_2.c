@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 00:43:54 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 11:27:08 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,12 +107,8 @@ static void	event_kb_poll_mousemotion(SDL_Event *event, t_cam *cam,
 
 	motion = event->motion.xrel / -250.0;
 	cam->rot += motion;
-	// cam->dir = vec_rotate(cam->dir, player->rot_speed * motion);
-	// cam->plane = vec_rotate(cam->plane, player->rot_speed * motion);
-	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
-	cam->plane = VEC2_INIT(0.0, 0.88);
-	cam->dir = vec_rotate(cam->dir, cam->rot);
-	cam->plane = vec_rotate(cam->plane, cam->rot);
+	cam->dir = vec_rotate(VEC2_INIT(-1.0, 0.0), cam->rot);
+	cam->plane = vec_rotate(VEC2_INIT(0.0, 0.88), cam->rot);
 	cam->height = clamp_float(cam->height + (t_float)event->motion.yrel * -2.0,
 					-MAX_OFFSET, MAX_OFFSET);
 }

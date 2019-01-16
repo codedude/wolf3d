@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 15:45:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/13 16:35:41 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 10:47:21 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 	}
 	if (check_door_open_ew(infos, door) == True)
 		return (0);
-	infos->map.y += 0.5;
 	infos->is_thin = 1;
+	infos->map.y += 0.5;
 	infos->tex_off_x = door->open_offset;
 	return (1);
 }
