@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:40:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 13:19:41 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 11:54:42 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_bool			prepare_object(t_env *env, int i, t_vec2 obj_dir,
 	obj = env->objects[i].e.object;
 	obj->z_buffer = vec_len(obj_dir) * vec_dot(vec_norm(obj_dir), env->cam.dir);
 	obj->size.y = env->sdl.canvas_h / obj->z_buffer;
-	obj->size.x = obj->size.y / env->sdl.canvas_h * env->sdl.canvas_w / 2.0;
+	obj->size.x = obj->size.y;
 	old_size = obj->size;
 	if (obj->scale != 1.0)
 		obj->size *= obj->scale;

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 17:21:52 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 12:00:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,18 @@ int			sdl_create_buffer(t_sdl *sdl)
 	return (SUCCESS);
 }
 
+/*
+** Multiplier le ratio_y pour varier la fov !
+** 1.0+ = on voit plus, 1.0- = on voit moins
+*/
+
 int			sdl_create_screen(t_sdl *sdl, int width, int height)
 {
 	sdl->width = width;
 	sdl->height = height;
 	sdl->canvas_h = (t_float)height;
 	sdl->canvas_w = (t_float)width;
+	sdl->ratio_y = (sdl->canvas_w / sdl->canvas_h) / 2.0;
 	sdl->half_canvas_h = sdl->canvas_h / 2.0;
 	if (sdl_create_renderer(sdl) == ERROR
 		|| sdl_create_texture(sdl) == ERROR

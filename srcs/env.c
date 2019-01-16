@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 03:45:56 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/16 11:58:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		init_cam(t_cam *cam, t_sdl *sdl, t_map *map)
 	cam->z_pos = cam->z_default;
 	cam->rot = map->spawn_rotation * DEG_TO_RAD;
 	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
-	cam->plane = VEC2_INIT(0.0, 0.88);
+	cam->plane = VEC2_INIT(0.0, sdl->ratio_y);
 	cam->dir = vec_rotate(cam->dir, cam->rot);
 	cam->plane = vec_rotate(cam->plane, cam->rot);
 	cam->height = 0.0;

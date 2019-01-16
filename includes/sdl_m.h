@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 17:44:43 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 11:57:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct		s_sdl {
 	int				bpp;
 	t_float			*z_buffer;
 	t_float			canvas_w;
+	t_float			ratio_y;
 	t_float			deltatime;
 	int				width;
 	int				height;
