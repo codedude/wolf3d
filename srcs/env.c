@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 18:26:04 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 03:45:56 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@
 
 void		init_player(t_player *player)
 {
+	player->axis_state = Axis_None;
 	player->velocity = VEC2_ZERO;
+	player->dash_time = 0.0;
 	player->mov_speed = 0.05;
 	player->rot_speed = 0.016;
 	player->acceleration = 0.0;
@@ -42,10 +44,11 @@ void		init_cam(t_cam *cam, t_sdl *sdl, t_map *map)
 	cam->z = sdl->canvas_h * 40.0 / 100.0;
 	cam->z_default = cam->z;
 	cam->z_pos = cam->z_default;
+	cam->rot = map->spawn_rotation * DEG_TO_RAD;
 	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
 	cam->plane = VEC2_INIT(0.0, 0.88);
-	cam->dir = vec_rotate(cam->dir, map->spawn_rotation * DEG_TO_RAD);
-	cam->plane = vec_rotate(cam->plane, map->spawn_rotation * DEG_TO_RAD);
+	cam->dir = vec_rotate(cam->dir, cam->rot);
+	cam->plane = vec_rotate(cam->plane, cam->rot);
 	cam->height = 0.0;
 	cam->side_filter = EFFECT_SIDE;
 	cam->depth_filter = &depth_filter_depth;

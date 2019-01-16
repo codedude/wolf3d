@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/15 19:38:05 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/16 05:08:33 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,67 +35,72 @@ static void		event_kb_state_jump(t_sdl *sdl, t_cam *cam, t_player *player)
 	}
 }
 
-/*
-	if ((cmp = state[SDL_SCANCODE_A] != 0))
-		env->cam.pos = straf(env, env->cam.pos, env->cam.dir, player_speed(
-			player->action_state, player->mov_speed, player->acceleration,
-			SPEED_F));
-	if ((cmp |= state[SDL_SCANCODE_D] != 0))
-		env->cam.pos = straf(env, env->cam.pos, env->cam.dir, player_speed(
-			player->action_state, player->mov_speed, player->acceleration,
-			-SPEED_F));
-	if ((cmp |= state[SDL_SCANCODE_W] != 0))
-		env->cam.pos = move_forward(env, env->cam.pos, env->cam.dir,
-			player_speed(player->action_state, player->mov_speed,
-				player->acceleration, SPEED_F));
-	if ((cmp |= state[SDL_SCANCODE_S] != 0))
-		env->cam.pos = move_forward(env, env->cam.pos, env->cam.dir,
-			player_speed(player->action_state, player->mov_speed,
-				player->acceleration, -SPEED_B));
-*/
-
-# define PLAYER_ACCEL_FWD	0.05
+//
+// static void		event_kb_state_move(const Uint8 *state, t_env *env,
+// 					t_player *player, t_bool *is_walking)
+// {
+// 	if (state[SDL_SCANCODE_D] != 0)
+// 	{
+// 		*is_walking = True;
+// 		player->axis_state |= Axis_Right;
+// 		// player->velocity.y -= PLAYER_ACCEL_FWD;
+// 	}
+// 	else
+// 		player->axis_state &= ~Axis_Right;
+// 	if (state[SDL_SCANCODE_A] != 0)
+// 	{
+// 		*is_walking = True;
+// 		player->axis_state |= Axis_Left;
+// 		// player->velocity.y += PLAYER_ACCEL_FWD;
+// 	}
+// 	else
+// 		player->axis_state &= ~Axis_Left;
+// 	if (state[SDL_SCANCODE_W] != 0)
+// 	{
+// 		*is_walking = True;
+// 		player->axis_state |= Axis_Up;
+// 		// player->velocity.x -= PLAYER_ACCEL_FWD;
+// 	}
+// 	else
+// 		player->axis_state &= ~Axis_Up;
+// 	if (state[SDL_SCANCODE_S] != 0)
+// 	{
+// 		*is_walking = True;
+// 		player->axis_state |= Axis_Down;
+// 		// player->velocity.x += PLAYER_ACCEL_FWD;
+// 	}
+// 	else
+// 		player->axis_state &= ~Axis_Down;
+// 	player_set_velocity(player);
+// }
 
 static void		event_kb_state_move(const Uint8 *state, t_env *env,
-					t_player *player, t_bool *is_walking)
+					t_player *player)
 {
-	if (state[SDL_SCANCODE_D] != 0)
-	{
-		*is_walking = True;
-		player->velocity.x += PLAYER_ACCEL_FWD;
-	}
-	if (state[SDL_SCANCODE_A] != 0)
-	{
-		*is_walking = True;
-		player->velocity.x -= PLAYER_ACCEL_FWD;
-	}
-	if (state[SDL_SCANCODE_W] != 0)
-	{
-		*is_walking = True;
-		player->velocity.y -= PLAYER_ACCEL_FWD;
-	}
-	if (state[SDL_SCANCODE_S] != 0)
-	{
-		*is_walking = True;
-		player->velocity.y += PLAYER_ACCEL_FWD;
-	}
-	player->velocity.y = clamp_float(player->velocity.y, -1.0, 0.75);
-	player->velocity.x = clamp_float(player->velocity.x, -0.75, 0.75);
-	printf("%f %f\n", player->velocity.x, player->velocity.y);
+	if (state[SDL_SCANCODE_D] == 0)
+		player->axis_state &= Axis_NOT_Right;
+	else if ((player->axis_state & Axis_Horizontal) == 0)
+		player->axis_state |= Axis_Right;
+	if (state[SDL_SCANCODE_A] == 0)
+		player->axis_state &= Axis_NOT_Left;
+	else if ((player->axis_state & Axis_Horizontal) == 0)
+		player->axis_state |= Axis_Left;
+	if (state[SDL_SCANCODE_W] == 0)
+		player->axis_state &= Axis_NOT_Up;
+	else if ((player->axis_state & Axis_Vertical) == 0)
+		player->axis_state |= Axis_Up;
+	if (state[SDL_SCANCODE_S] == 0)
+		player->axis_state &= Axis_NOT_Down;
+	else if ((player->axis_state & Axis_Vertical) == 0)
+		player->axis_state |= Axis_Down;
 }
 
 void			event_kb_state(const Uint8 *state, t_env *env)
 {
 	t_player	*player;
-	t_bool		is_walking;
 
 	player = &env->player;
-	is_walking = False;
-	event_kb_state_move(state, env, player, &is_walking);
-	if (is_walking == True)
-		player->action_state |= ACTION_WALKING;
-	else
-		player->action_state &= ~ACTION_WALKING;
+	event_kb_state_move(state, env, player);
 	if (state[SDL_SCANCODE_LCTRL])
 	{
 		if (player->action_state & ACTION_GROUNDED)
@@ -103,8 +108,16 @@ void			event_kb_state(const Uint8 *state, t_env *env)
 	}
 	else
 		player->action_state &= ~ACTION_CROUCHING;
-	if (state[SDL_SCANCODE_LSHIFT] && player->acceleration == 0.0)
-		player->acceleration = 0.25;
+	// if (state[SDL_SCANCODE_LSHIFT] && player->acceleration == 0.0)
+	// 	player->acceleration = 0.25;
+	// if (state[SDL_SCANCODE_LSHIFT] && !(player->action_state & ACTION_DASHING))
+	// {
+	// 	player->action_state |= ACTION_DASHING;
+	// 	player->dash = vec_norm(player->velocity);
+	// 	player->dash_time = 0.0;
+	// 	if (player->dash.x == 0.0 && player->dash.y == 0.0)
+	// 		player->dash = vec_rotate(VEC2_BACK, env->cam.rot);
+	// }
 	if (state[SDL_SCANCODE_SPACE])
 		event_kb_state_jump(&env->sdl, &env->cam, player);
 }

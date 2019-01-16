@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/12 20:15:01 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/15 23:31:57 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ struct				s_cam {
 	t_vec3			(*depth_filter)(t_vec3 color, t_float depth);
 	t_vec3			(*color_filter)(t_vec3 color);
 	t_vec2			pos;
+	t_float			rot;
 	t_vec2			dir;
 	t_vec2			plane;
 	t_float			height;
