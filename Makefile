@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/16 15:51:51 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/18 15:04:40 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,11 +42,11 @@ FLAGS_OPT		=
 ifeq ($(DEBUG),0)
 	FLAGS_OPT	=	-O3 -flto
 else ifeq ($(DEBUG),1)
-	FLAGS_OPT	=	-g3 -O2
+	FLAGS_OPT	=	-g -O2
 else ifeq ($(DEBUG),2)
-	FLAGS_OPT	=	-g3 -fsanitize=address
+	FLAGS_OPT	=	-g -fsanitize=address
 else ifeq ($(DEBUG),3)
-	FLAGS_OPT	=	-g3
+	FLAGS_OPT	=	-g
 endif
 
 CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \

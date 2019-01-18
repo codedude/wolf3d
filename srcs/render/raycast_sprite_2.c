@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:40:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 11:54:42 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/18 15:49:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,37 +75,48 @@ t_bool			prepare_object(t_env *env, int i, t_vec2 obj_dir,
 	return (True);
 }
 
-static void		s_put_color(t_color color, t_env *env, t_ivec2 it,
+static void		s_put_color(t_color color, t_env *env, int it[2],
 				t_float z_buffer)
 {
 	if (color.rgba > 0)
-		sdl_put_pixel(&env->sdl, it.x, it.y,
+	{
+		sdl_put_pixel(&env->sdl, it[0], it[1],
 			dark_color(color, &env->cam, 0, z_buffer));
+	}
 }
 
 void			draw_sprite(t_env *env, t_sdl *sdl, t_entity *obj)
 {
-	t_ivec2		tex;
-	t_ivec2		it;
+	int			tex[2];
+	int			it[2];
+	t_float		pre_calc[2];
+	int			pre_calc2[2];
+	int			pre_it;
 	t_tex		*text;
 	t_object	*o;
 
 	o = obj->e.object;
 	text = tex_get_sprite(sdl, obj->tex_id);
-	it.x = o->x_start < 0 ? -1 : o->x_start;
-	while (++it.x < o->x_end)
-		if (o->z_buffer < sdl->z_buffer[it.x])
+	pre_calc[0] = text->w / o->size.x;
+	pre_calc[1] = text->h / o->size.y;
+	pre_calc2[0] = o->x_offset - o->x_start;
+	pre_calc2[1] = o->y_offset - o->y_start;
+	it[0] = o->x_start < 0 ? 0 : o->x_start;
+	pre_it = o->y_start < 0 ? 0 : o->y_start;
+	while (it[0] < o->x_end)
+	{
+		if (o->z_buffer < sdl->z_buffer[it[0]])
 		{
-			it.y = o->y_start < 0 ? -1 : o->y_start;
-			tex.x = (int)((it.x - o->x_start + o->x_offset)
-				/ o->size.x * text->w);
-			while (++it.y < o->y_end)
+			it[1] = pre_it;
+			tex[0] = (int)((it[0] + pre_calc2[0]) * pre_calc[0]);
+			while (it[1] < o->y_end)
 			{
-				tex.y = (int)((it.y - o->y_start + o->y_offset)
-					/ o->size.y * text->h);
-				if (tex.y >= 0 && tex.y < text->h)
-					s_put_color(sdl_get_pixel(text, tex.x, tex.y, obj->tex_key),
-						env, it, o->z_buffer);
+				tex[1] = (int)((it[1] + pre_calc2[1]) * pre_calc[1]);
+				s_put_color(sdl_get_pixel(text, tex[0], tex[1], obj->tex_key),
+					env, it, o->z_buffer);
+				++it[1];
 			}
 		}
+		++it[0];
+	}
 }

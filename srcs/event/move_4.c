@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:50:06 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 14:54:55 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/18 15:35:49 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			is_close_objects(t_env *env, t_vec2 pos)
 		if (env->objects[i].crossable == 0)
 		{
 			t = vec_len(env->objects[i].e.object->pos - pos);
-			if (t < 0.3)
+			if (t < 0.5)
 				return (True);
 		}
 		i++;
