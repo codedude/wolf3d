@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/15 03:08:30 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 02:14:17 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ t_color			sdl_pixel_pick_from_img(t_sdl *sdl, int x, int y)
 
 	img = sdl->image;
 	pos = x * sdl->bpp + y * sdl->pitch;
-	c.c.b = img[pos];
+	c.c.r = img[pos];
 	c.c.g = img[pos + 1];
-	c.c.r = img[pos + 2];
+	c.c.b = img[pos + 2];
 	c.c.a = 0;
 	return (c);
 }
@@ -133,44 +133,26 @@ void		draw_canvas_border(t_sdl *sdl, t_canvas canvas, t_canvas parent,
 	}
 }
 
-
-void		draw_canvas_fill(t_sdl *sdl, t_canvas canvas, t_canvas parent,
+void		draw_canvas_fill(t_sdl *sdl, t_canvas *canvas, t_canvas *parent,
 							unsigned int color)
 {
 	t_ivec2		pos;
 	t_ivec2		end;
 
-	pos.x = canvas.pos.x;
-	end = pos + (canvas.size);
+	end.x = canvas->pos.x + (canvas->size.x);
+	end.y = canvas->pos.y + (canvas->size.y);
+	pos.x = canvas->pos.x;
 	while (pos.x < end.x)
 	{
-		pos.y = canvas.pos.y;
+		pos.y = canvas->pos.y;
 		while (pos.y < end.y)
 		{
-			put_pixel_inside_canvas(sdl, parent, pos, color);
+			put_pixel_inside_canvas(sdl, *parent, pos, color);
 			pos.y++;
 		}
 		pos.x++;
 	}
 }
-
-// t_canvas	get_map_boundaries(t_env *env)
-// {
-// 	t_canvas	bounds;
-// 	t_vec2		offset;
-//
-// 	offset.x = -(((env->map->size.x) / 2.0)
-// 						* env->node_size * env->zoom);
-// 	offset.y = -((((env->map->size.y) / 2.0))
-// 						* env->node_size * env->zoom);
-// 	bounds.pos.x = (int)round(env->map_pos.x + offset.x);
-// 	bounds.pos.y = (int)round(env->map_pos.y + offset.y);
-// 	bounds.size.x = (int)round((t_float)env->map->size.x
-// 					* (t_float)env->node_size * env->zoom);
-// 	bounds.size.y = (int)round((t_float)env->map->size.y
-// 					* (t_float)env->node_size * env->zoom);
-// 	return (bounds);
-// }
 
 t_vec2 get_intersect_line(t_vec2 l1from, t_vec2 l1to,
 							t_vec2 l2from, t_vec2 l2to)

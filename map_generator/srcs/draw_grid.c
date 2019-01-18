@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/11 04:29:35 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 05:22:54 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static void			draw_mprops(t_env *env, t_mprops *props)
 {
 	t_u32		i;
 
-	draw_canvas_fill(&env->sdl, props->anchor, CANVAS_INIT(0, 0), 0x222222);
+	draw_canvas_fill(&env->sdl, &props->anchor,
+		&CANVAS_INIT(IVEC2_ZERO, IVEC2_ZERO), 0x222222);
 	i = 0;
 	while (i < Max_editor_action)
 	{
@@ -33,8 +34,8 @@ static void			draw_editor(t_env *env)
 {
 	t_u32		i;
 
-	draw_canvas_fill(&env->sdl, env->editor.anchor,
-				CANVAS_INIT(0, 0), 0x222222);
+	draw_canvas_fill(&env->sdl, &env->editor.anchor,
+		&CANVAS_INIT(IVEC2_ZERO, IVEC2_ZERO), 0x222222);
 	i = 0;
 	while (i < Max_EditMod_type)
 	{
@@ -60,7 +61,7 @@ static void			draw_obj_prev_on_mouse(t_env *env)
 	p = env->rpan.p[Object_Panel];
 	anchor.size = env->obj.mb_size;
 	anchor.pos = env->mouse.pos - anchor.size / 2;
-	draw_tex(env, env->obj.map_boxes[env->mouse.button_index], False, anchor);
+	draw_tex(env, &env->sdl.tex_sprites[env->mouse.button_index], False, anchor);
 }
 
 t_ivec2				map_coord_to_screen(t_env *env, t_vec2 v2)
@@ -98,6 +99,22 @@ static void			sdl_draw_rect(t_env *env, t_canvas rect, int line_h)
 	}
 }
 
+static t_bool		test_position(t_canvas anch, t_canvas grid)
+{
+	if ((anch.pos.x < grid.pos.x && anch.pos.x + anch.size.x < grid.pos.x)
+	|| (anch.pos.y < grid.pos.y && anch.pos.y + anch.size.y < grid.pos.y))
+		return (False);
+	return (True);
+}
+
+static t_ivec2		get_prev_size(t_env *env)
+{
+	t_map_info	*m_inf;
+
+	m_inf = &env->map_info;
+	return (m_inf->x_draw[1] - m_inf->x_draw[0]);
+}
+
 static void			draw_map_obj(t_env *env)
 {
 	t_u32				i;
@@ -109,15 +126,15 @@ static void			draw_map_obj(t_env *env)
 	env_set_canvas(env, env->grid);
 	i = 0;
 	otools = &env->obj;
-	anchor.size = otools->mb_size;
+	anchor.size = get_prev_size(env);
 	while (i < otools->count)
 	{
 		obj = otools->list[i];
 		anchor.pos = map_coord_to_screen(env, obj->pos);
-		if (is_bounded(anchor.pos, env->grid))
+		if (test_position(anchor, env->grid))
 		{
 			anchor.pos -= anchor.size / 2;
-			draw_tex(env, env->obj.map_boxes[obj->id], False, anchor);
+			draw_tex(env, &env->sdl.tex_sprites[obj->id], False, anchor);
 			if (env->editor.mode == Object_Edit
 				&& (int)i == env->obj.edit.selected)
 				sdl_draw_rect(env, anchor, 3);
@@ -125,12 +142,17 @@ static void			draw_map_obj(t_env *env)
 		i++;
 	}
 	env->cpick.use_canvas = False;
+	env_unset_canvas(env);
 }
 
 void				draw_grid(t_env *env, t_sdl *sdl)
 {
+	t_canvas		c;
+
+	c.size = IVEC2_ZERO;
+	c.pos = IVEC2_ZERO;
 	sdl_clear_color(sdl, 0x101010);
-	draw_canvas_fill(sdl, env->grid, CANVAS_INIT(0, 0), 0x252525);
+	draw_canvas_fill(sdl, &env->grid, &c, 0x252525);
 	draw_map(env, sdl);
 	draw_ui(env, sdl);
 	if (env->editor.mode == Object_Edit && env->mouse.area == Right_Panel

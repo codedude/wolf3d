@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 19:27:34 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 17:45:46 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 04:57:22 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "gen_env.h"
 #include "libft.h"
 
-static t_color	*create_button_tex(t_texture *tex, t_ivec2 size)
+static t_color	*create_button_tex(t_tex *tex, t_ivec2 size)
 {
 	t_color		*btex;
 	t_ivec2		i;
@@ -38,7 +38,7 @@ static t_color	*create_button_tex(t_texture *tex, t_ivec2 size)
 	return (btex);
 }
 
-t_button		*button_new(t_canvas anchor, t_texture *tex, void *param,
+t_button		*button_new(t_canvas anchor, t_tex *tex, void *param,
 						void (*trigger)(void*))
 {
 	t_button	*b;
@@ -73,7 +73,7 @@ void			button_setactive(t_button *button, t_bool active)
 
 void			button_draw(t_env *env, t_button *button)
 {
-	draw_tex(env, button->tex, !button->is_active, button->anchor);
+	draw_tex_color(env, button->tex, !button->is_active, button->anchor);
 }
 
 void			button_trigger(t_button *button)

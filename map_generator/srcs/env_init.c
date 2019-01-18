@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 04:17:38 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 03:51:26 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ static int			env_init2(t_env *env, char *filename)
 	env->alt = 0;
 	env->spawn = IVEC2_INIT(map->size.x / 2, map->size.y / 2);
 	env->spawn_rotation = 0;
+	env->kframe = 0;
 	env->saved = True;
 	button_setactive(env->editor.switch_b[Painter], True);
 	mouse_track_init(env);

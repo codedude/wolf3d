@@ -6,16 +6,16 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 23:01:17 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/21 23:12:22 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 04:02:27 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gen_env.h"
 #include "libft.h"
 
-static t_texture	*get_sprite_texture(t_sdl *sdl, int i)
+static t_tex	*get_sprite_texture(t_sdl *sdl, int i)
 {
-	return (&sdl->sprites[i].texture);
+	return (&sdl->tex_sprites[i]);
 }
 
 static t_color		**create_obj_tex(void *vsdl, t_ivec2 size)
@@ -24,7 +24,7 @@ static t_color		**create_obj_tex(void *vsdl, t_ivec2 size)
 	t_sdl		*sdl;
 
 	sdl = (t_sdl*)vsdl;
-	nb = (t_u32)sdl->sprites_nb;
+	nb = (t_u32)sdl->tex_sprite_nb;
 	return (new_panel_tex(sdl, nb, size, get_sprite_texture));
 }
 
@@ -37,8 +37,8 @@ int					init_object_pbox(t_panel **pan, t_sdl *sdl)
 	pos.y = ipercent_of(sdl->height, OBJ_OFF_Y);
 	size.x =  ipercent_of(sdl->width, OBJ_SIZE_X);
 	size.y = ipercent_of(sdl->height, OBJ_SIZE_Y);
-	(*pan) = new_panel((t_u32)sdl->sprites_nb, CANVAS_INIT(pos, size),
-					sdl, create_obj_tex);
+	(*pan) = new_panel((t_u32)sdl->tex_sprite_nb, CANVAS_INIT(pos, size),
+					sdl, create_obj_tex, sdl->tex_sprites);
 	if (!(*pan))
 		return (ERROR);
 	panel_set_bgcolor((*pan), 0x222222);

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:15:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 17:37:20 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 05:23:35 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void			env_set_canvas(t_env *env, t_canvas canvas)
 {
 	env->cpick.canvas_mask = canvas;
 	env->cpick.use_canvas = True;
+}
+
+void			env_unset_canvas(t_env *env)
+{
+	env->cpick.use_canvas = False;
 }
 
 void			env_set_transparency(t_env *env, t_u32 color)

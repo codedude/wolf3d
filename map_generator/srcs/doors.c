@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 07:32:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 07:55:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 05:19:13 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,5 @@ int			door_create(t_env *env, t_door_edit *dedit)
 	door->direction = Dir_Horizontal;
 	door_add(dedit, door);
 	dedit->count++;
-	printf("coucou %p\n", dedit->list);
 	return (SUCCESS);
 }

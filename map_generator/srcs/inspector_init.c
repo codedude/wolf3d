@@ -173,11 +173,9 @@ static void			draw_cf_prev(t_env *env, t_world_i *w_inf)
 	t_u32		id;
 
 	id = w_inf->id[WButton_Ceil];
-	draw_tex(env, env->rpan.p[Texture_Panel]->elem_tex[id],
-		False, w_inf->prev[WButton_Ceil]);
+	draw_tex(env, &env->sdl.tex_walls[id], False, w_inf->prev[WButton_Ceil]);
 	id = w_inf->id[WButton_Floor];
-	draw_tex(env, env->rpan.p[Texture_Panel]->elem_tex[id],
-		False, w_inf->prev[WButton_Floor]);
+	draw_tex(env, &env->sdl.tex_walls[id], False, w_inf->prev[WButton_Floor]);
 }
 
 static void			draw_world(t_env *env)
@@ -421,7 +419,7 @@ static void			draw_obj_selected(t_env *env)
 	&& env->mouse.button_index == Obj_Preview)
 		draw_y_line(env, tex_anchor.pos.y + tex_anchor.size.y / 2);
 	env_set_transparency(env, 0x0);
-	draw_tex(env, p->elem_tex[obj->id], False, tex_anchor);
+	draw_tex(env, &env->sdl.tex_sprites[obj->id], False, tex_anchor);
 	env_unset_transparency(env);
 }
 
@@ -504,11 +502,9 @@ static void			draw_ds_prev(t_env *env, t_door_edit *dedit, t_door *door)
 	t_u32		id;
 
 	id = door->tex_id[Door_Tex];
-	draw_tex(env, env->rpan.p[Texture_Panel]->elem_tex[id],
-		False, dedit->prev[Door_Tex]);
+	draw_tex(env, &env->sdl.tex_walls[id], False, dedit->prev[Door_Tex]);
 	id = door->tex_id[Side_Tex];
-	draw_tex(env, env->rpan.p[Texture_Panel]->elem_tex[id],
-		False, dedit->prev[Side_Tex]);
+	draw_tex(env, &env->sdl.tex_walls[id], False, dedit->prev[Side_Tex]);
 }
 
 static void			draw_door_centerl(t_env *env, t_canvas anch, int dim,

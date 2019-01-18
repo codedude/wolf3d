@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 22:58:01 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/31 02:19:41 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/17 19:29:04 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,10 @@ static void			mprops_act_recenter(void *v_env)
 
 void				TMP_color_props(t_env *env)
 {
-	# define PURPLE_C	0xcc2485
-	# define BLUE_C		0xcc5050
+	# define PURPLE_C	0x8524cc
+	# define BLUE_C		0x5050cc
 	# define GREEN_C	0x50cc50
-	# define RED_C		0x5050cc
+	# define RED_C		0xcc5050
 	static t_u32		col[Max_editor_action] = {PURPLE_C, GREEN_C, GREEN_C,
 												  BLUE_C, PURPLE_C, PURPLE_C,
 												 		    PURPLE_C};

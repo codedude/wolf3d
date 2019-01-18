@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/14 16:38:11 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/18 00:51:54 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SDLD		=	$(PARENT_SD)/sdl
 PARSERD		=	$(PARENT_SD)/parser
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
-				-lm -lSDL2 -lSDL2_image \
+				-lm -lSDL2 -lSDL2_image -lSDL2_mixer \
 				../libft/libft.a ../libtpool/libtpool.a ../libft/libft.a
 
 UNAME_S := $(shell uname -s)
@@ -35,6 +35,25 @@ else
 	SDLINCD		=	/usr/include/SDL2
 	LDLIBS		+=	-pthread
 endif
+
+DEBUG			?=	1
+FLAGS_OPT		=
+ifeq ($(DEBUG),0)
+	FLAGS_OPT	=	-O3 -flto
+else ifeq ($(DEBUG),1)
+	FLAGS_OPT	=	-g3 -O2
+else ifeq ($(DEBUG),2)
+	FLAGS_OPT	=	-g3 -fsanitize=address
+else ifeq ($(DEBUG),3)
+	FLAGS_OPT	=	-g3
+endif
+
+CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
+				-I$(INCD) -I$(PARENT_INCD) -Wextra -Wall -Wno-unused-result \
+				-Wconversion $(FLAGS_OPT)
+LDFLAGS		+=	$(FLAGS_OPT)
+
+LDFLAGS		+=	-flto -O3 #-fsanitize=address
 
 FILES		=	env_destroy.c main.c manage_binds.c map.c \
 				save_file.c algo.c
@@ -50,11 +69,12 @@ FILES		+=	draw_grid_lines.c draw_grid.c draw_node.c \
 FILES		+=	paint_bucket_tools.c brushes.c objects.c \
 				toolset.c editor.c doors.c
 
-PARENT_FILES	=	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c \
-					$(SDLD)/sdl_load_image.c $(SDLD)/sdl_sprites.c \
-					$(SDLD)/sdl_textures.c
+PARENT_FILES =	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl_load_image.c \
+				$(SDLD)/export_bmp_1.c $(SDLD)/export_bmp_2.c \
+				$(SDLD)/texture_1.c $(SDLD)/texture_2.c $(SDLD)/sound.c \
+				$(SDLD)/music.c $(SDLD)/audio.c
 PARENT_FILES	+=	$(PARSERD)/stack.c $(PARSERD)/reader.c
-PARENT_FILES	+=	$(PARENT_SD)/types.c
+PARENT_FILES	+=	$(PARENT_SD)/utils/types.c
 
 MGEN_FILES	=	$(MGEND)/main.c
 
@@ -62,13 +82,6 @@ SRCS		=	$(addprefix $(SRCD)/, $(FILES))
 SRCS		+=	$(PARENT_FILES)
 
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
-
-CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
-				-I$(INCD) -I$(PARENT_INCD) -g3 -Wextra -Wall \
-				-Wno-unused-result -Wconversion -O3 -flto \
-				# -fsanitize=address
-
-LDFLAGS		+=	-flto -O3 #-fsanitize=address
 
 HEADER			=	$(INCD)/gen_env.h $(INCD)/algo.h $(PARENT_HEADER)
 
@@ -80,9 +93,9 @@ PARENT_HEADER	= 	$(PARENT_INCD)/env.h $(PARENT_INCD)/sdl_m.h \
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make -C $(LIBFTD)
-	make -C $(LIBTPOOLD)
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $(NAME)
+	make -C $(LIBFTD) DEBUG=$(DEBUG)
+	make -C $(LIBTPOOLD) DEBUG=$(DEBUG)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	@echo "$(NAME) - compiled"
 
 %.o: %.c $(HEADER)

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/11 04:50:29 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 04:17:42 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ int			get_events(t_env *env)
 
 void		loop(t_env *env)
 {
+	int		i;
+
+	i = 0;
 	while (get_events(env) == 1)
 	{
 		sdl_update_texture(&env->sdl);
@@ -72,6 +75,12 @@ void		loop(t_env *env)
 		update_zoom(env);
 		draw_grid(env, &env->sdl);
 		sdl_render(&env->sdl);
+		i++;
+		if (i == 3)
+		{
+			env->kframe = (env->kframe + 1) % 60;
+			i = 0;
+		}
 	}
 }
 

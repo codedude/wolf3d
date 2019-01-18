@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 01:30:31 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 17:44:25 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 05:24:37 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "gen_env.h"
 #include "libft.h"
 
-static t_color	*create_button_tex(t_texture *tex, t_ivec2 size, t_u32 c)
+static t_color	*create_button_tex(t_tex *tex, t_ivec2 size, t_u32 c)
 {
 	t_color		*btex;
 	t_ivec2		i;
@@ -37,7 +37,7 @@ static t_color	*create_button_tex(t_texture *tex, t_ivec2 size, t_u32 c)
 	return (btex);
 }
 
-t_slider		*slider_new(t_ivec2 pos, t_texture *imgs[2],
+t_slider		*slider_new(t_ivec2 pos, t_tex *imgs[2],
 						t_ivec2 img_size[2])
 {
 	t_slider	*slider;
@@ -45,8 +45,8 @@ t_slider		*slider_new(t_ivec2 pos, t_texture *imgs[2],
 
 	if (!(slider = (t_slider*)ft_memalloc(sizeof(t_slider))))
 		return (NULL);
-	err = !(slider->slid_img = create_button_tex(imgs[0], img_size[0], 0xd22d54));
-	err |= !(slider->curs_img = create_button_tex(imgs[1], img_size[1], 0x2d54d2));
+	err = !(slider->slid_img = create_button_tex(imgs[0], img_size[0], 0x542dd2));
+	err |= !(slider->curs_img = create_button_tex(imgs[1], img_size[1], 0xd2542d));
 	slider->slid_img_size = img_size[0];
 	slider->curs_img_size = img_size[1];
 	slider->pos = pos;
@@ -80,7 +80,7 @@ void			slider_draw(t_env *env, t_slider *slider)
 
 	anch.pos = slider->pos;
 	anch.size = slider->slid_img_size;
-	draw_tex(env, slider->slid_img, False, anch);
+	draw_tex_color(env, slider->slid_img, False, anch);
 	anch.size = slider->curs_img_size;
 	stepped = (int)((slider->val - slider->min_val)
 				/ slider->range * (t_float)slider->size);
@@ -94,7 +94,7 @@ void			slider_draw(t_env *env, t_slider *slider)
 		anch.pos.y += stepped - anch.size.y / 2;
 		anch.pos.x -= (anch.size.x - slider->slid_img_size.x) / 2;
 	}
-	draw_tex(env, slider->curs_img, False, anch);
+	draw_tex_color(env, slider->curs_img, False, anch);
 }
 
 t_bool			slider_hover(t_slider *slider, t_ivec2 pos)

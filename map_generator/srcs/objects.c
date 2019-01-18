@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 01:22:45 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 04:44:23 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/17 19:02:42 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int		create_map_boxes(t_panel *p, t_objects_tools *otools, t_sdl *sdl)
 	i = 0;
 	while (i < p->nb_elem)
 	{
-		otools->map_boxes[i] = new_texdata(&sdl->sprites[i].texture, size);
+		otools->map_boxes[i] = new_texdata(&sdl->tex_sprites[i], size);
 		if (!otools->map_boxes[i])
 			return (ERROR);
 		i++;
@@ -78,7 +78,7 @@ int				init_grid_snap(t_objects_tools *otools, t_sdl *sdl)
 	size[0].y = ipercent_of(sdl->height, G_SNAP_S_SIZE_Y);
 	size[1].x = ipercent_of(sdl->width, G_SNAP_C_SIZE_X);
 	size[1].y = ipercent_of(sdl->height, G_SNAP_C_SIZE_Y);
-	if (!(otools->g_snap = slider_new(pos, (t_texture*[2]){NULL, NULL}, size)))
+	if (!(otools->g_snap = slider_new(pos, (t_tex*[2]){NULL, NULL}, size)))
 		return (ERROR);
 	slider_setup(otools->g_snap, Dir_Horizontal, VEC2_INIT(0.0, 1.0), 10.0);
 	return (SUCCESS);

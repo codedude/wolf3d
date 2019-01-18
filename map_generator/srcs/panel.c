@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 18:38:54 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/19 18:39:12 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 04:03:36 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,15 @@ void			panel_set_anchor(t_panel *pan, t_canvas anchor)
 }
 
 t_panel			*new_panel(t_u32 nb_elem, t_canvas anchor, void *param,
-						t_color **(*get_elems)(void *, t_ivec2))
+						t_color **(*get_elems)(void *, t_ivec2),
+						t_tex *elems)
 {
 	t_panel		*pan;
 
 	if (!(pan = ft_memalloc(sizeof(*pan))))
 		return (NULL);
 	pan->nb_elem = nb_elem;
+	pan->tex = elems;
 	pan->cursor = 0;
 	panel_set_anchor(pan, anchor);
 	if (!(pan->elem_tex = get_elems(param, pan->elem_anchor.size)))

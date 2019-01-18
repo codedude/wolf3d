@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:14:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/11 06:04:10 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/17 19:28:35 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,5 @@ void				draw_player_radar(t_env *env, t_radar *radar)
 			-env->spawn_rotation / 180.0 * M_PI) * radar->f_radius;
 	px2.x = px1.x + (int)round(dir.x);
 	px2.y = px1.y + (int)round(dir.y);
-	draw_line(env, px1, px2, 0x20cccc);
+	draw_line(env, px1, px2, 0xcccc20);
 }

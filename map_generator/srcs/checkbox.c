@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 16:23:16 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 17:46:33 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 04:57:37 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "gen_env.h"
 #include "libft.h"
 
-static t_color	*create_button_tex(t_texture *tex, t_ivec2 size, t_u32 c)
+static t_color	*create_button_tex(t_tex *tex, t_ivec2 size, t_u32 c)
 {
 	t_color		*btex;
 	t_ivec2		i;
@@ -37,7 +37,7 @@ static t_color	*create_button_tex(t_texture *tex, t_ivec2 size, t_u32 c)
 	return (btex);
 }
 
-t_checkbox		*checkbox_new(t_canvas anchor, t_texture *tex)
+t_checkbox		*checkbox_new(t_canvas anchor, t_tex *tex)
 {
 	t_checkbox	*cbox;
 
@@ -98,7 +98,7 @@ void			checkbox_draw(t_env *env, t_checkbox *cbox)
 	int		state;
 
 	state = cbox->get_state(cbox->param);
-	draw_tex(env, cbox->tex, (state == Unavailable), cbox->anchor);
+	draw_tex_color(env, cbox->tex, (state == Unavailable), cbox->anchor);
 	if (state == Check)
 		draw_cross(env, cbox);
 }

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 07:33:24 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 05:23:47 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "sdl_m.h"
+# include "texture.h"
 
 # define MAP_GEN_NAME		"Wolf3d: Editor"
 
@@ -154,7 +155,7 @@
 
 # define CB_SOL_S_SIZE			3
 
-# define CANVAS_INIT(x, y)	(t_canvas){x, y}
+# define CANVAS_INIT(x, y)	(t_canvas){(x), (y)}
 
 typedef struct	s_canvas {
 	t_ivec2		pos;
@@ -168,6 +169,7 @@ typedef struct	s_map {
 
 typedef struct	s_panel {
 	t_color		**elem_tex;
+	t_tex		*tex;
 	t_u32		nb_elem;
 	t_u32		cursor;
 	t_canvas	anchor;
@@ -183,10 +185,11 @@ typedef struct	s_panel {
 	t_u32		view_max;
 }				t_panel;
 
-t_color			*new_texdata(t_texture *tex, t_ivec2 size);
+t_color			*new_texdata(t_tex *tex, t_ivec2 size);
 
 t_panel			*new_panel(t_u32 nb_elem, t_canvas anchor, void *param,
-						t_color **(*get_elems)(void *, t_ivec2));
+						t_color **(*get_elems)(void *, t_ivec2),
+						t_tex *elems);
 void			panel_set_anchor(t_panel *pan, t_canvas anchor);
 void			panel_set_bgcolor(t_panel *pan, t_u32 color);
 void			panel_set_bordercolor(t_panel *pan, t_u32 color);
@@ -203,7 +206,7 @@ int				panel_get_index_by_pos(t_panel *pan, t_ivec2 point);
 t_canvas		panel_get_elem_anchor(t_panel *pan, int i);
 
 t_color			**new_panel_tex(t_sdl *sdl, t_u32 nb, t_ivec2 size,
-							t_texture *(*tex_src)(t_sdl*, int));
+							t_tex *(*tex_src)(t_sdl*, int));
 void			destroy_panel_tex(t_color ***pbox_src, unsigned int nb);
 
 enum			e_user_action {
@@ -222,7 +225,7 @@ typedef struct	s_button {
 	void		(*trigger)(void*);
 }				t_button;
 
-t_button		*button_new(t_canvas anchor, t_texture *tex, void *param,
+t_button		*button_new(t_canvas anchor, t_tex *tex, void *param,
 						void (*trigger)(void*));
 t_bool			button_hover(t_button *button, t_ivec2 pos);
 void			button_trigger(t_button *button);
@@ -363,7 +366,7 @@ struct			s_slider {
 	t_float		val;
 };
 
-t_slider		*slider_new(t_ivec2 pos, t_texture *imgs[2],
+t_slider		*slider_new(t_ivec2 pos, t_tex *imgs[2],
 						t_ivec2 img_size[2]);
 void			slider_setup(t_slider *slider, int direction,
 						t_vec2 range, t_float step);
@@ -386,7 +389,7 @@ struct			s_checkbox {
 	void		(*reverse_state)(void *);
 };
 
-t_checkbox		*checkbox_new(t_canvas anchor, t_texture *tex);
+t_checkbox		*checkbox_new(t_canvas anchor, t_tex *tex);
 void			checkbox_setup(t_checkbox *cbox, void *param,
 					void (*reverse_state)(void*), int (*get_state)(void *));
 t_bool			checkbox_hover(t_checkbox *cbox, t_ivec2 pos);
@@ -595,6 +598,7 @@ struct			s_env {
 	int				ctrl;
 	char			*save_file;
 	int				saved;
+	int				kframe;
 };
 
 void			toggle_action(t_env *env, int action);
@@ -639,7 +643,7 @@ t_ivec2			map_coord_to_screen(t_env *env, t_vec2 v2);
 t_ivec2			get_mouse_pos(void);
 void			update_mouse_pos(t_env *env);
 
-void			draw_canvas_fill(t_sdl *sdl, t_canvas canvas, t_canvas parent,
+void			draw_canvas_fill(t_sdl *sdl, t_canvas *canvas, t_canvas *parent,
 								unsigned int color);
 void			draw_canvas_border(t_sdl *sdl, t_canvas canvas, t_canvas parent,
 								unsigned int color);
@@ -652,8 +656,10 @@ void			texdata_fill_rect(t_color *tex, t_ivec2 t_size,
 								t_canvas rect, t_u32 color);
 void			texdata_draw_rect(t_color *tex, t_ivec2 t_size,
 								t_canvas rect, t_u32 color);
-void			draw_tex(t_env *env, t_color *tex, t_bool shade,
-								t_canvas anchor);
+void			draw_tex(t_env *env, t_tex *tex, t_bool shade,
+						t_canvas anchor);
+void			draw_tex_color(t_env *env, t_color *tex, t_bool shade,
+						t_canvas anchor);
 void			put_pixel_inside_canvas(t_sdl *sdl, t_canvas canvas,
 								t_ivec2 pos, unsigned int color);
 
@@ -668,6 +674,7 @@ void			paint_bucket_tools(t_env *env, t_ivec2 pos, t_u32 color);
 void			env_pick_color_replace(t_env *env, t_ivec2 px);
 void			env_set_color(t_env *env, t_u32 color);
 void			env_set_canvas(t_env *env, t_canvas canvas);
+void			env_unset_canvas(t_env *env);
 void			env_set_transparency(t_env *env, t_u32 color);
 void			env_unset_transparency(t_env *env);
 

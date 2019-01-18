@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 01:03:07 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 05:12:30 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 05:44:23 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,32 @@ static void		get_start_end(t_env *env, t_map_info *minf,
 	}
 }
 
+static void		draw_doors(t_env *env, t_sdl *sdl)
+{
+	t_map_info	*m_inf;
+	t_door		*door;
+	t_door_edit	*d_ed;
+	t_canvas	anch;
+	int			convert;
+
+	m_inf = &env->map_info;
+	d_ed = &env->inspector.door_edit;
+	door = d_ed->list;
+	env_set_canvas(env, env->grid);
+	while (door)
+	{
+		anch.pos = IVEC2_INIT(m_inf->x_draw[door->pos.x],
+					m_inf->y_draw[door->pos.y]);
+		anch.size = IVEC2_INIT(m_inf->x_draw[1], m_inf->y_draw[1])
+			- IVEC2_INIT(m_inf->x_draw[0], m_inf->y_draw[0]);
+		draw_tex(env, &sdl->tex_walls[door->tex_id[Door_Tex]], False, anch);
+		draw_canvas_border(sdl, anch, env->grid,
+			d_ed->selected == door ? 0xffffff : 0x0);
+		door = door->next;
+	}
+	env_unset_canvas(env);
+}
+
 void			draw_map(t_env *env, t_sdl *sdl)
 {
 	t_ivec2		start;
@@ -94,4 +120,5 @@ void			draw_map(t_env *env, t_sdl *sdl)
 		}
 		i.y++;
 	}
+	draw_doors(env, sdl);
 }

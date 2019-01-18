@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:42:18 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 17:11:18 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/17 19:55:13 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ int			audio_init(t_audio *audio)
 	int		flags;
 
 	flags = MIX_INIT_OGG | MIX_INIT_MOD;
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+	{
+		return (audio_error(
+			"Mix_OpenAudio: Failed to init audio !"));
+	}
 	r = Mix_Init(flags);
 	if ((r & flags) != flags)
 	{
 		return (audio_error(
 		"Mix_Init: Failed to init required ogg and mod support !"));
-	}
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
-	{
-		return (audio_error(
-			"Mix_OpenAudio: Failed to init audio !"));
 	}
 	Mix_AllocateChannels(16);
 	return (audio_load_all(audio));

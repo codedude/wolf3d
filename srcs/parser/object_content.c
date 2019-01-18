@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_content.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:07:37 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 18:41:37 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/18 05:20:25 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static int		load_objects(t_env *env, t_parser *parser)
 		|| skipchar(parser, ':') == ERROR
 		|| get_and_skipvec2(parser, &obj->pos) == ERROR)
 			return (set_parse_error(parser, EOGET));
-		printf("%f %f\n", ent->e.object->pos.x, ent->e.object->pos.y);
 		ent->tex_id = sp_i;
 		i++;
 	}

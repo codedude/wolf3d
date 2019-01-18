@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 04:17:38 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 01:15:36 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void			destroy_objets_tools(t_objects_tools *otools, t_panel *o_pan)
 	}
 	slider_destroy(&otools->g_snap);
 	checkbox_destroy(&otools->cbox_solid);
+	checkbox_destroy(&otools->cbox_collect);
 }
 
 void			destroy_rpanels(t_env *env)
@@ -90,7 +91,6 @@ void			destroy_rpanels(t_env *env)
 
 void			env_destroy(t_env *env)
 {
-	sdl_destroy_textures(&env->sdl);
 	sdl_destroy(&env->sdl);
 	if (env->saved == False)
 		ask_saving(env);
@@ -99,7 +99,8 @@ void			env_destroy(t_env *env)
 	destroy_objets_tools(&env->obj, env->rpan.p[Object_Panel]);
 	destroy_buttons(env->editor.switch_b, Max_EditMod_type);
 	destroy_buttons(env->inspector.action, Max_EditMod_type);
-	destroy_buttons(env->map_properties.actions, Max_editor_action);
-	destroy_buttons(env->inspector.b_select.type_select, Max_brush_type);
 	checkbox_destroy(&env->inspector.world.cbox_ceil);
+	destroy_buttons(env->map_properties.actions, Max_editor_action);
+	destroy_buttons(env->inspector.b_select.type_select, Max_Brush_Buttons);
+	destroy_rpanels(env);
 }

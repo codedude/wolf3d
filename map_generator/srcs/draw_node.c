@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/29 05:58:04 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 05:39:59 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,16 @@ static void		env_update_map_value(t_env *env, t_ivec2 mapi)
 	env->ed_map_value = value;
 }
 
-static t_u32	compute_color(t_bool erasing, t_texture *text, t_ivec2 px)
+static t_u32	compute_color(t_bool erasing, t_tex *text, t_ivec2 px)
 {
 	t_color		c;
+	t_color		raw_c;
 
-	c = sdl_get_pixel(text, px.x, px.y);
+	raw_c = sdl_get_pixel(text, px.x, px.y, 0);
+	c.c.r = raw_c.c.b;
+	c.c.g = raw_c.c.g;
+	c.c.b = raw_c.c.r;
+	c.c.a = raw_c.c.a;
 	if (erasing)
 	{
 		c.c.r += 40;
@@ -43,11 +48,11 @@ static t_u32	compute_color(t_bool erasing, t_texture *text, t_ivec2 px)
 
 static void		draw_canvas_tex(t_sdl *sdl, t_env *env, t_canvas canvas)
 {
-	t_texture	*text;
+	t_tex	*text;
 	t_ivec2		i;
 	t_ivec2		px;
 
-	text = sdl->textures + (env->ed_map_value - 1);
+	text = sdl->tex_walls + (env->ed_map_value - 1);
 	i.y = 0;
 	while (i.y < canvas.size.y)
 	{
@@ -71,10 +76,10 @@ static void		draw_node_tex(t_sdl *sdl, t_env *env, t_canvas canvas,
 {
 	env_update_map_value(env, mapi);
 	if (env->spawn.x == mapi.x && env->spawn.y == mapi.y)
-		draw_canvas_fill(sdl, canvas, env->grid, 0x30a530);
+		draw_canvas_fill(sdl, &canvas, &env->grid, 0x30a530);
 	else if (env->ed_map_value == 0)
-		draw_canvas_fill(sdl, canvas, env->grid,
-				env->erasing ? 0x1010a2 : 0x853030);
+		draw_canvas_fill(sdl, &canvas, &env->grid,
+				env->erasing ? 0xa21010 : 0x303085);
 	else
 		draw_canvas_tex(sdl, env, canvas);
 }

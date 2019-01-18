@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 17:30:56 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/19 19:28:06 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 02:21:23 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,18 @@
 #include "types.h"
 #include "gen_env.h"
 
-t_color			*new_texdata(t_texture *tex, t_ivec2 size)
+t_color			convert_pixel(t_color get)
+{
+	t_color		c;
+
+	c.c.r = get.c.b;
+	c.c.g = get.c.g;
+	c.c.b = get.c.r;
+	c.c.a = get.c.a;
+	return (c);
+}
+
+t_color			*new_texdata(t_tex *tex, t_ivec2 size)
 {
 	t_color		*tdata;
 	t_ivec2		i;
@@ -35,8 +46,8 @@ t_color			*new_texdata(t_texture *tex, t_ivec2 size)
 						* ((t_float)i.x * 100.0 / (t_float)size.x));
 			transpo.y = (int)((t_float)tex->h / 100.0
 						* ((t_float)i.y * 100.0 / (t_float)size.y));
-			tdata[i.x + i.y * size.x] = sdl_get_pixel(tex,
-											transpo.x, transpo.y);
+			tdata[i.x + i.y * size.x] = convert_pixel(sdl_get_pixel(tex,
+											transpo.x, transpo.y, 0));
 			i.x++;
 		}
 		i.y++;
@@ -63,7 +74,7 @@ void			destroy_panel_tex(t_color ***pbox_src, t_u32 nb)
 }
 
 t_color			**new_panel_tex(t_sdl *sdl, t_u32 nb, t_ivec2 size,
-								t_texture *(*tex_src)(t_sdl*, int))
+								t_tex *(*tex_src)(t_sdl*, int))
 {
 	t_color		**tex;
 	t_u32		i;
