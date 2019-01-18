@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/11 04:35:55 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 16:54:24 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ void		draw_on_map(t_env *env, int brush)
 	if (is_bounded(env->mouse.pos, env->grid)
 	&& is_bounded(env->mouse.pos, bounds))
 	{
-		type = (env->toolset.use_tmp == True) ?
-			env->toolset.tmp_type : env->toolset.type;
+		type = toolset_get_type(&env->toolset);
 		old_brush = env->palette.brush;
 		env->palette.brush = type == Eraser ? -1 : brush;
 		if (type == SpawnSetter)

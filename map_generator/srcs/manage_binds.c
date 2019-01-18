@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 04:18:39 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 17:40:21 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,23 @@
 
 void		manage_down(const Uint8	*state, t_env *env)
 {
-	if (state[SDL_SCANCODE_X])
+	int		test;
+
+	if ((test = (state[SDL_SCANCODE_X] != 0)))
 		toolset_set_tmp_type(&env->toolset, ZoomIn);
-	if (state[SDL_SCANCODE_Z])
+	if ((test |= (state[SDL_SCANCODE_Z] != 0)))
 		toolset_set_tmp_type(&env->toolset, ZoomOut);
-	if (state[SDL_SCANCODE_SPACE])
+	if ((test |= (state[SDL_SCANCODE_SPACE] != 0)))
 		toolset_set_tmp_type(&env->toolset, Hand);
-	if (state[SDL_SCANCODE_LALT])
+	if ((test |= (state[SDL_SCANCODE_LALT] != 0)))
 		toolset_set_tmp_type(&env->toolset, Picker);
-	if (state[SDL_SCANCODE_LCTRL])
+	if ((test |= (state[SDL_SCANCODE_LCTRL] != 0)))
 		toolset_set_tmp_type(&env->toolset, SpawnSetter);
-	if (state[SDL_SCANCODE_LSHIFT])
+	if ((test |= (state[SDL_SCANCODE_LSHIFT] != 0)))
 		toolset_set_tmp_type(&env->toolset, Eraser);
+	if (test && env->mouse.b1_status == Mouse_Hold
+		&& env->editor.mode != Painter && env->editor.mode != World)
+		env->mouse.no_trigger = True;
 }
 
 int			on_key_release(SDL_Event *event, t_env *env)

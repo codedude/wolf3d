@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 02:14:17 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 17:00:13 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,5 +205,13 @@ t_ivec2		mpos_to_map_index(t_canvas bounds, t_env *env)
 	t_vec2		v2;
 
 	v2 = mpos_to_map_coord(bounds, env->mouse.pos, env);
+	return (IVEC2_INIT((int)v2.x, (int)v2.y));
+}
+
+t_ivec2		pos_to_map_index(t_canvas bounds, t_ivec2 pos, t_env *env)
+{
+	t_vec2		v2;
+
+	v2 = mpos_to_map_coord(bounds, pos, env);
 	return (IVEC2_INIT((int)v2.x, (int)v2.y));
 }

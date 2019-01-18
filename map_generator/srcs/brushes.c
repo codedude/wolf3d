@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 19:20:39 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 07:34:58 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 17:02:08 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,9 @@ static void		compute_simple_brush(t_env *env, t_canvas bounds)
 	t_ivec2			mpos_i2;
 
 	mpos_i = mpos_to_map_index(bounds, env);
-	mpos_i2 = mpos_to_map_index(bounds, env);
-	if (mpos_i.x == mpos_i2.x && mpos_i.y == mpos_i2.y)
-		env->map_info.map_mask->data[mpos_i.y][mpos_i.x] = env->palette.brush;
-	else
+	mpos_i2 = pos_to_map_index(bounds, env->mouse.last_pos, env);
+	env->map_info.map_mask->data[mpos_i.y][mpos_i.x] = env->palette.brush;
+	if (mpos_i.x != mpos_i2.x || mpos_i.y != mpos_i2.y)
 	{
 		br_data = BRES_INIT(mpos_i2, mpos_i, env, draw_wall);
 		ft_bresenham(&br_data);
@@ -51,7 +50,7 @@ static void		compute_line_tracer(t_env *env, t_canvas bounds)
 	t_ivec2			mpos_i2;
 
 	mpos_i = mpos_to_map_index(bounds, env);
-	mpos_i2 = mpos_to_map_index(bounds, env);
+	mpos_i2 = pos_to_map_index(bounds, env->mouse.record_pos_b, env);
 	br_data = BRES_INIT(mpos_i2, mpos_i, env, draw_wall);
 	ft_bresenham(&br_data);
 	env->map_info.map_mask->data[mpos_i.y][mpos_i.x] = env->palette.brush;
@@ -86,7 +85,7 @@ static void		compute_square_tracer(t_env *env, t_canvas bounds)
 	t_ivec2			size;
 
 	mpos_i = mpos_to_map_index(bounds, env);
-	mpos_i2 = mpos_to_map_index(bounds, env);
+	mpos_i2 = pos_to_map_index(bounds, env->mouse.record_pos_b, env);
 	size = mpos_i2 - mpos_i;
 	udl_data = UDL_INIT(mpos_i, size.x, UD_LINE_HORIZONTAL, env, draw_wall);
 	ft_unidir_line(&udl_data);
@@ -110,7 +109,7 @@ static void		compute_circle_tracer(t_env *env, t_canvas bounds)
 	t_ivec2			mpos_i2;
 	t_float			radius;
 
-	mpos_i = mpos_to_map_index(bounds, env);
+	mpos_i = pos_to_map_index(bounds, env->mouse.record_pos_b, env);
 	mpos_i2 = mpos_to_map_index(bounds, env) - mpos_i;
 	mpos_i2 = IVEC2_INIT((int)abs(mpos_i2.x), (int)abs(mpos_i2.y));
 	radius = (t_float)(mpos_i2.x > mpos_i2.y ? mpos_i2.x : mpos_i2.y);

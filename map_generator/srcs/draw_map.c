@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/29 01:03:07 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 05:44:23 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 18:24:53 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,25 @@ static void		get_start_end(t_env *env, t_map_info *minf,
 		i.x++;
 	}
 }
+//
+// static void		fill_rect_opacity(t_env *env, t_canvas anch,
+// 					t_pixel c, t_float factor)
+// {
+//
+// }
+
+static void		draw_door(t_env *env, t_sdl *sdl, t_door *door, t_canvas anch)
+{
+	// t_pixel		c;
+
+	draw_tex(env, &sdl->tex_walls[door->tex_id[Door_Tex]], False, anch);
+	// if (door_is_valid_place(env, door->pos))
+	// 	c = 0x10aaaa;
+	// else
+	// 	c = 0x1010aa;
+	// fill_rect_opacity(env, anch, c, 0.5);
+	// draw_door_mask(env, sdl, door, anch);
+}
 
 static void		draw_doors(t_env *env, t_sdl *sdl)
 {
@@ -77,21 +96,23 @@ static void		draw_doors(t_env *env, t_sdl *sdl)
 	t_door		*door;
 	t_door_edit	*d_ed;
 	t_canvas	anch;
-	int			convert;
 
 	m_inf = &env->map_info;
 	d_ed = &env->inspector.door_edit;
 	door = d_ed->list;
 	env_set_canvas(env, env->grid);
+	env_set_color(env, 0xffffff);
 	while (door)
 	{
 		anch.pos = IVEC2_INIT(m_inf->x_draw[door->pos.x],
 					m_inf->y_draw[door->pos.y]);
-		anch.size = IVEC2_INIT(m_inf->x_draw[1], m_inf->y_draw[1])
-			- IVEC2_INIT(m_inf->x_draw[0], m_inf->y_draw[0]);
-		draw_tex(env, &sdl->tex_walls[door->tex_id[Door_Tex]], False, anch);
-		draw_canvas_border(sdl, anch, env->grid,
-			d_ed->selected == door ? 0xffffff : 0x0);
+		anch.size = IVEC2_INIT(m_inf->x_draw[door->pos.x + 1],
+						m_inf->y_draw[door->pos.y + 1])
+					- IVEC2_INIT(m_inf->x_draw[door->pos.x],
+						m_inf->y_draw[door->pos.y]);
+		draw_door(env, sdl, door, anch);
+		if (d_ed->selected == door)
+			sdl_draw_rect(env, anch, 3);
 		door = door->next;
 	}
 	env_unset_canvas(env);

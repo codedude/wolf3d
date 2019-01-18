@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 05:23:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 17:25:57 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,6 +303,7 @@ struct			s_mousetrack {
 	t_bool		b2;
 	t_bool		b2_cancel_b1;
 	t_bool		is_editing;
+	t_bool		no_trigger;
 	t_u32		button_index;
 	int			wheel;
 };
@@ -638,6 +639,7 @@ t_bool			is_bounded(t_ivec2 pos, t_canvas canvas);
 t_canvas		get_map_boundaries(t_env *env);
 t_vec2			map_to_center(t_env *env);
 t_ivec2			mpos_to_map_index(t_canvas bounds, t_env *env);
+t_ivec2			pos_to_map_index(t_canvas bounds, t_ivec2 pos, t_env *env);
 t_vec2			mpos_to_map_coord(t_canvas bounds, t_ivec2 mpos, t_env *env);
 t_ivec2			map_coord_to_screen(t_env *env, t_vec2 v2);
 t_ivec2			get_mouse_pos(void);
@@ -648,6 +650,7 @@ void			draw_canvas_fill(t_sdl *sdl, t_canvas *canvas, t_canvas *parent,
 void			draw_canvas_border(t_sdl *sdl, t_canvas canvas, t_canvas parent,
 								unsigned int color);
 
+void			sdl_draw_rect(t_env *env, t_canvas rect, int line_h);
 void			sdl_draw_circle(t_sdl *sdl, t_ivec2 pos,
 								t_float radius, t_u32 color);
 void			texdata_draw_circle_filled(t_color *tex, t_canvas anchor,

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 23:54:46 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 04:19:54 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 18:26:00 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void		sw_painter(void *v_env)
 	button_switch(env->editor.switch_b, Max_EditMod_type, Painter);
 	env->rpan.type = Texture_Panel;
 	env->editor.mode = Painter;
+	toolset_set_type(&env->toolset, Pencil);
 }
 
 static void		sw_world(void *v_env)
@@ -43,6 +44,7 @@ static void		sw_world(void *v_env)
 	button_switch(env->editor.switch_b, Max_EditMod_type, World);
 	env->rpan.type = Texture_Panel;
 	env->editor.mode = World;
+	toolset_set_type(&env->toolset, SpawnSetter);
 }
 
 static void		sw_door(void *v_env)

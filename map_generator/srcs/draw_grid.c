@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 05:22:54 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 17:24:25 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_ivec2				map_coord_to_screen(t_env *env, t_vec2 v2)
 	return (IVEC2_INIT((int)coord.x, (int)coord.y) + env->grid.pos);
 }
 
-static void			sdl_draw_rect(t_env *env, t_canvas rect, int line_h)
+void				sdl_draw_rect(t_env *env, t_canvas rect, int line_h)
 {
 	t_ivec2		from;
 	int			xy;

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 01:30:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 08:09:59 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 17:55:48 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,22 @@ static int		find_selected_obj(t_env *env)
 	return (-1);
 }
 
-static t_bool	g_area_mw_objects(t_env *env)
+static t_bool	g_mw_painter(t_env *env)
+{
+	if (is_bounded(env->mouse.pos, env->grid))
+	{
+		env->mouse.is_editing = True;
+		env->mouse.b2_cancel_b1 = True;
+		clear_map(env->map_info.map_mask);
+		if (env->editor.mode != Painter && env->editor.mode != World)
+			env->mouse.no_trigger = True;
+		return (True);
+	}
+	return (False);
+
+}
+
+static t_bool	g_mw_object_edit(t_env *env)
 {
 	int		obj;
 
@@ -52,29 +67,6 @@ static t_bool	g_area_mw_objects(t_env *env)
 	else if (is_bounded(env->mouse.pos, env->grid))
 		env->obj.edit.selected = -1;
 	return (False);
-}
-
-static t_bool	g_mw_painter(t_env *env)
-{
-	if (is_bounded(env->mouse.pos, env->grid))
-	{
-		env->mouse.is_editing = True;
-		env->mouse.b2_cancel_b1 = True;
-		clear_map(env->map_info.map_mask);
-		return (True);
-	}
-	return (False);
-
-}
-
-static t_bool	g_mw_object_edit(t_env *env)
-{
-	t_u32		type;
-
-	type = toolset_get_type(&env->toolset);
-	if (type < Max_ToolType_Painter)
-		return (g_area_mw_objects(env));
-	return (g_mw_painter(env));
 
 }
 
@@ -89,21 +81,20 @@ static t_bool	g_mw_door(t_env *env)
 		return (False);
 	mpos = mpos_to_map_index(get_map_boundaries(env), env);
 	door = dedit->list;
-	while (door)
-	{
-		if (door->pos.x == mpos.x && door->pos.y == mpos.y)
-			break ;
+	while (door && !(door->pos.x == mpos.x && door->pos.y == mpos.y))
 		door = door->next;
-	}
 	dedit->selected = door;
 	return (True);
 }
 
-
 static t_bool	g_area_mw(t_env *env)
 {
+	t_u32		type;
+
+	type = toolset_get_type(&env->toolset);
 	env->obj.holding = False;
-	if (env->editor.mode == Painter || env->editor.mode == World)
+	if (env->editor.mode == Painter || env->editor.mode == World
+	|| type >= Max_ToolType_Painter)
 		return (g_mw_painter(env));
 	else if (env->editor.mode == Object_Edit)
 		return (g_mw_object_edit(env));
@@ -187,19 +178,6 @@ static void		init_get_area(t_mousetrack *mtrack)
 	mtrack->get_area[Right_Panel] = g_area_rpan;
 }
 
-void			TMP_debug_mouse_area(t_u32 i, t_u32 i2)
-{
-	static char		*str[Max_Win_Area + 1] = {
-			"Map_window",
-			"Map_properties_buttons",
-			"Inspector",
-			"Tools_buttons",
-			"Right_Panel",
-			"Not_On_Window"
-	};
-	printf("Mouse pos: %s\nButton   : %d\n", str[i], i2);
-}
-
 void			mouse_track_update_area(t_env *env)
 {
 	t_u32		i;
@@ -209,7 +187,6 @@ void			mouse_track_update_area(t_env *env)
 	while (i < Max_Win_Area && env->mouse.get_area[i](env) == False)
 		i++;
 	env->mouse.area = i;
-	TMP_debug_mouse_area(i, env->mouse.button_index);
 }
 
 void			mouse_button_setstate(t_env *env, int button, t_bool state)
@@ -224,9 +201,11 @@ void			mouse_button_setstate(t_env *env, int button, t_bool state)
 			tracker->b2_cancel_b1 = False;
 			tracker->record_pos_b = tracker->pos;
 			tracker->b1_status = Mouse_Press;
+			env->mouse.no_trigger = False;
 			mouse_track_update_area(env);
 		}
-		else if (tracker->b1 == True && tracker->area != Not_On_Window)
+		else if (tracker->b1 == True && tracker->area != Not_On_Window
+			&& tracker->no_trigger == False)
 		{
 			tracker->b1_status = Mouse_Release;
 			tracker->trigger[tracker->area](env);
@@ -292,6 +271,23 @@ static void		t_mw_object_edit(t_env *env)
 		object_destroy(&env->obj, env->mouse.button_index);
 }
 
+static int		door_select_at(t_door_edit *dedit, t_ivec2 pos)
+{
+	t_door		*d;
+
+	d = dedit->list;
+	while (d)
+	{
+		if (d->pos.x == pos.x && d->pos.y == pos.y)
+		{
+			dedit->selected = d;
+			return (SUCCESS);
+		}
+		d = d->next;
+	}
+	return (ERROR);
+}
+
 static void		t_mw_door(t_env *env)
 {
 	t_door_edit	*dedit;
@@ -301,10 +297,13 @@ static void		t_mw_door(t_env *env)
 	dedit->door_pos = mpos_to_map_index(get_map_boundaries(env), env);
 	if (door_valid_mouse_coord(env))
 	{
-		if (dedit->selected)
-			dedit->selected->pos = dedit->door_pos;
-		else
-			door_create(env, dedit);
+		if (door_select_at(dedit, dedit->door_pos) == ERROR)
+		{
+			if (dedit->selected)
+				dedit->selected->pos = dedit->door_pos;
+			else
+				door_create(env, dedit);
+		}
 		door = dedit->selected;
 		env->map_info.map->data[door->pos.y][door->pos.x] = 0;
 	}
@@ -444,13 +443,8 @@ static void		u_mw_painter(t_env *env)
 
 static void		u_mw_object_edit(t_env *env)
 {
-	t_u32		type;
-
-	type = toolset_get_type(&env->toolset);
 	if (env->obj.holding == True)
 		return (mw_object_edit(env));
-	else if (type < Max_ToolType_Painter)
-		toolset_use_fx(env);
 }
 
 static void		u_mw_door(t_env *env)
@@ -463,8 +457,11 @@ static void		u_mw_door(t_env *env)
 
 static void		u_area_mw(t_env *env)
 {
+	t_u32		type;
 
-	if (env->editor.mode == Painter || env->editor.mode == World)
+	type = toolset_get_type(&env->toolset);
+	if (type >= Max_ToolType_Painter
+	|| env->editor.mode == Painter || env->editor.mode == World)
 		u_mw_painter(env);
 	else if (env->editor.mode == Object_Edit)
 		u_mw_object_edit(env);
