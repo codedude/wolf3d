@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 01:21:17 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/18 01:10:05 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/18 16:57:41 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_tex			*tex_get_sprite(t_sdl *sdl, int id)
 	return (&sdl->tex_sprites[id]);
 }
 
-static void		tex_destroy_pixels(t_tex *tex)
+void			tex_destroy_pixels(t_tex *tex)
 {
 	int		i;
 

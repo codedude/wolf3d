@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 16:09:59 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/18 16:57:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ struct			s_tex {
 int				tex_load(t_tex *tex, char *filename, int n_sprites, int n_cols);
 int				tex_load_all(t_sdl *sdl);
 void			tex_destroy_all(t_sdl *sdl);
+void			tex_destroy_pixels(t_tex *tex);
 t_tex			*tex_get_wall(t_sdl *sdl, int id);
 t_tex			*tex_get_sprite(t_sdl *sdl, int id);
 
