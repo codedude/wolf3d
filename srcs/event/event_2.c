@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 03:42:12 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 17:10:04 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ static void	event_kb_poll_up3(SDL_Event *event, t_cam *cam, t_env *env)
 		music_play(&env->audio, MUSIC_TITLE);
 	else if (event->key.keysym.sym == SDLK_9)
 		music_stop(&env->audio);
-	else if (event->key.keysym.sym == SDLK_o)
-		sound_play(&env->audio, SOUND_TEST);
 }
 
 static void	event_kb_poll_up2(SDL_Event *event, t_cam *cam, t_player *player,

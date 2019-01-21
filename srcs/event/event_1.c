@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/16 21:02:56 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 17:18:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ void			event_kb_state(const Uint8 *state, t_env *env)
 	else
 		player->action_state &= ~ACTION_CROUCHING;
 	if (state[SDL_SCANCODE_LSHIFT])
+	{
+		sound_play(&env->audio, SOUND_DASH);
 		player_set_dash(player);
+	}
 	if (state[SDL_SCANCODE_SPACE])
 		event_kb_state_jump(&env->sdl, &env->cam, &env->player);
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:21:46 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 17:16:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define ANIM_DOOR_OFFSET	0.015
 # define ANIM_DOOR_SPEED	1
 
+typedef struct s_env		t_env;
 typedef struct s_anim		t_anim;
 typedef enum e_anim_type	t_anim_type;
 typedef struct s_list_anim	t_list_anim;
@@ -62,8 +63,8 @@ void				alist_del_elem(t_list_anim **head);
 void				alist_del(t_list_anim **head, t_list_anim *entry);
 void				alist_clear(t_list_anim **head);
 
-void				compute_anim(t_sdl *sdl, t_list_anim **head);
-t_bool				anim_door(t_anim *anim);
+void				compute_anim(t_env *env, t_list_anim **head);
+t_bool				anim_door(t_env *env, t_anim *anim);
 t_bool				anim_object(t_sdl *sdl, t_anim *anim);
 t_bool				anim_texture(t_sdl *sdl, t_anim *anim);
 t_bool				anim_skybox(t_sdl *sdl, t_anim *anim);

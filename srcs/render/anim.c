@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:32:48 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:22:14 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 17:16:40 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "ft_type.h"
 #include "anim.h"
 #include "entity.h"
+#include "env.h"
 
 t_anim			*anim_new(t_entity *entity, int type, t_bool to_del,
 					int key_speed)
@@ -37,7 +38,7 @@ void			anim_destroy(t_anim *anim)
 	free(anim);
 }
 
-void			compute_anim(t_sdl *sdl, t_list_anim **head)
+void			compute_anim(t_env *env, t_list_anim **head)
 {
 	t_anim	*anim;
 	t_bool	r;
@@ -47,11 +48,11 @@ void			compute_anim(t_sdl *sdl, t_list_anim **head)
 		r = False;
 		anim = (*head)->value;
 		if ((anim->type & ANIM_MASK_TYPE) == ANIM_TEXTURE)
-			r = anim_texture(sdl, anim);
+			r = anim_texture(&env->sdl, anim);
 		else if ((anim->type & ANIM_MASK_TYPE) == ANIM_DOOR)
-			r = anim_door(anim);
+			r = anim_door(env, anim);
 		else if ((anim->type  & ANIM_MASK_TYPE)== ANIM_SKYBOX)
-			r = anim_skybox(sdl, anim);
+			r = anim_skybox(&env->sdl, anim);
 		if (r && (anim->type & ANIM_MASK_LOOP) != ANIM_LOOP)
 			alist_del_elem(head);
 		else

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:46:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:22:09 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 17:15:25 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,14 @@ t_bool			anim_texture(t_sdl *sdl, t_anim *anim)
 	return (False);
 }
 
-static t_bool	anim_door_2(t_door *door, int cmp, t_float cmp_val)
+static t_bool	anim_door_2(t_env *env, t_door *door, int cmp, t_float cmp_val)
 {
 	if (cmp)
 	{
 		door->open_offset = cmp_val;
 		door->is_open = !door->is_open;
 		door->is_active = False;
+		sound_play(&env->audio, SOUND_DOOR_CLOSE);
 		return (True);
 	}
 	else
@@ -64,7 +65,7 @@ static t_bool	anim_door_2(t_door *door, int cmp, t_float cmp_val)
 	return (False);
 }
 
-t_bool			anim_door(t_anim *anim)
+t_bool			anim_door(t_env *env, t_anim *anim)
 {
 	int			cmp;
 	t_float		cmp_val;
@@ -85,5 +86,5 @@ t_bool			anim_door(t_anim *anim)
 		off = ANIM_DOOR_OFFSET;
 	}
 	door->open_offset += off;
-	return (anim_door_2(door, cmp, cmp_val));
+	return (anim_door_2(env, door, cmp, cmp_val));
 }

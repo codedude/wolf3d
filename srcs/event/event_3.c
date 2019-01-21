@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:46 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 11:18:02 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 17:13:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void		binds_open_door(t_env *env, t_cam *cam, t_map *map)
 			ANIM_DOOR | ANIM_ONCE, False, ANIM_DOOR_SPEED);
 		if (alist_push(&env->anims, anim) == ERROR)
 			return ;
+		sound_play(&env->audio, SOUND_DOOR_OPEN);
 	}
 }

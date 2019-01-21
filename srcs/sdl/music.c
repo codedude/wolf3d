@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:22:42 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 16:56:23 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 17:00:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 char		**music_get_files(void)
 {
 	static char	*music_files[] = {
-		"music_1.ogg",
+		"minecraft_sweden.ogg",
 		NULL
 	};
 

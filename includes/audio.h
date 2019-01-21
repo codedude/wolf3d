@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 17:07:33 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 17:09:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@
 # define SOUND_FOLDER	"data/sound/"
 
 # define MUSIC_TITLE	0
-# define SOUND_TEST		0
+
+enum {
+	SOUND_DASH=0, SOUND_DOOR_CLOSE=1, SOUND_DOOR_OPEN, SOUND_EXPLOSION,
+	SOUND_FALL_JUMP
+};
 
 typedef struct s_audio	t_audio;
 

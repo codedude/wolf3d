@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:22:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 17:09:21 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 17:08:14 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@
 char		**sound_get_files(void)
 {
 	static char	*sound_files[] = {
-		"bow_shoot.ogg",
+		"dash.ogg",
+		"door_close.ogg",
+		"door_open.ogg",
+		"explosion.ogg",
+		"fall_jump.ogg",
 		NULL
 	};
 
