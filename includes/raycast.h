@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 10:43:21 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 16:21:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include "types.h"
 # include "sdl_m.h"
 # include "env.h"
-# include "texture.h"
 # include "list.h"
 
 # define C_RED			0x00FF0000

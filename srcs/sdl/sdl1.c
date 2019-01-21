@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:23:03 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 16:20:56 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 16:44:16 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "SDL.h"
 #include "libft.h"
 #include "sdl_m.h"
-#include "texture.h"
 #include "audio.h"
 
 static int		sdl_init2(t_sdl *sdl, const char *title, int width,
@@ -49,6 +48,7 @@ int				sdl_init(t_sdl *sdl, const char *title, int width,
 	}
 	if (sdl_init2(sdl, title, width, height) == ERROR)
 		return (ERROR);
+	sdl->fps = 60;
 	return (SUCCESS);
 }
 

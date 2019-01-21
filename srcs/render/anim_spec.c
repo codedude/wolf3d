@@ -6,13 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:46:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 11:27:58 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 16:22:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_type.h"
 #include "anim.h"
-#include "texture.h"
+#include "sdl_m.h"
 #include "entity.h"
 #include "env.h"
 #include "anim.h"

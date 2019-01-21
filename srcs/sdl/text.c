@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:42:18 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/18 18:22:37 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 16:52:41 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include "libft.h"
 #include "ft_type.h"
 #include "libft.h"
-#include "texture.h"
-#include "text.h"
+#include "env.h"
 
 int			text_error(char *info)
 {
@@ -44,7 +43,7 @@ int			text_init(t_text *text)
 void		text_destroy(t_text *text)
 {
 	tex_destroy_pixels(&text->font_little);
-	//tex_destroy_pixels(&text->font_big);
+	tex_destroy_pixels(&text->font_big);
 	TTF_Quit();
 }
 
@@ -53,54 +52,80 @@ TTF_Font	*text_load_font(char *filename, int font_size)
 	return (TTF_OpenFont(filename, font_size));
 }
 
-int			text_load_all(t_text *text)
+int			text_load_font_surf(t_tex *tex, char *filename, int size,
+				SDL_Color color)
 {
 	TTF_Font	*font;
 	SDL_Surface	*surf;
 	SDL_Surface	*tmp;
+	char 		texte[96];
+	int			i;
 
-	if ((font = text_load_font("data/font/monofonto.ttf", 50)) == NULL)
+	if ((font = text_load_font(filename, size)) == NULL)
 		return (text_error("Can't load font"));
-
-	int i = 0;
-	int h, w;
-
-	char texte[256];
 	i = 0;
-	while (i < (127 - 32))
+	while (i < 95)
 	{
-		texte[i] = i + 32;
+		texte[i] = (char)(i + 32);
 		++i;
 	}
 	texte[i] = 0;
-	printf("%s\n", texte);
-
-	char t[2];
-	t[1] = 0;
-	i = 0;
-	while (texte[i] != 0)
-	{
-		t[0] = texte[i];
-		TTF_SizeText(font, t, &w, &h);
-		printf("%d, %d\n", w, h);
-		++i;
-	}
-
-	SDL_Color color = {255,255,255,255};
-	if ((tmp = TTF_RenderText_Solid(font, texte,
-		color)) == NULL)
+	if ((tmp = TTF_RenderText_Solid(font, texte, color)) == NULL)
 	{
 		ft_putendl_fd("Can't draw test in surface", 2);
 		return (ERROR);
 	}
 	surf = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGB888, 0);
 	SDL_FreeSurface(tmp);
-	TTF_SizeText(font, "A", &(text->font_little.w), &(text->font_little.h));
+	TTF_SizeText(font, "A", &(tex->w), &(tex->h));
 	TTF_CloseFont(font);
-	text->font_little.n_sprites = ft_strlen(texte);
-	text->font_little.n_cols = text->font_little.n_sprites;
-	if (sdl_convert_data(&text->font_little, surf) == ERROR)
+	tex->n_sprites = (int)ft_strlen(texte);
+	tex->n_cols = tex->n_sprites;
+	if (sdl_convert_data(tex, surf) == ERROR)
 		return (ERROR);
 	SDL_FreeSurface(surf);
 	return (SUCCESS);
+}
+
+int			text_load_all(t_text *text)
+{
+	if (text_load_font_surf(&(text->font_little), FONT_PATH, 24,
+		(SDL_Color){255,255,255,255}) == ERROR)
+		return (ERROR);
+	if (text_load_font_surf(&(text->font_big), FONT_PATH, 48,
+		(SDL_Color){255,255,255,255}) == ERROR)
+		return (ERROR);
+	return (SUCCESS);
+}
+
+void		text_write(t_env *env, int x, int y, char *str)
+{
+	int		i;
+	t_tex	*tex;
+	t_color	color;
+	int		x_pad;
+	int		it[2];
+
+	tex = &(env->sdl.text.font_little);
+	i = 0;
+	x_pad = 0;
+	while (str[i] != 0)
+	{
+		it[0] = 0;
+		while (it[0] < tex->w)
+		{
+			it[1] = 0;
+			while (it[1] < tex->h)
+			{
+				color = sdl_get_pixel(tex, it[0], it[1], str[i] - 32);
+				if (color.rgba > 0)
+					sdl_put_pixel(&env->sdl, x + it[0] + i * tex->w + x_pad,
+						y + it[1], color);
+				++it[1];
+			}
+			++it[0];
+		}
+		x_pad += 2;
+		++i;
+	}
 }

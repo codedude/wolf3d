@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/20 23:16:09 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 16:53:53 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,44 +15,9 @@
 #include "env.h"
 #include "sdl_m.h"
 #include "raycast.h"
-#include "texture.h"
 #include "entity.h"
 #include "anim.h"
 #include "event.h"
-
-static void	test_text(t_env *env)
-{
-	int		i;
-	char	*texte = "Hello world !";
-	t_tex	*tex;
-	t_color	color;
-	int		x_pad;
-
-	tex = &(env->text.font_little);
-	i = 0;
-	x_pad = 10;
-	while (texte[i] != 0)
-	{
-		int	key = texte[i] - 32;
-		int	it_x, it_y;
-		it_x = 0;
-		while (it_x < tex->w)
-		{
-			it_y = 0;
-			while (it_y < tex->h)
-			{
-				color = sdl_get_pixel(tex, it_x, it_y, key);
-				if (color.rgba > 0)
-					sdl_put_pixel(&env->sdl, it_x + i * tex->w + x_pad,
-						10 + it_y, color);
-				++it_y;
-			}
-			++it_x;
-		}
-		x_pad += 2;
-		++i;
-	}
-}
 
 static void	test(t_env *env)
 {
@@ -62,6 +27,15 @@ static void	test(t_env *env)
 		return ;
 	anim = anim_new(&env->objects[0], ANIM_TEXTURE | ANIM_LOOP, False, 1);
 	alist_push(&env->anims, anim);
+}
+
+void		draw_interface(t_env *env)
+{
+	char	fps[16];
+
+	ft_itoa_to_buffer(env->sdl.fps, fps);
+	text_write(env, env->sdl.width - 40, env->sdl.height - 32,
+		fps);
 }
 
 static int	loop(t_env *env)
@@ -77,7 +51,7 @@ static int	loop(t_env *env)
 		sdl_update_texture(&env->sdl);
 		tp_wait_for_queue(env->tpool);
 		compute_sprite(env);
-		test_text(env);
+		draw_interface(env);
 		sdl_render(&env->sdl);
 	}
 	render_clean(env);

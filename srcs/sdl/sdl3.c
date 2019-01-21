@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:20:25 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 03:05:45 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 16:43:39 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ void		sdl_get_fps(t_sdl *sdl)
 	sum_fps += 1;
 	if (new.tv_sec - last.tv_sec >= 1)
 	{
-		ft_putstr("\r         \rFPS : ");
-		ft_putnbr(sum_fps);
+		sdl->fps = sum_fps;
 		sum_fps = 0;
 	}
 	last.tv_sec = new.tv_sec;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 22:22:13 by vparis            #+#    #+#             */
-/*   Updated: 2018/04/25 02:51:48 by valentin         ###   ########.fr       */
+/*   Updated: 2019/01/21 16:51:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void				ft_strsplit_free(char **str);
 
 int					ft_atoi(const char *nptr);
 char				*ft_itoa(int n);
+void				ft_itoa_to_buffer(int n, char *number);
 int					ft_atoi_base(char const *nptr, char const *base);
 int					ft_atoi_s(const char *str, int *nb);
 int					ft_atof_s(char *str, t_f64 *n);

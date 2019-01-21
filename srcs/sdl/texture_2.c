@@ -6,12 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 01:21:17 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/18 16:57:41 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 16:17:10 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sdl_m.h"
-#include "texture.h"
 
 t_tex			*tex_get_wall(t_sdl *sdl, int id)
 {

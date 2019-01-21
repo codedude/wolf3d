@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:32:48 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/20 23:02:17 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 16:22:14 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "ft_type.h"
 #include "anim.h"
 #include "entity.h"
-#include "anim.h"
 
 t_anim			*anim_new(t_entity *entity, int type, t_bool to_del,
 					int key_speed)

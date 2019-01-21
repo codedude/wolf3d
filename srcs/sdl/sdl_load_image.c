@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 13:07:22 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 16:43:29 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 16:22:56 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include "sdl_m.h"
 #include "env.h"
 #include "parser.h"
-#include "texture.h"
 
 SDL_Surface				*sdl_load_image(char *filename)
 {

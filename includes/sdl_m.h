@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/18 16:31:57 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 16:43:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,10 @@
 # include "SDL_image.h"
 # include "SDL_ttf.h"
 # include "types.h"
-# include "texture.h"
 
 /*
 ** forward declaration
 */
-
-typedef struct s_tex	t_tex;
 
 # define KEY_ESCAPE		SDLK_ESCAPE
 # define KEY_FPS		SDLK_1
@@ -35,9 +32,63 @@ typedef struct s_tex	t_tex;
 # define KEY_SPEED		SDLK_6
 # define KEY_MODE		SDLK_SPACE
 
+typedef struct s_env	t_env;
+typedef struct s_text	t_text;
+typedef struct s_tex	t_tex;
+typedef struct s_sdl	t_sdl;
+
+/*
+** TEXTURE
+*/
+
+/*
+** w and h = size of ONE sprite
+** n_sprites = total nb of sprites in the texture
+*/
+
+# define TEX_WALL_FILE		"data/texture/textures.conf"
+# define TEX_SPRITE_FILE	"data/sprite/sprites.conf"
+
+struct				s_tex {
+	t_pixel			**pixels;
+	int				w;
+	int				h;
+	int				n_sprites;
+	int				n_cols;
+};
+
+int					tex_load(t_tex *tex, char *filename, int n_sprites,
+						int n_cols);
+int					tex_load_all(t_sdl *sdl);
+void				tex_destroy_all(t_sdl *sdl);
+void				tex_destroy_pixels(t_tex *tex);
+t_tex				*tex_get_wall(t_sdl *sdl, int id);
+t_tex				*tex_get_sprite(t_sdl *sdl, int id);
+
+/*
+** TEXT
+*/
+
+# define FONT_PATH "data/font/monofonto.ttf"
+
+struct				s_text {
+	t_tex			font_little;
+	t_tex			font_big;
+};
+
+int					text_init(t_text *text);
+void				text_destroy(t_text *text);
+int					text_error(char *info);
+void				*text_error_null(char *info);
+
+int					text_load_all(t_text *text);
+void				text_write(t_env *env, int x, int y, char *str);
+
+
 typedef struct		s_sdl {
 	t_tex			*tex_walls;
 	t_tex			*tex_sprites;
+	t_text			text;
 	int				tex_wall_nb;
 	int				tex_sprite_nb;
 	t_float			canvas_h;
@@ -49,6 +100,7 @@ typedef struct		s_sdl {
 	t_float			canvas_w;
 	t_float			ratio_y;
 	t_float			deltatime;
+	int				fps;
 	int				width;
 	int				height;
 	size_t			size_buffer;

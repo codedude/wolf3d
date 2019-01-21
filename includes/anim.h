@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 11:24:48 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 16:21:46 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "ft_type.h"
 # include "types.h"
-# include "texture.h"
+# include "sdl_m.h"
 # include "entity.h"
 
 # define ANIM_DOOR_OFFSET	0.015

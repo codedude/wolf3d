@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/18 16:37:03 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/21 16:20:46 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,8 +77,8 @@ SRCS_F		+=	$(EVENTD)/move_1 $(EVENTD)/move_2 $(EVENTD)/move_3 \
 				$(EVENTD)/event $(EVENTD)/move_4
 SRCS_F		+=	$(UTILSD)/vector $(UTILSD)/types
 
-HEADERS_F	= 	env sdl_m raycast types list texture entity anim event \
-				export_bmp parser camera player audio text
+HEADERS_F	= 	env sdl_m raycast types list entity anim event \
+				export_bmp parser camera player audio
 
 SRCS		=	$(addprefix $(SRCD)/, $(addsuffix .c, $(SRCS_F)))
 HEADERS		=	$(addprefix $(INCD)/, $(addsuffix .h, $(HEADERS_F)))
