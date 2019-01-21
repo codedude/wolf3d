@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 16:19:00 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 13:10:00 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/20 22:23:40 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@ void		entity_merge(t_entity *entity, void *obj, t_entity_type type)
 		entity->e.brick = NULL;
 }
 
-void		entity_set_void(t_entity *entity)
+void		entity_set_void(t_entity *entity, t_bool keep_id)
 {
 	entity->tex_id = 0;
 	entity->tex_calc = IVEC3_ZERO;
-	entity->id = 0;
+	if (keep_id == False)
+		entity->id = 0;
 	entity->crossable = 1;
 	entity->type = ENTITY_VOID;
 	entity->e.brick = NULL;
@@ -55,12 +56,12 @@ void		entity_set(t_entity *entity, int tex_id, int id,
 	entity->crossable = crossable;
 }
 
-void		entity_destroy(t_entity *entity)
+void		entity_destroy(t_entity *entity, t_bool keep_id)
 {
 	free(entity->e.brick);
 	entity->e.brick = NULL;
 	if (entity->type == ENTITY_OBJECT)
 		free(entity);
 	else
-		entity_set_void(entity);
+		entity_set_void(entity, keep_id);
 }

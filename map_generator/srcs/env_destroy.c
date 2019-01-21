@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 01:15:36 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/20 16:25:07 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ void			env_destroy(t_env *env)
 	if (env->saved == False)
 		ask_saving(env);
 	destroy_map(env->map_info.map);
-	destroy_map(env->map_info.map_mask);
 	destroy_objets_tools(&env->obj, env->rpan.p[Object_Panel]);
 	destroy_buttons(env->editor.switch_b, Max_EditMod_type);
 	destroy_buttons(env->inspector.action, Max_EditMod_type);
 	checkbox_destroy(&env->inspector.world.cbox_ceil);
 	destroy_buttons(env->map_properties.actions, Max_editor_action);
 	destroy_buttons(env->inspector.b_select.type_select, Max_Brush_Buttons);
+	free_ar_data((void **)env->map_info.tmp_data, MAX_SIZE_Y);
 	destroy_rpanels(env);
 }

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 17:40:21 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/20 22:39:53 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,17 @@ int			on_key_release(SDL_Event *event, t_env *env)
 	return (1);
 }
 
+void		call_remove(t_env *env)
+{
+	if (env->editor.mode == Object_Edit)
+	{
+		if (env->obj.edit.selected != -1)
+			object_destroy(&env->obj, (t_u32)env->obj.edit.selected);
+	}
+	else if (env->editor.mode == Door)
+		door_destroy_selected(&env->inspector.door_edit);
+}
+
 int			on_key_press(SDL_Event *event, t_env *env)
 {
 	if (event->key.keysym.sym == SDLK_SPACE)
@@ -89,24 +100,23 @@ int			on_key_press(SDL_Event *event, t_env *env)
 	else if (event->key.keysym.sym == SDLK_n)
 		button_setactive(env->editor.switch_b[Object_Edit], True);
 	else if (event->key.keysym.sym == SDLK_1)
-		button_trigger(env->inspector.b_select.type_select[Pencil]);
+		env_change_brush(env, Pencil);
 	else if (event->key.keysym.sym == SDLK_2)
-		button_trigger(env->inspector.b_select.type_select[Line]);
+		env_change_brush(env, Line);
 	else if (event->key.keysym.sym == SDLK_3)
-		button_trigger(env->inspector.b_select.type_select[Horizontal_line]);
+		env_change_brush(env, Horizontal_line);
 	else if (event->key.keysym.sym == SDLK_4)
-		button_trigger(env->inspector.b_select.type_select[Vertical_line]);
+		env_change_brush(env, Vertical_line);
 	else if (event->key.keysym.sym == SDLK_5)
-		button_trigger(env->inspector.b_select.type_select[Square]);
+		env_change_brush(env, Square);
 	else if (event->key.keysym.sym == SDLK_6)
-		button_trigger(env->inspector.b_select.type_select[Circle]);
+		env_change_brush(env, Circle);
 	else if (event->key.keysym.sym == SDLK_7)
-		button_trigger(env->inspector.b_select.type_select[Paint_Bucket]);
+		env_change_brush(env, Paint_Bucket);
 	else if (event->key.keysym.sym == SDLK_p)
 		printf("%f\n", env->map_info.zoom);
-	else if (event->key.keysym.sym == SDLK_DELETE
-		&& env->obj.edit.selected != -1 && env->editor.mode == Object_Edit)
-		object_destroy(&env->obj, (t_u32)env->obj.edit.selected);
+	else if (event->key.keysym.sym == SDLK_DELETE)
+		call_remove(env);
 	return (1);
 }
 

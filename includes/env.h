@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/18 16:37:51 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 03:45:01 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ struct				s_env {
 	t_algo			*packs;
 	int				objects_nb;
 	t_sdl			sdl;
-	t_tex			*textures;
-	int				textures_nb;
 	t_map			map;
 	t_cam			cam;
 	t_player		player;
@@ -71,6 +69,10 @@ struct				s_env {
 
 int					env_init(t_env *env, char *filename);
 void				env_destroy(t_env *env);
+
+int					load_map(t_env *env, t_map *map, char *mapfile);
+void				map_destroy(t_map *map);
+
 int					render_prepare(t_env *env);
 void				render_clean(t_env *env);
 

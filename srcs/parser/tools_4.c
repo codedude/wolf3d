@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   tools_4.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:15:01 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 16:56:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 03:47:05 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
 #include "libft.h"
 #include "parser.h"
 
@@ -46,19 +45,4 @@ int			get_next_clbracket(t_parser *parser)
 		return (ERROR);
 	}
 	return (SUCCESS);
-}
-
-void		destroy_textures(t_env *env)
-{
-	int			i;
-
-	if (!env->textures)
-		return ;
-	i = 0;
-	while (i < env->textures_nb)
-	{
-		free(env->textures[i].pixels);
-		i++;
-	}
-	free(env->textures);
 }

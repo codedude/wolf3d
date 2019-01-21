@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 20:08:10 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 18:39:39 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 03:40:01 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@
 void			map_destroy(t_map *map)
 {
 	if (map->skybox)
-		entity_destroy(map->skybox);
-	destroy_map_data(map);
+		entity_destroy(map->skybox, False);
+	destroy_map_data(&map->data, map->width, map->height);
 }

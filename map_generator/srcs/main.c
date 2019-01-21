@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 04:17:42 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/20 22:24:29 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <errno.h>
 #include "sdl_m.h"
 #include "gen_env.h"
+#include "entity.h"
 #include "libft.h"
 
 void		update_zoom(t_env *env)
@@ -41,7 +42,8 @@ void		update_actions(t_env *env)
 	area = env->mouse.area;
 	if (env->mouse.b1 == False || area == Not_On_Window)
 	{
-		env->map_info.map->data[env->spawn.y][env->spawn.x] = 0;
+		entity_destroy(&env->map_info.map->data[env->spawn.y][env->spawn.x],
+			True);
 		return ;
 	}
 	update_mouse_pos(env);

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 01:22:45 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/17 19:02:42 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 04:54:28 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ static int		create_map_boxes(t_panel *p, t_objects_tools *otools, t_sdl *sdl)
 void			add_new_object(t_objects_tools *otools, t_vec2 pos,
 						t_bool is_solid, t_u32 id)
 {
-	t_object	*obj;
+	t_object_e	*obj;
 
 	if (otools->count == MAX_OBJECTS)
 		return ;
-	obj = (t_object*)malloc(sizeof(t_object));
+	obj = (t_object_e*)malloc(sizeof(*obj));
 	if (!obj)
 		return ;
 	obj->pos = pos;
@@ -97,7 +97,7 @@ int			gstate_obj_solid(void *v_env)
 void		rstate_obj_solid(void *v_env)
 {
 	t_env 		*env;
-	t_object	*o;
+	t_object_e	*o;
 
 	env = (t_env*)v_env;
 	if (env->obj.edit.selected == -1)
@@ -135,7 +135,7 @@ int			gstate_obj_collect(void *v_env)
 void		rstate_obj_collect(void *v_env)
 {
 	t_env 		*env;
-	t_object	*o;
+	t_object_e	*o;
 
 	env = (t_env*)v_env;
 	if (env->obj.edit.selected == -1)
@@ -160,7 +160,8 @@ int			init_cbox_collect(t_objects_tools *otools, t_env *env)
 int				init_objects_tools(t_objects_tools *otools, t_sdl *sdl,
 								t_env *env)
 {
-	otools->count = 0;
+	if (env->loaded == False)
+		otools->count = 0;
 	otools->edit.selected = -1;
 	if (create_map_boxes(env->rpan.p[Object_Panel], otools, sdl) == ERROR
 	|| init_grid_snap(otools, sdl) == ERROR

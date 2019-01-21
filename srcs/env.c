@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/18 16:37:35 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 03:37:55 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	wolf_destroy(t_env *env, t_map *map, t_cam *cam)
 	int	i;
 
 	(void)cam;
-	map_destroy(map);
+	destroy_map_data(&map->data, map->width, map->height);
 	i = 0;
 	while (i < env->objects_nb)
 	{

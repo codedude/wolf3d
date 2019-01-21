@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 17:25:57 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 04:36:11 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "sdl_m.h"
+# include "entity.h"
 # include "texture.h"
 
 # define MAP_GEN_NAME		"Wolf3d: Editor"
@@ -164,7 +165,8 @@ typedef struct	s_canvas {
 
 typedef struct	s_map {
 	t_ivec2		size;
-	int			**data;
+	t_entity	**data;
+	// int			**data;
 }				t_map;
 
 typedef struct	s_panel {
@@ -250,9 +252,9 @@ typedef struct s_checkbox		t_checkbox;
 typedef struct s_object_edit	t_object_edit;
 typedef struct s_objects_tools	t_objects_tools;
 typedef struct s_slider			t_slider;
-typedef struct s_object			t_object;
+typedef struct s_object_e		t_object_e;
 typedef struct s_world_i		t_world_i;
-typedef struct s_door			t_door;
+typedef struct s_door_e			t_door_e;
 typedef struct s_door_edit		t_door_edit;
 typedef struct s_inspector		t_inspector;
 typedef struct s_palette		t_palette;
@@ -261,7 +263,7 @@ typedef struct s_toolset		t_toolset;
 typedef struct s_rpanel			t_rpanel;
 typedef struct s_radar			t_radar;
 typedef struct s_b_select		t_b_select;
-typedef struct s_editor		t_editor;
+typedef struct s_editor			t_editor;
 typedef struct s_env			t_env;
 
 struct			s_mprops {
@@ -333,7 +335,7 @@ enum			e_brush_Buttons {
 
 # define MAX_OBJECTS		150
 
-struct			s_object {
+struct			s_object_e {
 	t_vec2		pos;
 	t_float		y_pos;
 	t_bool		is_solid;
@@ -420,7 +422,7 @@ struct			s_objects_tools {
 	t_checkbox		*cbox_collect;
 	t_color			**map_boxes;
 	t_ivec2			mb_size;
-	t_object		*list[MAX_OBJECTS];
+	t_object_e		*list[MAX_OBJECTS];
 	t_bool			holding;
 	t_u32			count;
 };
@@ -482,25 +484,17 @@ enum			e_door_edit_area {
 	Max_Door_Area
 };
 
-struct			s_door {
-	t_door		*next;
-	t_door		*prev;
-	t_ivec2		pos;
-	t_u32		tex_id[Max_Door_Tex];
-	t_u32		direction;
-};
-
-t_bool		door_valid_mouse_coord(t_env *env);
-void		door_destroy_selected(t_door_edit *dedit);
-int			door_create(t_env *env, t_door_edit *dedit);
+t_bool			door_valid_mouse_coord(t_env *env);
+t_bool			door_check_neighbour(t_map *map, t_entity *ent);
+void			door_destroy_selected(t_door_edit *dedit);
+int				door_create(t_env *env, t_door_edit *dedit);
 
 t_bool			door_valid_mouse_coord(t_env *env);
 
 struct			s_door_edit {
 	t_canvas	prev[Max_Door_Area];
-	t_door		*list;
 	t_u32		count;
-	t_door		*selected;
+	t_entity	*selected;
 	t_ivec2		door_pos;
 };
 
@@ -522,7 +516,7 @@ struct			s_map_info {
 	int			x_draw[MAX_SIZE_X + 1];
 	int			y_draw[MAX_SIZE_Y + 1];
 	t_map		*map;
-	t_map		*map_mask;
+	int			**tmp_data;
 	t_vec2		pos;
 	t_float		zoom;
 	t_float		zoom_min;
@@ -540,6 +534,9 @@ void			mprops_act_size_x_up(void *v_env);
 void			mprops_act_size_y_up(void *v_env);
 void			mprops_act_size_x_down(void *v_env);
 void			mprops_act_size_y_down(void *v_env);
+
+void			free_ar_data(void **tab, size_t size);
+void			**new_ar_data(size_t height, size_t width);
 
 enum			e_tooltype {
 	Brush,
@@ -598,8 +595,9 @@ struct			s_env {
 	int				alt;
 	int				ctrl;
 	char			*save_file;
-	int				saved;
 	int				kframe;
+	int				loaded;
+	int				saved;
 };
 
 void			toggle_action(t_env *env, int action);
@@ -615,7 +613,7 @@ int				env_create_inspect(t_env *env);
 int				env_create_mprops(t_env *env);
 void			env_destroy(t_env *env);
 t_map			*map_new(t_ivec2 size);
-void			clear_map(t_map *map);
+void			clear_map(t_map_info *m_inf);
 void			destroy_map(t_map *map);
 int				sdl_clear_color(t_sdl *sdl, unsigned int color);
 void			sdl_put_pixel_safe(t_sdl *sdl, t_ivec2 px, t_color c);
@@ -680,6 +678,7 @@ void			env_set_canvas(t_env *env, t_canvas canvas);
 void			env_unset_canvas(t_env *env);
 void			env_set_transparency(t_env *env, t_u32 color);
 void			env_unset_transparency(t_env *env);
+void			env_change_brush(t_env *env, t_u32 type);
 
 void			mouse_track_update_area(t_env *env);
 void			mouse_button_setstate(t_env *env, int button, t_bool state);

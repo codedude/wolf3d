@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 17:03:34 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 03:42:12 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,7 @@ static void	event_kb_poll_down(SDL_Event *event, t_player *player)
 		player->axis_state = (player->axis_state & Axis_Horizontal) | Axis_Down;
 }
 
-static void	event_kb_poll_mousemotion(SDL_Event *event, t_cam *cam,
-				t_player *player, t_sdl *sdl)
+static void	event_kb_poll_mousemotion(SDL_Event *event, t_cam *cam, t_sdl *sdl)
 {
 	t_float	motion;
 
@@ -125,7 +124,7 @@ t_bool		event_kb_poll(SDL_Event *event, t_env *env)
 {
 	if (event->type == SDL_MOUSEMOTION)
 	{
-		event_kb_poll_mousemotion(event, &env->cam, &env->player, &env->sdl);
+		event_kb_poll_mousemotion(event, &env->cam, &env->sdl);
 		update_skybox_offset(&env->cam, &env->sdl, &env->map);
 	}
 	else if (event->type == SDL_KEYDOWN)

@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   map_content.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:04:01 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/15 16:56:56 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 03:49:50 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
 #include "libft.h"
 #include "parser.h"
 #include "entity.h"
 
-static int		get_map_content(t_map *map, t_parser *parser)
+static int		get_map_content(t_parser_map *map, t_parser *parser)
 {
 	t_ivec2		it;
 	int			val;
@@ -63,7 +62,7 @@ static t_bool	ivec2_is_inside(t_ivec2 min, t_ivec2 max, t_ivec2 iv2)
 	return (True);
 }
 
-static int		get_doors(t_map *map, t_parser *parser)
+static int		get_doors(t_parser_map *map, t_parser *parser)
 {
 	t_entity	*ent;
 	t_door		*door;
@@ -74,23 +73,23 @@ static int		get_doors(t_map *map, t_parser *parser)
 	while (skipword(parser, "Door") == SUCCESS)
 	{
 		if (get_door_params(parser, &pos, tex_id, &orientation) == ERROR
-			|| ivec2_is_inside(IVEC2_ZERO,IVEC2_INIT(map->width, map->height)
-				, pos) == False
-			|| (door = entity_new_door(orientation, tex_id[1])) == NULL)
+			|| ivec2_is_inside(IVEC2_ZERO,
+				IVEC2_INIT(map->width, map->height) - 1, pos) == False
+			|| (door = entity_new_door(orientation, tex_id[1] + 1)) == NULL)
 			return (ERROR);
 		ent = &map->data[pos.y][pos.x];
 		entity_merge(ent, (void *)door, ENTITY_DOOR);
-		entity_set(ent, tex_id[0], pos.x + pos.y * map->width, 0);
+		entity_set(ent, tex_id[0] + 1, pos.x + pos.y * map->width, 0);
 	}
 	return (SUCCESS);
 }
 
-int				map_content_analyze(t_env *env, t_parser *parser)
+int				map_content_analyze(t_parser *parser)
 {
-	t_map		*map;
+	t_parser_map	*map;
 
-	map = &env->map;
-	if (!new_map_data(map)
+	map = &parser->map;
+	if ((map->data = new_map_data(map->width, map->height)) == NULL
 	|| get_doors(map, parser) == ERROR
 	|| get_map_content(map, parser) == ERROR)
 	{

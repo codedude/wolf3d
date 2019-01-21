@@ -50,23 +50,29 @@ static t_bool		gb_painter(t_env *env)
 	return (False);
 }
 
-static void			change_brush(void *v_env)
+void				env_change_brush(t_env *env, t_u32 type)
 {
-	t_env		*env;
 	t_button	*b;
 	t_b_select	*selector;
 	t_u32		i;
 
-	env = (t_env*)v_env;
 	selector = &env->inspector.b_select;
 	i = 0;
 	while (i < Max_brush_type)
 	{
 		b = selector->type_select[i];
-		b->is_active = (env->mouse.button_index == i);
+		b->is_active = (type == i);
 		i++;
 	}
-	selector->type = (int)env->mouse.button_index;
+	selector->type = (int)type;
+}
+
+static void			change_brush(void *v_env)
+{
+	t_env		*env;
+
+	env = (t_env*)v_env;
+	env_change_brush(env, env->mouse.button_index);
 }
 
 static void			init_xy(t_sdl *sdl, int x[2], int y[2])
@@ -288,8 +294,6 @@ static void			init_cf_prev(t_env *env, t_world_i *w_inf, t_canvas i_anch)
 	anchor.pos.x = (w_inf->radar.center.x - (anchor.size.x + offset))
 			- i_anch.pos.x;
 	texdata_fill_rect(b->tex, i_anch.size, anchor, 0x757575);
-	w_inf->id[WButton_Ceil] = 0;
-	w_inf->id[WButton_Floor] = 0;
 }
 
 int			gstate_draw_ceil(void *v_env)
@@ -344,13 +348,19 @@ static int			create_world_inpector(t_env *env, t_canvas i_anch)
 	init_radar(env, &w_inf->radar, i_anch);
 	init_cf_prev(env, w_inf, i_anch);
 	init_cbox_draw_ceil(env, &env->sdl, w_inf, i_anch);
+	if (env->loaded == False)
+	{
+		w_inf->id[WButton_Ceil] = 0;
+		w_inf->id[WButton_Floor] = 0;
+		env->inspector.world.draw_ceil = False;
+	}
 	return (SUCCESS);
 }
 
 static void			update_obj_y(t_env *env)
 {
 	t_object_edit	*oedit;
-	t_object		*obj;
+	t_object_e		*obj;
 	t_float			y;
 	t_float			hsize_y;
 
@@ -406,7 +416,7 @@ static void			draw_y_line(t_env *env, int y)
 
 static void			draw_obj_selected(t_env *env)
 {
-	t_object	*obj;
+	t_object_e	*obj;
 	t_canvas	tex_anchor;
 	t_panel		*p;
 
@@ -483,27 +493,27 @@ static int			create_object_edit_inpector(t_env *env, t_canvas i_anch)
 static void			action_door(void *v_env)
 {
 	t_env		*env;
-	t_door		*door;
+	t_entity	*ent;
 	t_u32		index;
 
 	env = (t_env*)v_env;
-	door = env->inspector.door_edit.selected;
-	if (door == NULL)
+	ent = env->inspector.door_edit.selected;
+	if (ent == NULL || env->mouse.b1_status != Mouse_Release)
 		return ;
 	index = env->mouse.button_index;
-	if (index == Door_Prev)
-		return ;
-	else if (index < Max_Door_Tex && env->mouse.b1_status == Mouse_Release)
-		door->tex_id[index] = env->rpan.p[Texture_Panel]->cursor;
+	if (index == Door_Tex)
+		ent->tex_id = (int)env->rpan.p[Texture_Panel]->cursor;
+	else if (index == Side_Tex)
+		ent->e.door->tex_wall_id = (int)env->rpan.p[Texture_Panel]->cursor;
 }
 
-static void			draw_ds_prev(t_env *env, t_door_edit *dedit, t_door *door)
+static void			draw_ds_prev(t_env *env, t_door_edit *dedit, t_entity *ent)
 {
-	t_u32		id;
+	int			id;
 
-	id = door->tex_id[Door_Tex];
+	id = ent->tex_id;
 	draw_tex(env, &env->sdl.tex_walls[id], False, dedit->prev[Door_Tex]);
-	id = door->tex_id[Side_Tex];
+	id = ent->e.door->tex_wall_id;
 	draw_tex(env, &env->sdl.tex_walls[id], False, dedit->prev[Side_Tex]);
 }
 
@@ -528,13 +538,17 @@ static void			draw_door_centerl(t_env *env, t_canvas anch, int dim,
 	}
 }
 
-static void			draw_door_prev(t_env *env, t_door_edit *dedit, t_door *door)
+static void			draw_door_prev(t_env *env, t_door_edit *dedit,
+						t_entity *ent)
 {
 	t_canvas	anch;
 
 	anch = dedit->prev[Door_Prev];
-	env_set_color(env, 0xFFFFFF);
-	if (door->direction == Dir_Horizontal)
+	if (door_check_neighbour(env->map_info.map, ent))
+		env_set_color(env, 0xFFFFFF);
+	else
+		env_set_color(env, 0xFF0000);
+	if (ent->e.door->orientation == Dir_Horizontal)
 		draw_door_centerl(env, anch, 1, draw_hline);
 	else
 		draw_door_centerl(env, anch, 0, draw_vline);
@@ -542,15 +556,15 @@ static void			draw_door_prev(t_env *env, t_door_edit *dedit, t_door *door)
 
 static void			draw_door(t_env *env)
 {
-	t_door_edit	*dedit;
-	t_door		*door;
+	t_door_edit		*dedit;
+	t_entity		*ent;
 
 	dedit = &env->inspector.door_edit;
-	door = dedit->selected;
-	if (door == NULL)
+	ent = dedit->selected;
+	if (ent == NULL)
 		return ;
-	draw_ds_prev(env, dedit, door);
-	draw_door_prev(env, dedit, door);
+	draw_ds_prev(env, dedit, ent);
+	draw_door_prev(env, dedit, ent);
 }
 
 static t_bool		gb_door(t_env *env)
@@ -615,7 +629,6 @@ static void			init_door_areas(t_env *env, t_door_edit *dedit,
 {
 	init_tex_prev(env, dedit, i_anch);
 	dedit->selected = NULL;
-	dedit->list = NULL;
 }
 
 static int			create_door_inpector(t_env *env, t_canvas i_anch)

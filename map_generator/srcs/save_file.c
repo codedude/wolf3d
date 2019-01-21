@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 12:06:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/17 18:58:42 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/20 23:35:40 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void			save_spawn(t_env *env, int fd)
 
 	rot = env->spawn_rotation;
 	if (rot)
-		rot = (rot + 180) % 360;
+		rot = 360 - rot;
 	ft_putstr_fd("Spawn {\n\tpos\t", fd);
 	ft_putnbr_fd(env->spawn.x, fd);
 	ft_putchar_fd(' ', fd);
@@ -92,6 +92,7 @@ void			save_spawn(t_env *env, int fd)
 void			save_map_content(t_map *map, int fd)
 {
 	t_ivec2		i;
+	int			val;
 
 	i.y = 0;
 	while (i.y < map->size.y)
@@ -100,9 +101,13 @@ void			save_map_content(t_map *map, int fd)
 		i.x = 0;
 		while (i.x < map->size.x)
 		{
-			if (map->data[i.y][i.x] < 10)
+			if (map->data[i.y][i.x].type == ENTITY_WALL)
+				val = map->data[i.y][i.x].tex_id + 1;
+			else
+				val = 0;
+			if (val < 10)
 				ft_putchar_fd(' ', fd);
-			ft_putnbr_fd(map->data[i.y][i.x], fd);
+			ft_putnbr_fd(val, fd);
 			if (i.x < map->size.x - 1)
 				ft_putchar_fd(' ', fd);
 			i.x++;
@@ -121,9 +126,50 @@ void			save_map_title(t_map *map, int fd)
 	ft_putstr_fd(" {\n", fd);
 }
 
+void			save_door(t_map *map, t_entity *ent, int fd)
+{
+	if (door_check_neighbour(map, ent))
+	{
+		ft_putstr_fd("Door ", fd);
+		ft_putnbr_fd(ent->id % MAX_SIZE_X, fd);
+		ft_putchar_fd(' ', fd);
+		ft_putnbr_fd(ent->id / MAX_SIZE_X, fd);
+		ft_putchar_fd(' ', fd);
+		ft_putnbr_fd(ent->e.door->orientation, fd);
+		ft_putchar_fd(' ', fd);
+		ft_putnbr_fd(ent->tex_id, fd);
+		ft_putchar_fd(' ', fd);
+		ft_putnbr_fd(ent->e.door->tex_wall_id, fd);
+		ft_putchar_fd('\n', fd);
+	}
+	else
+		ft_putstr_fd("W3dEditor: Warning: door has too many or not enough neighbours\n", 2);
+}
+
+void			save_map_doors(t_map *map, int fd)
+{
+	int			x;
+	int			y;
+	t_entity	*ent;
+	y = 1;
+	while (y < map->size.y - 1)
+	{
+		x = 1;
+		while (x < map->size.x - 1)
+		{
+			ent = &map->data[y][x];
+			if (ent->type == ENTITY_DOOR)
+				save_door(map, ent, fd);
+			x++;
+		}
+		y++;
+	}
+}
+
 void			save_map(t_env *env, int fd)
 {
 	save_map_title(env->map_info.map, fd);
+	save_map_doors(env->map_info.map, fd);
 	save_map_content(env->map_info.map, fd);
 	ft_putstr_fd("}\n\n", fd);
 }
@@ -156,7 +202,7 @@ void			print_obj_title(t_env *env, int fd)
 void			save_objects(t_env *env, int fd)
 {
 	t_objects_tools	*otools;
-	t_object		*obj;
+	t_object_e		*obj;
 	t_u32			i;
 
 	print_obj_title(env, fd);
@@ -167,7 +213,7 @@ void			save_objects(t_env *env, int fd)
 		obj = otools->list[i];
 		ft_putstr_fd((obj->is_solid ? "True" : "False"), fd);
 		ft_putstr_fd(" : ", fd);
-		ft_putnbr_fd(obj->id, fd);
+		ft_putnbr_fd((int)obj->id, fd);
 		ft_putstr_fd(" : ", fd);
 		ft_putnbrf_fd(obj->pos.x, fd, 6);
 		ft_putstr_fd(", ", fd);

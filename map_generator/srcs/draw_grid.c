@@ -119,7 +119,7 @@ static void			draw_map_obj(t_env *env)
 {
 	t_u32				i;
 	t_objects_tools		*otools;
-	t_object			*obj;
+	t_object_e			*obj;
 	t_canvas			anchor;
 
 	env_set_color(env, 0xffffff);

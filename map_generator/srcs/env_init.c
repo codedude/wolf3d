@@ -6,14 +6,16 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 03:51:26 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 05:01:18 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <fcntl.h>
 #include <errno.h>
 #include "sdl_m.h"
 #include "gen_env.h"
+#include "parser.h"
 #include "libft.h"
 
 static void			init_grid(t_env *env, t_sdl *sdl)
@@ -98,8 +100,11 @@ static int			env_init2(t_env *env, char *filename)
 	env->save_file = filename;
 	env->space = 0;
 	env->alt = 0;
-	env->spawn = IVEC2_INIT(map->size.x / 2, map->size.y / 2);
-	env->spawn_rotation = 0;
+	if (env->loaded == False)
+	{
+		env->spawn = IVEC2_INIT(map->size.x / 2, map->size.y / 2);
+		env->spawn_rotation = 0;
+	}
 	env->kframe = 0;
 	env->saved = True;
 	button_setactive(env->editor.switch_b[Painter], True);
@@ -107,6 +112,94 @@ static int			env_init2(t_env *env, char *filename)
 	palette_init(env);
 	init_map_info(env, &env->map_info);
 	init_toolset(&env->toolset);
+	return (SUCCESS);
+}
+
+static void		convert_ent(t_entity *ent, int id)
+{
+	ent->id = id;
+	ent->tex_id--;
+	if (ent->type == ENTITY_DOOR)
+		ent->e.door->tex_wall_id--;
+}
+
+static void		convert_parsed_map(t_map *map, t_parser *parser)
+{
+	t_ivec2		it;
+	t_entity	*ent;
+	t_entity	*p_ent;
+	int			id;
+
+	map->size = IVEC2_INIT(parser->map.width, parser->map.height);
+	it.y = 0;
+	while (it.y < map->size.y)
+	{
+		it.x = 0;
+		while (it.x < map->size.x)
+		{
+			ent = &map->data[it.y][it.x];
+			p_ent = &parser->map.data[it.y][it.x];
+			id = ent->id;
+			ft_memcpy(ent, p_ent, sizeof(*ent));
+			convert_ent(ent, id);
+			it.x++;
+		}
+		free(parser->map.data[it.y]);
+		it.y++;
+	}
+	free(parser->map.data);
+}
+
+static void		convert_parsed_obj(t_env *env, t_parser *parser)
+{
+	t_objects_tools	*otools;
+	t_entity		*ent;
+	int				i;
+
+	otools = &env->obj;
+	otools->count = 0;
+	i = 0;
+	while (i < parser->obj.objects_nb)
+	{
+		ent = &parser->obj.objects[i];
+		add_new_object(otools, ent->e.object->pos,
+			!ent->crossable, (t_u32)ent->tex_id);
+		i++;
+	}
+	free(parser->obj.objects);
+}
+
+static void		convert_parsed_data(t_env *env, t_map *map, t_parser *parser)
+{
+	t_parser_map	*p_map;
+
+	p_map = &parser->map;
+	convert_parsed_map(map, parser);
+	convert_parsed_obj(env, parser);
+	env->inspector.world.id[WButton_Floor] = (t_u32)p_map->floor_id;
+	env->inspector.world.id[WButton_Ceil] = (t_u32)p_map->ceil_id;
+	env->inspector.world.draw_ceil = (t_u32)p_map->show_ceil;
+	env->spawn = p_map->spawn;
+	env->spawn_rotation = (int)p_map->spawn_rotation;
+	env->loaded = True;
+}
+
+int				load_map(t_env *env, char *filename)
+{
+	int			conf_fd;
+	t_parser	parser;
+	t_map		*map;
+
+	if ((map = map_new(IVEC2_INIT(DEF_SIZE_X, DEF_SIZE_Y))) == NULL)
+		return (ERROR);
+	env->loaded = False;
+	env->map_info.map = map;
+	if ((conf_fd = open(filename, O_RDONLY | O_NONBLOCK | O_NOFOLLOW)) != -1)
+	{
+		if (parse_map(&env->sdl, &parser, conf_fd) == SUCCESS)
+			convert_parsed_data(env, map, &parser);
+		close(conf_fd);
+	}
 	return (SUCCESS);
 }
 
@@ -120,8 +213,10 @@ int					env_init(t_env *env, char *filename)
 		ft_putstr_fd("SDL2 can't start\n", 2);
 		return (ERROR);
 	}
-	if (!(env->map_info.map_mask = map_new(IVEC2_INIT(DEF_SIZE_X, DEF_SIZE_Y)))
-		|| !(env->map_info.map = map_new(IVEC2_INIT(DEF_SIZE_X, DEF_SIZE_Y)))
+	env->map_info.tmp_data = (int**)new_ar_data(MAX_SIZE_Y,
+										sizeof(int) * MAX_SIZE_X);
+	if (env->map_info.tmp_data == NULL
+		|| load_map(env, filename) == ERROR
 		|| init_rpanels(env, &env->rpan) == ERROR
 		|| env_create_inspect(env) == ERROR
 		|| init_editor(env, &env->sdl, &env->editor) == ERROR)

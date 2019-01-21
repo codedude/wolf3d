@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 19:20:39 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 17:02:08 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/20 16:15:47 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 static void		draw_wall(void *v_env, t_ivec2 pos)
 {
 	t_env	*env;
-	t_map	*map;
+	int		**tmp_data;
+	t_ivec2	size;
 
 	env = (t_env*)v_env;
-	map = env->map_info.map_mask;
-	map->size = env->map_info.map->size;
-	if (pos.y < 0 || pos.y >= map->size.y
-	|| pos.x < 0 || pos.x >= map->size.x)
+	tmp_data = env->map_info.tmp_data;
+	size = env->map_info.map->size;
+	if (pos.y < 0 || pos.y >= size.y || pos.x < 0 || pos.x >= size.x)
 		return ;
-	map->data[pos.y][pos.x] = env->palette.brush;
+	tmp_data[pos.y][pos.x] = env->palette.brush;
 }
 
 static void		compute_simple_brush(t_env *env, t_canvas bounds)
@@ -35,7 +35,7 @@ static void		compute_simple_brush(t_env *env, t_canvas bounds)
 
 	mpos_i = mpos_to_map_index(bounds, env);
 	mpos_i2 = pos_to_map_index(bounds, env->mouse.last_pos, env);
-	env->map_info.map_mask->data[mpos_i.y][mpos_i.x] = env->palette.brush;
+	env->map_info.tmp_data[mpos_i.y][mpos_i.x] = env->palette.brush;
 	if (mpos_i.x != mpos_i2.x || mpos_i.y != mpos_i2.y)
 	{
 		br_data = BRES_INIT(mpos_i2, mpos_i, env, draw_wall);
@@ -53,7 +53,7 @@ static void		compute_line_tracer(t_env *env, t_canvas bounds)
 	mpos_i2 = pos_to_map_index(bounds, env->mouse.record_pos_b, env);
 	br_data = BRES_INIT(mpos_i2, mpos_i, env, draw_wall);
 	ft_bresenham(&br_data);
-	env->map_info.map_mask->data[mpos_i.y][mpos_i.x] = env->palette.brush;
+	env->map_info.tmp_data[mpos_i.y][mpos_i.x] = env->palette.brush;
 }
 
 static void		compute_udline_tracer(t_env *env, int dir, t_canvas bounds)
@@ -63,7 +63,8 @@ static void		compute_udline_tracer(t_env *env, int dir, t_canvas bounds)
 
 	mpos_i = mpos_to_map_index(bounds, env);
 	mpos_i[dir] = 0;
-	udl_data = UDL_INIT(mpos_i, env->map_info.map->size[dir], dir, env, draw_wall);
+	udl_data = UDL_INIT(mpos_i, env->map_info.map->size[dir],
+				dir, env, draw_wall);
 	ft_unidir_line(&udl_data);
 }
 
@@ -99,7 +100,7 @@ static void		compute_square_tracer(t_env *env, t_canvas bounds)
 	if (mpos_i2.y < mpos_i.y)
 		udl_data.len = -udl_data.len;
 	ft_unidir_line(&udl_data);
-	env->map_info.map_mask->data[mpos_i2.y][mpos_i2.x] = env->palette.brush;
+	env->map_info.tmp_data[mpos_i2.y][mpos_i2.x] = env->palette.brush;
 }
 
 static void		compute_circle_tracer(t_env *env, t_canvas bounds)
@@ -121,34 +122,38 @@ static int		wall_pbuck_cond(t_flood_d *f_data, t_ivec2 point)
 {
 	t_env	*env;
 	t_map	*map;
+	int		tex_id;
 
 	env = (t_env*)f_data->param;
 	map = env->map_info.map;
-	return (point.y >= 0 && point.y < map->size.y
-		&& point.x >= 0 && point.x < map->size.x
-	&& map->data[point.y][point.x] == env->ed_map_value
-	&& env->map_info.map_mask->data[point.y][point.x] != env->palette.brush);
-	return (True);
+	if (point.y < 0 || point.y >= map->size.y
+		|| point.x < 0 || point.x >= map->size.x)
+		return (False);
+	if (map->data[point.y][point.x].type == ENTITY_VOID)
+		tex_id = 0;
+	else
+		tex_id = map->data[point.y][point.x].tex_id + 1;
+	return (tex_id == env->ed_map_value
+	&& env->map_info.tmp_data[point.y][point.x] != env->palette.brush);
 }
 
 static void		wall_pbuck_act(t_flood_d *f_data, t_ivec2 point)
 {
 	t_env	*env;
-	t_map	*map;
 
 	env = (t_env*)f_data->param;
-	map = env->map_info.map_mask;
-	map->size = env->map_info.map->size;
-	map->data[point.y][point.x] = env->palette.brush;
+	env->map_info.tmp_data[point.y][point.x] = env->palette.brush;
 }
 
 static void		compute_bucket_filler(t_env *env, t_canvas bounds)
 {
 	t_flood_d		f_data;
+	t_entity		*ent;
 	t_ivec2			mpos_i;
 
 	mpos_i = mpos_to_map_index(bounds, env);
-	env->ed_map_value = env->map_info.map->data[mpos_i.y][mpos_i.x];
+	ent = &env->map_info.map->data[mpos_i.y][mpos_i.x];
+	env->ed_map_value = (ent->type == ENTITY_VOID) ? 0 : ent->tex_id + 1;
 	if (env->ed_map_value == env->palette.brush)
 		return ;
 	f_data = FLOOD_D_INIT(wall_pbuck_cond, wall_pbuck_act, env);

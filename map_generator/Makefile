@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/18 00:51:54 by jbulant          ###   ########.fr        #
+#    Updated: 2019/01/21 03:54:06 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ LIBTPOOLD	=	../libtpool
 PARENT_SD	=	../srcs
 SDLD		=	$(PARENT_SD)/sdl
 PARSERD		=	$(PARENT_SD)/parser
+RENDERD		=	$(PARENT_SD)/render
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image -lSDL2_mixer \
@@ -73,7 +74,14 @@ PARENT_FILES =	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl_load_ima
 				$(SDLD)/export_bmp_1.c $(SDLD)/export_bmp_2.c \
 				$(SDLD)/texture_1.c $(SDLD)/texture_2.c $(SDLD)/sound.c \
 				$(SDLD)/music.c $(SDLD)/audio.c
-PARENT_FILES	+=	$(PARSERD)/stack.c $(PARSERD)/reader.c
+PARENT_FILES	+=	$(RENDERD)/entity.c $(RENDERD)/entity_new.c
+PARENT_FILES	+=	$(PARSERD)/ent_analyze.c \
+					$(PARSERD)/map_content.c $(PARSERD)/object_content.c \
+					$(PARSERD)/spawn_content.c \
+					$(PARSERD)/parse_map.c $(PARSERD)/reader.c \
+					$(PARSERD)/tools.c $(PARSERD)/tools_2.c \
+					$(PARSERD)/tools_3.c $(PARSERD)/tools_4.c \
+					$(PARSERD)/stack.c
 PARENT_FILES	+=	$(PARENT_SD)/utils/types.c
 
 MGEN_FILES	=	$(MGEND)/main.c

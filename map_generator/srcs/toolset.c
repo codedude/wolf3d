@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 00:47:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 17:29:09 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/20 16:18:08 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void			map_fx_brush(t_env *env)
 {
 	if (env->inspector.b_select.type != Pencil)
-		clear_map(env->map_info.map_mask);
+		clear_map(&env->map_info);
 	draw_on_map(env, (int)(env->palette.brush + 1));
 }
 
@@ -33,7 +33,7 @@ void			map_fx_spawnsetter(t_env *env)
 void			map_fx_eraser(t_env *env)
 {
 	if (env->inspector.b_select.type != Pencil)
-		clear_map(env->map_info.map_mask);
+		clear_map(&env->map_info);
 	draw_on_map(env, 0);
 }
 
@@ -41,16 +41,16 @@ void			map_fx_picker(t_env *env)
 {
 	t_canvas	bounds;
 	t_ivec2		map_pos;
-	int			map_b;
+	t_entity	*ent;
 
 	bounds = get_map_boundaries(env);
 	map_pos = mpos_to_map_index(bounds, env);
 	map_pos = clamp_ivec2(map_pos, 0, env->map_info.map->size - 1);
-	map_b = env->map_info.map->data[map_pos.y][map_pos.x];
-	if (map_b != 0 )
+	ent = &env->map_info.map->data[map_pos.y][map_pos.x];
+	if (ent->type != ENTITY_VOID)
 	{
-		panel_update_cursor(env->rpan.p[Texture_Panel], (t_u32)(map_b - 1));
-		env->palette.brush = map_b - 1;
+		panel_update_cursor(env->rpan.p[Texture_Panel], (t_u32)ent->tex_id);
+		env->palette.brush = ent->tex_id;
 	}
 }
 

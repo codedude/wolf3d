@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 18:17:14 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/20 23:16:09 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static void	test(t_env *env)
 {
 	t_anim *anim;
 
+	if (env->objects_nb == 0)
+		return ;
 	anim = anim_new(&env->objects[0], ANIM_TEXTURE | ANIM_LOOP, False, 1);
 	alist_push(&env->anims, anim);
 }

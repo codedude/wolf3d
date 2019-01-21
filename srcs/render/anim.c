@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:32:48 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 11:24:21 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/20 23:02:17 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_anim			*anim_new(t_entity *entity, int type, t_bool to_del,
 void			anim_destroy(t_anim *anim)
 {
 	if (anim->to_del == True)
-		entity_destroy(anim->entity);
+		entity_destroy(anim->entity, False);
 	free(anim);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/15 22:26:33 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/14 17:50:52 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 03:48:47 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,52 +27,54 @@ char	*skip_whitespace(char *str)
 	return (str);
 }
 
-void	destroy_map_data(t_map *map)
+void	destroy_map_data(t_entity ***a_data, int width, int height)
 {
-	int		i;
-	int		j;
+	t_entity	**data;
+	int			i;
+	int			j;
 
-	if (map->data)
+	data = *a_data;
+	if (data)
 	{
 		i = 0;
-		while (i < map->height)
+		while (i < height)
 		{
-			if (map->data[i])
+			if (data[i])
 			{
 				j = 0;
-				while (j < map->width)
+				while (j < width)
 				{
-					free(map->data[i][j].e.brick);
+					free(data[i][j].e.brick);
 					++j;
 				}
-				free(map->data[i]);
+				free(data[i]);
 			}
 			++i;
 		}
-		free(map->data);
-		map->data = NULL;
-}
+		free(data);
+		*a_data = NULL;
+	}
 }
 
-int		new_map_data(t_map *map)
+t_entity		**new_map_data(int width, int height)
 {
+	t_entity	**data;
 	int			i;
 
-	if (!(map->data
-		= (t_entity **)ft_memalloc(sizeof(t_entity *) * (size_t)map->height)))
+	if (!(data = (t_entity **)ft_memalloc(sizeof(*data) * (size_t)height)))
 		return (0);
 	i = 0;
-	while (i < map->height)
+	while (i < height)
 	{
-		if (!(map->data[i]
-			= (t_entity *)ft_memalloc(sizeof(t_entity) * (size_t)map->width)))
+		if (!(data[i]
+			= (t_entity *)ft_memalloc(sizeof(t_entity) * (size_t)width)))
 		{
-			destroy_map_data(map);
-			return (0);
+			destroy_map_data(&data, width, height);
+			return (NULL);
 		}
 		i++;
 	}
-	return (1);
+	return (data);
 }
 
 int		is_filechar(int c)
