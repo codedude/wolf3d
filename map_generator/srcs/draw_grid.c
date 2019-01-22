@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/22 01:45:22 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/22 03:17:08 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ static void			draw_single_obj(t_env *env, t_objects_tools *otools,
 	if (test_position(anchor, env->grid))
 	{
 		anchor.pos -= anchor.size / 2;
-		draw_tex(env, &env->sdl.tex_sprites[obj->id], False, anchor);
 		if (env->editor.mode == Object_Edit && (int)i == env->obj.edit.selected)
 			sdl_draw_rect(env, anchor, 3);
 		if (obj->unlock_door != NULL)
@@ -138,6 +137,7 @@ static void			draw_single_obj(t_env *env, t_objects_tools *otools,
 				draw_canvas_border(&env->sdl, anchor, env->grid, 0xffff00);
 			}
 		}
+		draw_tex(env, &env->sdl.tex_sprites[obj->id], False, anchor);
 	}
 }
 

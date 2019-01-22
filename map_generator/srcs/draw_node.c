@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/20 22:28:31 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/22 03:23:30 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ t_bool			door_check_neighbour(t_map *map, t_entity *ent)
 }
 
 void			draw_node_door(t_env *env, t_sdl *sdl, t_entity *ent,
-					t_canvas rec_anch)
+					t_canvas *rec_anch)
 {
 	int				rsize;
 	t_u32			c;
@@ -144,14 +144,14 @@ void			draw_node_door(t_env *env, t_sdl *sdl, t_entity *ent,
 		c = 0xff0000;
 	else
 		c = 0xffff00;
-	rsize = rec_anch.size.x / 5;
+	rsize = (int)(rec_anch->size.x * 0.15);
 	while (rsize--)
 	{
-		rec_anch.size -= 2;
-		rec_anch.pos += 1;
-		draw_canvas_border(sdl, rec_anch, env->grid, c);
+		rec_anch->size -= 2;
+		rec_anch->pos += 1;
+		draw_canvas_border(sdl, *rec_anch, env->grid, c);
 	}
-	draw_canvas_border(sdl, rec_anch, env->grid, 0x00);
+	draw_canvas_border(sdl, *rec_anch, env->grid, 0x00);
 }
 
 void			draw_node(t_env *env, t_sdl *sdl, t_map_info *minf, t_ivec2 i)
@@ -165,9 +165,13 @@ void			draw_node(t_env *env, t_sdl *sdl, t_map_info *minf, t_ivec2 i)
 						minf->y_draw[i.y + 1]) - rec_anch.pos;
 	tex_anch.pos = rec_anch.pos + 1;
 	tex_anch.size = rec_anch.size - 1;
-	draw_node_tex(sdl, env, tex_anch, i);
 	ent = &minf->map->data[i.y][i.x];
 	draw_canvas_border(sdl, rec_anch, env->grid, 0);
 	if (ent->type == ENTITY_DOOR)
-		draw_node_door(env, sdl, ent, rec_anch);
+	{
+		draw_node_door(env, sdl, ent, &rec_anch);
+		draw_node_tex(sdl, env, rec_anch, i);
+	}
+	else
+		draw_node_tex(sdl, env, tex_anch, i);
 }
