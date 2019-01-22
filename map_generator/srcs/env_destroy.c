@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/20 16:25:07 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 23:13:15 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void			destroy_objets_tools(t_objects_tools *otools, t_panel *o_pan)
 	}
 	slider_destroy(&otools->g_snap);
 	checkbox_destroy(&otools->cbox_solid);
-	checkbox_destroy(&otools->cbox_collect);
 }
 
 void			destroy_rpanels(t_env *env)

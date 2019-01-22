@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 18:27:48 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 05:23:17 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/22 02:29:23 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,42 @@ t_color			tex_px_getscaled(t_tex *tex, int kframe, t_ivec2 from, t_ivec2 scale)
 	return (c_ret);
 }
 
+t_ivec2			get_clamp_min(t_env *env, t_color_pick *cpick, t_canvas anchor)
+{
+	t_ivec2 	clamp;
+
+	clamp.x = (cpick->canvas_mask.pos.x + 1) - anchor.pos.x;
+	if (clamp.x < 0)
+		clamp.x = 0;
+	clamp.y = (cpick->canvas_mask.pos.y + 1) - anchor.pos.y;
+	if (clamp.y < 0)
+		clamp.y = 0;
+	return (clamp);
+}
+
+t_ivec2			get_clamp_max(t_env *env, t_color_pick *cpick, t_canvas anchor)
+{
+	t_ivec2 	clamp;
+	t_ivec2		curr_max;
+	t_ivec2		max;
+
+	curr_max = anchor.pos + anchor.size;
+	max = cpick->canvas_mask.pos + (cpick->canvas_mask.size - 2);
+	if (curr_max.x > max.x)
+		clamp.x = (cpick->canvas_mask.size.x - 2);
+	else if (cpick->canvas_mask.pos.x > curr_max.x)
+		clamp.x = -1;
+	else
+		clamp.x = anchor.size.x;
+	if (curr_max.y > max.y)
+		clamp.y = anchor.size.y - (curr_max.y - max.y);
+	else if (cpick->canvas_mask.pos.y > curr_max.y)
+		clamp.y = -1;
+	else
+		clamp.y = anchor.size.y;
+	return (clamp);
+}
+
 void			canvas_get_it_clamp(t_env *env, t_ivec2 clamp[2],
 					t_canvas anchor)
 {
@@ -72,20 +108,8 @@ void			canvas_get_it_clamp(t_env *env, t_ivec2 clamp[2],
 		clamp[1] = anchor.size;
 		return ;
 	}
-	clamp[0].x = (cpick->canvas_mask.pos.x + 1) - anchor.pos.x;
-	if (clamp[0].x < 0)
-		clamp[0].x = 0;
-	clamp[0].y = (cpick->canvas_mask.pos.y + 1) - anchor.pos.y;
-	if (clamp[0].y < 0)
-		clamp[0].y = 0;
-	clamp[1].x = anchor.size.x - (anchor.pos.x + anchor.size.x)
-		- (cpick->canvas_mask.pos.x + (cpick->canvas_mask.size.x - 2));
-	if (clamp[1].x < 0)
-		clamp[1].x = anchor.size.x;
-	clamp[1].y = anchor.size.y - (anchor.pos.y + anchor.size.y)
-		- (cpick->canvas_mask.pos.y + (cpick->canvas_mask.size.y - 2));
-	if (clamp[1].y < 0)
-		clamp[1].y = anchor.size.y;
+	clamp[0] = get_clamp_min(env, cpick, anchor);
+	clamp[1] = get_clamp_max(env, cpick, anchor);
 }
 
 void			draw_tex(t_env *env, t_tex *tex, t_bool shade,

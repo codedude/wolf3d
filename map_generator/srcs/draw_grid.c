@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/18 17:24:25 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/22 01:45:22 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,36 @@ static t_ivec2		get_prev_size(t_env *env)
 	return (m_inf->x_draw[1] - m_inf->x_draw[0]);
 }
 
+static void			draw_single_obj(t_env *env, t_objects_tools *otools,
+						t_canvas anchor, int i)
+{
+	t_object_e			*obj;
+
+	obj = otools->list[i];
+	anchor.pos = map_coord_to_screen(env, obj->pos);
+	if (test_position(anchor, env->grid))
+	{
+		anchor.pos -= anchor.size / 2;
+		draw_tex(env, &env->sdl.tex_sprites[obj->id], False, anchor);
+		if (env->editor.mode == Object_Edit && (int)i == env->obj.edit.selected)
+			sdl_draw_rect(env, anchor, 3);
+		if (obj->unlock_door != NULL)
+		{
+			i = anchor.size.x / 10;
+			while (i--)
+			{
+				anchor.size -= 2;
+				anchor.pos += 1;
+				draw_canvas_border(&env->sdl, anchor, env->grid, 0xffff00);
+			}
+		}
+	}
+}
+
 static void			draw_map_obj(t_env *env)
 {
 	t_u32				i;
 	t_objects_tools		*otools;
-	t_object_e			*obj;
 	t_canvas			anchor;
 
 	env_set_color(env, 0xffffff);
@@ -129,19 +154,9 @@ static void			draw_map_obj(t_env *env)
 	anchor.size = get_prev_size(env);
 	while (i < otools->count)
 	{
-		obj = otools->list[i];
-		anchor.pos = map_coord_to_screen(env, obj->pos);
-		if (test_position(anchor, env->grid))
-		{
-			anchor.pos -= anchor.size / 2;
-			draw_tex(env, &env->sdl.tex_sprites[obj->id], False, anchor);
-			if (env->editor.mode == Object_Edit
-				&& (int)i == env->obj.edit.selected)
-				sdl_draw_rect(env, anchor, 3);
-		}
+		draw_single_obj(env, otools, anchor, (int)i);
 		i++;
 	}
-	env->cpick.use_canvas = False;
 	env_unset_canvas(env);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 07:32:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/20 22:50:21 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/21 23:23:23 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,19 @@ t_bool		door_valid_mouse_coord(t_env *env)
 		&& !pos_on_spawner(env, mcoord));
 }
 
-void		door_destroy_selected(t_door_edit *dedit)
+void		door_destroy_selected(t_env *env, t_door_edit *dedit)
 {
-	if (dedit->selected == NULL)
+	t_entity	*ent;
+	int			obj_i;
+
+	ent = dedit->selected;
+	if (ent == NULL)
 		return ;
-	entity_destroy(dedit->selected, True);
+	obj_i = ent->e.door->item_id;
+	if (obj_i != -1)
+		env->obj.list[obj_i]->unlock_door = NULL;
+	entity_destroy(ent, True);
+	dedit->mode = Door_Select;
 	dedit->selected = NULL;
 }
 

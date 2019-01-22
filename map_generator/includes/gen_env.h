@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/21 04:36:11 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/22 02:48:12 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libft.h"
 # include "sdl_m.h"
 # include "entity.h"
-# include "texture.h"
 
 # define MAP_GEN_NAME		"Wolf3d: Editor"
 
@@ -340,6 +339,8 @@ struct			s_object_e {
 	t_float		y_pos;
 	t_bool		is_solid;
 	t_bool		collectible;
+	t_entity	*unlock_door;
+	t_float		scale;
 	t_u32		id;
 };
 
@@ -403,7 +404,6 @@ void			checkbox_destroy(t_checkbox **cbox);
 enum			e_otools_button {
 	Grid_Snap,
 	Box_Is_Solid,
-	Box_Collectible,
 	Obj_Preview,
 	Otools_No_Button
 };
@@ -412,6 +412,7 @@ struct			s_object_edit {
 	t_canvas	bg_prev;
 	t_canvas	tex_prev;
 	int			selected;
+	t_float		saved_scale;
 
 };
 
@@ -419,7 +420,6 @@ struct			s_objects_tools {
 	t_object_edit	edit;
 	t_slider		*g_snap;
 	t_checkbox		*cbox_solid;
-	t_checkbox		*cbox_collect;
 	t_color			**map_boxes;
 	t_ivec2			mb_size;
 	t_object_e		*list[MAX_OBJECTS];
@@ -481,21 +481,28 @@ enum			e_door_edit_area {
 	Side_Tex,
 	Max_Door_Tex,
 	Door_Prev = Max_Door_Tex,
+	Item_Prev,
 	Max_Door_Area
 };
 
 t_bool			door_valid_mouse_coord(t_env *env);
 t_bool			door_check_neighbour(t_map *map, t_entity *ent);
-void			door_destroy_selected(t_door_edit *dedit);
+void			door_destroy_selected(t_env *env, t_door_edit *dedit);
 int				door_create(t_env *env, t_door_edit *dedit);
 
 t_bool			door_valid_mouse_coord(t_env *env);
+
+enum			e_door_ed_mode {
+	Door_Select,
+	Object_Select
+};
 
 struct			s_door_edit {
 	t_canvas	prev[Max_Door_Area];
 	t_u32		count;
 	t_entity	*selected;
 	t_ivec2		door_pos;
+	t_u32		mode;
 };
 
 struct			s_inspector {

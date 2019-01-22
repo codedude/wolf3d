@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/20 22:39:53 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/22 02:34:46 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,18 @@ void		manage_down(const Uint8	*state, t_env *env)
 {
 	int		test;
 
+	env->ctrl = (state[SDL_SCANCODE_LCTRL] != 0);
 	if ((test = (state[SDL_SCANCODE_X] != 0)))
 		toolset_set_tmp_type(&env->toolset, ZoomIn);
-	if ((test |= (state[SDL_SCANCODE_Z] != 0)))
+	else if ((test = (state[SDL_SCANCODE_Z] != 0)))
 		toolset_set_tmp_type(&env->toolset, ZoomOut);
-	if ((test |= (state[SDL_SCANCODE_SPACE] != 0)))
+	else if ((test = (state[SDL_SCANCODE_SPACE] != 0)))
 		toolset_set_tmp_type(&env->toolset, Hand);
-	if ((test |= (state[SDL_SCANCODE_LALT] != 0)))
+	else if ((test = (state[SDL_SCANCODE_LALT] != 0)))
 		toolset_set_tmp_type(&env->toolset, Picker);
-	if ((test |= (state[SDL_SCANCODE_LCTRL] != 0)))
+	else if ((test = (state[SDL_SCANCODE_LCTRL] != 0)))
 		toolset_set_tmp_type(&env->toolset, SpawnSetter);
-	if ((test |= (state[SDL_SCANCODE_LSHIFT] != 0)))
+	else if ((test = (state[SDL_SCANCODE_LSHIFT] != 0)))
 		toolset_set_tmp_type(&env->toolset, Eraser);
 	if (test && env->mouse.b1_status == Mouse_Hold
 		&& env->editor.mode != Painter && env->editor.mode != World)
@@ -61,7 +62,7 @@ void		call_remove(t_env *env)
 			object_destroy(&env->obj, (t_u32)env->obj.edit.selected);
 	}
 	else if (env->editor.mode == Door)
-		door_destroy_selected(&env->inspector.door_edit);
+		door_destroy_selected(env, &env->inspector.door_edit);
 }
 
 int			on_key_press(SDL_Event *event, t_env *env)

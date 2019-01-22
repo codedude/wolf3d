@@ -357,21 +357,42 @@ static int			create_world_inpector(t_env *env, t_canvas i_anch)
 	return (SUCCESS);
 }
 
-static void			update_obj_y(t_env *env)
+static void			update_obj_y(t_env *env, t_object_edit *oedit,
+						t_object_e *obj)
 {
-	t_object_edit	*oedit;
-	t_object_e		*obj;
 	t_float			y;
 	t_float			hsize_y;
 
-	oedit = &env->obj.edit;
-	obj = env->obj.list[oedit->selected];
 	hsize_y = oedit->bg_prev.size.y / 2.0;
 	y = env->mouse.pos.y - (oedit->bg_prev.pos.y + hsize_y);
 	y = clamp_float(y, -hsize_y, hsize_y);
 	obj->y_pos = -y / hsize_y;
 	if (env->obj.g_snap->val != 0.0)
 		obj->y_pos = snap_f(obj->y_pos, env->obj.g_snap->val);
+}
+
+static void			action_update_obj(t_env *env)
+{
+	t_object_edit	*oedit;
+	t_object_e		*obj;
+	t_ivec2			proj;
+	t_float			dist;
+	t_float			res;
+
+	oedit = &env->obj.edit;
+	obj = env->obj.list[oedit->selected];
+	if (!env->ctrl)
+		return (update_obj_y(env, oedit, obj));
+	proj = env->mouse.pos - env->mouse.record_pos_b;
+	dist = sqrt((t_float)(proj.x * proj.x + proj.y * proj.y));
+	res = proj.x / (t_float)oedit->bg_prev.size.x * -1;
+	obj->scale = clamp_float(res + oedit->saved_scale, 0.1, 2.0);
+	if (env->obj.g_snap->val != 0.0)
+	{
+		obj->scale = snap_f(obj->scale, env->obj.g_snap->val);
+		obj->scale = clamp_float(obj->scale, env->obj.g_snap->val, 2.0);
+	}
+
 }
 
 static void			action_object_edit(void *v_env)
@@ -382,15 +403,12 @@ static void			action_object_edit(void *v_env)
 	if (env->mouse.button_index == Grid_Snap)
 		slider_update_bypos(env->obj.g_snap, env->mouse.pos);
 	else if (env->mouse.button_index == Obj_Preview)
-		update_obj_y(env);
+		action_update_obj(env);
 	else if (env->mouse.b1_status == Mouse_Release)
 	{
 		if (env->mouse.button_index == Box_Is_Solid
 			&& checkbox_hover(env->obj.cbox_solid, env->mouse.pos))
 			checkbox_clic(env->obj.cbox_solid);
-		else if (env->mouse.button_index == Box_Collectible
-			&& checkbox_hover(env->obj.cbox_collect, env->mouse.pos))
-			checkbox_clic(env->obj.cbox_collect);
 	}
 }
 
@@ -421,16 +439,20 @@ static void			draw_obj_selected(t_env *env)
 	t_panel		*p;
 
 	obj = env->obj.list[env->obj.edit.selected];
+	env_set_canvas(env, env->obj.edit.bg_prev);
 	p = env->rpan.p[Object_Panel];
-	tex_anchor = env->obj.edit.tex_prev;
-	tex_anchor.pos.y -= (int)((env->obj.edit.bg_prev.size.y - tex_anchor.size.y)
-					/ 2.0 * obj->y_pos);
+	tex_anchor.size.x = (int)(env->obj.edit.tex_prev.size.x * obj->scale * 0.8);
+	tex_anchor.size.y = (int)(env->obj.edit.tex_prev.size.y * obj->scale * 0.8);
+	tex_anchor.pos = env->obj.edit.bg_prev.pos;
+	tex_anchor.pos += (env->obj.edit.bg_prev.size - tex_anchor.size) / 2;
+	tex_anchor.pos.y -= (int)(env->obj.edit.bg_prev.size.y / 2.0 * obj->y_pos);
 	if (env->mouse.b1 == True && env->mouse.area == Inspector
 	&& env->mouse.button_index == Obj_Preview)
 		draw_y_line(env, tex_anchor.pos.y + tex_anchor.size.y / 2);
 	env_set_transparency(env, 0x0);
 	draw_tex(env, &env->sdl.tex_sprites[obj->id], False, tex_anchor);
 	env_unset_transparency(env);
+	env_unset_canvas(env);
 }
 
 static void			draw_object_edit(t_env *env)
@@ -438,21 +460,24 @@ static void			draw_object_edit(t_env *env)
 	if (env->obj.edit.selected != -1)
 		draw_obj_selected(env);
 	checkbox_draw(env, env->obj.cbox_solid);
-	checkbox_draw(env, env->obj.cbox_collect);
 	slider_draw(env, env->obj.g_snap);
 }
 
 static t_bool		gb_object_edit(t_env *env)
 {
+	t_object_edit	*oedit;
+
+	oedit = &env->obj.edit;
 	if (slider_hover(env->obj.g_snap, env->mouse.pos))
 		env->mouse.button_index = Grid_Snap;
 	else if (checkbox_hover(env->obj.cbox_solid, env->mouse.pos))
 		env->mouse.button_index = Box_Is_Solid;
-	else if (checkbox_hover(env->obj.cbox_collect, env->mouse.pos))
-		env->mouse.button_index = Box_Collectible;
-	else if (env->obj.edit.selected != -1
-		&& is_bounded(env->mouse.pos, env->obj.edit.bg_prev))
+	else if (oedit->selected != -1
+		&& is_bounded(env->mouse.pos, oedit->bg_prev))
+	{
 		env->mouse.button_index = Obj_Preview;
+		oedit->saved_scale = env->obj.list[oedit->selected]->scale;
+	}
 	else
 		return (False);
 	return (True);
@@ -492,12 +517,14 @@ static int			create_object_edit_inpector(t_env *env, t_canvas i_anch)
 
 static void			action_door(void *v_env)
 {
+	t_door_edit	*dedit;
 	t_env		*env;
 	t_entity	*ent;
 	t_u32		index;
 
 	env = (t_env*)v_env;
-	ent = env->inspector.door_edit.selected;
+	dedit = &env->inspector.door_edit;
+	ent = dedit->selected;
 	if (ent == NULL || env->mouse.b1_status != Mouse_Release)
 		return ;
 	index = env->mouse.button_index;
@@ -505,6 +532,9 @@ static void			action_door(void *v_env)
 		ent->tex_id = (int)env->rpan.p[Texture_Panel]->cursor;
 	else if (index == Side_Tex)
 		ent->e.door->tex_wall_id = (int)env->rpan.p[Texture_Panel]->cursor;
+	else if (index == Item_Prev)
+		dedit->mode = !dedit->mode;
+
 }
 
 static void			draw_ds_prev(t_env *env, t_door_edit *dedit, t_entity *ent)
@@ -515,6 +545,10 @@ static void			draw_ds_prev(t_env *env, t_door_edit *dedit, t_entity *ent)
 	draw_tex(env, &env->sdl.tex_walls[id], False, dedit->prev[Door_Tex]);
 	id = ent->e.door->tex_wall_id;
 	draw_tex(env, &env->sdl.tex_walls[id], False, dedit->prev[Side_Tex]);
+	id = ent->e.door->item_id;
+	if (id != -1)
+		draw_tex(env, &env->sdl.tex_sprites[env->obj.list[id]->id], False,
+			dedit->prev[Item_Prev]);
 }
 
 static void			draw_door_centerl(t_env *env, t_canvas anch, int dim,
@@ -558,6 +592,8 @@ static void			draw_door(t_env *env)
 {
 	t_door_edit		*dedit;
 	t_entity		*ent;
+	t_canvas		anch;
+	int				i;
 
 	dedit = &env->inspector.door_edit;
 	ent = dedit->selected;
@@ -565,6 +601,17 @@ static void			draw_door(t_env *env)
 		return ;
 	draw_ds_prev(env, dedit, ent);
 	draw_door_prev(env, dedit, ent);
+	if (dedit->mode == Object_Select)
+	{
+		anch = dedit->prev[Item_Prev];
+		i = ipercent_of(anch.size.x, 5);
+		while (i--)
+		{
+			draw_canvas_border(&env->sdl, anch, CANVAS_INIT(0, 0), 0xFFFFFF);
+			anch.pos += 1;
+			anch.size -= 2;
+		}
+	}
 }
 
 static t_bool		gb_door(t_env *env)
@@ -607,10 +654,12 @@ static void			init_tex_bg(t_env *env, t_door_edit *dedit,
 static void			init_tex_prev(t_env *env, t_door_edit *dedit,
 						t_canvas i_anch)
 {
+	t_ivec2		elem_size;
 	t_canvas	anchor;
 	int			offset;
 
-	anchor.size = env->rpan.p[Texture_Panel]->elem_anchor.size;
+	elem_size = env->rpan.p[Texture_Panel]->elem_anchor.size;
+	anchor.size = elem_size;
 	offset = (int)((t_float)anchor.size.x * 0.1);
 	anchor.pos.y = i_anch.pos.y + offset * 2;
 	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 - (anchor.size.x + offset);
@@ -621,6 +670,10 @@ static void			init_tex_prev(t_env *env, t_door_edit *dedit,
 	anchor.pos.y = dedit->prev[Door_Tex].pos.y + ipercent_of(i_anch.pos.x, 10);
 	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 - anchor.size.x / 2;
 	dedit->prev[Door_Prev] = anchor;
+	anchor.size = elem_size;
+	anchor.pos.y = i_anch.pos.y + i_anch.size.y - offset * 2 - anchor.size.y;
+	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 - anchor.size.x / 2;
+	dedit->prev[Item_Prev] = anchor;
 	init_tex_bg(env, dedit, i_anch);
 }
 
@@ -629,6 +682,7 @@ static void			init_door_areas(t_env *env, t_door_edit *dedit,
 {
 	init_tex_prev(env, dedit, i_anch);
 	dedit->selected = NULL;
+	dedit->mode = Door_Select;
 }
 
 static int			create_door_inpector(t_env *env, t_canvas i_anch)

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:21:09 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/21 23:33:08 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ struct				s_brick {
 struct				s_door {
 	int				orientation;
 	int				tex_wall_id;
+	int				item_id;
 	t_float			open_offset;
 	t_bool			is_active;
 	t_bool			is_open;

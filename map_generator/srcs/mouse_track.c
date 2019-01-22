@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 01:30:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/20 23:25:57 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/22 01:52:38 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ static t_bool	g_mw_object_edit(t_env *env)
 		env->mouse.button_index = (t_u32)obj;
 		return (True);
 	}
-	else if (is_bounded(env->mouse.pos, env->grid))
-		env->obj.edit.selected = -1;
+	env->obj.edit.selected = -1;
 	return (False);
 
 }
@@ -77,11 +76,12 @@ static t_bool	g_mw_door(t_env *env)
 	t_door_edit		*dedit;
 
 	dedit = &env->inspector.door_edit;
+	if (dedit->selected && dedit->mode == Object_Select)
+		return (True);
 	if (door_valid_mouse_coord(env))
 	{
 		mpos = mpos_to_map_index(get_map_boundaries(env), env);
 		ent = &env->map_info.map->data[mpos.y][mpos.x];
-		dedit->selected = (ent->type == ENTITY_DOOR) ? ent : NULL;
 		return (True);
 	}
 	dedit->selected = NULL;
@@ -295,6 +295,21 @@ static void		t_mw_object_edit(t_env *env)
 		object_destroy(&env->obj, env->mouse.button_index);
 }
 
+static void		t_mw_door_obj(t_env *env, t_door_edit *dedit)
+{
+	t_entity	*ent;
+	int			id;
+
+	ent = dedit->selected;
+	if (ent == NULL)
+		return ;
+	ent->e.door->item_id = find_selected_obj(env);
+	id = ent->e.door->item_id;
+	if (id != -1)
+		env->obj.list[id]->unlock_door = ent;
+	dedit->mode = Door_Select;
+}
+
 static void		t_mw_door(t_env *env)
 {
 	t_door_edit	*dedit;
@@ -302,15 +317,19 @@ static void		t_mw_door(t_env *env)
 	t_ivec2		pos;
 
 	dedit = &env->inspector.door_edit;
+	if (dedit->mode == Object_Select)
+		return (t_mw_door_obj(env, dedit));
 	pos = mpos_to_map_index(get_map_boundaries(env), env);
 	dedit->door_pos = pos;
 	if (door_valid_mouse_coord(env))
 	{
 		ent = &env->map_info.map->data[pos.y][pos.x];
-		if (ent->type != ENTITY_DOOR)
-			door_create(env, dedit);
-		else
+		if (ent->type == ENTITY_DOOR)
 			dedit->selected = ent;
+		else if (dedit->selected != NULL)
+			dedit->selected = NULL;
+		else
+			door_create(env, dedit);
 	}
 	else
 		dedit->selected = NULL;
