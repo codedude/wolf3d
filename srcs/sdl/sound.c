@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:22:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 17:08:14 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/24 13:00:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ char		**sound_get_files(void)
 		"door_open.ogg",
 		"explosion.ogg",
 		"fall_jump.ogg",
+		"gravel.ogg",
+		"leaves.ogg",
+		"mud.ogg",
+		"stone.ogg",
+		"wood.ogg",
 		NULL
 	};
 
@@ -43,6 +48,7 @@ Mix_Chunk	*sound_load(char *filename)
 		return (audio_error_null(
 			"Mix_LoadWAV : can't load chunk"));
 	}
+	Mix_VolumeChunk(chunk, MIX_MAX_VOLUME / 2);
 	return (chunk);
 }
 

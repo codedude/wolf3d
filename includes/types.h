@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 12:59:23 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 19:15:16 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/24 12:46:30 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef unsigned int	t_pixel;
 t_float					clamp_float(t_float clamp, t_float min, t_float max);
 t_vec2					clamp_vec2(t_vec2 clamp, t_vec2 min, t_vec2 max);
 t_ivec2					clamp_ivec2(t_ivec2 clamp, t_ivec2 min, t_ivec2 max);
+char					*concat_path_file(char *path, char *filename);
 
 t_vec2					vec_rotate(t_vec2 v, t_float angle);
 t_vec2					vec_rotate_vec(t_vec2 v1, t_vec2 v2);

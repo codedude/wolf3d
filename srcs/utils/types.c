@@ -6,10 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 13:02:07 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/04 12:07:27 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/24 12:54:03 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "ft_type.h"
 #include "types.h"
 
@@ -34,4 +35,9 @@ t_ivec2		clamp_ivec2(t_ivec2 v, t_ivec2 min, t_ivec2 max)
 	return (IVEC2_INIT(
 		clamp_int(v.x, min.x, max.x),
 		clamp_int(v.y, min.y, max.y)));
+}
+
+char		*concat_path_file(char *path, char *filename)
+{
+	return (ft_strjoin(path, filename));
 }

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:45:59 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 21:01:00 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/24 13:07:00 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "env.h"
 #include "event.h"
 
-void		player_jump(t_sdl *sdl, t_cam *cam, t_player *player)
+void		player_jump(t_sdl *sdl, t_cam *cam, t_player *player, t_env *env)
 {
 	if (player->action_state & ACTION_JUMPING)
 	{
@@ -31,7 +31,7 @@ void		player_jump(t_sdl *sdl, t_cam *cam, t_player *player)
 	}
 }
 
-void		player_fall(t_sdl *sdl, t_cam *cam, t_player *player)
+void		player_fall(t_sdl *sdl, t_cam *cam, t_player *player, t_env *env)
 {
 	if (player->action_state & ACTION_GROUNDED)
 		return ;
@@ -42,6 +42,7 @@ void		player_fall(t_sdl *sdl, t_cam *cam, t_player *player)
 		{
 			player->action_state |= ACTION_GROUNDED;
 			player->action_state &= ~ACTION_FALLING;
+			sound_play(&env->audio, SOUND_FALL_JUMP);
 		}
 	}
 	else

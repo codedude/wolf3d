@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 21:22:55 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/24 13:07:08 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ struct				s_player {
 };
 
 void				player_set_dash(t_player *player);
-void				player_jump(t_sdl *sdl, t_cam *cam, t_player *player);
-void				player_fall(t_sdl *sdl, t_cam *cam, t_player *player);
+void				player_jump(t_sdl *sdl, t_cam *cam, t_player *player,
+						t_env *env);
+void				player_fall(t_sdl *sdl, t_cam *cam, t_player *player,
+						t_env *env);
 void				player_set_acceleration(t_player *player);
 void				player_set_z(t_sdl *sdl, t_cam *cam, t_player *player);
 

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 16:41:50 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:17:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/24 12:53:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ int				tex_load(t_tex *tex, char *filename, int n_sprites, int n_cols)
 	return (r);
 }
 
-static int		tex_parse_line(char **line_split, t_tex *tex)
+static int		tex_parse_line(char **line_split, t_tex *tex, int type)
 {
 	int			params[2];
+	char		*path;
 
 	if (line_split[0] == NULL)
 		return (ERROR);
@@ -56,12 +57,20 @@ static int		tex_parse_line(char **line_split, t_tex *tex)
 	}
 	else
 		params[1] = 1;
-	if (tex_load(tex, line_split[0], params[0], params[1]) == ERROR)
+	if (type == 0)
+		path = concat_path_file("data/texture/", line_split[0]);
+	else
+		path = concat_path_file("data/sprite/", line_split[0]);
+	if (path == NULL)
 		return (ERROR);
+	if (tex_load(tex, path, params[0], params[1]) == ERROR)
+		return (ERROR);
+	free(path);
 	return (SUCCESS);
 }
 
-static int		tex_load_file_content(t_stack **stack, t_tex *tex, int n)
+static int		tex_load_file_content(t_stack **stack, t_tex *tex, int n,
+					int type)
 {
 	char		*tmp;
 	char		**line_split;
@@ -77,7 +86,7 @@ static int		tex_load_file_content(t_stack **stack, t_tex *tex, int n)
 		free(tmp);
 		if (line_split == NULL)
 			return (ERROR);
-		r = tex_parse_line(line_split, &tex[i]);
+		r = tex_parse_line(line_split, &tex[i], type);
 		ft_strsplit_free(line_split);
 		if (r == ERROR)
 			return (ERROR);
@@ -87,7 +96,7 @@ static int		tex_load_file_content(t_stack **stack, t_tex *tex, int n)
 }
 
 int				tex_load_file(char *filename, t_tex **tex,
-					int *tex_nb)
+					int *tex_nb, int type)
 {
 	t_stack		*stack;
 	int			n;
@@ -101,7 +110,7 @@ int				tex_load_file(char *filename, t_tex **tex,
 		return (ERROR);
 	}
 	*tex_nb = n;
-	if (tex_load_file_content(&stack, *tex, n) == ERROR)
+	if (tex_load_file_content(&stack, *tex, n, type) == ERROR)
 	{
 		ft_stackclear(&stack);
 		return (ERROR);
@@ -111,11 +120,11 @@ int				tex_load_file(char *filename, t_tex **tex,
 
 int				tex_load_all(t_sdl *sdl)
 {
-	if (tex_load_file(TEX_WALL_FILE, &sdl->tex_walls, &sdl->tex_wall_nb)
+	if (tex_load_file(TEX_WALL_FILE, &sdl->tex_walls, &sdl->tex_wall_nb, 0)
 		== ERROR)
 		return (ERROR);
 	if (tex_load_file(TEX_SPRITE_FILE, &sdl->tex_sprites,
-			&sdl->tex_sprite_nb) == ERROR)
+			&sdl->tex_sprite_nb, 1) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
 }

@@ -6,20 +6,16 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:42:18 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/17 19:55:13 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/24 13:01:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sdl_m.h"
 #include "types.h"
 #include "ft_type.h"
+#include "types.h"
 #include "libft.h"
 #include "audio.h"
-
-char		*concat_path_file(char *path, char *filename)
-{
-	return (ft_strjoin(path, filename));
-}
 
 int			audio_error(char *info)
 {
@@ -41,7 +37,7 @@ int			audio_init(t_audio *audio)
 	int		flags;
 
 	flags = MIX_INIT_OGG | MIX_INIT_MOD;
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
 	{
 		return (audio_error(
 			"Mix_OpenAudio: Failed to init audio !"));
@@ -52,7 +48,8 @@ int			audio_init(t_audio *audio)
 		return (audio_error(
 		"Mix_Init: Failed to init required ogg and mod support !"));
 	}
-	Mix_AllocateChannels(16);
+	Mix_AllocateChannels(8);
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 	return (audio_load_all(audio));
 }
 

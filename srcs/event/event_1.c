@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/21 17:18:09 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/24 12:59:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ void			event_kb_state(const Uint8 *state, t_env *env)
 		player->action_state &= ~ACTION_CROUCHING;
 	if (state[SDL_SCANCODE_LSHIFT])
 	{
-		sound_play(&env->audio, SOUND_DASH);
+		if (!(player->action_state &ACTION_DASHING))
+			sound_play(&env->audio, SOUND_DASH);
 		player_set_dash(player);
 	}
 	if (state[SDL_SCANCODE_SPACE])

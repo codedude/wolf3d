@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 21:21:39 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/24 13:07:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static void	player_ground_anim(t_sdl *sdl, t_cam *cam, t_player *player)
 	}
 }
 
-void		player_set_anim(t_sdl *sdl, t_cam *cam, t_player *player)
+void		player_set_anim(t_sdl *sdl, t_cam *cam, t_player *player,
+				t_env *env)
 {
 	player_set_walk_anim(sdl, player);
 	if (player->action_state & ACTION_GROUNDED)
@@ -78,9 +79,9 @@ void		player_set_anim(t_sdl *sdl, t_cam *cam, t_player *player)
 	else
 	{
 		if (player->action_state & ACTION_FALLING)
-			player_fall(sdl, cam, player);
+			player_fall(sdl, cam, player, env);
 		else if (player->action_state & ACTION_JUMPING)
-			player_jump(sdl, cam, player);
+			player_jump(sdl, cam, player, env);
 	}
 }
 
@@ -187,6 +188,6 @@ void		compute_player(t_env *env)
 		speed *= 0.5;
 	dir = vec_rotate(player->velocity, env->cam.rot);
 	env->cam.pos = move_forward(env, env->cam.pos, dir, speed * env->sdl.deltatime);
-	player_set_anim(&env->sdl, &env->cam, player);
+	player_set_anim(&env->sdl, &env->cam, player, env);
 	player_set_z(&env->sdl, &env->cam, player);
 }
