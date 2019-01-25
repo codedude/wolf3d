@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:43:50 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/25 10:35:31 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_sdl	t_sdl;
 
 # define TEX_WALL_FILE		"data/texture/textures.conf"
 # define TEX_SPRITE_FILE	"data/sprite/sprites.conf"
+# define TEX_SKYBOX_FILE	"data/skybox.png"
 
 struct				s_tex {
 	t_pixel			**pixels;
@@ -88,6 +89,7 @@ void				text_write(t_env *env, int x, int y, char *str);
 typedef struct		s_sdl {
 	t_tex			*tex_walls;
 	t_tex			*tex_sprites;
+	t_tex			tex_skybox;
 	t_text			text;
 	int				tex_wall_nb;
 	int				tex_sprite_nb;

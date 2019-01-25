@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:22:35 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/25 10:36:12 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam, t_map *map)
 	t_ivec2		pos;
 	t_tex		*text;
 
-	text = tex_get_wall(sdl, map->skybox->tex_id);
+	text = &sdl->tex_skybox;
 	y = infos->draw_start;
 	while (y < infos->draw_end)
 	{

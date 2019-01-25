@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 16:41:50 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/24 12:53:36 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/25 10:33:45 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ int				tex_load_all(t_sdl *sdl)
 		return (ERROR);
 	if (tex_load_file(TEX_SPRITE_FILE, &sdl->tex_sprites,
 			&sdl->tex_sprite_nb, 1) == ERROR)
+		return (ERROR);
+	if (tex_load(&sdl->tex_skybox, TEX_SKYBOX_FILE, 1, 1) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
 }

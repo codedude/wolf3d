@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:18:26 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/25 10:34:31 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	wolf_init(t_env *env, char *filename)
 	if (load_map(env, &env->map, filename) == ERROR)
 		return (ERROR);
 	env->map.show_ceil = 1;
-	env->map.skybox = entity_new(env->sdl.tex_wall_nb - 1, 0, 0);
+	env->map.skybox = entity_new(0, 0, 0);
 	entity_merge(env->map.skybox, NULL, ENTITY_SKYBOX);
 	env->map.ceil_id = 1;
 	env->map.floor_id = 4;

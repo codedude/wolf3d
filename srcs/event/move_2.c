@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/24 13:07:29 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/25 10:50:23 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_vec2		vec_lerp(t_vec2 from, t_vec2 to, t_float t)
 	return (from + (to - from) / t);
 }
 
-static void	player_set_walk_anim(t_sdl *sdl, t_player *player)
+static void	player_set_walk_anim(t_sdl *sdl, t_player *player, t_env *env)
 {
 	t_float		speed;
 
@@ -73,7 +73,7 @@ static void	player_ground_anim(t_sdl *sdl, t_cam *cam, t_player *player)
 void		player_set_anim(t_sdl *sdl, t_cam *cam, t_player *player,
 				t_env *env)
 {
-	player_set_walk_anim(sdl, player);
+	player_set_walk_anim(sdl, player, env);
 	if (player->action_state & ACTION_GROUNDED)
 		player_ground_anim(sdl, cam, player);
 	else
@@ -180,7 +180,6 @@ void		compute_player(t_env *env)
 	player = &env->player;
 	player_calc_controller(player);
 	player_set_velocity(&env->sdl, player);
-	// player_set_acceleration(player);
 	speed = 1.0;
 	if (player->velocity.y != 0.0 || player->velocity.x > 0.0)
 		speed *= 0.75;

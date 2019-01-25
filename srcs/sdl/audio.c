@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:42:18 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/24 13:01:27 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/25 10:46:40 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			audio_init(t_audio *audio)
 		return (audio_error(
 		"Mix_Init: Failed to init required ogg and mod support !"));
 	}
-	Mix_AllocateChannels(8);
+	Mix_AllocateChannels(16);
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 	return (audio_load_all(audio));
 }

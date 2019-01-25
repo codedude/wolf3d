@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 01:21:17 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:17:10 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/25 10:38:59 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void			tex_destroy_all(t_sdl *sdl)
 	}
 	free(sdl->tex_walls);
 	free(sdl->tex_sprites);
+	tex_destroy_pixels(&sdl->tex_skybox);
 	sdl->tex_walls = NULL;
 	sdl->tex_sprites = NULL;
 }
