@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/20 22:24:29 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 02:17:10 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "entity.h"
 #include "libft.h"
 
-void		update_zoom(t_env *env)
+static void		update_zoom(t_env *env)
 {
 	t_map_info	*inf;
 	t_float		factor;
@@ -35,7 +35,7 @@ void		update_zoom(t_env *env)
 	}
 }
 
-void		update_actions(t_env *env)
+static void		update_actions(t_env *env)
 {
 	t_u32		area;
 
@@ -51,7 +51,7 @@ void		update_actions(t_env *env)
 	env->mouse.update[area](env);
 }
 
-int			get_events(t_env *env)
+static int		get_events(t_env *env)
 {
 	SDL_Event	event;
 	const Uint8	*state;
@@ -65,7 +65,7 @@ int			get_events(t_env *env)
 	return (1);
 }
 
-void		loop(t_env *env)
+static void		loop(t_env *env)
 {
 	int		i;
 
@@ -75,18 +75,18 @@ void		loop(t_env *env)
 		sdl_update_texture(&env->sdl);
 		update_actions(env);
 		update_zoom(env);
-		draw_grid(env, &env->sdl);
+		draw_update(env, &env->sdl);
 		sdl_render(&env->sdl);
 		i++;
 		if (i == 3)
 		{
-			env->kframe = (env->kframe + 1) % 60;
+			env->cpick.kframe = (env->cpick.kframe + 1) % 60;
 			i = 0;
 		}
 	}
 }
 
-int			main(int ac, char **argv)
+int				main(int ac, char **argv)
 {
 	t_env	env;
 

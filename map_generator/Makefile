@@ -6,22 +6,38 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/21 03:54:06 by jbulant          ###   ########.fr        #
+#    Updated: 2019/01/27 02:30:30 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	w3d_generator
 CC			=	clang
 
-SRCD		=	srcs
 INCD		=	includes
+
 PARENT_INCD	=	../includes
 LIBFTD		=	../libft
 LIBTPOOLD	=	../libtpool
+
+SRCD		=	srcs
+PALETTE_D	=	palette
+UI_D		=	UI
+UTILS_D		=	utils
+DRAW_D		=	draw_tools
+MAP_EDIT_D	=	map_edit
+OBJ_EDIT_D	=	obj_edit
+EDITOR_D	=	editor
+ENV_D		=	env
+INSPECT_D	=	inspector
+MTRACK_D	=	mouse_tracker
+TOOLSET_D	=	toolset
+SAVE_D		=	save
+BINDS_D		=	bindings
+
 PARENT_SD	=	../srcs
-SDLD		=	$(PARENT_SD)/sdl
-PARSERD		=	$(PARENT_SD)/parser
-RENDERD		=	$(PARENT_SD)/render
+SDLD		=	sdl
+PARSERD		=	parser
+RENDERD		=	render
 
 LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 				-lm -lSDL2 -lSDL2_image -lSDL2_mixer \
@@ -56,45 +72,96 @@ LDFLAGS		+=	$(FLAGS_OPT)
 
 LDFLAGS		+=	-flto -O3 #-fsanitize=address
 
-FILES		=	env_destroy.c main.c manage_binds.c map.c \
-				save_file.c algo.c
-FILES		+=	env_tools.c tools.c mouse_tools.c mouse_track.c
-FILES		+=	panel.c panel_tex.c panel_draw.c panel_tools.c
-FILES		+=	buttons.c
-FILES		+=	slider.c checkbox.c
-FILES		+=	env_init.c inspector_init.c map_props_init.c \
-				obj_prevbox_init.c wall_prevbox_init.c
-FILES		+=	texdata_draw.c
-FILES		+=	draw_grid_lines.c draw_grid.c draw_node.c \
-				draw_line.c draw_player_radar.c draw_map.c
-FILES		+=	paint_bucket_tools.c brushes.c objects.c \
-				toolset.c editor.c doors.c
+SRCS_F		=	main
+SRCS_F		+=	$(addprefix $(PALETTE_D)/, $(PALETTE_F))
+SRCS_F		+=	$(addprefix $(UTILS_D)/, $(UTILS_F))
+SRCS_F		+=	$(addprefix $(UI_D)/, $(UI_F))
+SRCS_F		+=	$(addprefix $(DRAW_D)/, $(DRAW_F))
+SRCS_F		+=	$(addprefix $(MAP_EDIT_D)/, $(MAP_EDIT_F))
+SRCS_F		+=	$(addprefix $(OBJ_EDIT_D)/, $(OBJ_EDIT_F))
+SRCS_F		+=	$(addprefix $(EDITOR_D)/, $(EDITOR_F))
+SRCS_F		+=	$(addprefix $(ENV_D)/, $(ENV_F))
+SRCS_F		+=	$(addprefix $(INSPECT_D)/, $(INSPECT_F))
+SRCS_F		+=	$(addprefix $(MTRACK_D)/, $(MTRACK_F))
+SRCS_F		+=	$(addprefix $(TOOLSET_D)/, $(TOOLSET_F))
+SRCS_F		+=	$(addprefix $(SAVE_D)/, $(SAVE_F))
+SRCS_F		+=	$(addprefix $(BINDS_D)/, $(BINDS_F))
 
-PARENT_FILES =	$(SDLD)/sdl1.c $(SDLD)/sdl2.c $(SDLD)/sdl3.c $(SDLD)/sdl_load_image.c \
-				$(SDLD)/export_bmp_1.c $(SDLD)/export_bmp_2.c \
-				$(SDLD)/texture_1.c $(SDLD)/texture_2.c $(SDLD)/sound.c \
-				$(SDLD)/music.c $(SDLD)/audio.c
-PARENT_FILES	+=	$(RENDERD)/entity.c $(RENDERD)/entity_new.c
-PARENT_FILES	+=	$(PARSERD)/ent_analyze.c \
-					$(PARSERD)/map_content.c $(PARSERD)/object_content.c \
-					$(PARSERD)/spawn_content.c \
-					$(PARSERD)/parse_map.c $(PARSERD)/reader.c \
-					$(PARSERD)/tools.c $(PARSERD)/tools_2.c \
-					$(PARSERD)/tools_3.c $(PARSERD)/tools_4.c \
-					$(PARSERD)/stack.c
-PARENT_FILES	+=	$(PARENT_SD)/utils/types.c
+PALETTE_F	=	common			compute_brushes_1	compute_brushes_2
+UTILS_F		=	algo			sdl_draw			draw_canvas \
+				lft_plus		lft_plus_2 \
+				sdl_plus_f1		sdl_plus_f2
+UI_F		=	buttons			buttons_tools \
+				checkbox		checkbox_tools \
+				slider			slider_tools \
+				panel			panel_draw \
+				panel_tools		panel_tools_2		panel_tools_3 \
+				new_texdata		texdata_draw
 
-MGEN_FILES	=	$(MGEND)/main.c
+DRAW_F		=	lines			cpick_tools_1		cpick_tools_2 \
+				paint_bucket	draw_tex
+OBJ_EDIT_F	=	obj_tools		checkbox_is_solid	handle_objects
+EDITOR_F	=	editor			editor_switch \
+				draw_update		draw_ui
+ENV_F		=	env_init		env_destroy			init_rpanels
+SAVE_F		=	check			save_file			save_map
+BINDS_F		=	binds_1			binds_2				binds_3
 
-SRCS		=	$(addprefix $(SRCD)/, $(FILES))
-SRCS		+=	$(PARENT_FILES)
+MAP_EDIT_F	=	map_info		load_map			doors \
+				map_tools_1		map_tools_2			map_tools_3
+MAP_EDIT_F		+=	$(addprefix draw/, $(MAP_DRAW_F))
+MAP_EDIT_F		+=	$(addprefix properties/, $(MAP_PROPS_F))
+MAP_DRAW_F		=	draw_map	draw_map_obj	draw_node
+MAP_PROPS_F		=	init		props_f1		props_f2
+
+INSPECT_F	=	inspector_init
+INSPECT_F		+=	$(addprefix door/, $(INSPECT_D_F))
+INSPECT_F		+=	$(addprefix obj_edit/, $(INSPECT_OE_F))
+INSPECT_F		+=	$(addprefix painter/, $(INSPECT_P_F))
+INSPECT_F		+=	$(addprefix world/, $(INSPECT_W_F))
+INSPECT_D_F		=	create		buttons_f1		buttons_f2
+INSPECT_OE_F	=	create		buttons_f1		buttons_f2
+INSPECT_P_F		=	create		buttons_f		init_selectors
+INSPECT_W_F		=	create		buttons_f		radar
+
+TOOLSET_F	=	toolset
+
+MTRACK_F	=	mouse_tools		init
+MTRACK_F		+=	$(addprefix trigger/, $(MTRACK_TRIG_F))
+MTRACK_F		+=	$(addprefix update/, $(MTRACK_UPD_F))
+MTRACK_F		+=	$(addprefix get_area/, $(MTRACK_GETA_F))
+MTRACK_TRIG_F	=	init		trig_map_window		mw_painter		trig_rpanels
+MTRACK_UPD_F	=	init		upd_map_window
+MTRACK_GETA_F	=	init		get_map_window
+
+PARENT_F	=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
+				$(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2 \
+				$(SDLD)/texture_1 $(SDLD)/texture_2 $(SDLD)/sound \
+				$(SDLD)/music $(SDLD)/audio
+PARENT_F	+=	$(RENDERD)/entity $(RENDERD)/entity_new
+PARENT_F	+=	$(PARSERD)/ent_analyze \
+				$(PARSERD)/map_content $(PARSERD)/object_content \
+				$(PARSERD)/spawn_content \
+				$(PARSERD)/parse_map $(PARSERD)/reader \
+				$(PARSERD)/tools $(PARSERD)/tools_2 \
+				$(PARSERD)/tools_3 $(PARSERD)/tools_4 \
+				$(PARSERD)/stack
+PARENT_F	+=	$(PARENT_SD)/utils/types
+
+HEADER			=	mouse_tracker	editor		sdl_plus	inspector	\
+					objects_edit	map_edit	painter		ui_positions \
+					lft_plus		ui 			algo		gen_env
+
+PARENT_HEADER	= 	env sdl_m types
+
+SRCS		=	$(addprefix $(SRCD)/, $(addsuffix .c, $(SRCS_F)))
+SRCS		+=	$(addprefix $(PARENT_SD)/, $(addsuffix .c, $(PARENT_F)))
+
+HEADERS		=	$(addprefix $(INCD)/, $(addsuffix .h, $(HEADERS_F)))
+HEADERS		+=	$(addprefix $(PARENT_INCD)/, $(addsuffix .h, $(PARENT_HEADER)))
 
 OBJS		=	$(patsubst %.c, %.o, $(SRCS))
 
-HEADER			=	$(INCD)/gen_env.h $(INCD)/algo.h $(PARENT_HEADER)
-
-PARENT_HEADER	= 	$(PARENT_INCD)/env.h $(PARENT_INCD)/sdl_m.h \
-					$(PARENT_INCD)/types.h
 
 .PHONY: clean fclean re rer valg
 
