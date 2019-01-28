@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 17:16:24 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:34:01 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "sdl_m.h"
 # include "entity.h"
 
-# define ANIM_DOOR_OFFSET	0.015
+# define ANIM_DOOR_OFFSET	0.015f
 # define ANIM_DOOR_SPEED	1
 
 typedef struct s_env		t_env;

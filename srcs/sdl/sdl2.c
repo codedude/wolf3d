@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 13:31:16 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:38:33 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 int			sdl_create_renderer(t_sdl *sdl)
 {
 	if ((sdl->renderer = SDL_CreateRenderer(sdl->window, -1,
-		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)) == NULL)
+		SDL_RENDERER_ACCELERATED/* | SDL_RENDERER_PRESENTVSYNC*/)) == NULL)
 	{
 		ft_putstr("Renderer could not be created ! SDL_Error : ");
 		ft_putendl(SDL_GetError());
@@ -69,9 +69,9 @@ int			sdl_create_screen(t_sdl *sdl, int width, int height)
 	sdl->height = height;
 	sdl->canvas_h = (t_float)height;
 	sdl->canvas_w = (t_float)width;
-	sdl->ratio_y = (sdl->canvas_w / sdl->canvas_h) / 2.0
-		* atan(M_PI / 180.0 * 120.0);
-	sdl->half_canvas_h = sdl->canvas_h / 2.0;
+	sdl->ratio_y = (sdl->canvas_w / sdl->canvas_h) / 2.0f
+		* atanf(MY_PI / 180.0f * 120.0f);
+	sdl->half_canvas_h = sdl->canvas_h / 2.0f;
 	if (sdl_create_renderer(sdl) == ERROR
 		|| sdl_create_texture(sdl) == ERROR
 		|| sdl_create_buffer(sdl) == ERROR)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   radar.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:14:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:49:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 13:40:55 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ static void			draw_view_lines(t_env *env, t_radar *radar, t_u32 t_col)
 	t_ivec2		px[3];
 
 	dir[0] = vec_rotate(VEC2_INIT(-1, 0),
-			(-env->spawn_rotation + 33.0) / 180.0 * M_PI);
+			(-env->spawn_rotation + 33.0) / 180.0 * MY_PI);
 	dir[0] *= radar->vlines_height;
 	dir[1] = vec_rotate(VEC2_INIT(-1, 0),
-			(-env->spawn_rotation - 33.0) / 180.0 * M_PI);
+			(-env->spawn_rotation - 33.0) / 180.0 * MY_PI);
 	dir[1] *= radar->vlines_height;
 	px[0] = radar->center;
 	px[1].x = px[0].x + (int)dir[0].x;
@@ -62,7 +62,7 @@ static void			fill_view_triangle(t_env *env, t_radar *radar, t_u32 t_col)
 
 	if (env->spawn_rotation)
 		dir = vec_rotate(VEC2_INIT(-1, 0),
-			(-env->spawn_rotation) / 180.0 * M_PI);
+			(-env->spawn_rotation) / 180.0 * MY_PI);
 	else
 		dir = VEC2_INIT(-1, 0);
 	dir *= radar->triangle_cdist;
@@ -108,7 +108,7 @@ void				draw_radar(t_env *env, t_radar *radar)
 	draw_radar_gizmos(env, radar);
 	px1 = radar->center;
 	dir = vec_rotate(VEC2_INIT(-1, 0),
-			-env->spawn_rotation / 180.0 * M_PI) * radar->f_radius;
+			-env->spawn_rotation / 180.0 * MY_PI) * radar->f_radius;
 	px2.x = px1.x + (int)round(dir.x);
 	px2.y = px1.y + (int)round(dir.y);
 	cpick_set_color(&env->cpick, 0xcccc20);

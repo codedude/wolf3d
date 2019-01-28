@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:34:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 10:47:33 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:44:32 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ void			get_wall_xz(t_hit_infos *infos, t_vec2 dir, t_vec2 dist_step)
 	if (infos->side == 0)
 	{
 		z = (infos->map.x - infos->ray.pos.x
-			+ (infos->is_thin == 0 ? (1.0 - dist_step.x) / 2.0 : 0)) / dir.x;
+			+ (infos->is_thin == 0 ? (1.0f - dist_step.x) / 2.0f : 0)) / dir.x;
 		wall_x = infos->ray.pos.y + z * dir.y;
 	}
 	else
 	{
 		z = (infos->map.y - infos->ray.pos.y
-			+ (infos->is_thin == 0 ? (1.0 - dist_step.y) / 2.0 : 0)) / dir.y;
+			+ (infos->is_thin == 0 ? (1.0f - dist_step.y) / 2.0f : 0)) / dir.y;
 		wall_x = infos->ray.pos.x + z * dir.x;
 	}
-	infos->wall_x = wall_x - floor(wall_x);
+	infos->wall_x = wall_x - floorf(wall_x);
 	infos->z = z;
 }
 

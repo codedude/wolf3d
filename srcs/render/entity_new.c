@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:52:51 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 23:33:28 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 13:43:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_door		*entity_new_door(int orientation, int tex_wall_id)
 	tmp->orientation = orientation;
 	tmp->tex_wall_id = tex_wall_id;
 	tmp->item_id = -1;
-	tmp->open_offset = 1.0;
+	tmp->open_offset = 1.0f;
 	tmp->is_open = False;
 	tmp->is_active = False;
 	return (tmp);
@@ -67,7 +67,7 @@ t_object	*entity_new_object(t_vec2 pos, t_vec2 size, t_vec2 scale_z,
 	tmp->z = scale_z[1];
 	tmp->size = size;
 	tmp->collectable = collectable;
-	tmp->z_buffer = 0.0;
+	tmp->z_buffer = 0.0f;
 	tmp->y_start = 0;
 	tmp->y_end = 0;
 	tmp->x_end = 0;

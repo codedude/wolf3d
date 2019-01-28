@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buttons_f.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:55:36 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:51:25 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 13:40:56 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void		action_player_radar(t_env *env, t_radar *radar)
 
 	b = env->inspector.action[World];
 	mpos = env->mouse.pos - radar->center;
-	env->spawn_rotation = (int)(atan2(mpos.y, mpos.x) * 180.0 / M_PI) + 180;
+	env->spawn_rotation = (int)(atan2(mpos.y, mpos.x) * 180.0 / MY_PI) + 180;
 }
 
 void			inspector_action_world(void *v_env)

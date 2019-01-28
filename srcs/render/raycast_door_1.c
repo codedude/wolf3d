@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 15:45:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 10:47:21 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:44:18 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static t_bool	check_door_open_ew(t_hit_infos *infos, t_door *door)
 	t_float t;
 	t_float sol;
 
-	t = ((infos->map.y + 0.5) - infos->ray.pos.y) / infos->ray.dir.y;
+	t = ((infos->map.y + 0.5f) - infos->ray.pos.y) / infos->ray.dir.y;
 	sol = infos->ray.pos.x + infos->ray.dir.x * t;
 	if (sol > infos->map.x + door->open_offset)
 		return (True);
@@ -34,7 +34,7 @@ static t_bool	check_door_open_ns(t_hit_infos *infos, t_door *door)
 	t_float t;
 	t_float sol;
 
-	t = ((infos->map.x + 0.5) - infos->ray.pos.x) / infos->ray.dir.x;
+	t = ((infos->map.x + 0.5f) - infos->ray.pos.x) / infos->ray.dir.x;
 	sol = infos->ray.pos.y + infos->ray.dir.y * t;
 	if (sol > infos->map.y + door->open_offset)
 		return (True);
@@ -70,14 +70,14 @@ int				thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 	if (side == 0)
 	{
 		simu_wall_xz(infos, map_tmp, dist, side);
-		if ((sens == -1 && infos->wall_x > 0.5)
-			|| (sens == 1 && infos->wall_x < 0.5))
+		if ((sens == -1 && infos->wall_x > 0.5f)
+			|| (sens == 1 && infos->wall_x < 0.5f))
 			return (0);
 	}
 	if (check_door_open_ew(infos, door) == True)
 		return (0);
 	infos->is_thin = 1;
-	infos->map.y += 0.5;
+	infos->map.y += 0.5f;
 	infos->tex_off_x = door->open_offset;
 	return (1);
 }
@@ -97,14 +97,14 @@ int				thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos, t_map *map,
 	if (side == 1)
 	{
 		simu_wall_xz(infos, map_tmp, dist, side);
-		if ((sens == -1 && infos->wall_x > 0.5)
-			|| (sens == 1 && infos->wall_x < 0.5))
+		if ((sens == -1 && infos->wall_x > 0.5f)
+			|| (sens == 1 && infos->wall_x < 0.5f))
 			return (0);
 	}
 	if (check_door_open_ns(infos, door) == True)
 		return (0);
 	infos->is_thin = 1;
-	infos->map.x += 0.5;
+	infos->map.x += 0.5f;
 	infos->tex_off_x = door->open_offset;
 	return (1);
 }

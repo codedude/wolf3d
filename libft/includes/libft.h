@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 22:22:13 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:51:33 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:25:35 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char				*ft_itoa(int n);
 void				ft_itoa_to_buffer(int n, char *number);
 int					ft_atoi_base(char const *nptr, char const *base);
 int					ft_atoi_s(const char *str, int *nb);
-int					ft_atof_s(char *str, t_f64 *n);
+int					ft_atof_s(char *str, float *n);
 
 /*
 ** ASCII Characters checking

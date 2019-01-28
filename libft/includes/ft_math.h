@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/24 19:05:21 by valentin          #+#    #+#             */
-/*   Updated: 2018/12/06 18:17:47 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:40:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@
 # include "ft_type.h"
 
 # define ZERO_INT	(0)
-# define ZERO_FLOAT	(0.0)
-# ifndef M_PI
-#  define M_PI		(3.14159265358979)
-# endif
-# define DEG_TO_RAD (M_PI / 180.0)
-# define RAD_TO_DEG (180.0 / M_PI)
+# define ZERO_FLOAT	(0.0f)
+# define MY_PI		(3.14159265358979f)
+# define DEG_TO_RAD (MY_PI / 180.0f)
+# define RAD_TO_DEG (180.0f / MY_PI)
 
 t_u32				ft_abs(t_i32 n);
 t_i32				ft_min(t_i32 a, t_i32 b);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atof_s.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: valentin <valentin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/28 01:05:08 by valentin          #+#    #+#             */
-/*   Updated: 2018/04/25 02:52:28 by valentin         ###   ########.fr       */
+/*   Updated: 2019/01/28 13:25:56 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@ static int	ft_atof_s_divi(size_t len)
 	return (divi);
 }
 
-static void	compute_d(int d[2], char *str, t_f64 *n, int sign)
+static void	compute_d(int d[2], char *str, float *n, int sign)
 {
 	int	divi;
 
 	divi = ft_atof_s_divi(ft_strlen(str));
 	if (sign < 0)
-		*n = (t_f64)d[0] - (t_f64)d[1] / (t_f64)divi;
+		*n = (float)d[0] - (float)d[1] / (float)divi;
 	else
-		*n = (t_f64)d[0] + (t_f64)d[1] / (t_f64)divi;
+		*n = (float)d[0] + (float)d[1] / (float)divi;
 }
 
-int			ft_atof_s(char *str, t_f64 *n)
+int			ft_atof_s(char *str, float *n)
 {
 	char	**parts;
 	int		d[2];
