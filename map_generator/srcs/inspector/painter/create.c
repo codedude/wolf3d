@@ -6,60 +6,12 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:48:55 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:39:09 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 22:36:03 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gen_env.h"
 #include "libft.h"
-
-static void			action_painter(void *v_env)
-{
-	t_b_select	*selector;
-	t_env		*env;
-
-	env = (t_env*)v_env;
-	selector = &env->inspector.b_select;
-	button_trigger(selector->type_select[env->mouse.button_index]);
-}
-
-static void			draw_painter(t_env *env)
-{
-	t_u32		i;
-	t_button	*b;
-	t_b_select	*selector;
-
-	selector = &env->inspector.b_select;
-	i = 0;
-	while (i < Max_Brush_Buttons)
-	{
-		b = selector->type_select[i];
-		button_draw(&env->sdl, &env->cpick, b);
-		i++;
-	}
-}
-
-static t_bool		gb_painter(t_env *env)
-{
-	t_u32		i;
-	t_button	*b;
-	t_b_select	*selector;
-
-	selector = &env->inspector.b_select;
-	i = 0;
-	while (i < Max_Brush_Buttons)
-	{
-		b = selector->type_select[i];
-		if (button_hover(b, env->mouse.pos))
-		{
-			selector->type_save = selector->type;
-			env->mouse.button_index = i;
-			return (True);
-		}
-		i++;
-	}
-	return (False);
-}
 
 static void			selector_set_mode(void *v_env)
 {
@@ -114,12 +66,12 @@ int				create_painter_inpector(t_env *env, t_canvas i_anch)
 
 	if (init_type_selectors(env, &env->inspector.b_select) == ERROR
 		|| init_mode_selectors(env, &env->inspector.b_select, i_anch) == ERROR
-		|| !(b = button_new(i_anch, NULL, env, action_painter)))
+		|| !(b = button_new(i_anch, NULL, env, inspector_action_painter)))
 		return (ERROR);
 	texdata_fill_rect(b->tex, i_anch.size,
 					CANVAS_INIT(0, i_anch.size), 0xacacac);
 	env->inspector.action[Painter] = b;
-	env->inspector.get_button[Painter] = gb_painter;
-	env->inspector.draw[Painter] = draw_painter;
+	env->inspector.get_button[Painter] = inspector_gb_painter;
+	env->inspector.draw[Painter] = inspector_draw_painter;
 	return (SUCCESS);
 }

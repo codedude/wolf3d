@@ -6,12 +6,26 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 16:55:19 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/21 03:26:53 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 19:21:12 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "parser.h"
+
+
+int				world_ent_analyze(t_parser *parser)
+{
+	if (parser->a_state & Parse_action_world)
+	{
+		parser->err_no = EWDEF;
+		return (ERROR);
+	}
+	if (get_next_opbracket(parser) == ERROR)
+		return (Parse_error);
+	parser->a_state |= Parse_action_world;
+	return (World_parsing);
+}
 
 static int		map_ent_paramaters(t_parser_map *map, t_parser *parser)
 {

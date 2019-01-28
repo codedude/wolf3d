@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:52:00 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:38:59 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 23:09:37 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,32 @@ static void			init_tex_bg(t_env *env, t_door_edit *dedit,
 		i++;
 	}
 }
+//
+// static void			init_tex_prev(t_env *env, t_door_edit *dedit,
+// 						t_canvas i_anch)
+// {
+// 	t_ivec2		elem_size;
+// 	t_canvas	anchor;
+// 	int			offset;
+//
+// 	elem_size = env->rpan.p[Texture_Panel]->elem_anchor.size;
+// 	anchor.size = elem_size;
+// 	offset = (int)((t_float)anchor.size.x * 0.2);
+// 	anchor.pos.y = i_anch.pos.y + offset * 2;
+// 	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 - (anchor.size.x + offset);
+// 	dedit->prev[Door_Tex] = anchor;
+// 	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 + offset;
+// 	dedit->prev[Side_Tex] = anchor;
+// 	// anchor.size = ipercent_of(i_anch.size.x, 33);
+// 	anchor.pos.y = dedit->prev[Door_Tex].pos.y + ipercent_of(i_anch.pos.x, 10);
+// 	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 - anchor.size.x / 2;
+// 	dedit->prev[Door_Prev] = anchor;
+// 	anchor.size = elem_size;
+// 	anchor.pos.y = i_anch.pos.y + i_anch.size.y - offset * 2 - anchor.size.y;
+// 	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 - anchor.size.x / 2;
+// 	dedit->prev[Item_Prev] = anchor;
+// 	init_tex_bg(env, dedit, i_anch);
+// }
 
 static void			init_tex_prev(t_env *env, t_door_edit *dedit,
 						t_canvas i_anch)
@@ -39,21 +65,17 @@ static void			init_tex_prev(t_env *env, t_door_edit *dedit,
 	int			offset;
 
 	elem_size = env->rpan.p[Texture_Panel]->elem_anchor.size;
-	anchor.size = elem_size;
-	offset = (int)((t_float)anchor.size.x * 0.1);
-	anchor.pos.y = i_anch.pos.y + offset * 2;
-	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 - (anchor.size.x + offset);
-	dedit->prev[Door_Tex] = anchor;
-	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 + offset;
-	dedit->prev[Side_Tex] = anchor;
-	anchor.size = ipercent_of(i_anch.size.x, 66);
-	anchor.pos.y = dedit->prev[Door_Tex].pos.y + ipercent_of(i_anch.pos.x, 10);
-	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 - anchor.size.x / 2;
+	anchor.size = (int)(elem_size.x * 0.8);
+	offset = (int)((i_anch.size.y - anchor.size.y * 4) / 5.0);
+	anchor.pos.x = i_anch.pos.x + i_anch.size.x - (offset / 2 + anchor.size.x);
+	anchor.pos.y = i_anch.pos.y + offset;
 	dedit->prev[Door_Prev] = anchor;
-	anchor.size = elem_size;
-	anchor.pos.y = i_anch.pos.y + i_anch.size.y - offset * 2 - anchor.size.y;
-	anchor.pos.x = i_anch.pos.x + i_anch.size.x / 2 - anchor.size.x / 2;
+	anchor.pos.y += offset + anchor.size.y;
 	dedit->prev[Item_Prev] = anchor;
+	anchor.pos.y += offset + anchor.size.y;
+	dedit->prev[Door_Tex] = anchor;
+	anchor.pos.y += offset + anchor.size.y;
+	dedit->prev[Side_Tex] = anchor;
 	init_tex_bg(env, dedit, i_anch);
 }
 

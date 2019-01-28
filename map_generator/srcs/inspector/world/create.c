@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:55:36 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:54:34 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 22:53:04 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static void		init_cf_prev(t_env *env, t_world_i *w_inf, t_canvas i_anch)
 	b = env->inspector.action[World];
 	anchor.size = env->rpan.p[Texture_Panel]->elem_anchor.size;
 	offset = (int)((t_float)anchor.size.x * 0.1);
-	anchor.pos.y = w_inf->radar.center.y + (int)(w_inf->radar.f_radius * 1.5);
+	anchor.pos.y = w_inf->radar.center.y + (int)(w_inf->radar.f_radius * 1.6);
 	anchor.pos.x = w_inf->radar.center.x - (anchor.size.x + offset);
-	w_inf->prev[WButton_Ceil] = anchor;
-	anchor.pos.x = w_inf->radar.center.x + offset;
 	w_inf->prev[WButton_Floor] = anchor;
+	anchor.pos.x = w_inf->radar.center.x + offset;
+	w_inf->prev[WButton_Ceil] = anchor;
 	anchor.pos -= i_anch.pos;
 	texdata_fill_rect(b->tex, i_anch.size, anchor, 0x757575);
 	anchor.pos.x = (w_inf->radar.center.x - (anchor.size.x + offset))
@@ -65,7 +65,7 @@ static int		init_cbox_draw_ceil(t_env *env, t_sdl *sdl,
 	anchor.pos.x -= (int)(anchor.size.x * 1.5);
 	anchor.pos.y = w_inf->prev[WButton_Ceil].pos.y
 				+ w_inf->prev[WButton_Ceil].size.y;
-	anchor.pos.y += (int)(anchor.size.y * 0.5);
+	anchor.pos.y += (int)(anchor.size.y * 1.0);
 	if (!(w_inf->cbox_ceil = checkbox_new(anchor, NULL)))
 		return (ERROR);
 	checkbox_setup(w_inf->cbox_ceil, env, rstate_draw_ceil, gstate_draw_ceil);

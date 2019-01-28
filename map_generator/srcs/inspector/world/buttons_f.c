@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:55:36 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:51:25 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 22:53:36 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,20 @@ void			inspector_draw_world(t_env *env)
 	w_inf = &env->inspector.world;
 	draw_radar(env, &w_inf->radar);
 	checkbox_draw(&env->sdl, &env->cpick, w_inf->cbox_ceil);
-	id = w_inf->id[WButton_Ceil];
-	draw_tex(&env->sdl, &env->cpick,
-		&env->sdl.tex_walls[id], w_inf->prev[WButton_Ceil]);
 	id = w_inf->id[WButton_Floor];
 	draw_tex(&env->sdl, &env->cpick,
 		&env->sdl.tex_walls[id], w_inf->prev[WButton_Floor]);
+	id = w_inf->id[WButton_Ceil];
+	if (w_inf->draw_ceil == False)
+	{
+		cpick_set_color_mask(&env->cpick, 0x0, 0.75);
+		draw_tex(&env->sdl, &env->cpick,
+			&env->sdl.tex_walls[id], w_inf->prev[WButton_Ceil]);
+		cpick_unset_color_mask(&env->cpick);
+	}
+	else
+		draw_tex(&env->sdl, &env->cpick,
+			&env->sdl.tex_walls[id], w_inf->prev[WButton_Ceil]);
 }
 
 static void		action_player_radar(t_env *env, t_radar *radar)
@@ -52,7 +60,7 @@ void			inspector_action_world(void *v_env)
 		action_player_radar(env, &w_inf->radar);
 	else if (env->mouse.b1_status == Mouse_Release)
 	{
-		if (b_index == WButton_Ceil)
+		if (b_index == WButton_Ceil && w_inf->draw_ceil)
 			w_inf->id[WButton_Ceil] = env->rpan.p[Texture_Panel]->cursor;
 		else if (b_index == WButton_Floor)
 			w_inf->id[WButton_Floor] = env->rpan.p[Texture_Panel]->cursor;

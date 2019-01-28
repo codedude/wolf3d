@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/25 10:34:31 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/27 19:33:18 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,8 @@ static int	wolf_init(t_env *env, char *filename)
 {
 	if (load_map(env, &env->map, filename) == ERROR)
 		return (ERROR);
-	env->map.show_ceil = 1;
 	env->map.skybox = entity_new(0, 0, 0);
 	entity_merge(env->map.skybox, NULL, ENTITY_SKYBOX);
-	env->map.ceil_id = 1;
-	env->map.floor_id = 4;
 	init_cam(&env->cam, &env->sdl, &env->map);
 	init_player(&env->player);
 	return (SUCCESS);

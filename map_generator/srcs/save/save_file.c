@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 12:06:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 01:54:55 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 20:54:07 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 #include <errno.h>
 #include "libft.h"
 #include "gen_env.h"
+
+void			save_world(t_env *env, int fd)
+{
+	t_world_i	*world;
+
+	world = &env->inspector.world;
+	ft_putstr_fd("World {\n\tFloor\t", fd);
+	ft_putnbr_fd((int)world->id[WButton_Floor], fd);
+	ft_putstr_fd("\n\tCeil\t", fd);
+	ft_putnbr_fd((int)world->id[WButton_Ceil], fd);
+	ft_putstr_fd(" : ", fd);
+	ft_putstr_fd(((world->draw_ceil == True) ? "True" : "False"), fd);
+	ft_putstr_fd("\n}\n\n", fd);
+}
 
 void			save_spawn(t_env *env, int fd)
 {
@@ -58,6 +72,10 @@ void			save_objects(t_env *env, int fd)
 		ft_putnbrf_fd(obj->pos.x, fd, 6);
 		ft_putstr_fd(", ", fd);
 		ft_putnbrf_fd(obj->pos.y, fd, 6);
+		ft_putstr_fd(" : ", fd);
+		ft_putnbrf_fd(obj->y_pos, fd, 6);
+		ft_putstr_fd(" : ", fd);
+		ft_putnbrf_fd(obj->scale, fd, 6);
 		ft_putchar_fd('\n', fd);
 		i++;
 	}
@@ -79,6 +97,7 @@ int				save_file(t_env *env)
 	save_spawn(env, fd);
 	save_objects(env, fd);
 	save_map(env, fd);
+	save_world(env, fd);
 	ft_putstr("W3dEditor: ");
 	ft_putstr(env->save_file);
 	ft_putstr(": file saved\n");

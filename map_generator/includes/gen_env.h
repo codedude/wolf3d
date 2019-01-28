@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:30:08 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 20:50:28 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int				save_file(t_env *env);
 void			save_map(t_env *env, int fd);
 
 int				manage_binds(SDL_Event *event, t_env *env);
+int				on_key_press(SDL_Event *event, t_env *env);
 int				on_key_release(SDL_Event *event, t_env *env);
 void			manage_down(const Uint8	*state, t_env *env);
 

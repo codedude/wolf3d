@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:40:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/18 15:49:49 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/27 20:30:26 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ static void		prepare_object_y(t_env *env, t_object *obj, t_vec2 old_size)
 		obj->y_start += (old_size.y - obj->size.y) / 2.0;
 	obj->y_end = obj->y_start + (int)obj->size.y;
 	if (obj->z > 0)
+	{
 		obj->y_end -= obj->y_offset;
+		if (env->map.show_ceil == False)
+			obj->y_start -= obj->y_offset;
+	}
 	else
 		obj->y_start -= obj->y_offset;
 }
@@ -98,7 +102,7 @@ void			draw_sprite(t_env *env, t_sdl *sdl, t_entity *obj)
 	o = obj->e.object;
 	text = tex_get_sprite(sdl, obj->tex_id);
 	pre_calc[0] = text->w / o->size.x;
-	pre_calc[1] = text->h / o->size.y;
+	pre_calc[1] = (text->h / o->size.y);
 	pre_calc2[0] = o->x_offset - o->x_start;
 	pre_calc2[1] = o->y_offset - o->y_start;
 	it[0] = o->x_start < 0 ? 0 : o->x_start;
@@ -112,6 +116,8 @@ void			draw_sprite(t_env *env, t_sdl *sdl, t_entity *obj)
 			while (it[1] < o->y_end)
 			{
 				tex[1] = (int)((it[1] + pre_calc2[1]) * pre_calc[1]);
+				if (o->z > 0 && env->map.show_ceil == False)
+					tex[1] = abs((int)(tex[1] + text->h * o->z) + 1) % text->h;
 				s_put_color(sdl_get_pixel(text, tex[0], tex[1], obj->tex_key),
 					env, it, o->z_buffer);
 				++it[1];

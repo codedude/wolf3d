@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:22:54 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 22:42:30 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,6 @@
 #include "sdl_m.h"
 #include "gen_env.h"
 #include "libft.h"
-
-static int	on_mouse_motion(SDL_Event *event, t_env *env)
-{
-	t_map_info	*minf;
-
-	minf = &env->map_info;
-	if (env->space && env->mouse.b1 && env->mouse.area == Map_window)
-	{
-		minf->pos.x += event->motion.xrel * (1.5 / env->map_info.zoom);
-		minf->pos.y += event->motion.yrel * (1.5 / env->map_info.zoom);
-	}
-	return (1);
-}
 
 static int	on_mbutton_press(SDL_Event *event, t_env *env)
 {

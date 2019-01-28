@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:48:55 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:29:15 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 22:43:47 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void			init_xy(t_sdl *sdl, int x[2], int y[2])
 	x[0] = ipercent_of(sdl->width, B_TYPE_B_P_X);
 	x[1] = ipercent_of(sdl->width, B_TYPE_B_P_X2);
 	y[0] = ipercent_of(sdl->height, B_TYPE_B_P_Y);
-	y[1] = ipercent_of(sdl->height, B_TYPE_B_OFF_Y);
+	y[1] = ipercent_of(sdl->width, B_TYPE_B_OFF_Y);
 }
 
 int 				init_type_selectors(t_env *env, t_b_select *selector)
@@ -55,8 +55,7 @@ int 				init_type_selectors(t_env *env, t_b_select *selector)
 	t_u32		i;
 
 	i = 0;
-	anchor.size.x = ipercent_of(env->sdl.width, B_TYPE_B_SZ_X);
-	anchor.size.y = ipercent_of(env->sdl.height, B_TYPE_B_SZ_Y);
+	anchor.size = ipercent_of(env->sdl.width, B_TYPE_B_SZ);
 	init_xy(&env->sdl, x, y);
 	while (i < Max_brush_type)
 	{

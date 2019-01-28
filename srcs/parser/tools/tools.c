@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/15 22:26:33 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/21 03:48:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 18:52:58 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 #include "parser.h"
 #include "entity.h"
 
-int		ft_iswhitespace(int c)
+int			ft_iswhitespace(int c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
 }
 
-char	*skip_whitespace(char *str)
+char		*skip_whitespace(char *str)
 {
 	while (ft_iswhitespace(*str))
 		str++;
 	return (str);
 }
 
-void	destroy_map_data(t_entity ***a_data, int width, int height)
+void		destroy_map_data(t_entity ***a_data, int width, int height)
 {
 	t_entity	**data;
 	int			i;
@@ -56,7 +56,7 @@ void	destroy_map_data(t_entity ***a_data, int width, int height)
 	}
 }
 
-t_entity		**new_map_data(int width, int height)
+t_entity	**new_map_data(int width, int height)
 {
 	t_entity	**data;
 	int			i;
@@ -77,7 +77,7 @@ t_entity		**new_map_data(int width, int height)
 	return (data);
 }
 
-int		is_filechar(int c)
+int			is_filechar(int c)
 {
 	return (c == '/' || c == '_' || ft_isalnum(c) || c == '.');
 }

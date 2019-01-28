@@ -6,13 +6,32 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 17:48:23 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 18:29:31 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include "env.h"
 #include "event.h"
+
+static int		is_close_objects(t_env *env, t_vec2 pos)
+{
+	t_float		t;
+	int			i;
+
+	i = 0;
+	while (i < env->objects_nb)
+	{
+		if (env->objects[i].crossable == 0)
+		{
+			t = vec_len(env->objects[i].e.object->pos - pos);
+			if (t < 0.5)
+				return (True);
+		}
+		i++;
+	}
+	return (False);
+}
 
 static t_bool	intersect_smth(t_env *env, t_vec2 pos, t_entity *entity)
 {

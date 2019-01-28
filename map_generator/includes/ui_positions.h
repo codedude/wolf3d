@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:48:08 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 17:56:59 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 23:23:42 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,13 @@
 # define B_TYPE_TOP_P_Y		INSPECT_TOP_P_Y
 # define B_TYPE_TOP_P_X		INSPECT_TOP_P_X
 
-# define B_TYPE_B_SZ_X		5
-# define B_TYPE_B_SZ_Y		5
+# define B_TYPE_B_SZ		4
 
 # define B_TYPE_B_P_X		(INSPECT_MID_P_X + 1)
-# define B_TYPE_B_P_X2		(INSPECT_MID_P_X - 1 - B_TYPE_B_SZ_X)
-# define B_TYPE_B_P_Y		(3 + B_TYPE_TOP_P_Y)
-# define B_TYPE_B_OFF_X		(1 + B_TYPE_B_SZ_X)
-# define B_TYPE_B_OFF_Y		(2 + B_TYPE_B_SZ_Y)
+# define B_TYPE_B_P_X2		(INSPECT_MID_P_X - 1 - B_TYPE_B_SZ)
+# define B_TYPE_B_P_Y		(4 + B_TYPE_TOP_P_Y)
+# define B_TYPE_B_OFF_X		(1 + B_TYPE_B_SZ)
+# define B_TYPE_B_OFF_Y		(1 + B_TYPE_B_SZ)
 
 /*
 **	INSPECTOR
@@ -120,7 +119,7 @@
 **	GRID_SNAP_SLIDER
 */
 
-# define G_SNAP_P_Y			(INSPECT_TOP_P_Y + INSPECT_SZ_Y - 4)
+# define G_SNAP_P_Y			(INSPECT_TOP_P_Y + INSPECT_SZ_Y - 6)
 # define G_SNAP_P_X			INSPECT_TOP_P_X + 1
 
 # define G_SNAP_S_SZ_X		(INSPECT_SZ_X - 2)
@@ -134,7 +133,7 @@
 */
 
 # define CB_SOL_P_Y			(G_SNAP_P_Y - (CB_SOL_S_SZ + 5))
-# define CB_SOL_P_X			(G_SNAP_P_X + (G_SNAP_S_SZ_X - CB_SOL_S_SZ))
+# define CB_SOL_P_X			(G_SNAP_P_X + (G_SNAP_S_SZ_X - 1))
 
 # define CB_SOL_S_SZ			3
 

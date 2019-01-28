@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:07:37 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/21 03:43:24 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 19:40:03 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ static int		load_objects(t_parser *parser, t_parser_obj *p_obj)
 		|| get_and_skipdigit(parser, &sp_i) == ERROR
 		|| sp_i < 0 || sp_i >= parser->sdl->tex_sprite_nb
 		|| skipchar(parser, ':') == ERROR
-		|| get_and_skipvec2(parser, &obj->pos) == ERROR)
+		|| get_and_skipvec2(parser, &obj->pos) == ERROR
+		|| skipchar(parser, ':') == ERROR
+		|| get_and_skipfdigit(parser, &obj->z) == ERROR
+		|| skipchar(parser, ':') == ERROR
+		|| get_and_skipfdigit(parser, &obj->scale) == ERROR)
 			return (set_parse_error(parser, EOGET));
 		ent->tex_id = sp_i;
 		i++;

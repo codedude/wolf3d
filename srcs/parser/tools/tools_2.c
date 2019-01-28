@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/15 22:26:33 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/15 02:24:08 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 19:52:53 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int				get_and_skipfdigit(t_parser *parser, t_float *get)
 	char	old_char;
 	int		ret;
 
-	if (!(line = get_next_word(parser, ft_isdigit))
+	if (!(line = get_next_word(parser, is_sdigit))
 	|| !(end_nb = skip_sign(line))
 	|| !(end_nb = skip_digit(end_nb))
 	|| *end_nb != '.'

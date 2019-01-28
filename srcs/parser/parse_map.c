@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:02:08 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/21 03:43:59 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 23:49:13 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int		check_spawn(t_parser_map *map, t_parser *parser)
 
 static int		check_tex_id(t_parser *parser, int tex_id)
 {
-	if (tex_id < 0 || tex_id >= parser->sdl->tex_wall_nb)
+	if (tex_id < 0 || tex_id > parser->sdl->tex_wall_nb)
 	{
 		parser->line_nb = 0;
 		parser->err_no = EBTEX;
@@ -130,10 +130,13 @@ static int		check_map_entities(t_parser_map *map, t_parser *parser)
 		while (it.x < map->width)
 		{
 			ent = &map->data[it.y][it.x];
-			if (ent->type != ENTITY_VOID
-				&& (check_tex_id(parser, ent->tex_id)
-				|| (ent->type == ENTITY_DOOR
-				&& check_door(parser, map, it) == ERROR)))
+			if (ent->type == ENTITY_WALL)
+			{
+				if (check_tex_id(parser, ent->tex_id))
+					return (ERROR);
+			}
+			else if (ent->type == ENTITY_DOOR
+				&& check_door(parser, map, it) == ERROR)
 				return (ERROR);
 			it.x++;
 		}

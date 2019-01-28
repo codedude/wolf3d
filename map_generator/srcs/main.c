@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:17:10 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 22:27:51 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ static void		update_zoom(t_env *env)
 static void		update_actions(t_env *env)
 {
 	t_u32		area;
+	t_entity	*ent;
 
 	area = env->mouse.area;
 	if (env->mouse.b1 == False || area == Not_On_Window)
 	{
-		entity_destroy(&env->map_info.map->data[env->spawn.y][env->spawn.x],
-			True);
+		ent = &env->map_info.map->data[env->spawn.y][env->spawn.x];
+		if (ent == env->inspector.door_edit.selected)
+			env->inspector.door_edit.selected = NULL;
+		entity_destroy(ent, True);
 		return ;
 	}
 	update_mouse_pos(env);

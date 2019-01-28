@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/27 02:30:30 by jbulant          ###   ########.fr        #
+#    Updated: 2019/01/27 22:42:02 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -139,18 +139,26 @@ PARENT_F	=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
 				$(SDLD)/texture_1 $(SDLD)/texture_2 $(SDLD)/sound \
 				$(SDLD)/music $(SDLD)/audio
 PARENT_F	+=	$(RENDERD)/entity $(RENDERD)/entity_new
-PARENT_F	+=	$(PARSERD)/ent_analyze \
-				$(PARSERD)/map_content $(PARSERD)/object_content \
-				$(PARSERD)/spawn_content \
-				$(PARSERD)/parse_map $(PARSERD)/reader \
-				$(PARSERD)/tools $(PARSERD)/tools_2 \
-				$(PARSERD)/tools_3 $(PARSERD)/tools_4 \
-				$(PARSERD)/stack
 PARENT_F	+=	$(PARENT_SD)/utils/types
+PARENT_F	+=	$(addprefix $(PARSERD)/, $(PARSER_F))
 
-HEADER			=	mouse_tracker	editor		sdl_plus	inspector	\
-					objects_edit	map_edit	painter		ui_positions \
-					lft_plus		ui 			algo		gen_env
+PARSER_F	=	map_parser		stack 			reader				\
+				ent_analyze		parse_map
+PARSER_F	+=	$(addprefix tools/, $(PTOOLS_F))
+PARSER_F	+=	$(addprefix map/, $(PMAP_F))
+PARSER_F	+=	$(addprefix object/, $(POBJ_F))
+PARSER_F	+=	$(addprefix spawn/, $(PSPAWN_F))
+PARSER_F	+=	$(addprefix world/, $(PWORLD_F))
+PTOOLS_F	=	tools			tools_2			tools_3				\
+				tools_4
+PMAP_F		=	map_content
+POBJ_F		=	object_content
+PSPAWN_F	=	spawn_content
+PWORLD_F	=	world_content
+
+HEADERS_F	=	mouse_tracker	editor		sdl_plus	inspector	\
+				objects_edit	map_edit	painter		ui_positions \
+				lft_plus		ui 			algo		gen_env
 
 PARENT_HEADER	= 	env sdl_m types
 
@@ -173,7 +181,7 @@ $(NAME): $(OBJS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	@echo "$(NAME) - compiled"
 
-%.o: %.c $(HEADER)
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:

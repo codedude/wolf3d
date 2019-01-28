@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 14:48:58 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 03:49:14 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 19:20:13 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ enum			e_parsing_states {
 	Map_parsing,
 	Spawn_parsing,
 	Object_parsing,
+	World_parsing,
 	Parse_end
 };
 
@@ -28,7 +29,8 @@ enum			e_parsing_actions {
 	Parse_action_default = 0,
 	Parse_action_map = (1 << 0),
 	Parse_action_spawn = (1 << 1),
-	Parse_action_object = (1 << 2)
+	Parse_action_object = (1 << 2),
+	Parse_action_world = (1 << 3)
 };
 
 # define TYPE_LIST_HELP	"types supported:\n" TYPE_NAMES_LIST
@@ -70,13 +72,20 @@ enum			e_parsing_actions {
 # define EDBOR_STR		"error: door: position on map border"
 # define EDWALL			17
 # define EDWALL_STR		"error: door: not enough or too many wall neighbours"
+# define EWGET			18
+# define EWGET_STR		"error: world: content"
+# define EWDEF			19
+# define EWDEF_STR		"error: world: already definded"
 
-# define ERRMSG_CNT		18
+# define ERRMSG_CNT		20
 # define ERRMSG_STR1	ENOBR_STR, EBTYPE_STR, EUNKST_STR, EMPAR_STR, EMGET_STR
 # define ERRMSG_STR2	EMDEF_STR, ESPAR_STR, ESGET_STR, ESDEF_STR, ESOOR_STR
 # define ERRMSG_STR3	ESONW_STR, ENCBR_STR, EOPAR_STR, EOGET_STR, EODEF_STR
-# define ERRMSG_STR4	EBTEX_STR, EDBOR_STR, EDWALL_STR
-# define ERRMSG_STR		ERRMSG_STR1, ERRMSG_STR2, ERRMSG_STR3, ERRMSG_STR4
+# define ERRMSG_STR4	EBTEX_STR, EDBOR_STR, EDWALL_STR, EWGET_STR
+# define ERRMSG_STR5	EWDEF_STR
+# define ERRMSG_STR_1	ERRMSG_STR1, ERRMSG_STR2, ERRMSG_STR3, ERRMSG_STR4
+# define ERRMSG_STR_2	ERRMSG_STR5
+# define ERRMSG_STR		ERRMSG_STR_1, ERRMSG_STR_2
 
 /*
 **	P_ENT		aka Parser_Entity
@@ -98,19 +107,23 @@ enum			e_parsing_actions {
 # define P_ENT_NAME_2_1		object_ent_analyze
 # define P_ENT_NAME_2_2		object_content_analyze
 
+# define P_ENT_NAME_3_0		"World"
+# define P_ENT_NAME_3_1		world_ent_analyze
+# define P_ENT_NAME_3_2		world_content_analyze
+
 # define P_ENT_TOSTRING1	P_ENT_NAME_0_0, P_ENT_NAME_1_0, P_ENT_NAME_2_0
-# define P_ENT_TOSTRING2
+# define P_ENT_TOSTRING2	P_ENT_NAME_3_0
 # define P_ENT_TOSTRING		P_ENT_TOSTRING1, P_ENT_TOSTRING2
 
 # define P_ENT_FUNCT1		P_ENT_NAME_0_1, P_ENT_NAME_1_1, P_ENT_NAME_2_1
-# define P_ENT_FUNCT2
+# define P_ENT_FUNCT2		P_ENT_NAME_3_1
 # define P_ENT_FUNCT		P_ENT_FUNCT1, P_ENT_FUNCT2
 
 # define P_CONTENT_FUNCT1	name_ent_analyze, P_ENT_NAME_0_2, P_ENT_NAME_1_2
-# define P_CONTENT_FUNCT2	P_ENT_NAME_2_2
+# define P_CONTENT_FUNCT2	P_ENT_NAME_2_2, P_ENT_NAME_3_2
 # define P_CONTENT_FUNCT	P_CONTENT_FUNCT1, P_CONTENT_FUNCT2
 
-# define P_ENT_COUNT		3
+# define P_ENT_COUNT		4
 
 typedef struct		s_stack {
 	struct s_stack	*previous;
@@ -160,6 +173,7 @@ int					parse_map(t_sdl *sdl, t_parser *parser, int conf_fd);
 int					map_content_analyze(t_parser *parser);
 int					spawn_content_analyze(t_parser *parser);
 int					object_content_analyze(t_parser *parser);
+int					world_content_analyze(t_parser *parser);
 
 /*
 **	ent_analyze.c
@@ -171,6 +185,7 @@ int					name_ent_analyze(t_parser *parser);
 int					spawn_ent_analyze(t_parser *parser);
 int					sprite_ent_analyze(t_parser *parser);
 int					object_ent_analyze(t_parser *parser);
+int					world_ent_analyze(t_parser *parser);
 
 /*
 **	tools.c

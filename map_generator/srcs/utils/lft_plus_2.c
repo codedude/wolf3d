@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 00:09:55 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:06:34 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 21:44:37 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ void			ft_putnbrf_fd(t_float f, int fd, t_u32 prec)
 	char		*str;
 	size_t		i;
 
+	if (f < 0.0)
+	{
+		ft_putchar_fd('-', fd);
+		f = -f;
+	}
 	ft_putnbr_fd((int)f, fd);
 	ft_putchar_fd('.', fd);
 	m = f - (int)f;

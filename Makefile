@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/21 16:20:46 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/27 19:07:10 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ LIBTPOOLD	=	libtpool
 SDLD		=	sdl
 PARSERD		=	parser
 EVENTD		=	event
+PLAYERD		=	player
 RENDERD		=	render
 UTILSD		=	utils
 
@@ -67,15 +68,27 @@ SRCS_F		+=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
 				$(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2 \
 				$(SDLD)/texture_1 $(SDLD)/texture_2 $(SDLD)/sound \
 				$(SDLD)/music $(SDLD)/audio $(SDLD)/text
-SRCS_F		+=	$(PARSERD)/map_parser $(PARSERD)/stack $(PARSERD)/reader \
-				$(PARSERD)/ent_analyze $(PARSERD)/load_map $(PARSERD)/tools \
-				$(PARSERD)/tools_2 $(PARSERD)/tools_3 $(PARSERD)/tools_4 \
-				$(PARSERD)/map_content $(PARSERD)/object_content \
-				$(PARSERD)/spawn_content $(PARSERD)/parse_map
-SRCS_F		+=	$(EVENTD)/move_1 $(EVENTD)/move_2 $(EVENTD)/move_3 \
-				$(EVENTD)/event_1 $(EVENTD)/event_2 $(EVENTD)/event_3 \
-				$(EVENTD)/event $(EVENTD)/move_4
+SRCS_F		+=	$(EVENTD)/event_1 $(EVENTD)/event_2 $(EVENTD)/event_3 \
+				$(EVENTD)/event
+SRCS_F		+=	$(PLAYERD)/move_1 $(PLAYERD)/move_2 $(PLAYERD)/move_3 \
+				$(PLAYERD)/move_4
 SRCS_F		+=	$(UTILSD)/vector $(UTILSD)/types
+SRCS_F		+=	$(addprefix $(PARSERD)/, $(PARSER_F))
+
+PARSER_F	=	map_parser		stack 			reader				\
+				ent_analyze		load_map 							\
+				parse_map
+PARSER_F	+=	$(addprefix tools/, $(PTOOLS_F))
+PARSER_F	+=	$(addprefix map/, $(PMAP_F))
+PARSER_F	+=	$(addprefix object/, $(POBJ_F))
+PARSER_F	+=	$(addprefix spawn/, $(PSPAWN_F))
+PARSER_F	+=	$(addprefix world/, $(PWORLD_F))
+PTOOLS_F	=	tools			tools_2			tools_3				\
+				tools_4
+PMAP_F		=	map_content
+POBJ_F		=	object_content
+PSPAWN_F	=	spawn_content
+PWORLD_F	=	world_content
 
 HEADERS_F	= 	env sdl_m raycast types list entity anim event \
 				export_bmp parser camera player audio

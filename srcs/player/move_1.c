@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:45:59 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/24 13:07:00 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/27 18:24:37 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 #include "env.h"
 #include "event.h"
 
-void		player_jump(t_sdl *sdl, t_cam *cam, t_player *player, t_env *env)
+void		player_jump(t_sdl *sdl, t_cam *cam, t_player *player)
 {
 	if (player->action_state & ACTION_JUMPING)
 	{
 		if (player->jump_time > 0.001)
 		{
-			cam->z_pos += ACTION_JUMP_FORCE * player->jump_time * sdl->deltatime;
+			cam->z_pos += ACTION_JUMP_FORCE
+				* player->jump_time * sdl->deltatime;
 			player->jump_time -= sdl->deltatime;
 		}
 		else

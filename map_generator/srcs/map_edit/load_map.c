@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:23:17 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 22:37:01 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 21:50:26 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ static void		convert_parsed_obj(t_env *env, t_parser *parser)
 		ent = &parser->obj.objects[i];
 		add_new_object(otools, ent->e.object->pos,
 			!ent->crossable, (t_u32)ent->tex_id);
+		otools->list[i]->scale = ent->e.object->scale;
+		otools->list[i]->y_pos = ent->e.object->z;
 		i++;
 	}
 	free(parser->obj.objects);
@@ -81,7 +83,7 @@ static void		convert_parsed_data(t_env *env, t_map *map, t_parser *parser)
 	env->inspector.world.id[WButton_Ceil] = (t_u32)p_map->ceil_id;
 	env->inspector.world.draw_ceil = (t_u32)p_map->show_ceil;
 	env->spawn = p_map->spawn;
-	env->spawn_rotation = (int)p_map->spawn_rotation;
+	env->spawn_rotation = 360 - (int)p_map->spawn_rotation;
 	env->loaded = True;
 }
 

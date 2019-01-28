@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:19:33 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 01:25:36 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 22:33:24 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int				get_obj_at_mpos(t_env *env)
 	t_u32		i;
 
 	mpos = env->mouse.pos;
-	anch.size = env->obj.mb_size;
+	anch.size = env->map_info.x_draw[1] - env->map_info.x_draw[0];
 	i = 0;
 	while (i < env->obj.count)
 	{

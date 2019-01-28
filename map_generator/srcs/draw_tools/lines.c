@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_line.c                                        :+:      :+:    :+:   */
+/*   lines.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:06:03 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 21:04:34 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 21:24:21 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void				draw_vline(t_sdl *sdl, t_color_pick *cpick,
 		y2 = from.y;
 		from.y = tmp;
 	}
-	if (line_outofbounds(cpick, &from, &y2, 0) == True)
+	if (line_outofbounds(cpick, &from, &y2, 1) == True)
 		return ;
 	while (from.y <= y2)
 	{

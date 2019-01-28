@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:14:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:49:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 22:47:30 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void				init_radar(t_env *env, t_radar *radar, t_canvas i_anch)
 	b = env->inspector.action[World];
 	texdata_fill_rect(b->tex, i_anch.size, CANVAS_INIT(0, i_anch.size),
 					0xacacac);
-	radar->f_radius = (t_float)ipercent_of(i_anch.size.x, 95) / 2.0;
+	radar->f_radius = (t_float)ipercent_of(i_anch.size.x, 80) / 2.0;
 	radar->center = (int)i_anch.size.x / 2;
 	radar->center.y += (int)(radar->f_radius * 0.2);
 	texdata_draw_circle_filled(b->tex, CANVAS_INIT(radar->center, i_anch.size)

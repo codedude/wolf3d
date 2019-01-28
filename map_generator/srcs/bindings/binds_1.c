@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   release.c                                          :+:      :+:    :+:   */
+/*   binds_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:22:10 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/27 22:29:52 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void		manage_down(const Uint8	*state, t_env *env)
 		toolset_set_tmp_type(&env->toolset, SpawnSetter);
 	else if ((test = (state[SDL_SCANCODE_LSHIFT] != 0)))
 		toolset_set_tmp_type(&env->toolset, Eraser);
+	else
+		env->toolset.use_tmp = False;
 	if (test && env->mouse.b1_status == Mouse_Hold
 		&& env->editor.mode != Painter && env->editor.mode != World)
 		env->mouse.no_trigger = True;
