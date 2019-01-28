@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/27 18:40:55 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 14:52:25 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ static t_float	set_accel_dim(t_float controller_v, t_float old_v,
 {
 	t_float		new_v;
 
-	if (is_grounded && controller_v != 0.0)
+	if (is_grounded && controller_v != 0.0f)
 		new_v = controller_v * PLAYER_ACCEL;
-	else if (old_v != 0.0)
+	else if (old_v != 0.0f)
 	{
-		new_v = -old_v * (is_grounded ? 1.0 : 0.2);
+		new_v = -old_v * (is_grounded ? 1.0f : 0.2f);
 		if (fabs(old_v) > PLAYER_STOP_TRESHOLD)
-			new_v /= PLAYER_DECEL * (is_grounded ? 1.0 : 7.0);
+			new_v /= PLAYER_DECEL * (is_grounded ? 1.0f : 7.0f);
 	}
 	else
-		new_v = 0.0;
+		new_v = 0.0f;
 	return (new_v);
 }
 
@@ -52,9 +52,9 @@ static void		player_set_velocity(t_sdl *sdl, t_player *player)
 	else
 	{
 		player->velocity = player->dash * DASH_SPEED * (player->dash_time
-				+ (0.1));
+				+ (0.1f));
 		player->dash_time -= sdl->deltatime;
-		if (player->dash_time <= 0.0)
+		if (player->dash_time <= 0.0f)
 		{
 			player->action_state &= ~ACTION_DASHING;
 		}
@@ -64,13 +64,13 @@ static void		player_set_velocity(t_sdl *sdl, t_player *player)
 static void		player_calc_controller(t_player *player)
 {
 	if (player->axis_state & Axis_Vertical)
-		player->controller.x = player->axis_state & Axis_Down ? 1.0 : -1.0;
+		player->controller.x = player->axis_state & Axis_Down ? 1.0f : -1.0f;
 	else
-		player->controller.x = 0.0;
+		player->controller.x = 0.0f;
 	if (player->axis_state & Axis_Horizontal)
-		player->controller.y = player->axis_state & Axis_Left ? 1.0 : -1.0;
+		player->controller.y = player->axis_state & Axis_Left ? 1.0f : -1.0f;
 	else
-		player->controller.y = 0.0;
+		player->controller.y = 0.0f;
 }
 
 void			compute_player(t_env *env)
@@ -82,11 +82,11 @@ void			compute_player(t_env *env)
 	player = &env->player;
 	player_calc_controller(player);
 	player_set_velocity(&env->sdl, player);
-	speed = 1.0;
-	if (player->velocity.y != 0.0 || player->velocity.x > 0.0)
-		speed *= 0.75;
+	speed = 1.0f;
+	if (player->velocity.y != 0.0f || player->velocity.x > 0.0f)
+		speed *= 0.7f5;
 	if (player->action_state & ACTION_CROUCHING)
-		speed *= 0.5;
+		speed *= 0.5f;
 	dir = vec_rotate(player->velocity, env->cam.rot);
 	env->cam.pos = move_forward(env, env->cam.pos,
 						dir, speed * env->sdl.deltatime);

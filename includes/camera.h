@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/15 23:31:57 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 13:46:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "types.h"
 
 # define MAX_OFFSET		600
-# define MAX_DEPTH		30.0
+# define MAX_DEPTH		30.0f
 # define EFFECT_MASK			0xff
 # define EFFECT_MASK_DEPTH		0xff00
 # define EFFECT_MASK_COLOR		0xff0000
@@ -28,8 +28,8 @@
 # define EFFECT_SEPIA	0x010000
 # define EFFECT_BAW		0x020000
 
-# define FOG_AMBIENT	VEC3_INIT(153.0, 211.0, 137.0)
-# define WATER_AMBIENT	VEC3_INIT(136.0, 210.0, 208.0)
+# define FOG_AMBIENT	VEC3_INIT(153.0f, 211.0f, 137.0f)
+# define WATER_AMBIENT	VEC3_INIT(136.0f, 210.0f, 208.0f)
 
 typedef struct s_cam	t_cam;
 

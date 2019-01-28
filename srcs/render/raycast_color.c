@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:37:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/18 15:56:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:44:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_color				dark_color(t_color color, t_cam *cam, int side, t_float z)
 
 	c = VEC3_INIT((t_float)color.c.r, (t_float)color.c.g, (t_float)color.c.b);
 	if (side)
-		c *= 0.80;
+		c *= 0.80f;
 	if (cam->depth_filter)
 		c = cam->depth_filter(c, z);
 	if (cam->color_filter)

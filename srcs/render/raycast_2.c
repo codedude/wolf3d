@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/16 11:05:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:43:57 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,15 @@ static t_vec2	get_wall_texel(t_hit_infos *infos)
 		if (infos->ray.dir.x > 0 || infos->is_thin == 1)
 			texel = VEC2_INIT(infos->map.x, infos->map.y + infos->wall_x);
 		else
-			texel = VEC2_INIT(infos->map.x + 1.0, infos->map.y + infos->wall_x);
+			texel = VEC2_INIT(infos->map.x + 1.0f, infos->map.y + infos->wall_x);
 	}
 	else
 	{
 		if (infos->ray.dir.y > 0 || infos->is_thin == 1)
 			texel = VEC2_INIT(infos->map.x + infos->wall_x, infos->map.y);
 		else
-			texel = VEC2_INIT(infos->map.x + infos->wall_x, infos->map.y + 1.0);
+			texel = VEC2_INIT(infos->map.x + infos->wall_x,
+				infos->map.y + 1.0f);
 	}
 	return (texel);
 }

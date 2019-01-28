@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/27 18:41:38 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 14:47:48 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,28 @@
 # include "camera.h"
 # include "sdl_m.h"
 
-# define VEC2_FWD				VEC2_INIT(0.0, 1.0)
+# define VEC2_FWD				VEC2_INIT(0.0f, 1.0f)
 # define VEC2_BACK				-VEC2_FWD
-# define VEC2_RIGHT				VEC2_INIT(1.0, 0.0)
+# define VEC2_RIGHT				VEC2_INIT(1.0f, 0.0f)
 # define VEC2_LEFT				-VEC2_RIGHT
 
 typedef struct s_player		t_player;
 typedef enum e_axis_state	t_axis_state;
 
-# define PLAYER_MAXSPEED		3.5
-# define PLAYER_ACCEL			(PLAYER_MAXSPEED * 0.75)
-# define PLAYER_DECEL			(PLAYER_MAXSPEED * 0.75)
-# define PLAYER_STOP_TRESHOLD	0.01
+# define PLAYER_MAXSPEED		3.5f
+# define PLAYER_ACCEL			(PLAYER_MAXSPEED * 0.75f)
+# define PLAYER_DECEL			(PLAYER_MAXSPEED * 0.75f)
+# define PLAYER_STOP_TRESHOLD	0.01f
 
-# define WALKANIM_MAXHEIGHT		15.0
-# define WALKANIM_SPEED			75.0
+# define WALKANIM_MAXHEIGHT		15.0f
+# define WALKANIM_SPEED			75.0f
 
-# define DASH_LIFETIME			0.25
-# define DASH_SPEED				45.0
+# define DASH_LIFETIME			0.25f
+# define DASH_SPEED				45.0f
 
-# define ACTION_MAX_JUMP_TIME	0.35
-# define ACTION_JUMP_FORCE		5.0
-# define ACTION_FALL_SPEED		5.0
+# define ACTION_MAX_JUMP_TIME	0.35f
+# define ACTION_JUMP_FORCE		5.0f
+# define ACTION_FALL_SPEED		5.0f
 
 # define ACTION_NONE		0b0
 # define ACTION_GROUNDED	0b000001
@@ -48,9 +48,6 @@ typedef enum e_axis_state	t_axis_state;
 # define ACTION_JUMPING		0b010000
 # define ACTION_DASHING		0b100000
 # define ACTION_FLY_MODE	(0x1000)
-
-# define SPEED_F			1.25
-# define SPEED_B			1.0
 
 # define ANIM_CROUCH_SPEED	2.5
 

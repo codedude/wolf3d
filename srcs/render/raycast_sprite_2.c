@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/13 16:40:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/27 20:30:26 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 14:50:26 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static void		prepare_object_x_and_opti(t_env *env, t_object *obj,
 
 static void		prepare_object_y(t_env *env, t_object *obj, t_vec2 old_size)
 {
-	obj->y_start = (int)((env->sdl.half_canvas_h - obj->size.y / 2.0)
+	obj->y_start = (int)((env->sdl.half_canvas_h - obj->size.y / 2.0f)
 		- ((env->sdl.half_canvas_h - env->cam.z) / obj->z_buffer)
 		+ env->cam.height);
-	if (obj->scale != 1.0)
-		obj->y_start += (old_size.y - obj->size.y) / 2.0;
+	if (obj->scale != 1.0f)
+		obj->y_start += (old_size.y - obj->size.y) / 2.0f;
 	obj->y_end = obj->y_start + (int)obj->size.y;
-	if (obj->z > 0)
+	if (obj->z > 0.0f)
 	{
 		obj->y_end -= obj->y_offset;
 		if (env->map.show_ceil == False)
@@ -68,9 +68,9 @@ t_bool			prepare_object(t_env *env, int i, t_vec2 obj_dir,
 	obj->size.y = env->sdl.canvas_h / obj->z_buffer;
 	obj->size.x = obj->size.y;
 	old_size = obj->size;
-	if (obj->scale != 1.0)
+	if (obj->scale != 1.0f)
 		obj->size *= obj->scale;
-	obj->x_offset = (int)(obj_x - clamp_float(obj_x, 0.0, env->sdl.canvas_w));
+	obj->x_offset = (int)(obj_x - clamp_float(obj_x, 0.0f, env->sdl.canvas_w));
 	if (abs(obj->x_offset) >= obj->size.x)
 		return (False);
 	obj->y_offset = (int)(obj->size.y * obj->z);

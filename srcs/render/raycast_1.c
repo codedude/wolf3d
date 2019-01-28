@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 10:43:08 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:43:46 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static t_ivec2	init_draw(int line_height, t_sdl *sdl, t_cam *cam,
 {
 	t_ivec2	draw;
 
-	draw.y = (int)((line_height + sdl->height) / 2.0
+	draw.y = (int)((line_height + sdl->height) / 2.0f
 		- (sdl->half_canvas_h - cam->z) / infos->z + cam->height);
 	draw.x = draw.y - line_height;
 	return (clamp_ivec2(draw, 0, sdl->height));
@@ -85,25 +85,25 @@ static void		raycast_init(t_vec2 dist[3], t_hit_infos *infos)
 
 	ray = infos->ray;
 	map_pos = infos->map;
-	if (ray.dir.x < 0.0)
+	if (ray.dir.x < 0.0f)
 	{
-		dist[STEP].x = -1.0;
+		dist[STEP].x = -1.0f;
 		dist[SIDE].x = (ray.pos.x - map_pos.x) * dist[DELTA].x;
 	}
 	else
 	{
-		dist[STEP].x = 1.0;
-		dist[SIDE].x = (map_pos.x + 1.0 - ray.pos.x) * dist[DELTA].x;
+		dist[STEP].x = 1.0f;
+		dist[SIDE].x = (map_pos.x + 1.0f - ray.pos.x) * dist[DELTA].x;
 	}
-	if (ray.dir.y < 0.0)
+	if (ray.dir.y < 0.0f)
 	{
-		dist[STEP].y = -1.0;
+		dist[STEP].y = -1.0f;
 		dist[SIDE].y = (ray.pos.y - map_pos.y) * dist[DELTA].y;
 	}
 	else
 	{
-		dist[STEP].y = 1.0;
-		dist[SIDE].y = (map_pos.y + 1.0 - ray.pos.y) * dist[DELTA].y;
+		dist[STEP].y = 1.0f;
+		dist[SIDE].y = (map_pos.y + 1.0f - ray.pos.y) * dist[DELTA].y;
 	}
 }
 
@@ -114,10 +114,10 @@ int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 	t_vec2	dir;
 
 	dir = infos->ray.dir;
-	dist[DELTA] = VEC2_INIT(fabs(1.0 / dir.x), fabs(1.0 / dir.y));
+	dist[DELTA] = VEC2_INIT(fabsf(1.0f / dir.x), fabsf(1.0f / dir.y));
 	raycast_init(dist, infos);
 	infos->is_thin = 0;
-	infos->tex_off_x = 0.0;
+	infos->tex_off_x = 0.0f;
 	infos->e_door = NULL;
 	infos->hit = raycast_compute(dist, infos, map);
 	get_wall_xz(infos, dir, dist[STEP]);

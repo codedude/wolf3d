@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 17:18:37 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/18 15:18:26 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:45:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int				prepare_sprite(t_env *env, t_klist **lst)
 	while (i < env->objects_nb)
 	{
 		obj_dir = env->objects[i].e.object->pos - env->cam.pos;
-		if (vec_is_in_front(-env->cam.plane, env->cam.plane, obj_dir) >= 0.0)
+		if (vec_is_in_front(-env->cam.plane, env->cam.plane, obj_dir) >= 0.0f)
 			if (prepare_object(env, i, obj_dir, vec_is_in_front(dir[0], dir[1],
 				obj_dir)) == True)
 			{

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/27 19:33:18 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 14:49:47 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,28 @@ void		init_player(t_player *player)
 {
 	player->axis_state = Axis_None;
 	player->velocity = VEC2_ZERO;
-	player->dash_time = 0.0;
-	player->mov_speed = 0.05;
-	player->rot_speed = 0.016;
-	player->acceleration = 0.0;
-	player->walk_anim = 0.0;
-	player->jump_time = 0.0;
+	player->dash_time = 0.0f;
+	player->mov_speed = 0.05f;
+	player->rot_speed = 0.016f;
+	player->acceleration = 0.0f;
+	player->walk_anim = 0.0f;
+	player->jump_time = 0.0f;
 	player->action_state = ACTION_GROUNDED;
 }
 
 void		init_cam(t_cam *cam, t_sdl *sdl, t_map *map)
 {
 	cam->pos = VEC2_INIT((t_float)map->spawn.x,
-		(t_float)map->spawn.y) + 0.5;
-	cam->z = 40.0 / 100.0;
+		(t_float)map->spawn.y) + 0.5f;
+	cam->z = 40.0f / 100.0f;
 	cam->z_default = cam->z;
 	cam->z_pos = cam->z_default;
 	cam->rot = map->spawn_rotation * DEG_TO_RAD;
-	cam->dir = vec_norm(VEC2_INIT(-1.0, 0.0));
-	cam->plane = VEC2_INIT(0.0, sdl->ratio_y);
+	cam->dir = vec_norm(VEC2_INIT(-1.0f, 0.0f));
+	cam->plane = VEC2_INIT(0.0f, sdl->ratio_y);
 	cam->dir = vec_rotate(cam->dir, cam->rot);
 	cam->plane = vec_rotate(cam->plane, cam->rot);
-	cam->height = 0.0;
+	cam->height = 0.0f;
 	cam->side_filter = EFFECT_SIDE;
 	cam->depth_filter = &depth_filter_depth;
 	cam->color_filter = NULL;

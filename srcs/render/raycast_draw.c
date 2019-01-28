@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:57:15 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/25 10:36:12 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:46:06 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	draw_skybox(t_sdl *sdl, t_hit_infos *infos, t_cam *cam, t_map *map)
 	{
 		pos.x = ((int)((infos->x + map->skybox->tex_key) / sdl->canvas_w
 			* text->w) + (map->skybox->id / 2)) % text->w;
-		lerp = clamp_float(y - cam->height, 0.0, sdl->canvas_h - 1.0);
+		lerp = clamp_float(y - cam->height, 0.0f, sdl->canvas_h - 1.0f);
 		pos.y = (int)(lerp / sdl->canvas_h * text->h);
 		color = dark_color(sdl_get_pixel(text, pos.x, pos.y, 0),
-			cam, 0, 0.0);
+			cam, 0, 0.0f);
 		sdl_put_pixel(sdl, infos->x, y, color);
 		y++;
 	}
@@ -51,13 +51,13 @@ void	draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos, t_vec2 texel)
 	y = infos->draw_end;
 	while (y < sdl->height)
 	{
-		if (env->cam.z > 0.0)
+		if (env->cam.z > 0.0f)
 		{
 			lookup = z_by_half_canvas
-				/ (2.0 * ((y + 1) - env->cam.height) - sdl->canvas_h);
+				/ (2.0f * ((y + 1) - env->cam.height) - sdl->canvas_h);
 			weight = lookup / infos->z;
-			curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
-			curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
+			curr_cf.x = weight * texel.x + (1.0f - weight) * infos->ray.pos.x;
+			curr_cf.y = weight * texel.y + (1.0f - weight) * infos->ray.pos.y;
 			sdl_put_pixel(sdl, infos->x, y, get_cf_color(tex_get_wall(
 				sdl, env->map.floor_id), curr_cf, &env->cam, lookup));
 		}
@@ -83,10 +83,10 @@ void	draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos, t_vec2 texel)
 		if (env->cam.z < sdl->canvas_h)
 		{
 			lookup = z_by_half_canvas
-				/ fabs(2.0 * (y - env->cam.height) - sdl->canvas_h);
+				/ fabsf(2.0f * (y - env->cam.height) - sdl->canvas_h);
 			weight = lookup / infos->z;
-			curr_cf.x = weight * texel.x + (1.0 - weight) * infos->ray.pos.x;
-			curr_cf.y = weight * texel.y + (1.0 - weight) * infos->ray.pos.y;
+			curr_cf.x = weight * texel.x + (1.0f - weight) * infos->ray.pos.x;
+			curr_cf.y = weight * texel.y + (1.0f - weight) * infos->ray.pos.y;
 			sdl_put_pixel(sdl, infos->x, y, get_cf_color(tex_get_wall(
 				sdl, env->map.ceil_id), curr_cf, &env->cam, lookup));
 		}
@@ -123,7 +123,7 @@ void	draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam, t_entity *e)
 		tex[0] = text->w - tex[0] - 1;
 	else if (infos->side == 1 && infos->ray.dir.y < 0)
 		tex[0] = text->w - tex[0] - 1;
-	half_height = -sdl->half_canvas_h + infos->line_height / 2.0
+	half_height = -sdl->half_canvas_h + infos->line_height / 2.0f
 		+ ((sdl->half_canvas_h - cam->z) / infos->z);
 	y = infos->draw_start;
 	while (y < infos->draw_end)

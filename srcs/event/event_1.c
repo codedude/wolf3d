@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:00:34 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/24 12:59:01 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:36:21 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		event_kb_state_jump(t_sdl *sdl, t_cam *cam, t_player *player)
 
 	if (player->action_state & ACTION_FLY_MODE)
 	{
-		percent = sdl->canvas_h / 33.33;
+		percent = sdl->canvas_h / 33.33f;
 		cam->z_pos += percent * sdl->deltatime;
 	}
 	else if (player->action_state & ACTION_GROUNDED)

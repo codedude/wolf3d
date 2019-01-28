@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:46:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 17:15:25 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:42:31 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,14 @@ t_bool			anim_door(t_env *env, t_anim *anim)
 	door = anim->entity->e.door;
 	if (door->is_open == False)
 	{
-		cmp = (door->open_offset <= 0.0);
-		cmp_val = 0.0;
+		cmp = (door->open_offset <= 0.0f);
+		cmp_val = 0.0f;
 		off = -ANIM_DOOR_OFFSET;
 	}
 	else
 	{
-		cmp = (door->open_offset >= 1.0);
-		cmp_val = 1.0;
+		cmp = (door->open_offset >= 1.0f);
+		cmp_val = 1.0f;
 		off = ANIM_DOOR_OFFSET;
 	}
 	door->open_offset += off;

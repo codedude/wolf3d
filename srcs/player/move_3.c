@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/27 18:29:31 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 14:49:41 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int		is_close_objects(t_env *env, t_vec2 pos)
 		if (env->objects[i].crossable == 0)
 		{
 			t = vec_len(env->objects[i].e.object->pos - pos);
-			if (t < 0.5)
+			if (t < 0.5f)
 				return (True);
 		}
 		i++;
@@ -36,7 +36,7 @@ static int		is_close_objects(t_env *env, t_vec2 pos)
 static t_bool	intersect_smth(t_env *env, t_vec2 pos, t_entity *entity)
 {
 	if ((entity->type != ENTITY_VOID && (entity->type != ENTITY_DOOR
-		|| !entity->e.door->is_open || entity->e.door->open_offset != 0.0))
+		|| !entity->e.door->is_open || entity->e.door->open_offset != 0.0f))
 		|| is_close_objects(env, pos))
 		return (False);
 	return (True);
@@ -48,10 +48,10 @@ static t_vec2	allow_move(t_env *env, t_vec2 from, t_vec2 to, t_vec2 calc)
 	t_map		*map;
 
 	map = &env->map;
-	offset.x = ((to.x < 0) ? -0.1 : 0.1);
-	offset.y = ((to.y < 0) ? -0.1 : 0.1);
-	calc = clamp_vec2(calc, VEC2_ZERO + 0.1,
-		VEC2_INIT((t_float)map->width - 0.2, (t_float)map->height - 0.2));
+	offset.x = ((to.x < 0) ? -0.1f : 0.1f);
+	offset.y = ((to.y < 0) ? -0.1f : 0.1f);
+	calc = clamp_vec2(calc, VEC2_ZERO + 0.1f,
+		VEC2_INIT((t_float)map->width - 0.2f, (t_float)map->height - 0.2f));
 	if (intersect_smth(env, VEC2_INIT(calc.x + offset.x, from.y),
 		&map->data[(int)from.y][(int)(calc.x + offset.x)]) == False)
 		calc.x = from.x;

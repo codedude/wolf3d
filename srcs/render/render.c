@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/16 11:17:21 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/28 13:45:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static void	render(t_env *env, int start, int end, int step)
 	x = start;
 	while (x < end)
 	{
-		infos.map = VEC2_INIT(floor(cam->pos.x), floor(cam->pos.y));
+		infos.map = VEC2_INIT(floorf(cam->pos.x), floorf(cam->pos.y));
 		infos.ray.dir = cam->dir + -cam->plane *
-			((t_float)(x << 1) / env->sdl.canvas_w - 1.0);
+			((t_float)(x << 1) / env->sdl.canvas_w - 1.0f);
 		raycast(&infos, &env->map, env, x);
 		rc_render(env, &infos);
 		x += step;
