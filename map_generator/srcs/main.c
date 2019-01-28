@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 22:27:51 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 15:00:09 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static void		update_zoom(t_env *env)
 	inf = &env->map_info;
 	if (inf->zoom > inf->zoom_max)
 	{
-		factor = (inf->zoom - inf->zoom_max) * 0.04;
-		inf->zoom = (factor < 0.002) ? inf->zoom_max : inf->zoom - factor;
+		factor = (inf->zoom - inf->zoom_max) * 0.04f;
+		inf->zoom = (factor < 0.002f) ? inf->zoom_max : inf->zoom - factor;
 	}
 	else if (inf->zoom < inf->zoom_min)
 	{
-		factor = (inf->zoom_min - inf->zoom) * 0.04;
-		inf->zoom = (factor < 0.002) ? inf->zoom_min : inf->zoom + factor;
+		factor = (inf->zoom_min - inf->zoom) * 0.04f;
+		inf->zoom = (factor < 0.002f) ? inf->zoom_min : inf->zoom + factor;
 	}
 }
 

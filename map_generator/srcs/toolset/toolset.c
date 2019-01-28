@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 00:47:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/20 16:18:08 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 15:13:27 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void			map_fx_hand(t_env *env)
 	t_map_info	*minf;
 
 	minf = &env->map_info;
-	minf->pos.x += env->mouse.rel_pos.x * (1.0 / env->map_info.zoom);
-	minf->pos.y += env->mouse.rel_pos.y * (1.0 / env->map_info.zoom);
+	minf->pos.x += env->mouse.rel_pos.x * (1.0f / env->map_info.zoom);
+	minf->pos.y += env->mouse.rel_pos.y * (1.0f / env->map_info.zoom);
 }
 
 void			map_fx_zoomin(t_env *env)
@@ -76,7 +76,7 @@ void			map_fx_zoomin(t_env *env)
 	mpos.x = env->mouse.pos.x - (env->grid.pos.x + env->map_info.grid_center.x);
 	mpos.y = env->mouse.pos.y - (env->grid.pos.y + env->map_info.grid_center.y);
 	mpos /= env->map_info.zoom;
-	env->map_info.pos -= mpos * 0.02;
+	env->map_info.pos -= mpos * 0.02f;
 }
 
 void			map_fx_zoomout(t_env *env)
@@ -92,7 +92,7 @@ void			map_fx_zoomout(t_env *env)
 	mpos.x = env->mouse.pos.x - (env->grid.pos.x + env->map_info.grid_center.x);
 	mpos.y = env->mouse.pos.y - (env->grid.pos.y + env->map_info.grid_center.y);
 	mpos /= env->map_info.zoom;
-	env->map_info.pos += mpos * 0.02;
+	env->map_info.pos += mpos * 0.02f;
 }
 
 void			init_toolset(t_toolset *toolset)

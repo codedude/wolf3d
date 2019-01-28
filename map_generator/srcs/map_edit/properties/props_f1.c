@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 23:57:30 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 00:02:09 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 15:13:07 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void				mprops_act_scale_up(void *v_env)
 
 	env = (t_env*)v_env;
 	minf = &env->map_info;
-	factor = 1.0 + (env->map_properties.tick / 60.0 * 0.05);
-	if (factor != 0.0)
+	factor = 1.0f + (env->map_properties.tick / 60.0f * 0.05f);
+	if (factor != 0.0f)
 		minf->zoom *= factor;
 	if (minf->zoom > minf->zoom_max)
 		minf->zoom = minf->zoom_max;
@@ -36,8 +36,8 @@ void				mprops_act_scale_down(void *v_env)
 
 	env = (t_env*)v_env;
 	minf = &env->map_info;
-	factor = 1.0 + (env->map_properties.tick / 60.0 * 0.05);
-	if (factor != 0.0)
+	factor = 1.0f + (env->map_properties.tick / 60.0f * 0.05f);
+	if (factor != 0.0f)
 		minf->zoom /= factor;
 	if (minf->zoom < minf->zoom_min)
 		minf->zoom = minf->zoom_min;

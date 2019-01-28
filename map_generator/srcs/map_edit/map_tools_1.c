@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 21:33:07 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:13:34 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 15:11:56 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ t_vec2				map_to_center(t_env *env)
 {
 	t_vec2		center;
 
-	center.x = (t_float)env->grid.pos.x + ((t_float)env->grid.size.x / 2.0);
-	center.y = (t_float)env->grid.pos.y + ((t_float)env->grid.size.y / 2.0);
+	center.x = (t_float)env->grid.pos.x + ((t_float)env->grid.size.x / 2.0f);
+	center.y = (t_float)env->grid.pos.y + ((t_float)env->grid.size.y / 2.0f);
 	return (center);
 }
 
@@ -32,10 +32,10 @@ static void			map_update_zoom_range(t_env *env, t_map_info *minf)
 	map = minf->map;
 	min[0] = ipercent_of(env->grid.size.x, 98)
 			/ (t_float)(map->size.x);
-	max[0] = env->grid.size.x / 2.0;
+	max[0] = env->grid.size.x / 2.0f;
 	min[1] = ipercent_of(env->grid.size.y, 98)
 			/ (t_float)(map->size.y);
-	max[1] = env->grid.size.y / 2.0;
+	max[1] = env->grid.size.y / 2.0f;
 	if (min[0] < min[1])
 	{
 		minf->zoom_min = min[0];
@@ -64,6 +64,6 @@ void				map_update_center(t_env *env)
 
 	minf = &env->map_info;
 	map = minf->map;
-	minf->map_center = VEC2_INIT(map->size.x / 2.0, map->size.y / 2.0);
+	minf->map_center = VEC2_INIT(map->size.x / 2.0f, map->size.y / 2.0f);
 	map_update_zoom_range(env, minf);
 }

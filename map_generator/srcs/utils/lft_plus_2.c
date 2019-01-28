@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 00:09:55 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 21:44:37 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 15:02:11 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ t_vec2			vec_rotate(t_vec2 dir, t_float radian)
 	t_float old_x;
 
 	old_x = dir.x;
-	dir.x = dir.x * cos(-radian) - dir.y * sin(-radian);
-	dir.y = old_x * sin(-radian) + dir.y * cos(-radian);
+	dir.x = (t_float)(dir.x * cos(-radian) - dir.y * sin(-radian));
+	dir.y = (t_float)(old_x * sin(-radian) + dir.y * cos(-radian));
 	return (dir);
 }
 
@@ -58,7 +58,7 @@ void			ft_putnbrf_fd(t_float f, int fd, t_u32 prec)
 	char		*str;
 	size_t		i;
 
-	if (f < 0.0)
+	if (f < 0.0f)
 	{
 		ft_putchar_fd('-', fd);
 		f = -f;
@@ -66,7 +66,7 @@ void			ft_putnbrf_fd(t_float f, int fd, t_u32 prec)
 	ft_putnbr_fd((int)f, fd);
 	ft_putchar_fd('.', fd);
 	m = f - (int)f;
-	str = ft_static_itoa((int)(pow(10.0, prec) * m));
+	str = ft_static_itoa((int)(pow(10.0f, prec) * m));
 	i = ft_strlen(str);
 	while (i && str[i - 1] == '0')
 		i--;

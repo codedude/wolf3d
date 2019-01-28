@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 00:09:55 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:05:17 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 15:06:39 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ t_float			snap_f(t_float snap, t_float height)
 {
 	t_float		mod;
 
-	mod = fmod(snap, height);
-	if (mod >= height / 2.0)
+	mod = fmodf(snap, height);
+	if (mod >= height / 2.0f)
 		return (snap - mod + height);
 	return (snap - mod);
 }

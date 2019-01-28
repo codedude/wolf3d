@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 14:52:25 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 14:56:51 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void			compute_player(t_env *env)
 	player_set_velocity(&env->sdl, player);
 	speed = 1.0f;
 	if (player->velocity.y != 0.0f || player->velocity.x > 0.0f)
-		speed *= 0.7f5;
+		speed *= 0.75f;
 	if (player->action_state & ACTION_CROUCHING)
 		speed *= 0.5f;
 	dir = vec_rotate(player->velocity, env->cam.rot);

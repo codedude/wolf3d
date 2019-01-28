@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:53:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:40:11 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 15:03:30 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static void		update_obj_y(t_env *env, t_object_edit *oedit, t_object_e *obj)
 	t_float			y;
 	t_float			hsize_y;
 
-	hsize_y = oedit->bg_prev.size.y / 2.0;
+	hsize_y = oedit->bg_prev.size.y / 2.0f;
 	y = env->mouse.pos.y - (oedit->bg_prev.pos.y + hsize_y);
 	y = clamp_float(y, -hsize_y, hsize_y);
 	obj->y_pos = -y / hsize_y;
-	if (env->obj.g_snap->val != 0.0)
+	if (env->obj.g_snap->val != 0.0f)
 		obj->y_pos = snap_f(obj->y_pos, env->obj.g_snap->val);
 }
 
@@ -39,13 +39,13 @@ static void		action_update_obj(t_env *env)
 	if (!env->ctrl)
 		return (update_obj_y(env, oedit, obj));
 	proj = env->mouse.pos - env->mouse.record_pos_b;
-	dist = sqrt((t_float)(proj.x * proj.x + proj.y * proj.y));
+	dist = (t_float)sqrt((double)(proj.x * proj.x + proj.y * proj.y));
 	res = proj.x / (t_float)oedit->bg_prev.size.x * -1;
-	obj->scale = clamp_float(res + oedit->saved_scale, 0.1, 2.0);
-	if (env->obj.g_snap->val != 0.0)
+	obj->scale = clamp_float(res + oedit->saved_scale, 0.1f, 2.0f);
+	if (env->obj.g_snap->val != 0.0f)
 	{
 		obj->scale = snap_f(obj->scale, env->obj.g_snap->val);
-		obj->scale = clamp_float(obj->scale, env->obj.g_snap->val, 2.0);
+		obj->scale = clamp_float(obj->scale, env->obj.g_snap->val, 2.0f);
 	}
 
 }

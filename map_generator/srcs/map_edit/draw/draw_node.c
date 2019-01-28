@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 21:34:30 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 15:12:42 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void		draw_node_tex(t_sdl *sdl, t_env *env, t_canvas canvas,
 {
 	env_update_map_value(env, mapi);
 	if (env->erasing)
-		cpick_set_color_mask(&env->cpick, 0xFF0000, 0.70);
+		cpick_set_color_mask(&env->cpick, 0xFF0000, 0.70f);
 	if (env->spawn.x == mapi.x && env->spawn.y == mapi.y)
 		draw_canvas_fill(sdl, &canvas, &env->grid, 0x30a530);
 	else if (env->ed_map_value == 0)
@@ -64,7 +64,7 @@ static void		draw_node_door(t_env *env, t_sdl *sdl, t_entity *ent,
 		c = 0xff0000;
 	else
 		c = 0xffff00;
-	rsize = (int)(rec_anch->size.x * 0.15);
+	rsize = (int)(rec_anch->size.x * 0.15f);
 	while (rsize--)
 	{
 		rec_anch->size -= 2;

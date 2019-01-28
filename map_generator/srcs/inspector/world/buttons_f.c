@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:55:36 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/28 14:49:50 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/28 15:04:33 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void			inspector_draw_world(t_env *env)
 	id = w_inf->id[WButton_Ceil];
 	if (w_inf->draw_ceil == False)
 	{
-		cpick_set_color_mask(&env->cpick, 0x0, 0.75);
+		cpick_set_color_mask(&env->cpick, 0x0, 0.75f);
 		draw_tex(&env->sdl, &env->cpick,
 			&env->sdl.tex_walls[id], w_inf->prev[WButton_Ceil]);
 		cpick_unset_color_mask(&env->cpick);
@@ -44,7 +44,7 @@ static void		action_player_radar(t_env *env, t_radar *radar)
 
 	b = env->inspector.action[World];
 	mpos = env->mouse.pos - radar->center;
-	env->spawn_rotation = (int)(atan2(mpos.y, mpos.x) * 180.0 / MY_PI) + 180;
+	env->spawn_rotation = (int)(atan2(mpos.y, mpos.x) * 180.0 / M_PI) + 180;
 }
 
 void			inspector_action_world(void *v_env)
