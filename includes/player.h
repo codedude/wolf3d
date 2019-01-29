@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 14:47:48 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 14:37:39 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef enum e_axis_state	t_axis_state;
 # define ACTION_DASHING		0b100000
 # define ACTION_FLY_MODE	(0x1000)
 
-# define ANIM_CROUCH_SPEED	2.5
+# define ANIM_CROUCH_SPEED	2.5f
 
 enum				e_axis_state {
 	Axis_None = 0,
