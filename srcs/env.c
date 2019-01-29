@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 14:49:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 16:44:56 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void		init_player(t_player *player)
 	player->walk_anim = 0.0f;
 	player->jump_time = 0.0f;
 	player->action_state = ACTION_GROUNDED;
+	player->inventory = NULL;
 }
 
 void		init_cam(t_cam *cam, t_sdl *sdl, t_map *map)
@@ -110,8 +111,6 @@ int			env_init(t_env *env, char *filename)
 		ft_putstr_fd("Can't init wolf\n", 2);
 		return (ERROR);
 	}
-	env->show_fps = 0;
-	env->anims = NULL;
 	return (SUCCESS);
 }
 
@@ -121,5 +120,6 @@ void		env_destroy(t_env *env)
 	audio_destroy(&env->audio);
 	text_destroy(&env->sdl.text);
 	sdl_destroy(&env->sdl);
+	klist_clear(&env->player.inventory);
 	wolf_destroy(env, &env->map, &env->cam);
 }

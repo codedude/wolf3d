@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:04:53 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/11 23:11:43 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/29 16:43:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,11 @@ void			klist_append(t_klist **head, t_klist *entry)
 	while (*head != NULL)
 		head = &(*head)->next;
 	*head = entry;
+}
+
+t_klist			*klist_find(t_klist **head, int id)
+{
+	while ((*head)->value->id != id)
+		head = &(*head)->next;
+	return (*head);
 }

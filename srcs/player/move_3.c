@@ -6,13 +6,24 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 14:49:41 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 18:15:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include "env.h"
 #include "event.h"
+
+static int		player_collect(t_env *env, t_entity *ent)
+{
+	t_klist		*list;
+
+	if ((list = klist_new(ent)) == NULL)
+		return (ERROR);
+	klist_append(&env->player.inventory, list);
+	ent->e.object->collectable = -1;
+	return (SUCCESS);
+}
 
 static int		is_close_objects(t_env *env, t_vec2 pos)
 {
@@ -22,9 +33,15 @@ static int		is_close_objects(t_env *env, t_vec2 pos)
 	i = 0;
 	while (i < env->objects_nb)
 	{
-		if (env->objects[i].crossable == 0)
+		t = vec_len(env->objects[i].e.object->pos - pos);
+		if (env->objects[i].e.object->collectable == 1)
 		{
-			t = vec_len(env->objects[i].e.object->pos - pos);
+			if (t < 0.5)
+				player_collect(env, &env->objects[i]);
+		}
+		else if (env->objects[i].e.object->collectable == 0
+			&& env->objects[i].crossable == 0)
+		{
 			if (t < 0.5f)
 				return (True);
 		}

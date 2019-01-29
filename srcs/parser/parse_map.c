@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:02:08 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 23:49:13 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 18:12:38 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,21 @@ static int		check_tex_id(t_parser *parser, int tex_id)
 	return (SUCCESS);
 }
 
-static int		check_door_pos(t_parser *parser, t_parser_map *map, t_ivec2 pos)
+static int		check_door_pos(t_parser *parser, t_parser_map *map, t_ivec2 pos,
+							t_door *door)
 {
 	if ((pos.x == 0 || pos.x == map->width - 1
-		|| pos.y == 0 || pos.y == map->height - 1))
+		|| pos.y == 0 || pos.y == map->height - 1)
+		|| door->item_id >= parser->obj.objects_nb)
 	{
 		parser->line_nb = 0;
 		parser->err_no = EDBOR;
 		return (ERROR);
 	}
+	else if (door->item_id < 0)
+		door->item_id = -1;
+	else
+		parser->obj.objects[door->item_id].e.object->collectable = 1;
 	return (SUCCESS);
 }
 
@@ -96,7 +102,7 @@ static int		check_door(t_parser *parser, t_parser_map *map, t_ivec2 pos)
 
 	door = map->data[pos.y][pos.x].e.door;
 	if (check_tex_id(parser, door->tex_wall_id) == ERROR
-	|| check_door_pos(parser, map, pos) == ERROR)
+	|| check_door_pos(parser, map, pos, door) == ERROR)
 		return (ERROR);
 	if (door->orientation == 1)
 	{

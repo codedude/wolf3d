@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:46 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 13:40:54 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/29 18:03:47 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,12 @@ void		binds_open_door(t_env *env, t_cam *cam, t_map *map)
 	if (map->data[look_pos.y][look_pos.x].type == ENTITY_DOOR
 		&& door->is_active == False)
 	{
+		if (door->item_id != -1
+		&& klist_find(&env->player.inventory, door->item_id) == NULL)
+			return ;
 		anim = anim_new(&map->data[look_pos.y][look_pos.x],
 			ANIM_DOOR | ANIM_ONCE, False, ANIM_DOOR_SPEED);
-		if (alist_push(&env->anims, anim) == ERROR)
-			return ;
-		sound_play(&env->audio, SOUND_DOOR_OPEN);
+		if (alist_push(&env->anims, anim) == SUCCESS)
+			sound_play(&env->audio, SOUND_DOOR_OPEN);
 	}
 }

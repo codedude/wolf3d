@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_content.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:07:37 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 19:40:03 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 17:53:57 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static int		get_is_solid(t_parser *parser)
 	int is_solid;
 
 	if (skipword(parser, "True") != ERROR)
-		is_solid = 1;
-	else if (skipword(parser, "False") != ERROR)
 		is_solid = 0;
+	else if (skipword(parser, "False") != ERROR)
+		is_solid = 1;
 	else
 		is_solid = -1;
 	return (is_solid);

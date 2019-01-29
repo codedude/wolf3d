@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 23:46:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 13:42:31 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/29 16:21:39 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,18 @@
 
 t_bool			anim_skybox(t_sdl *sdl, t_anim *anim)
 {
+	t_tex	*tex;
+
+	tex = tex_get_wall(sdl, anim->entity->tex_id - 1);
 	if (anim->key.counter % anim->key.speed == 0)
 		++anim->entity->id;
-	if (anim->entity->id == tex_get_wall(sdl, anim->entity->tex_id)->w * 2)
+	if (anim->entity->id == tex->w * 2)
 	{
 		anim->entity->id = 0;
 		anim->key.counter = 0;
 		return (True);
 	}
+	++anim->key.counter;
 	return (False);
 }
 

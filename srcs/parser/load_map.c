@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 22:53:54 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 19:32:59 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 18:06:28 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,71 @@
 #include "libft.h"
 #include "parser.h"
 
-static void		convert_parsed_data(t_env *env, t_map *map, t_parser *parser)
+static int make_maps(t_env *env, t_map *map)
+{
+	int			i;
+	int			j;
+	t_entity	*obj;
+	t_tex		*tex;
+	t_anim		*anim;
+
+	i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+		while (j < map->width)
+		{
+			obj = &map->data[i][j];
+			if (obj->type != ENTITY_DOOR)
+			{
+				tex = tex_get_sprite(&env->sdl, obj->tex_id);
+				if (tex->n_sprites > 1)
+				{
+					anim = anim_new(obj, ANIM_TEXTURE | ANIM_LOOP, False, 1);
+					if (anim == NULL)
+						return (ERROR);
+					alist_push(&env->anims, anim);
+				}
+			}
+			++j;
+		}
+		++i;
+	}
+	return (SUCCESS);
+}
+
+static int make_sprites(t_env *env)
+{
+	int			i;
+	t_entity	*obj;
+	t_tex		*tex;
+	t_anim		*anim;
+
+	i = 0;
+	while (i < env->objects_nb)
+	{
+		obj = &env->objects[i];
+		tex = tex_get_sprite(&env->sdl, obj->tex_id);
+		if (tex->n_sprites > 1)
+		{
+			anim = anim_new(obj, ANIM_TEXTURE | ANIM_LOOP, False, 1);
+			if (anim == NULL)
+				return (ERROR);
+			alist_push(&env->anims, anim);
+		}
+		++i;
+	}
+	return (SUCCESS);
+}
+
+static int		make_anims(t_env *env, t_map *map)
+{
+	if (make_sprites(env) == ERROR || make_maps(env, map) == ERROR)
+		return (ERROR);
+	return (SUCCESS);
+}
+
+static int		convert_parsed_data(t_env *env, t_map *map, t_parser *parser)
 {
 	t_parser_map	*p_map;
 
@@ -33,6 +97,7 @@ static void		convert_parsed_data(t_env *env, t_map *map, t_parser *parser)
 	map->height = p_map->height;
 	env->objects = parser->obj.objects;
 	env->objects_nb = parser->obj.objects_nb;
+	return (make_anims(env, map));
 }
 
 int				load_map(t_env *env, t_map *map, char *mapfile)
@@ -51,7 +116,7 @@ int				load_map(t_env *env, t_map *map, char *mapfile)
 		return (ERROR);
 	}
 	if ((ret_value = parse_map(&env->sdl, &parser, conf_fd)) == SUCCESS)
-		convert_parsed_data(env, map, &parser);
+		ret_value = convert_parsed_data(env, map, &parser);
 	close(conf_fd);
 	return (ret_value);
 }

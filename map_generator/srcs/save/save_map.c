@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 12:06:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 01:56:17 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 17:47:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ static void		save_door(t_map *map, t_entity *ent, int fd)
 		ft_putnbr_fd(ent->tex_id, fd);
 		ft_putchar_fd(' ', fd);
 		ft_putnbr_fd(ent->e.door->tex_wall_id, fd);
+		ft_putchar_fd(' ', fd);
+		ft_putnbr_fd(ent->e.door->item_id, fd);
 		ft_putchar_fd('\n', fd);
 	}
 	else

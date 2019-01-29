@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/29 14:37:39 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/29 16:41:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "types.h"
 # include "camera.h"
 # include "sdl_m.h"
+# include "list.h"
 
 # define VEC2_FWD				VEC2_INIT(0.0f, 1.0f)
 # define VEC2_BACK				-VEC2_FWD
@@ -79,6 +80,7 @@ struct				s_player {
 	t_float			walk_anim;
 	t_float			wanim_towards;
 	int				action_state;
+	t_klist			*inventory;
 };
 
 void				compute_player(t_env *env);

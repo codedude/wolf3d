@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 23:33:08 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 17:56:02 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,13 @@ struct				s_door {
 /*
 ** Represent an objet in the world
 ** tex = sprite of the object
+*/
+
+/*
+**	collectable values:
+**	1 = is collectable
+**	0 = is not collectable
+** -1 = is collected
 */
 
 struct				s_object {

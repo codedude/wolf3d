@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_content.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:04:01 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/21 03:49:50 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 17:49:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static int		get_door_params(t_parser *parser, t_ivec2 *pos,
 	|| get_and_skipdigit(parser, orientation) == ERROR
 	|| *orientation < 0 || *orientation > 1
 	|| get_and_skipdigit(parser, &tex_id[0]) == ERROR
-	|| get_and_skipdigit(parser, &tex_id[1]) == ERROR)
+	|| get_and_skipdigit(parser, &tex_id[1]) == ERROR
+	|| get_and_skipsdigit(parser, &tex_id[2]) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
 }
@@ -67,7 +68,7 @@ static int		get_doors(t_parser_map *map, t_parser *parser)
 	t_entity	*ent;
 	t_door		*door;
 	t_ivec2		pos;
-	int			tex_id[2];
+	int			tex_id[3];
 	int			orientation;
 
 	while (skipword(parser, "Door") == SUCCESS)
@@ -79,6 +80,7 @@ static int		get_doors(t_parser_map *map, t_parser *parser)
 			return (ERROR);
 		ent = &map->data[pos.y][pos.x];
 		entity_merge(ent, (void *)door, ENTITY_DOOR);
+		door->item_id = tex_id[2];
 		entity_set(ent, tex_id[0] + 1, pos.x + pos.y * map->width, 0);
 	}
 	return (SUCCESS);
