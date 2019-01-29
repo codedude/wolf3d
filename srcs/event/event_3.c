@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:46 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/29 18:03:47 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/29 19:13:28 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ void		binds_open_door(t_env *env, t_cam *cam, t_map *map)
 	t_door		*door;
 	t_anim		*anim;
 
-	cam_pos.x = (int)cam->pos.x;
-	cam_pos.y = (int)cam->pos.y;
+	cam_pos = IVEC2_INIT((int)cam->pos.x, (int)cam->pos.y);
 	look_pos.x = (int)(cam->pos.x + cam->dir.x * 0.8f);
 	look_pos.y = (int)(cam->pos.y + cam->dir.y * 0.8f);
 	if ((cam_pos.x == look_pos.x && cam_pos.y == look_pos.y)

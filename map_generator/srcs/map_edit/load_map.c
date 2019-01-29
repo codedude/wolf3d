@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:23:17 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 21:50:26 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 18:53:20 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		convert_ent(t_entity *ent, int id)
 		ent->e.door->tex_wall_id--;
 }
 
-static void		convert_parsed_map(t_map *map, t_parser *parser)
+static void		convert_parsed_map(t_env *env, t_map *map, t_parser *parser)
 {
 	t_ivec2		it;
 	t_entity	*ent;
@@ -43,6 +43,8 @@ static void		convert_parsed_map(t_map *map, t_parser *parser)
 			id = ent->id;
 			ft_memcpy(ent, p_ent, sizeof(*ent));
 			convert_ent(ent, id);
+			if (ent->type == ENTITY_DOOR && ent->e.door->item_id >= 0)
+				env->obj.list[ent->e.door->item_id]->unlock_door = ent;
 			it.x++;
 		}
 		free(parser->map.data[it.y]);
@@ -77,8 +79,8 @@ static void		convert_parsed_data(t_env *env, t_map *map, t_parser *parser)
 	t_parser_map	*p_map;
 
 	p_map = &parser->map;
-	convert_parsed_map(map, parser);
 	convert_parsed_obj(env, parser);
+	convert_parsed_map(env, map, parser);
 	env->inspector.world.id[WButton_Floor] = (t_u32)p_map->floor_id;
 	env->inspector.world.id[WButton_Ceil] = (t_u32)p_map->ceil_id;
 	env->inspector.world.draw_ceil = (t_u32)p_map->show_ceil;

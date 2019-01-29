@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_content.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:07:37 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 17:53:57 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/29 19:25:01 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int		load_objects(t_parser *parser, t_parser_obj *p_obj)
 		|| get_and_skipfdigit(parser, &obj->scale) == ERROR)
 			return (set_parse_error(parser, EOGET));
 		ent->tex_id = sp_i;
+		ent->id = i;
 		i++;
 	}
 	return (SUCCESS);
