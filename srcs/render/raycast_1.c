@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/29 17:12:18 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/29 20:25:20 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ int				raycast(t_hit_infos *infos, t_map *map, t_env *env, int x)
 	infos->is_thin = 0;
 	infos->tex_off_x = 0.0f;
 	infos->e_door = NULL;
+	if (map->data[(int)env->cam.pos.y][(int)env->cam.pos.x].type == ENTITY_DOOR)
+		infos->e_door = &map->data[(int)env->cam.pos.y][(int)env->cam.pos.x];
 	infos->hit = raycast_compute(dist, infos, map);
 	get_wall_xz(infos, dir, dist[STEP]);
 	infos->line_height = (int)(env->sdl.canvas_h / infos->z);

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 00:42:05 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 00:50:50 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 19:39:07 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void		t_mw_door_obj(t_env *env, t_door_edit *dedit)
 	ent = dedit->selected;
 	if (ent == NULL)
 		return ;
+	if (ent->e.door->item_id != -1)
+		env->obj.list[ent->e.door->item_id]->unlock_door = NULL;
 	ent->e.door->item_id = get_obj_at_mpos(env);
 	id = ent->e.door->item_id;
 	if (id != -1)

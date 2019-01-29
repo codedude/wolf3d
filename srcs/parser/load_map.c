@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 22:53:54 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 18:06:28 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/29 19:41:30 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,13 @@ static int make_maps(t_env *env, t_map *map)
 		while (j < map->width)
 		{
 			obj = &map->data[i][j];
-			if (obj->type != ENTITY_DOOR)
+			tex = tex_get_sprite(&env->sdl, obj->tex_id);
+			if (tex->n_sprites > 1)
 			{
-				tex = tex_get_sprite(&env->sdl, obj->tex_id);
-				if (tex->n_sprites > 1)
-				{
-					anim = anim_new(obj, ANIM_TEXTURE | ANIM_LOOP, False, 1);
-					if (anim == NULL)
-						return (ERROR);
-					alist_push(&env->anims, anim);
-				}
+				anim = anim_new(obj, ANIM_TEXTURE | ANIM_LOOP, False, 1);
+				if (anim == NULL)
+					return (ERROR);
+				alist_push(&env->anims, anim);
 			}
 			++j;
 		}

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:21:36 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/29 20:29:25 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef struct			s_hit_info {
 	t_float				wall_x;
 	t_float				tex_off_x;
 	t_entity			*e_door;
+	t_tex				*tex;
+	int					tex_key;
 	int					offset;
 	int					line_height;
 	int					draw_start;
@@ -83,8 +85,7 @@ int						thin_wall_ns(t_vec2 dist[3], t_hit_infos *infos,
 int						thin_wall_ew(t_vec2 dist[3], t_hit_infos *infos,
 							t_map *map, t_door *door);
 
-void					draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam,
-							t_entity *e);
+void					draw_wall(t_sdl *sdl, t_hit_infos *infos, t_cam *cam);
 void					draw_ceil(t_env *env, t_sdl *sdl, t_hit_infos *infos,
 							t_vec2 texel);
 void					draw_floor(t_env *env, t_sdl *sdl, t_hit_infos *infos,
