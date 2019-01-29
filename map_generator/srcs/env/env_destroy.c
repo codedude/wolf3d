@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 22:38:55 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:35:38 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,6 @@
 #include "sdl_m.h"
 #include "gen_env.h"
 #include "libft.h"
-
-
-static void		ask_saving(t_env *env)
-{
-	char	str[5];
-	ssize_t	r;
-
-	ft_putstr("W3dEditor: modification occurs\n");
-	ft_putstr("  Would you like to save (Yes/No): ");
-	while ((r = read(0, str, 4)) > 0)
-	{
-		str[r - 1] = '\0';
-		ft_strtolower(str);
-		if (ft_strequ("yes", str) || ft_strequ("y", str))
-		{
-			save_file(env);
-			break ;
-		}
-		if (ft_strequ("no", str) || ft_strequ("n", str))
-			break ;
-		ft_putstr("Please answer by [Yes] or [No]\n");
-		ft_putstr("  Would you like to save (Yes/No): ");
-	}
-}
-
 
 static void		destroy_rpanels(t_env *env)
 {
@@ -53,13 +28,25 @@ static void		destroy_rpanels(t_env *env)
 	}
 }
 
+static void		destroy_ui_tex(t_env *env)
+{
+	int			i;
+
+	i = 0;
+	while (i < UI_FILES_TOTAL)
+	{
+		tex_destroy_pixels(&env->ui_tex[i]);
+		i++;
+	}
+	free(env->ui_tex);
+}
+
 void			env_destroy(t_env *env)
 {
 	sdl_destroy(&env->sdl);
-	if (env->saved == False)
-		ask_saving(env);
+	destroy_ui_tex(env);
 	destroy_map_info(&env->map_info);
-	object_tools_destroy(&env->obj, env->rpan.p[Object_Panel]);
+	object_tools_destroy(&env->obj);
 	editor_destroy(&env->editor);
 	destroy_button_array(env->inspector.action, Max_EditMod_type);
 	checkbox_destroy(&env->inspector.world.cbox_ceil);

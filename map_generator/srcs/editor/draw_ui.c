@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 21:36:34 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:06:31 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,23 @@
 
 static void			draw_mprops(t_env *env, t_mprops *props)
 {
-	t_u32		i;
+	t_canvas	anch;
 
-	draw_canvas_fill(&env->sdl, &props->anchor,
-		&CANVAS_INIT(IVEC2_ZERO, IVEC2_ZERO), 0x222222);
-	i = 0;
-	while (i < Max_editor_action)
-	{
-		button_draw(&env->sdl, &env->cpick, props->actions[i]);
-		i++;
-	}
+	anch.pos = props->anchor.pos - 1;
+	anch.size = props->anchor.size + 2;
+	draw_tex(&env->sdl, &env->cpick, &env->ui_tex[UI_MProps_BG], anch);
+	if (env->mouse.b1 == True && env->mouse.area == Map_properties_buttons)
+		button_draw(&env->sdl, &env->cpick,
+			props->actions[env->mouse.button_index]);
 }
 
 static void			draw_editor(t_env *env)
 {
-	t_u32		i;
+	t_editor	*ed;
 
-	draw_canvas_fill(&env->sdl, &env->editor.anchor,
-		&CANVAS_INIT(IVEC2_ZERO, IVEC2_ZERO), 0x222222);
-	i = 0;
-	while (i < Max_EditMod_type)
-	{
-		button_draw(&env->sdl, &env->cpick, env->editor.switch_b[i]);
-		i++;
-	}
+	ed = &env->editor;
+	draw_tex(&env->sdl, &env->cpick, &env->ui_tex[UI_EMode_BG], ed->anchor);
+	button_draw(&env->sdl, &env->cpick, ed->switch_b[ed->mode]);
 }
 
 void				draw_ui(t_env *env, t_sdl *sdl)

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 01:17:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 01:27:08 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:32:47 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void		rstate_obj_solid(void *v_otools)
 	o->is_solid = !o->is_solid;
 }
 
-int				init_cbox_solid(t_objects_tools *otools, t_sdl *sdl)
+int				init_cbox_solid(t_objects_tools *otools, t_sdl *sdl, t_env *env)
 {
 	t_canvas	anchor;
 
@@ -48,7 +48,7 @@ int				init_cbox_solid(t_objects_tools *otools, t_sdl *sdl)
 		anchor.size = ipercent_of(sdl->width, CB_SOL_S_SZ);
 	else
 		anchor.size = ipercent_of(sdl->height, CB_SOL_S_SZ);
-	if (!(otools->cbox_solid = checkbox_new(anchor, NULL)))
+	if (!(otools->cbox_solid = checkbox_new(anchor, &env->ui_tex[UI_CheckBox])))
 		return (ERROR);
 	checkbox_setup(otools->cbox_solid, otools,
 		rstate_obj_solid, gstate_obj_solid);

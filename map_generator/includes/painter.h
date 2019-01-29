@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:16:31 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:32:14 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:56:48 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ typedef struct s_env			t_env;
 enum			e_brush_Buttons {
 	Pencil,
 	Line,
-	Horizontal_line,
 	Vertical_line,
+	Horizontal_line,
 	Square,
 	Circle,
 	Paint_Bucket,

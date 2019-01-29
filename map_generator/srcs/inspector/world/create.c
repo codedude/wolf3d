@@ -6,14 +6,14 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:55:36 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 22:53:04 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:36:32 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gen_env.h"
 #include "libft.h"
 
-static void		init_cf_prev(t_env *env, t_world_i *w_inf, t_canvas i_anch)
+static void		init_cf_prev(t_env *env, t_world_i *w_inf)
 {
 	t_canvas	anchor;
 	int			offset;
@@ -27,11 +27,6 @@ static void		init_cf_prev(t_env *env, t_world_i *w_inf, t_canvas i_anch)
 	w_inf->prev[WButton_Floor] = anchor;
 	anchor.pos.x = w_inf->radar.center.x + offset;
 	w_inf->prev[WButton_Ceil] = anchor;
-	anchor.pos -= i_anch.pos;
-	texdata_fill_rect(b->tex, i_anch.size, anchor, 0x757575);
-	anchor.pos.x = (w_inf->radar.center.x - (anchor.size.x + offset))
-			- i_anch.pos.x;
-	texdata_fill_rect(b->tex, i_anch.size, anchor, 0x757575);
 }
 
 static int		gstate_draw_ceil(void *v_env)
@@ -66,7 +61,7 @@ static int		init_cbox_draw_ceil(t_env *env, t_sdl *sdl,
 	anchor.pos.y = w_inf->prev[WButton_Ceil].pos.y
 				+ w_inf->prev[WButton_Ceil].size.y;
 	anchor.pos.y += (int)(anchor.size.y * 1.0);
-	if (!(w_inf->cbox_ceil = checkbox_new(anchor, NULL)))
+	if (!(w_inf->cbox_ceil = checkbox_new(anchor, &env->ui_tex[UI_CheckBox])))
 		return (ERROR);
 	checkbox_setup(w_inf->cbox_ceil, env, rstate_draw_ceil, gstate_draw_ceil);
 	return (SUCCESS);
@@ -78,13 +73,15 @@ int				create_world_inpector(t_env *env, t_canvas i_anch)
 	t_button	*b;
 
 	w_inf = &env->inspector.world;
-	if (!(b = button_new(i_anch, NULL, env, inspector_action_world)))
+	if (!(b = button_new(i_anch, &env->ui_tex[UI_World_BG],
+				env, inspector_action_world)))
 		return (ERROR);
+	b->is_active = True;
 	env->inspector.action[World] = b;
 	env->inspector.draw[World] = inspector_draw_world;
 	env->inspector.get_button[World] = inspector_gb_world;
 	init_radar(env, &w_inf->radar, i_anch);
-	init_cf_prev(env, w_inf, i_anch);
+	init_cf_prev(env, w_inf);
 	init_cbox_draw_ceil(env, &env->sdl, w_inf, i_anch);
 	if (env->loaded == False)
 	{

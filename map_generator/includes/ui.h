@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 16:50:42 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 21:49:56 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:25:23 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ struct			s_slider {
 	t_color		*curs_img;
 	t_ivec2		curs_img_size;
 	t_ivec2		pos;
+	t_bool		draw_bar;
 	int			direction;
 	int			size;
 	t_float		step;
@@ -156,7 +157,6 @@ t_slider		*slider_new(t_ivec2 pos, t_tex *imgs[2],
 void			slider_setup(t_slider *slider, int direction,
 						t_vec2 range, t_float step);
 void			slider_destroy(t_slider **slider);
-
 t_bool			slider_hover(t_slider *slider, t_ivec2 pos);
 void			slider_update_bypos(t_slider *slider, t_ivec2 pos);
 

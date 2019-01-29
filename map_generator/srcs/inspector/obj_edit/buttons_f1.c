@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:53:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 23:17:26 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:40:42 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,23 @@ static void		draw_obj_selected(t_env *env)
 	cpick_unset_canvas(cpick);
 }
 
+static void		draw_bg(t_env *env, t_sdl *sdl, t_color_pick *cpick)
+{
+	if (env->obj.edit.selected == -1)
+	{
+		cpick_set_color_mask(cpick, 0x0, 0.75);
+		draw_tex(sdl, cpick, &env->ui_tex[UI_Objects_Prev_BG],
+			env->obj.edit.bg_prev);
+		cpick_unset_color_mask(cpick);
+	}
+	else
+		draw_tex(sdl, cpick, &env->ui_tex[UI_Objects_Prev_BG],
+			env->obj.edit.bg_prev);
+}
+
 void			inspector_draw_object_edit(t_env *env)
 {
+	draw_bg(env, &env->sdl, &env->cpick);
 	if (env->obj.edit.selected != -1)
 		draw_obj_selected(env);
 	checkbox_draw(&env->sdl, &env->cpick, env->obj.cbox_solid);

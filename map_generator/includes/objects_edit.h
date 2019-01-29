@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:39:24 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 01:21:37 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:35:27 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ struct			s_objects_tools {
 	t_object_edit	edit;
 	t_slider		*g_snap;
 	t_checkbox		*cbox_solid;
-	t_color			**map_boxes;
 	t_ivec2			mb_size;
 	t_object_e		*list[MAX_OBJECTS];
 	t_bool			holding;
@@ -85,8 +84,9 @@ struct			s_objects_tools {
 
 int				init_objects_tools(t_objects_tools *obj_tools, t_sdl *sdl,
 							t_env *env);
-int				init_cbox_solid(t_objects_tools *otools, t_sdl *sdl);
-void			object_tools_destroy(t_objects_tools *otools, t_panel *o_pan);
+int				init_cbox_solid(t_objects_tools *otools, t_sdl *sdl,
+								t_env *env);
+void			object_tools_destroy(t_objects_tools *otools);
 
 void			add_new_object(t_objects_tools *otools, t_vec2 pos,
 						t_bool is_solid, t_u32 id);

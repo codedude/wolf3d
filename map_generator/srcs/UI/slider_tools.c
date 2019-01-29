@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 01:30:31 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 01:59:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 04:05:25 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void			slider_draw(t_sdl *sdl, t_color_pick *cpick, t_slider *slider)
 
 	anch.pos = slider->pos;
 	anch.size = slider->slid_img_size;
-	draw_tex_color(sdl, cpick, slider->slid_img, anch);
+	cpick_set_transparency(cpick, 0x0);
+	if (slider->draw_bar == True)
+		draw_tex_color(sdl, cpick, slider->slid_img, anch);
 	anch.size = slider->curs_img_size;
 	stepped = (int)((slider->val - slider->min_val)
 				/ slider->range * (t_float)slider->size);
@@ -36,6 +38,7 @@ void			slider_draw(t_sdl *sdl, t_color_pick *cpick, t_slider *slider)
 		anch.pos.x -= (anch.size.x - slider->slid_img_size.x) / 2;
 	}
 	draw_tex_color(sdl, cpick, slider->curs_img, anch);
+	cpick_unset_transparency(cpick);
 }
 
 t_bool			slider_hover(t_slider *slider, t_ivec2 pos)

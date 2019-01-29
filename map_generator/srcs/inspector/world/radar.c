@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:14:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/28 15:08:33 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:21:56 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,11 @@ void				init_radar(t_env *env, t_radar *radar, t_canvas i_anch)
 	t_button	*b;
 
 	b = env->inspector.action[World];
-	texdata_fill_rect(b->tex, i_anch.size, CANVAS_INIT(0, i_anch.size),
-					0xacacac);
 	radar->f_radius = (t_float)ipercent_of(i_anch.size.x, 80) / 2.0f;
 	radar->center = (int)i_anch.size.x / 2;
 	radar->center.y += (int)(radar->f_radius * 0.2f);
 	texdata_draw_circle_filled(b->tex, CANVAS_INIT(radar->center, i_anch.size)
-					, radar->f_radius, 0x757575);
+					, radar->f_radius, 0x222222);
 	radar->center += i_anch.pos;
 	radar->radius = (int)radar->f_radius;
 	radar->vlines_height = radar->f_radius + 2.0f;

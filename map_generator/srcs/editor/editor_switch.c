@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 23:54:46 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 21:43:40 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 03:03:11 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,16 @@ int				init_editor_switch(t_env *env, t_sdl *sdl, t_editor *editor)
 	pos[1].x = ipercent_of(sdl->width, EM_B_POS2_X);
 	pos[1].y = ipercent_of(sdl->height, EM_B_POS2_Y);
 	anchor.pos = pos[0];
-	editor->switch_b[Painter] = button_new(anchor, NULL, env, sw_painter);
+	editor->switch_b[Painter] = button_new(anchor,
+							&env->ui_tex[UI_EMode_Painter], env, sw_painter);
 	anchor.pos.x = pos[1].x;
-	editor->switch_b[World] = button_new(anchor, NULL, env, sw_world);
+	editor->switch_b[World] = button_new(anchor,
+							&env->ui_tex[UI_EMode_World], env, sw_world);
 	anchor.pos = IVEC2_INIT(pos[0].x, pos[1].y);
-	editor->switch_b[Door] = button_new(anchor, NULL, env, sw_door);
+	editor->switch_b[Door] = button_new(anchor,
+							&env->ui_tex[UI_EMode_Doors], env, sw_door);
 	anchor.pos = pos[1];
-	editor->switch_b[Object_Edit] = button_new(anchor, NULL, env, sw_object);
+	editor->switch_b[Object_Edit] = button_new(anchor,
+							&env->ui_tex[UI_EMode_Objects], env, sw_object);
 	return (SUCCESS);
 }

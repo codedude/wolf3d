@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 16:23:16 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 20:56:59 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 04:24:32 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ t_bool			checkbox_hover(t_checkbox *cbox, t_ivec2 pos)
 	return (is_bounded(pos, cbox->anchor));
 }
 
-void			draw_cross(t_sdl *sdl, t_color_pick *cpick, t_checkbox *cbox)
+static void		draw_cross(t_sdl *sdl, t_color_pick *cpick, t_checkbox *cbox)
 {
 	t_ivec2		px1;
 	t_ivec2		px2;
 
-	px1 = cbox->anchor.pos;
-	px2 = px1 + cbox->anchor.size;
+	px1 = cbox->anchor.pos + 1;
+	px2 = px1 + cbox->anchor.size - 2;
 	draw_line(sdl, cpick, px1, px2);
 	px1.x++;
 	px2.y--;
@@ -37,10 +37,10 @@ void			draw_cross(t_sdl *sdl, t_color_pick *cpick, t_checkbox *cbox)
 	px2.y++;
 	px2.x--;
 	draw_line(sdl, cpick, px1, px2);
-	px1 = cbox->anchor.pos;
-	px2 = px1;
-	px1.x += cbox->anchor.size.x;
-	px2.y += cbox->anchor.size.y;
+	px2.x = cbox->anchor.pos.x;
+	px1.x = px2.x + (cbox->anchor.size.x - 2);
+	px1.y = cbox->anchor.pos.y + 1;
+	px2.y = px1.y + cbox->anchor.size.y - 2;
 	draw_line(sdl, cpick, px1, px2);
 	px1.y++;
 	px2.x++;
@@ -70,7 +70,7 @@ void			checkbox_draw(t_sdl *sdl, t_color_pick *cpick, t_checkbox *cbox)
 		draw_tex_color(sdl, cpick, cbox->tex, cbox->anchor);
 	if (state == Check)
 	{
-		cpick_set_color(cpick, 0xffffff);
+		cpick_set_color(cpick, 0x333333);
 		draw_cross(sdl, cpick, cbox);
 	}
 }

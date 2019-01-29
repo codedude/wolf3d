@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 12:06:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 20:54:07 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/29 02:40:13 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,5 @@ int				save_file(t_env *env)
 	ft_putstr(env->save_file);
 	ft_putstr(": file saved\n");
 	close(fd);
-	env->saved = True;
 	return (SUCCESS);
 }
