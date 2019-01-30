@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:53:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:17:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 16:39:00 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int					create_object_edit_inpector(t_env *env, t_canvas i_anch)
 {
 	t_button	*b;
 
-	init_objects_tools(&env->obj, &env->sdl, env);
-	if (!(b = button_new(i_anch, &env->ui_tex[UI_Objects_BG],
+	if (init_objects_tools(&env->obj, &env->sdl, env) == ERROR
+	|| !(b = button_new(i_anch, &env->ui_tex[UI_Objects_BG],
 				env, inspector_action_object_edit)))
 		return (ERROR);
 	b->is_active = True;

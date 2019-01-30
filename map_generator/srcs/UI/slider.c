@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 01:30:31 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/30 15:16:16 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 16:39:49 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_slider		*slider_new(t_ivec2 pos, t_tex *imgs[2],
 	slider->curs_img_size = img_size[1];
 	slider->pos = pos;
 	slider->draw_bar = True;
-	if (slider->slid_img == NULL || slider->curs_img)
+	if (slider->slid_img == NULL || slider->curs_img == NULL)
 		slider_destroy(&slider);
 	return (slider);
 }
