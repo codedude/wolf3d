@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/15 22:26:33 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 18:52:58 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 13:25:07 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ t_entity	**new_map_data(int width, int height)
 	i = 0;
 	while (i < height)
 	{
-		if (!(data[i]
-			= (t_entity *)ft_memalloc(sizeof(t_entity) * (size_t)width)))
+		if (!(data[i] = (t_entity *)ft_memalloc(
+			sizeof(t_entity) * (size_t)width)))
 		{
 			destroy_map_data(&data, width, height);
 			return (NULL);

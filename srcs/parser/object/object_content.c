@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_content.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:07:37 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 19:25:01 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 13:25:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int		set_parse_error(t_parser *parser, int err_no)
 {
 	parser->err_no = err_no;
 	return (Parse_error);
-
 }
 
 static int		load_objects(t_parser *parser, t_parser_obj *p_obj)
@@ -60,6 +59,7 @@ static int		load_objects(t_parser *parser, t_parser_obj *p_obj)
 		|| skipchar(parser, ':') == ERROR
 		|| get_and_skipfdigit(parser, &obj->scale) == ERROR)
 			return (set_parse_error(parser, EOGET));
+		obj->scale = clamp_float(obj->scale, 0.0, 1.0);
 		ent->tex_id = sp_i;
 		ent->id = i;
 		i++;
