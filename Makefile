@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/27 19:07:10 by jbulant          ###   ########.fr        #
+#    Updated: 2019/01/30 12:54:40 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,21 +55,23 @@ CFLAGS		+=	-I$(SDLINCD) -I$(LIBFTD)/includes -I$(LIBTPOOLD)/includes \
 				-Wconversion $(FLAGS_OPT)
 LDFLAGS		+=	$(FLAGS_OPT)
 
-SRCS_F		=	main env
+SRCS_F		=	main env_1 env_2
 SRCS_F		+=	$(RENDERD)/render $(RENDERD)/raycast_1 $(RENDERD)/raycast_2 \
 				$(RENDERD)/raycast_color $(RENDERD)/raycast_draw \
 				$(RENDERD)/raycast_door_1 $(RENDERD)/raycast_door_2 \
 				$(RENDERD)/raycast_sprite_1 $(RENDERD)/raycast_sprite_2 \
-				$(RENDERD)/entity $(RENDERD)/entity_new $(RENDERD)/list \
+				$(RENDERD)/raycast_sprite_3 \
+				$(RENDERD)/entity $(RENDERD)/entity_new \
 				$(RENDERD)/depth_filters $(RENDERD)/color_filters \
-				$(RENDERD)/list $(RENDERD)/anim \
+				$(RENDERD)/list_1 $(RENDERD)/list_2 $(RENDERD)/anim \
 				$(RENDERD)/anim_spec $(RENDERD)/anim_list
 SRCS_F		+=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
 				$(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2 \
 				$(SDLD)/texture_1 $(SDLD)/texture_2 $(SDLD)/sound \
-				$(SDLD)/music $(SDLD)/audio $(SDLD)/text
+				$(SDLD)/music $(SDLD)/audio_1 $(SDLD)/audio_2 $(SDLD)/text_1 \
+				$(SDLD)/text_2
 SRCS_F		+=	$(EVENTD)/event_1 $(EVENTD)/event_2 $(EVENTD)/event_3 \
-				$(EVENTD)/event
+				$(EVENTD)/event $(EVENTD)/event_4
 SRCS_F		+=	$(PLAYERD)/move_1 $(PLAYERD)/move_2 $(PLAYERD)/move_3 \
 				$(PLAYERD)/move_4
 SRCS_F		+=	$(UTILSD)/vector $(UTILSD)/types

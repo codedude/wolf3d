@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:13:40 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:15:56 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # define THREADS		0
 # define TASKS			32
 # define WINDOW_NAME	"DAT Wolf3D"
+
+# define WINDOW_WIDTH	1280
+# define WINDOW_HEIGHT	720
 
 typedef struct s_map	t_map;
 typedef struct s_algo	t_algo;
@@ -67,6 +70,8 @@ struct				s_env {
 
 int					env_init(t_env *env, char *filename);
 void				env_destroy(t_env *env);
+int					wolf_init(t_env *env, char *filename);
+void				wolf_destroy(t_env *env, t_map *map);
 
 int					load_map(t_env *env, t_map *map, char *mapfile);
 void				map_destroy(t_map *map);

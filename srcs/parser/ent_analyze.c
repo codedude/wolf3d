@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ent_analyze.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 16:55:19 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 19:21:12 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 13:07:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "parser.h"
-
 
 int				world_ent_analyze(t_parser *parser)
 {
@@ -78,7 +77,7 @@ int				object_ent_analyze(t_parser *parser)
 
 static int		get_obj_type_name(t_parser *parser, size_t wlen)
 {
-	static char		*name[P_ENT_COUNT] = {
+	static char	*name[P_ENT_COUNT] = {
 		P_ENT_TOSTRING
 	};
 	int			i;

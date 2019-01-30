@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 14:45:48 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 12:48:09 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 t_bool					compute_event(t_env *env);
 t_bool					event_kb_poll(SDL_Event *event, t_env *env);
+void					event_kb_poll_up(SDL_Event *event, t_cam *cam,
+							t_player *player, t_env *env);
 void					event_kb_state(const Uint8	*state, t_env *env);
 void					switch_effect(t_cam *cam, void *new, int type);
 void					binds_open_door(t_env *env, t_cam *cam, t_map *map);

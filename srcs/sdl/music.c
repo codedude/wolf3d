@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:22:42 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/24 13:01:16 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:18:41 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,6 @@ int			music_play(t_audio *audio, int id)
 		return (audio_error("Can't play music"));
 	audio->current_music = id;
 	return (SUCCESS);
-}
-
-void		music_pause(void)
-{
-	Mix_PauseMusic();
-}
-
-void		music_resume(void)
-{
-	Mix_ResumeMusic();
 }
 
 void		music_stop(t_audio *audio)

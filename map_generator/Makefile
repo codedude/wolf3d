@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/27 22:42:02 by jbulant          ###   ########.fr        #
+#    Updated: 2019/01/30 13:13:06 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -137,7 +137,7 @@ MTRACK_GETA_F	=	init		get_map_window
 PARENT_F	=	$(SDLD)/sdl1 $(SDLD)/sdl2 $(SDLD)/sdl3 $(SDLD)/sdl_load_image \
 				$(SDLD)/export_bmp_1 $(SDLD)/export_bmp_2 \
 				$(SDLD)/texture_1 $(SDLD)/texture_2 $(SDLD)/sound \
-				$(SDLD)/music $(SDLD)/audio
+				$(SDLD)/music $(SDLD)/audio_1 $(SDLD)/audio_2
 PARENT_F	+=	$(RENDERD)/entity $(RENDERD)/entity_new
 PARENT_F	+=	$(PARENT_SD)/utils/types
 PARENT_F	+=	$(addprefix $(PARSERD)/, $(PARSER_F))

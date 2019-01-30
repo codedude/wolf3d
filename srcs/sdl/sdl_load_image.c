@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 13:07:22 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:22:56 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:26:07 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "env.h"
 #include "parser.h"
 
-SDL_Surface				*sdl_load_image(char *filename)
+SDL_Surface		*sdl_load_image(char *filename)
 {
 	SDL_Surface	*surf;
 
@@ -33,12 +33,32 @@ SDL_Surface				*sdl_load_image(char *filename)
 	return (surf);
 }
 
-int						sdl_convert_data(t_tex *tex, SDL_Surface *surf)
+static void		fill_pixels(t_tex *tex, SDL_Surface *surf, Uint8 *pixels,
+					int i)
+{
+	int		x;
+	int		y;
+	Uint8	*p;
+
+	y = 0;
+	while (y < tex->h)
+	{
+		x = 0;
+		while (x < tex->w)
+		{
+			p = pixels + (y + i / tex->n_cols * tex->h) * surf->pitch
+			+ (x + i % tex->n_cols * tex->w) * surf->format->BytesPerPixel;
+			tex->pixels[i][x + y * tex->w] =
+					(t_pixel)(p[0] << 16 | p[1] << 8 | p[2]);
+			++x;
+		}
+		++y;
+	}
+}
+
+int				sdl_convert_data(t_tex *tex, SDL_Surface *surf)
 {
 	Uint8		*pixels;
-	Uint8		*p;
-	int			x;
-	int			y;
 	int			i;
 
 	if ((tex->pixels = (t_pixel **)malloc(sizeof(t_pixel *)
@@ -51,20 +71,7 @@ int						sdl_convert_data(t_tex *tex, SDL_Surface *surf)
 		if ((tex->pixels[i] = (t_pixel *)malloc(sizeof(t_pixel)
 			* (size_t)(tex->h * tex->w))) == NULL)
 			return (ERROR);
-		y = 0;
-		while (y < tex->h)
-		{
-			x = 0;
-			while (x < tex->w)
-			{
-				p = pixels + (y + i / tex->n_cols * tex->h) * surf->pitch
-				+ (x + i % tex->n_cols * tex->w) * surf->format->BytesPerPixel;
-				tex->pixels[i][x + y * tex->w] =
-						(t_pixel)(p[0] << 16 | p[1] << 8 | p[2]);
-				++x;
-			}
-			++y;
-		}
+		fill_pixels(tex, surf, pixels, i);
 		++i;
 	}
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 22:53:54 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/30 10:17:00 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 13:09:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,40 +18,34 @@
 #include "libft.h"
 #include "parser.h"
 
-static int make_maps(t_env *env, t_map *map)
+static int	make_maps(t_env *env, t_map *map)
 {
 	int			i;
 	int			j;
 	t_entity	*obj;
-	t_tex		*tex;
 	t_anim		*anim;
 
-	i = 0;
-	while (i < map->height)
+	i = -1;
+	while (++i < map->height)
 	{
-		j = 0;
-		while (j < map->width)
+		j = -1;
+		while (++j < map->width)
 		{
 			obj = &map->data[i][j];
 			if (obj->type != ENTITY_VOID)
-			{
-				tex = tex_get_wall(&env->sdl, obj->tex_id - 1);
-				if (tex->n_sprites > 1)
+				if (tex_get_wall(&env->sdl, obj->tex_id - 1)->n_sprites > 1)
 				{
 					anim = anim_new(obj, ANIM_TEXTURE | ANIM_LOOP, False, 2);
 					if (anim == NULL)
 						return (ERROR);
 					alist_push(&env->anims, anim);
 				}
-			}
-			++j;
 		}
-		++i;
 	}
 	return (SUCCESS);
 }
 
-static int make_sprites(t_env *env)
+static int	make_sprites(t_env *env)
 {
 	int			i;
 	t_entity	*obj;
@@ -75,14 +69,14 @@ static int make_sprites(t_env *env)
 	return (SUCCESS);
 }
 
-static int		make_anims(t_env *env, t_map *map)
+static int	make_anims(t_env *env, t_map *map)
 {
 	if (make_sprites(env) == ERROR || make_maps(env, map) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
 }
 
-static int		convert_parsed_data(t_env *env, t_map *map, t_parser *parser)
+static int	convert_parsed_data(t_env *env, t_map *map, t_parser *parser)
 {
 	t_parser_map	*p_map;
 
@@ -100,7 +94,7 @@ static int		convert_parsed_data(t_env *env, t_map *map, t_parser *parser)
 	return (make_anims(env, map));
 }
 
-int				load_map(t_env *env, t_map *map, char *mapfile)
+int			load_map(t_env *env, t_map *map, char *mapfile)
 {
 	int			conf_fd;
 	int			ret_value;

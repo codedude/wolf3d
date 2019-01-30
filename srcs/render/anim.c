@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 16:32:48 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 17:16:40 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:50:11 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void			compute_anim(t_env *env, t_list_anim **head)
 			r = anim_texture(&env->sdl, anim);
 		else if ((anim->type & ANIM_MASK_TYPE) == ANIM_DOOR)
 			r = anim_door(env, anim);
-		else if ((anim->type  & ANIM_MASK_TYPE)== ANIM_SKYBOX)
+		else if ((anim->type & ANIM_MASK_TYPE) == ANIM_SKYBOX)
 			r = anim_skybox(&env->sdl, anim);
 		if (r && (anim->type & ANIM_MASK_LOOP) != ANIM_LOOP)
 			alist_del_elem(head);

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/29 17:56:02 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:07:36 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ struct				s_entity {
 		t_brick		*brick;
 		t_door		*door;
 		t_object	*object;
+	}				e;
+};
+
+struct				s_norm {
+	union {
+		int			tweak;
 	}				e;
 };
 

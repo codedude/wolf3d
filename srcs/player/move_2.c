@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 14:56:51 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 12:41:44 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void		player_set_velocity(t_sdl *sdl, t_player *player)
 	t_float		max_v;
 	t_vec2		accel;
 
-
 	if ((player->action_state & ACTION_DASHING) == 0)
 	{
 		accel.x = set_accel_dim(player->controller.x, player->velocity.x,
@@ -47,7 +46,7 @@ static void		player_set_velocity(t_sdl *sdl, t_player *player)
 		player->velocity += accel;
 		max_v = vec_len(player->velocity);
 		if (max_v > PLAYER_MAXSPEED)
-			player->velocity *=  PLAYER_MAXSPEED / max_v;
+			player->velocity *= PLAYER_MAXSPEED / max_v;
 	}
 	else
 	{

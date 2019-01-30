@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 16:41:50 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 09:55:37 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:27:43 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,8 @@ static int		tex_parse_line(char **line_split, t_tex *tex, int type)
 	}
 	else
 		params[1] = 1;
-	if (type == 0)
-		path = concat_path_file("data/texture/", line_split[0]);
-	else
-		path = concat_path_file("data/sprite/", line_split[0]);
-	if (path == NULL)
+	if ((path = concat_path_file(type == 0 ? "data/texture/" : "data/sprite/",
+			line_split[0])) == NULL)
 		return (ERROR);
 	if (tex_load(tex, path, params[0], params[1]) == ERROR)
 		return (ERROR);

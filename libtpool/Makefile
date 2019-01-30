@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 23:02:03 by vparis            #+#    #+#              #
-#    Updated: 2019/01/18 15:04:53 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/30 12:23:20 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ $(NAME): $(OBJS)
 	@echo "libtpool - compiled"
 
 %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -o $@ -c $< $(LDLIBS)
+	@$(CC) $(CFLAGS) -o $@ -c $< $(LDLIBS)
 
 showlib: $(NAME)
 	@$(AR) -t $(NAME)

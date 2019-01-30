@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 14:24:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/25 10:35:31 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:09:30 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@
 # include "SDL_ttf.h"
 # include "types.h"
 
-/*
-** forward declaration
-*/
-
 # define KEY_ESCAPE		SDLK_ESCAPE
 # define KEY_FPS		SDLK_1
 # define KEY_SAVE		SDLK_2
@@ -31,6 +27,12 @@
 # define KEY_BW			SDLK_5
 # define KEY_SPEED		SDLK_6
 # define KEY_MODE		SDLK_SPACE
+
+# define TEX_WALL_FILE		"data/texture/textures.conf"
+# define TEX_SPRITE_FILE	"data/sprite/sprites.conf"
+# define TEX_SKYBOX_FILE	"data/skybox.png"
+
+# define FONT_PATH			"data/font/monofonto.ttf"
 
 typedef struct s_env	t_env;
 typedef struct s_text	t_text;
@@ -46,10 +48,6 @@ typedef struct s_sdl	t_sdl;
 ** n_sprites = total nb of sprites in the texture
 */
 
-# define TEX_WALL_FILE		"data/texture/textures.conf"
-# define TEX_SPRITE_FILE	"data/sprite/sprites.conf"
-# define TEX_SKYBOX_FILE	"data/skybox.png"
-
 struct				s_tex {
 	t_pixel			**pixels;
 	int				w;
@@ -58,35 +56,12 @@ struct				s_tex {
 	int				n_cols;
 };
 
-int					tex_load(t_tex *tex, char *filename, int n_sprites,
-						int n_cols);
-int					tex_load_all(t_sdl *sdl);
-void				tex_destroy_all(t_sdl *sdl);
-void				tex_destroy_pixels(t_tex *tex);
-t_tex				*tex_get_wall(t_sdl *sdl, int id);
-t_tex				*tex_get_sprite(t_sdl *sdl, int id);
-
-/*
-** TEXT
-*/
-
-# define FONT_PATH "data/font/monofonto.ttf"
-
 struct				s_text {
 	t_tex			font_little;
 	t_tex			font_big;
 };
 
-int					text_init(t_text *text);
-void				text_destroy(t_text *text);
-int					text_error(char *info);
-void				*text_error_null(char *info);
-
-int					text_load_all(t_text *text);
-void				text_write(t_env *env, int x, int y, char *str);
-
-
-typedef struct		s_sdl {
+struct				s_sdl {
 	t_tex			*tex_walls;
 	t_tex			*tex_sprites;
 	t_tex			tex_skybox;
@@ -109,7 +84,27 @@ typedef struct		s_sdl {
 	SDL_Texture		*texture;
 	SDL_Renderer	*renderer;
 	SDL_Window		*window;
-}					t_sdl;
+};
+
+int					tex_load(t_tex *tex, char *filename, int n_sprites,
+						int n_cols);
+int					tex_load_all(t_sdl *sdl);
+void				tex_destroy_all(t_sdl *sdl);
+void				tex_destroy_pixels(t_tex *tex);
+t_tex				*tex_get_wall(t_sdl *sdl, int id);
+t_tex				*tex_get_sprite(t_sdl *sdl, int id);
+
+/*
+** TEXT
+*/
+
+int					text_init(t_text *text);
+void				text_destroy(t_text *text);
+int					text_error(char *info);
+void				*text_error_null(char *info);
+
+int					text_load_all(t_text *text);
+void				text_write(t_env *env, int x, int y, char *str);
 
 /*
 ** sdl1.c

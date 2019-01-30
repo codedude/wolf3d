@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:46 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 11:04:31 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:45:37 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,32 @@ void		switch_effect(t_cam *cam, void *new, int type)
 		*current = new;
 }
 
+static void	binds_door_next(t_env *env, t_door *door, t_entity *entity)
+{
+	t_anim	*anim;
+
+	if (door->item_id != -1
+		&& klist_find(&env->player.inventory, door->item_id) == NULL)
+	{
+		sound_play(&env->audio, SOUND_DOOR_NOKEY);
+		return ;
+	}
+	anim = anim_new(entity,
+		ANIM_DOOR | ANIM_ONCE, False, ANIM_DOOR_SPEED);
+	if (alist_push(&env->anims, anim) == SUCCESS)
+	{
+		if (door->item_id != -1)
+			sound_play(&env->audio, SOUND_DOOR_UNLOCK);
+		sound_play(&env->audio, SOUND_DOOR_OPEN);
+	}
+	door->item_id = -1;
+}
+
 void		binds_open_door(t_env *env, t_cam *cam, t_map *map)
 {
 	t_ivec2		cam_pos;
 	t_ivec2		look_pos;
 	t_door		*door;
-	t_anim		*anim;
 
 	cam_pos = IVEC2_INIT((int)cam->pos.x, (int)cam->pos.y);
 	look_pos.x = (int)(cam->pos.x + cam->dir.x * 0.8f);
@@ -62,20 +82,6 @@ void		binds_open_door(t_env *env, t_cam *cam, t_map *map)
 	if (map->data[look_pos.y][look_pos.x].type == ENTITY_DOOR
 		&& door->is_active == False)
 	{
-		if (door->item_id != -1
-		&& klist_find(&env->player.inventory, door->item_id) == NULL)
-		{
-			sound_play(&env->audio, SOUND_DOOR_NOKEY);
-			return ;
-		}
-		anim = anim_new(&map->data[look_pos.y][look_pos.x],
-			ANIM_DOOR | ANIM_ONCE, False, ANIM_DOOR_SPEED);
-		if (alist_push(&env->anims, anim) == SUCCESS)
-		{
-			if (door->item_id != -1)
-				sound_play(&env->audio, SOUND_DOOR_UNLOCK);
-			sound_play(&env->audio, SOUND_DOOR_OPEN);
-		}
-		door->item_id = -1;
+		binds_door_next(env, door, &map->data[look_pos.y][look_pos.x]);
 	}
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   text.c                                             :+:      :+:    :+:   */
+/*   text_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:42:18 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/21 16:52:41 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:40:29 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,52 +17,22 @@
 #include "libft.h"
 #include "env.h"
 
-int			text_error(char *info)
-{
-	ft_putendl_fd(info, 2);
-	ft_putendl_fd(TTF_GetError(), 2);
-	return (ERROR);
-}
-
-void		*text_error_null(char *info)
-{
-	ft_putendl_fd(info, 2);
-	ft_putendl_fd(TTF_GetError(), 2);
-	return (NULL);
-}
-
-int			text_init(t_text *text)
-{
-	if (TTF_Init() == -1)
-		return (text_error("Can't init TTF"));
-	if (text_load_all(text) == ERROR)
-		return (text_error("Can't init fonts"));
-	return (SUCCESS);
-}
-
-void		text_destroy(t_text *text)
+void			text_destroy(t_text *text)
 {
 	tex_destroy_pixels(&text->font_little);
 	tex_destroy_pixels(&text->font_big);
 	TTF_Quit();
 }
 
-TTF_Font	*text_load_font(char *filename, int font_size)
+static TTF_Font	*text_load_font(char *filename, int font_size)
 {
 	return (TTF_OpenFont(filename, font_size));
 }
 
-int			text_load_font_surf(t_tex *tex, char *filename, int size,
-				SDL_Color color)
+static void		text_init_tab(char texte[96])
 {
-	TTF_Font	*font;
-	SDL_Surface	*surf;
-	SDL_Surface	*tmp;
-	char 		texte[96];
-	int			i;
+	int		i;
 
-	if ((font = text_load_font(filename, size)) == NULL)
-		return (text_error("Can't load font"));
 	i = 0;
 	while (i < 95)
 	{
@@ -70,6 +40,19 @@ int			text_load_font_surf(t_tex *tex, char *filename, int size,
 		++i;
 	}
 	texte[i] = 0;
+}
+
+static int		text_load_font_surf(t_tex *tex, char *filename, int size,
+					SDL_Color color)
+{
+	TTF_Font	*font;
+	SDL_Surface	*surf;
+	SDL_Surface	*tmp;
+	char		texte[96];
+
+	if ((font = text_load_font(filename, size)) == NULL)
+		return (text_error("Can't load font"));
+	text_init_tab(texte);
 	if ((tmp = TTF_RenderText_Solid(font, texte, color)) == NULL)
 	{
 		ft_putendl_fd("Can't draw test in surface", 2);
@@ -87,45 +70,13 @@ int			text_load_font_surf(t_tex *tex, char *filename, int size,
 	return (SUCCESS);
 }
 
-int			text_load_all(t_text *text)
+int				text_load_all(t_text *text)
 {
 	if (text_load_font_surf(&(text->font_little), FONT_PATH, 24,
-		(SDL_Color){255,255,255,255}) == ERROR)
+		(SDL_Color){255, 255, 255, 255}) == ERROR)
 		return (ERROR);
 	if (text_load_font_surf(&(text->font_big), FONT_PATH, 48,
-		(SDL_Color){255,255,255,255}) == ERROR)
+		(SDL_Color){255, 255, 255, 255}) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
-}
-
-void		text_write(t_env *env, int x, int y, char *str)
-{
-	int		i;
-	t_tex	*tex;
-	t_color	color;
-	int		x_pad;
-	int		it[2];
-
-	tex = &(env->sdl.text.font_little);
-	i = 0;
-	x_pad = 0;
-	while (str[i] != 0)
-	{
-		it[0] = 0;
-		while (it[0] < tex->w)
-		{
-			it[1] = 0;
-			while (it[1] < tex->h)
-			{
-				color = sdl_get_pixel(tex, it[0], it[1], str[i] - 32);
-				if (color.rgba > 0)
-					sdl_put_pixel(&env->sdl, x + it[0] + i * tex->w + x_pad,
-						y + it[1], color);
-				++it[1];
-			}
-			++it[0];
-		}
-		x_pad += 2;
-		++i;
-	}
 }

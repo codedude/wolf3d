@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   audio.c                                            :+:      :+:    :+:   */
+/*   audio_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:42:18 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 11:02:34 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 12:21:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,6 @@
 #include "types.h"
 #include "libft.h"
 #include "audio.h"
-
-int			audio_error(char *info)
-{
-	ft_putendl_fd(info, 2);
-	ft_putendl_fd(Mix_GetError(), 2);
-	return (ERROR);
-}
-
-void		*audio_error_null(char *info)
-{
-	ft_putendl_fd(info, 2);
-	ft_putendl_fd(Mix_GetError(), 2);
-	return (NULL);
-}
 
 int			audio_init(t_audio *audio)
 {
@@ -56,29 +42,7 @@ int			audio_init(t_audio *audio)
 	return (audio_load_all(audio));
 }
 
-int			audio_destroy(t_audio *audio)
-{
-	audio_unload_all(audio);
-	Mix_CloseAudio();
-	while (Mix_Init(0))
-		Mix_Quit();
-	return (SUCCESS);
-}
-
-int			count_files(char **files)
-{
-	int	n;
-
-	n = 0;
-	while (*files != NULL)
-	{
-		++n;
-		++files;
-	}
-	return (n);
-}
-
-int			audio_load_music(t_audio *audio, char **files)
+static int	audio_load_music(t_audio *audio, char **files)
 {
 	int		i;
 
@@ -96,7 +60,7 @@ int			audio_load_music(t_audio *audio, char **files)
 	return (SUCCESS);
 }
 
-int			audio_load_sound(t_audio *audio, char **files)
+static int	audio_load_sound(t_audio *audio, char **files)
 {
 	int		i;
 

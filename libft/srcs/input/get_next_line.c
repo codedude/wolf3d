@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/09 18:33:59 by vparis            #+#    #+#             */
-/*   Updated: 2018/12/15 20:51:13 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 12:05:04 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char	*ft_strjoin_proper(char **s1, char *s2)
 	*s1 = tmp;
 	return (tmp);
 }
+
 char	*ft_strndup(const char *src, size_t n)
 {
 	char *dup;
