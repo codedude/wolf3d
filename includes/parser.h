@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 14:48:58 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/27 19:20:13 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:22:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,12 @@ void				ft_stackclear(t_stack **stack);
 
 int					read_file(char *filename, t_stack **stack);
 int					parse_map(t_sdl *sdl, t_parser *parser, int conf_fd);
+int					clean_info(t_parser *parser);
+int					check_spawn(t_parser_map *map, t_parser *parser);
+int					check_tex_id(t_parser *parser, int tex_id);
+t_bool				ent_is_wall(t_parser_map *map, t_ivec2 pos);
+int					check_door_pos(t_parser *parser, t_parser_map *map,
+						t_ivec2 pos, t_door *door);
 
 /*
 **		content_analyze
@@ -191,11 +197,8 @@ int					world_ent_analyze(t_parser *parser);
 **	tools.c
 */
 
-int					ft_iswhitespace(int c);
-char				*skip_whitespace(char *str);
 void				destroy_map_data(t_entity ***a_data, int width, int height);
 t_entity			**new_map_data(int width, int height);
-int					is_filechar(int c);
 
 /*
 **	tools_2.c
@@ -225,4 +228,14 @@ size_t				get_next_word_len(t_parser *parser, int (*cmp)(int));
 int					is_valid_filename(char *filename);
 int					get_next_opbracket(t_parser *parser);
 int					get_next_clbracket(t_parser *parser);
+
+/*
+** tools_5.c
+*/
+int					is_sdigit(int c);
+char				*skip_digit(char *str);
+int					ft_iswhitespace(int c);
+char				*skip_whitespace(char *str);
+int					is_filechar(int c);
+
 #endif

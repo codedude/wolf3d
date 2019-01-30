@@ -3,40 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tools_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/15 22:26:33 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 19:52:53 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:17:11 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 #include "parser.h"
-
-static int		is_sdigit(int c)
-{
-	return (c == '+' || c == '-' || ft_isdigit(c));
-}
-
-static char		*skip_digit(char *str)
-{
-	while (ft_isdigit(*str))
-		str++;
-	return (str);
-}
-
-int				get_and_skipivec2(t_parser *parser, t_ivec2 *get)
-{
-	int		x;
-	int		y;
-
-	if (get_and_skipsdigit(parser, &x) == ERROR
-	|| get_and_skipsdigit(parser, &y) == ERROR)
-		return (ERROR);
-	*get = IVEC2_INIT(x, y);
-	return (SUCCESS);
-}
 
 int				get_and_skipdigit(t_parser *parser, int *get)
 {

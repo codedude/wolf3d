@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/30 12:54:40 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/30 14:23:32 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,22 +75,16 @@ SRCS_F		+=	$(EVENTD)/event_1 $(EVENTD)/event_2 $(EVENTD)/event_3 \
 SRCS_F		+=	$(PLAYERD)/move_1 $(PLAYERD)/move_2 $(PLAYERD)/move_3 \
 				$(PLAYERD)/move_4
 SRCS_F		+=	$(UTILSD)/vector $(UTILSD)/types
-SRCS_F		+=	$(addprefix $(PARSERD)/, $(PARSER_F))
-
-PARSER_F	=	map_parser		stack 			reader				\
-				ent_analyze		load_map 							\
-				parse_map
-PARSER_F	+=	$(addprefix tools/, $(PTOOLS_F))
-PARSER_F	+=	$(addprefix map/, $(PMAP_F))
-PARSER_F	+=	$(addprefix object/, $(POBJ_F))
-PARSER_F	+=	$(addprefix spawn/, $(PSPAWN_F))
-PARSER_F	+=	$(addprefix world/, $(PWORLD_F))
-PTOOLS_F	=	tools			tools_2			tools_3				\
-				tools_4
-PMAP_F		=	map_content
-POBJ_F		=	object_content
-PSPAWN_F	=	spawn_content
-PWORLD_F	=	world_content
+SRCS_F		+=	$(PARSERD)/stack $(PARSERD)/reader \
+				$(PARSERD)/ent_analyze $(PARSERD)/ent_analyze_2 \
+				$(PARSERD)/load_map $(PARSERD)/parse_map \
+				$(PARSERD)/parse_map_2 $(PARSERD)/parse_map_3 \
+				$(PARSERD)/tools/tools $(PARSERD)/tools/tools_2 \
+				$(PARSERD)/tools/tools_3 $(PARSERD)/tools/tools_4 \
+				$(PARSERD)/tools/tools_5 $(PARSERD)/content/map_content \
+				$(PARSERD)/content/world_content \
+				$(PARSERD)/content/object_content \
+				$(PARSERD)/content/spawn_content
 
 HEADERS_F	= 	env sdl_m raycast types list entity anim event \
 				export_bmp parser camera player audio

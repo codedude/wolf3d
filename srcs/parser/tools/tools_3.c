@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/15 22:20:22 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 19:52:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:18:10 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,28 +65,6 @@ int			get_next_char(t_parser *parser, int c)
 		if (check_parse_line(parser) == ERROR)
 			return (ERROR);
 	}
-	return (SUCCESS);
-}
-
-int			skipchar(t_parser *parser, char c)
-{
-	if (get_next_char(parser, c) == ERROR)
-		return (ERROR);
-	parser->line++;
-	return (SUCCESS);
-}
-
-int			skipword(t_parser *parser, char *word)
-{
-	size_t		wlen;
-
-	wlen = ft_strlen(word);
-	if (get_next_char(parser, *word) == ERROR
-	|| !ft_strnequ(parser->line, word, wlen)
-	|| (!ft_iswhitespace(parser->line[wlen])
-		&& parser->line[wlen] != ':' && parser->line[wlen] != '\0'))
-		return (ERROR);
-	parser->line += wlen;
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/30 13:13:06 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/30 14:29:16 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -142,19 +142,13 @@ PARENT_F	+=	$(RENDERD)/entity $(RENDERD)/entity_new
 PARENT_F	+=	$(PARENT_SD)/utils/types
 PARENT_F	+=	$(addprefix $(PARSERD)/, $(PARSER_F))
 
-PARSER_F	=	map_parser		stack 			reader				\
-				ent_analyze		parse_map
+PARSER_F	=	stack 			reader			ent_analyze_2	\
+				ent_analyze		parse_map		parse_map_2 parse_map_3
 PARSER_F	+=	$(addprefix tools/, $(PTOOLS_F))
-PARSER_F	+=	$(addprefix map/, $(PMAP_F))
-PARSER_F	+=	$(addprefix object/, $(POBJ_F))
-PARSER_F	+=	$(addprefix spawn/, $(PSPAWN_F))
-PARSER_F	+=	$(addprefix world/, $(PWORLD_F))
+PARSER_F	+=	$(addprefix content/, $(PCONTENT_F))
 PTOOLS_F	=	tools			tools_2			tools_3				\
-				tools_4
-PMAP_F		=	map_content
-POBJ_F		=	object_content
-PSPAWN_F	=	spawn_content
-PWORLD_F	=	world_content
+				tools_4 tools_5
+PCONTENT_F		=	map_content object_content spawn_content world_content
 
 HEADERS_F	=	mouse_tracker	editor		sdl_plus	inspector	\
 				objects_edit	map_edit	painter		ui_positions \

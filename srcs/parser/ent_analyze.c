@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 16:55:19 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/30 13:07:29 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 14:07:05 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,55 +24,6 @@ int				world_ent_analyze(t_parser *parser)
 		return (Parse_error);
 	parser->a_state |= Parse_action_world;
 	return (World_parsing);
-}
-
-static int		map_ent_paramaters(t_parser_map *map, t_parser *parser)
-{
-	if (parser->a_state & Parse_action_map)
-	{
-		parser->err_no = ETDEF;
-		return (ERROR);
-	}
-	if (get_and_skipdigit(parser, &map->width) == ERROR
-	|| get_and_skipdigit(parser, &map->height) == ERROR)
-	{
-		parser->err_no = EMPAR;
-		return (ERROR);
-	}
-	return (SUCCESS);
-}
-
-int				map_ent_analyze(t_parser *parser)
-{
-	if (map_ent_paramaters(&parser->map, parser) == ERROR
-	|| get_next_opbracket(parser) == ERROR)
-		return (Parse_error);
-	parser->a_state |= Parse_action_map;
-	return (Map_parsing);
-}
-
-static int		object_ent_paramaters(t_parser_obj *obj, t_parser *parser)
-{
-	if (parser->a_state & Parse_action_object)
-	{
-		parser->err_no = EODEF;
-		return (ERROR);
-	}
-	if (get_and_skipdigit(parser, &obj->objects_nb) == ERROR)
-	{
-		parser->err_no = EOPAR;
-		return (ERROR);
-	}
-	return (SUCCESS);
-}
-
-int				object_ent_analyze(t_parser *parser)
-{
-	if (object_ent_paramaters(&parser->obj, parser) == ERROR
-	|| get_next_opbracket(parser) == ERROR)
-		return (Parse_error);
-	parser->a_state |= Parse_action_object;
-	return (Object_parsing);
 }
 
 static int		get_obj_type_name(t_parser *parser, size_t wlen)

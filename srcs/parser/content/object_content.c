@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:07:37 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/30 13:25:29 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 14:05:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,11 @@ static int		set_parse_error(t_parser *parser, int err_no)
 	return (Parse_error);
 }
 
-static int		load_objects(t_parser *parser, t_parser_obj *p_obj)
+static int		load_object_set(t_entity *ent, t_parser *parser, t_object *obj)
 {
-	int			i;
-	t_entity	*ent;
-	t_object	*obj;
-	int			sp_i;
+	int		sp_i;
 
-	i = 0;
-	while (i < p_obj->objects_nb)
-	{
-		ent = p_obj->objects + i;
-		if ((obj = entity_new_object(VEC2_ZERO, VEC2_ZERO, VEC2_INIT(1.0, 0.0),
-				0)) == NULL)
-			return (set_parse_error(parser, EOGET));
-		entity_merge(ent, (void *)obj, ENTITY_OBJECT);
-		if ((ent->crossable = get_is_solid(parser)) == -1
+	if ((ent->crossable = get_is_solid(parser)) == -1
 		|| skipchar(parser, ':') == ERROR
 		|| get_and_skipdigit(parser, &sp_i) == ERROR
 		|| sp_i < 0 || sp_i >= parser->sdl->tex_sprite_nb
@@ -58,9 +47,28 @@ static int		load_objects(t_parser *parser, t_parser_obj *p_obj)
 		|| get_and_skipfdigit(parser, &obj->z) == ERROR
 		|| skipchar(parser, ':') == ERROR
 		|| get_and_skipfdigit(parser, &obj->scale) == ERROR)
+		return (set_parse_error(parser, EOGET));
+	obj->scale = clamp_float(obj->scale, 0.0, 1.0);
+	ent->tex_id = sp_i;
+	return (SUCCESS);
+}
+
+static int		load_objects(t_parser *parser, t_parser_obj *p_obj)
+{
+	int			i;
+	t_entity	*ent;
+	t_object	*obj;
+
+	i = 0;
+	while (i < p_obj->objects_nb)
+	{
+		ent = p_obj->objects + i;
+		if ((obj = entity_new_object(VEC2_ZERO, VEC2_ZERO, VEC2_INIT(1.0, 0.0),
+				0)) == NULL)
 			return (set_parse_error(parser, EOGET));
-		obj->scale = clamp_float(obj->scale, 0.0, 1.0);
-		ent->tex_id = sp_i;
+		entity_merge(ent, (void *)obj, ENTITY_OBJECT);
+		if (load_object_set(ent, parser, obj) == ERROR)
+			return (ERROR);
 		ent->id = i;
 		i++;
 	}
