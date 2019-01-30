@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/29 16:44:56 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 10:04:25 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void		env_destroy(t_env *env)
 	tp_destroy(&env->tpool);
 	audio_destroy(&env->audio);
 	text_destroy(&env->sdl.text);
-	sdl_destroy(&env->sdl);
 	klist_clear(&env->player.inventory);
 	wolf_destroy(env, &env->map, &env->cam);
+	sdl_destroy(&env->sdl);
 }

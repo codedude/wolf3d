@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:22:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/24 13:00:29 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 10:58:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ char		**sound_get_files(void)
 		"mud.ogg",
 		"stone.ogg",
 		"wood.ogg",
+		"pickup_key.ogg",
+		"guitar.ogg",
+		"door_nokey.ogg",
 		NULL
 	};
 

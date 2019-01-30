@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:42:18 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/25 10:46:40 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 11:02:34 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ int			audio_init(t_audio *audio)
 	}
 	Mix_AllocateChannels(16);
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
+	r = 0;
+	while (r < 16)
+		Mix_Volume(r++, (int)(MIX_MAX_VOLUME / 1.5));
 	return (audio_load_all(audio));
 }
 

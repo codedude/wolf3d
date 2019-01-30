@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/24 12:46:22 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 10:58:55 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 enum {
 	SOUND_DASH=0, SOUND_DOOR_CLOSE=1, SOUND_DOOR_OPEN, SOUND_EXPLOSION,
 	SOUND_FALL_JUMP, SOUND_GRAVEL, SOUND_LEAVES, SOUND_MUD, SOUND_STONE,
-	SOUND_WOOD
+	SOUND_WOOD, SOUND_PICKUP, SOUND_DOOR_UNLOCK, SOUND_DOOR_NOKEY
 };
 
 typedef struct s_audio	t_audio;

@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 17:23:17 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 13:38:33 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 09:31:30 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 int			sdl_create_renderer(t_sdl *sdl)
 {
 	if ((sdl->renderer = SDL_CreateRenderer(sdl->window, -1,
-		SDL_RENDERER_ACCELERATED/* | SDL_RENDERER_PRESENTVSYNC*/)) == NULL)
+		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)) == NULL)
 	{
 		ft_putstr("Renderer could not be created ! SDL_Error : ");
 		ft_putendl(SDL_GetError());

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/10 22:53:54 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 19:41:30 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 10:17:00 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,16 @@ static int make_maps(t_env *env, t_map *map)
 		while (j < map->width)
 		{
 			obj = &map->data[i][j];
-			tex = tex_get_sprite(&env->sdl, obj->tex_id);
-			if (tex->n_sprites > 1)
+			if (obj->type != ENTITY_VOID)
 			{
-				anim = anim_new(obj, ANIM_TEXTURE | ANIM_LOOP, False, 1);
-				if (anim == NULL)
-					return (ERROR);
-				alist_push(&env->anims, anim);
+				tex = tex_get_wall(&env->sdl, obj->tex_id - 1);
+				if (tex->n_sprites > 1)
+				{
+					anim = anim_new(obj, ANIM_TEXTURE | ANIM_LOOP, False, 2);
+					if (anim == NULL)
+						return (ERROR);
+					alist_push(&env->anims, anim);
+				}
 			}
 			++j;
 		}
@@ -62,7 +65,7 @@ static int make_sprites(t_env *env)
 		tex = tex_get_sprite(&env->sdl, obj->tex_id);
 		if (tex->n_sprites > 1)
 		{
-			anim = anim_new(obj, ANIM_TEXTURE | ANIM_LOOP, False, 1);
+			anim = anim_new(obj, ANIM_TEXTURE | ANIM_LOOP, False, 2);
 			if (anim == NULL)
 				return (ERROR);
 			alist_push(&env->anims, anim);
