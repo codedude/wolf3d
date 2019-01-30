@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 00:12:57 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:18:45 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int			data_set_ids(t_map *map)
 	return (SUCCESS);
 }
 
-void 		clear_map(t_map_info *m_inf)
+void		clear_map(t_map_info *m_inf)
 {
 	t_ivec2		i;
 

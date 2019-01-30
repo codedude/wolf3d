@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 16:23:16 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 20:58:58 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:19:44 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void			checkbox_setup(t_checkbox *cbox, void *param,
 
 void			checkbox_destroy(t_checkbox **cbox)
 {
-	free((*cbox)->tex);
 	free(*cbox);
 	*cbox = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:48:55 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:51:56 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:11:47 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void			selector_set_mode(void *v_env)
 	}
 }
 
-static int 			init_mode_selectors(t_env *env, t_b_select *selector,
+static int			init_mode_selectors(t_env *env, t_b_select *selector,
 						t_canvas i_anch)
 {
 	t_canvas	anchor;
@@ -58,7 +58,7 @@ static int 			init_mode_selectors(t_env *env, t_b_select *selector,
 	return (SUCCESS);
 }
 
-int				create_painter_inpector(t_env *env, t_canvas i_anch)
+int					create_painter_inpector(t_env *env, t_canvas i_anch)
 {
 	t_button	*b;
 

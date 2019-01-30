@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:48:55 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:56:26 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:12:09 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void			init_xy(t_sdl *sdl, int xy[4], int tex_id[Max_brush_type])
 	tex_id[Paint_Bucket] = UI_Painter_P_Bucket;
 }
 
-int 				init_type_selectors(t_env *env, t_b_select *selector)
+int					init_type_selectors(t_env *env, t_b_select *selector)
 {
 	t_button	*b;
 	t_canvas	anchor;

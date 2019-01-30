@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:16:31 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:56:48 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:31:20 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_env			t_env;
 **		Common
 */
 
-enum			e_brush_Buttons {
+enum			e_brush_buttons {
 	Pencil,
 	Line,
 	Vertical_line,
@@ -54,7 +54,7 @@ struct			s_b_select {
 	int			type_save;
 };
 
-int 			init_type_selectors(t_env *env, t_b_select *selector);
+int				init_type_selectors(t_env *env, t_b_select *selector);
 
 int				create_painter_inpector(t_env *env, t_canvas i_anch);
 void			inspector_action_painter(void *v_env);
@@ -89,5 +89,13 @@ void			toolset_set_type(t_toolset *toolset, t_u32 type);
 void			toolset_set_tmp_type(t_toolset *toolset, t_u32 type);
 t_u32			toolset_get_type(t_toolset *toolset);
 void			toolset_use_fx(t_env *env);
+
+void			map_fx_picker(t_env *env);
+void			map_fx_hand(t_env *env);
+void			map_fx_zoomin(t_env *env);
+void			map_fx_zoomout(t_env *env);
+void			map_fx_brush(t_env *env);
+void			map_fx_spawnsetter(t_env *env);
+void			map_fx_eraser(t_env *env);
 
 #endif

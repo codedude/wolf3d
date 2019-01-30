@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:24:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 02:57:42 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:01:58 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 # define EDIT_USAGE			"W3d Editor:\n" EDIT_USAGE1
 # define EDIT_USAGE1		"usage -- ./w3d_generator map_name.w3d\n"
 
-
 typedef struct s_palette		t_palette;
 typedef struct s_rpanel			t_rpanel;
 typedef struct s_env			t_env;
@@ -46,7 +45,7 @@ struct			s_palette {
 	int			brush;
 };
 
-void 			palette_init(t_env *env);
+void			palette_init(t_env *env);
 
 void			draw_wall(void *v_env, t_ivec2 pos);
 
@@ -70,8 +69,6 @@ struct			s_rpanel {
 	t_panel		*p[Max_RPan_Type];
 	t_u32		type;
 };
-
-int				init_rpanels(t_sdl *sdl, t_rpanel *rpan);
 
 struct			s_env {
 	t_sdl			sdl;

@@ -6,36 +6,12 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 00:47:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/28 15:13:27 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:28:37 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gen_env.h"
 #include "libft.h"
-
-void			map_fx_brush(t_env *env)
-{
-	if (env->inspector.b_select.type != Pencil)
-		clear_map(&env->map_info);
-	map_usebrush(env, (int)(env->palette.brush + 1));
-}
-
-void			map_fx_spawnsetter(t_env *env)
-{
-	t_canvas	bounds;
-	t_ivec2		map_pos;
-
-	bounds = get_map_boundaries(env);
-	map_pos = mpos_to_map_index(bounds, env);
-	env->spawn = clamp_ivec2(map_pos, 0, env->map_info.map->size - 1);
-}
-
-void			map_fx_eraser(t_env *env)
-{
-	if (env->inspector.b_select.type != Pencil)
-		clear_map(&env->map_info);
-	map_usebrush(env, 0);
-}
 
 void			map_fx_picker(t_env *env)
 {
@@ -106,36 +82,4 @@ void			init_toolset(t_toolset *toolset)
 	toolset->map_fx[ZoomOut] = map_fx_zoomout;
 	toolset->type = Brush;
 	toolset->use_tmp = False;
-}
-
-void			toolset_use_fx(t_env *env)
-{
-	t_toolset	*toolset;
-
-	toolset = &env->toolset;
-	if (toolset->use_tmp)
-	{
-		toolset->map_fx[toolset->tmp_type](env);
-		toolset->use_tmp = False;
-	}
-	else
-		toolset->map_fx[toolset->type](env);
-}
-
-void			toolset_set_type(t_toolset *toolset, t_u32 type)
-{
-	toolset->type = type;
-}
-
-void			toolset_set_tmp_type(t_toolset *toolset, t_u32 type)
-{
-	toolset->tmp_type = type;
-	toolset->use_tmp = True;
-}
-
-t_u32			toolset_get_type(t_toolset *toolset)
-{
-	if (toolset->use_tmp == True)
-		return (toolset->tmp_type);
-	return (toolset->type);
 }

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 23:05:19 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:39:59 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:11:02 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,4 @@ void			inspector_action_door(void *v_env)
 		ent->e.door->tex_wall_id = (int)env->rpan.p[Texture_Panel]->cursor;
 	else if (index == Item_Prev)
 		dedit->mode = !dedit->mode;
-
 }

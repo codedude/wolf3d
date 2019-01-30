@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 01:30:31 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:43:00 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:16:16 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,16 @@ t_slider		*slider_new(t_ivec2 pos, t_tex *imgs[2],
 						t_ivec2 img_size[2])
 {
 	t_slider	*slider;
-	int			err;
 
 	if (!(slider = (t_slider*)ft_memalloc(sizeof(t_slider))))
 		return (NULL);
-	err = !(slider->slid_img = create_button_tex(imgs[0], img_size[0], 0x542dd2));
-	err |= !(slider->curs_img = create_button_tex(imgs[1], img_size[1], 0xd2542d));
+	slider->slid_img = create_button_tex(imgs[0], img_size[0], 0x542dd2);
+	slider->curs_img = create_button_tex(imgs[1], img_size[1], 0xd2542d);
 	slider->slid_img_size = img_size[0];
 	slider->curs_img_size = img_size[1];
 	slider->pos = pos;
 	slider->draw_bar = True;
-	if (err)
+	if (slider->slid_img == NULL || slider->curs_img)
 		slider_destroy(&slider);
 	return (slider);
 }
@@ -73,6 +72,7 @@ void			slider_setup(t_slider *slider,
 	slider->max_val = range.y;
 	slider->val = slider->min_val;
 }
+
 void			slider_destroy(t_slider **slider)
 {
 	if (*slider)

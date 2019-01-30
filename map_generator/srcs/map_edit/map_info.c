@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:34:33 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 22:39:27 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:18:00 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void		init_grid(t_env *env, t_sdl *sdl)
 
 int				init_map_info(t_env *env, t_map_info *minf, char *mapfile)
 {
-	t_map 	*map;
+	t_map	*map;
 
 	if (!(minf->tmp_data = (int**)new_ar_data(MAX_SZ_Y, sizeof(int) * MAX_SZ_X))
 	|| load_map(env, mapfile) == ERROR)

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 20:22:46 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 20:44:58 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:23:18 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void			draw_wall(void *v_env, t_ivec2 pos)
 	tmp_data[pos.y][pos.x] = env->palette.brush;
 }
 
-static void 	init_brush_fx(t_palette *palette)
+static void		init_brush_fx(t_palette *palette)
 {
 	palette->b_fx[Pencil] = compute_simple_brush;
 	palette->b_fx[Line] = compute_line_tracer;
@@ -37,7 +37,7 @@ static void 	init_brush_fx(t_palette *palette)
 	palette->b_fx[Paint_Bucket] = compute_bucket_filler;
 }
 
-void 			palette_init(t_env *env)
+void			palette_init(t_env *env)
 {
 	t_palette	*palette;
 

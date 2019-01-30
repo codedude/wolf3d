@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 02:38:51 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:09:46 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,32 @@ static int			load_ui_tex(t_env *env)
 			return (ERROR);
 		i++;
 	}
+	return (SUCCESS);
+}
+
+static int			init_rpanels(t_sdl *sdl, t_rpanel *rpan)
+{
+	t_panel		*p;
+	t_canvas	p_anch;
+
+	p_anch.pos.x = ipercent_of(sdl->width, OBJ_OFF_X);
+	p_anch.pos.y = ipercent_of(sdl->height, OBJ_OFF_Y);
+	p_anch.size.x = ipercent_of(sdl->width, OBJ_SZ_X);
+	p_anch.size.y = ipercent_of(sdl->height, OBJ_SZ_Y);
+	p = new_panel((t_u32)sdl->tex_sprite_nb, p_anch, sdl->tex_sprites);
+	if (p == NULL)
+		return (ERROR);
+	panel_set_bgcolor(p, 0x222222);
+	panel_set_bordercolor(p, 0xababab);
+	rpan->p[Object_Panel] = p;
+	p = new_panel((t_u32)sdl->tex_wall_nb, p_anch, sdl->tex_walls);
+	if (p == NULL)
+		return (ERROR);
+	panel_set_bgcolor(p, 0x222222);
+	panel_set_bordercolor(p, 0xababab);
+	panel_set_highlight(p);
+	rpan->p[Texture_Panel] = p;
+	rpan->type = Texture_Panel;
 	return (SUCCESS);
 }
 

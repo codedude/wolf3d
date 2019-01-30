@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 01:34:21 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:16:07 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:33:03 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_color			tex_px_getscaled(t_tex *tex, int kframe,
 	c_ret.c.a = c.c.a;
 	return (c_ret);
 }
-
 
 t_color			sdl_pixel_pick_from_img(t_sdl *sdl, int x, int y)
 {

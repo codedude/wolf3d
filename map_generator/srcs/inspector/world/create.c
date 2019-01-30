@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:55:36 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:36:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:12:25 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int		gstate_draw_ceil(void *v_env)
 
 static void		rstate_draw_ceil(void *v_env)
 {
-	t_env 		*env;
+	t_env		*env;
 	t_world_i	*w_inf;
 
 	env = (t_env*)v_env;

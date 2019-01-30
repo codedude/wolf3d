@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 18:08:25 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 01:35:39 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:48:29 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 /*
 **		Forward declaration
 */
-
 
 typedef struct s_canvas		t_canvas;
 typedef struct s_color_pick	t_color_pick;
@@ -84,9 +83,8 @@ void			cpick_unset_transparency(t_color_pick *cpick);
 **		SDL Drawing functions +
 */
 
-
 void			paint_bucket_tools(t_sdl *sdl, t_color_pick *cpick,
-					t_ivec2 pos	);
+					t_ivec2 pos);
 
 void			draw_canvas_fill(t_sdl *sdl, t_canvas *canvas,
 					t_canvas *parent, unsigned int color);

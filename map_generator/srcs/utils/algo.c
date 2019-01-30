@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:05:14 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/06 19:30:22 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:32:14 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void			ft_bresenham(t_bresenham *data)
 {
 	t_ivec2 orientation;
 	t_ivec2 direction;
-	int 	error[2];
+	int		error[2];
 
 	direction = IVEC2_INIT(abs(data->v1.x - data->v2.x),
 					abs(data->v1.y - data->v2.y));
@@ -82,7 +82,7 @@ void			ft_circle(t_circle *c)
 	t_ivec2		point;
 
 	i = 0;
-	while(i <= 360 * c->radius)
+	while (i <= 360 * c->radius)
 	{
 		point = c->pos;
 		point.x += (int)round(sin((t_float)i) * c->radius);

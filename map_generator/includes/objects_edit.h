@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:39:24 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:35:27 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:47:52 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int				create_object_edit_inpector(t_env *env, t_canvas i_anch);
 void			inspector_draw_object_edit(t_env *env);
 void			inspector_action_object_edit(void *v_env);
 t_bool			inspector_gb_object_edit(t_env *env);
-
 
 /*
 **		Object tools

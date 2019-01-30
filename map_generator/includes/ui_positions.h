@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:48:08 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 23:23:42 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:47:13 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@
 
 # define EM_B_SZ_X			5
 # define EM_B_SZ_Y			3
-
 
 /*
 **	GRID_SNAP_SLIDER

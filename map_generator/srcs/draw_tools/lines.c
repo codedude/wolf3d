@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:06:03 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 21:24:21 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:08:18 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static void			br_draw_line(void *l_inf, t_ivec2 px)
 {
-	t_sdl 			*sdl;
+	t_sdl			*sdl;
 	t_color_pick	*cpick;
 
 	sdl = (t_sdl*)(((void **)l_inf)[0]);

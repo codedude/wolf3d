@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:06:03 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 01:37:37 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:08:50 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static t_ivec2		get_clamp_min(t_color_pick *cpick, t_canvas anchor)
 {
-	t_ivec2 	clamp;
+	t_ivec2		clamp;
 
 	clamp.x = (cpick->canvas_mask.pos.x + 1) - anchor.pos.x;
 	if (clamp.x < 0)
@@ -30,7 +30,7 @@ static t_ivec2		get_clamp_min(t_color_pick *cpick, t_canvas anchor)
 
 static t_ivec2		get_clamp_max(t_color_pick *cpick, t_canvas anchor)
 {
-	t_ivec2 	clamp;
+	t_ivec2		clamp;
 	t_ivec2		curr_max;
 	t_ivec2		max;
 

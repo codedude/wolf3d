@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 12:06:56 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 17:47:36 by vparis           ###   ########.fr       */
+/*   Updated: 2019/01/30 15:25:38 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <errno.h>
 #include "libft.h"
 #include "gen_env.h"
+#include "parser.h"
 
 static void		save_map_content(t_map *map, int fd)
 {
@@ -72,7 +73,7 @@ static void		save_door(t_map *map, t_entity *ent, int fd)
 		ft_putchar_fd('\n', fd);
 	}
 	else
-		ft_putstr_fd("W3dEditor: Warning: door has too many or not enough neighbours\n", 2);
+		ft_putstr_fd("W3dEditor: " EDWALL_STR "\n", 2);
 }
 
 static void		save_map_doors(t_map *map, int fd)
@@ -80,6 +81,7 @@ static void		save_map_doors(t_map *map, int fd)
 	int			x;
 	int			y;
 	t_entity	*ent;
+
 	y = 1;
 	while (y < map->size.y - 1)
 	{

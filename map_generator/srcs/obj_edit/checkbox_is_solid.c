@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 01:17:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:32:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:22:33 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 static int		gstate_obj_solid(void *v_otools)
 {
-	t_objects_tools 	*otools;
+	t_objects_tools		*otools;
 
 	otools = (t_objects_tools*)v_otools;
 	if (otools->edit.selected == -1)

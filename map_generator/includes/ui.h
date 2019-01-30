@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 16:50:42 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:25:23 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:59:53 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "ft_type.h"
 # include "sdl_m.h"
-#include "sdl_plus.h"
+# include "sdl_plus.h"
 # include "types.h"
 
 /*
@@ -32,7 +32,6 @@ typedef struct s_slider		t_slider;
 */
 
 struct			s_panel {
-	t_color		**elem_tex;
 	t_tex		*tex;
 	t_u32		nb_elem;
 	t_u32		cursor;
@@ -51,12 +50,7 @@ struct			s_panel {
 
 t_color			*new_texdata(t_tex *tex, t_ivec2 size);
 
-t_color			**new_panel_tex(t_sdl *sdl, t_u32 nb, t_ivec2 size,
-					t_tex *(*tex_src)(t_sdl*, int));
-t_panel			*new_panel(t_u32 nb_elem, t_canvas anchor, void *param,
-					t_color **(*get_elems)(void *, t_ivec2),
-					t_tex *elems);
-void			destroy_panel_tex(t_color ***pbox_src, unsigned int nb);
+t_panel			*new_panel(t_u32 nb_elem, t_canvas anchor, t_tex *elems);
 void			panel_destroy(t_panel **pan);
 void			panel_set_anchor(t_panel *pan, t_canvas anchor);
 void			panel_set_bgcolor(t_panel *pan, t_u32 color);
@@ -125,7 +119,8 @@ void			checkbox_destroy(t_checkbox **cbox);
 t_bool			checkbox_hover(t_checkbox *cbox, t_ivec2 pos);
 void			checkbox_clic(t_checkbox *cbox);
 
-void			checkbox_draw(t_sdl *sdl, t_color_pick *cpick, t_checkbox *cbox);
+void			checkbox_draw(t_sdl *sdl, t_color_pick *cpick,
+					t_checkbox *cbox);
 
 /*
 **		Slider

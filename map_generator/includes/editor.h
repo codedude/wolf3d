@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 16:45:18 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 21:47:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:45:35 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,5 @@ int				init_editor_switch(t_env *env, t_sdl *sdl, t_editor *editor);
 
 int				editor_init(t_env *env, t_sdl *sdl, t_editor *editor);
 void			editor_destroy(t_editor *editor);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:53:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/28 15:03:30 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:11:11 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void		action_update_obj(t_env *env)
 		obj->scale = snap_f(obj->scale, env->obj.g_snap->val);
 		obj->scale = clamp_float(obj->scale, env->obj.g_snap->val, 2.0f);
 	}
-
 }
 
 void			inspector_action_object_edit(void *v_env)

@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/30 14:29:16 by vparis           ###   ########.fr        #
+#    Updated: 2019/01/30 15:29:26 by jbulant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,7 +103,7 @@ DRAW_F		=	lines			cpick_tools_1		cpick_tools_2 \
 OBJ_EDIT_F	=	obj_tools		checkbox_is_solid	handle_objects
 EDITOR_F	=	editor			editor_switch \
 				draw_update		draw_ui
-ENV_F		=	env_init		env_destroy			init_rpanels
+ENV_F		=	env_init		env_destroy
 SAVE_F		=	check			save_file			save_map
 BINDS_F		=	binds_1			binds_2				binds_3
 
@@ -124,7 +124,7 @@ INSPECT_OE_F	=	create		buttons_f1		buttons_f2
 INSPECT_P_F		=	create		buttons_f		init_selectors
 INSPECT_W_F		=	create		buttons_f		radar
 
-TOOLSET_F	=	toolset
+TOOLSET_F		=	toolset		toolset_2		toolset_utils	
 
 MTRACK_F	=	mouse_tools		init
 MTRACK_F		+=	$(addprefix trigger/, $(MTRACK_TRIG_F))

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 21:31:37 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:02:32 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:32:44 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void			sdl_draw_circle(t_sdl *sdl, t_ivec2 pos, t_float radius,
 	t_ivec2		px;
 
 	i = 0;
-	while(i <= 360 * radius)
+	while (i <= 360 * radius)
 	{
 		px = pos;
 		px.x += (int)(sin((t_float)i) * radius);

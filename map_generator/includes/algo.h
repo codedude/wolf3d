@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/22 00:02:08 by jbulant           #+#    #+#             */
-/*   Updated: 2018/12/22 21:36:34 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:45:15 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ typedef struct	s_ud_line {
 	void		(*call)(void*, t_ivec2);
 }				t_ud_line;
 
-# define	UD_LINE_HORIZONTAL	0
-# define	UD_LINE_VERTICAL	1
+# define UD_LINE_HORIZONTAL	0
+# define UD_LINE_VERTICAL	1
 
 typedef struct	s_bresenham {
 	t_ivec2		v1;
@@ -35,7 +35,7 @@ typedef struct	s_bresenham {
 
 typedef struct	s_circle {
 	t_ivec2		pos;
-	t_float 	radius;
+	t_float		radius;
 	void		*param;
 	void		(*call)(void*, t_ivec2);
 }				t_circle;

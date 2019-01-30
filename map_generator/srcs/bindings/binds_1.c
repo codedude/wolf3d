@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 22:29:52 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:07:28 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "gen_env.h"
 #include "libft.h"
 
-void		manage_down(const Uint8	*state, t_env *env)
+void		manage_down(const Uint8 *state, t_env *env)
 {
 	int		test;
 

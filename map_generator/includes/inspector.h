@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 16:39:41 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/26 23:52:22 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 14:45:43 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ t_bool			door_valid_mouse_coord(t_env *env);
 t_bool			door_check_neighbour(t_map *map, t_entity *ent);
 void			door_destroy_selected(t_env *env, t_door_edit *dedit);
 int				door_create(t_env *env, t_door_edit *dedit);
-
 
 /*
 **		Inspector - struct & enum

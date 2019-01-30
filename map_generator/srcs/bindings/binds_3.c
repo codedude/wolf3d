@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 22:42:30 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:07:41 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	on_mbutton_press(SDL_Event *event, t_env *env)
 	if (event->button.button == SDL_BUTTON_LEFT)
 	{
 		if (env->space == 1)
-				SDL_SetRelativeMouseMode(SDL_TRUE);
+			SDL_SetRelativeMouseMode(SDL_TRUE);
 		mouse_button_setstate(env, 1, True);
 	}
 	else if (event->button.button == SDL_BUTTON_RIGHT)

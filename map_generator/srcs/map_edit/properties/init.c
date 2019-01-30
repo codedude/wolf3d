@@ -6,20 +6,20 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 22:58:01 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:14:14 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:16:37 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "gen_env.h"
 #include "libft.h"
 
-static void			init_xy(t_sdl *sdl, int x[3], int y[2])
+static void			init_xy(t_sdl *sdl, int xy[3])
 {
-	x[0] = ipercent_of(sdl->width, MPROPS_B_P_X);
-	x[1] = ipercent_of(sdl->width, MPROPS_B_P_RX);
-	x[2] = ipercent_of(sdl->width, MPROPS_B_P_LX);
-	y[0] = ipercent_of(sdl->height, MPROPS_B_P_Y);
-	y[1] = ipercent_of(sdl->height, MPROPS_B_OFF_Y);
+	xy[0] = ipercent_of(sdl->width, MPROPS_B_P_X);
+	xy[1] = ipercent_of(sdl->width, MPROPS_B_P_RX);
+	xy[2] = ipercent_of(sdl->width, MPROPS_B_P_LX);
+	xy[3] = ipercent_of(sdl->height, MPROPS_B_P_Y);
+	xy[4] = ipercent_of(sdl->height, MPROPS_B_OFF_Y);
 }
 
 static void			init_trigger_and_tex_id(
@@ -47,18 +47,17 @@ static int			mprop_create_buttons(t_mprops *prop, t_env *env)
 	t_canvas	anchor;
 	void		(*trigger[Max_editor_action])(void*);
 	int			tex_id[Max_editor_action];
-	int			x[3];
-	int			y[2];
+	int			xy[5];
 	t_u32		i;
 
 	i = 0;
 	anchor.size.x = ipercent_of(env->sdl.width, MPROPS_B_SZ_X);
 	anchor.size.y = ipercent_of(env->sdl.height, MPROPS_B_SZ_Y);
-	init_xy(&env->sdl, x, y);
+	init_xy(&env->sdl, xy);
 	init_trigger_and_tex_id(trigger, tex_id);
 	while (i < Max_editor_action)
 	{
-		anchor.pos = IVEC2_INIT(x[i % 3], y[0] + y[1] * ((int)i / 3));
+		anchor.pos = IVEC2_INIT(xy[i % 3], xy[3] + xy[4] * ((int)i / 3));
 		prop->actions[i] = button_new(anchor, &env->ui_tex[tex_id[i]],
 								env, trigger[i]);
 		if (prop->actions[i] == NULL)

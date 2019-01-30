@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/28 15:12:42 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:13:57 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static void		draw_node_tex(t_sdl *sdl, t_env *env, t_canvas canvas,
 			&sdl->tex_walls[env->ed_map_value - 1], canvas);
 	cpick_unset_color_mask(&env->cpick);
 }
-
 
 static void		draw_node_door(t_env *env, t_sdl *sdl, t_entity *ent,
 					t_canvas *rec_anch)

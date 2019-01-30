@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 02:08:53 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:32:27 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "sdl_m.h"
 #include "gen_env.h"
 #include "libft.h"
-
 
 void		draw_canvas_border(t_sdl *sdl, t_canvas canvas, t_canvas parent,
 							unsigned int color)

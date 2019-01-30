@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:53:29 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:40:42 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:12:46 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		draw_gizmos(t_env *env, t_canvas tex_anchor)
 		if (env->ctrl)
 		{
 			px1.x += env->obj.edit.bg_prev.size.x / 2;
-			px1.y =  env->obj.edit.bg_prev.pos.y;
+			px1.y = env->obj.edit.bg_prev.pos.y;
 			px2 = px1.y + env->obj.edit.bg_prev.size.y - 4;
 			draw_vline(&env->sdl, &env->cpick, px1, px2);
 		}

@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 22:19:33 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:35:05 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:23:36 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static int		init_grid_snap(t_objects_tools *otools, t_sdl *sdl, t_env *env)
 {
 	t_ivec2		pos;
 	t_ivec2		size[2];
-
 
 	pos.x = ipercent_of(sdl->width, G_SNAP_P_X);
 	pos.y = ipercent_of(sdl->height, G_SNAP_P_Y);

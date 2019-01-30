@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 00:34:26 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/27 00:48:33 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:21:37 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static t_bool	g_mw_painter(t_env *env)
 		return (True);
 	}
 	return (False);
-
 }
 
 static t_bool	g_mw_object_edit(t_env *env)
@@ -42,7 +41,6 @@ static t_bool	g_mw_object_edit(t_env *env)
 	}
 	env->obj.edit.selected = -1;
 	return (False);
-
 }
 
 static t_bool	g_mw_door(t_env *env)

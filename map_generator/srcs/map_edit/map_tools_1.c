@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 21:33:07 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/28 15:11:56 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/01/30 15:18:27 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_vec2				map_to_center(t_env *env)
 
 static void			map_update_zoom_range(t_env *env, t_map_info *minf)
 {
-	t_map 			*map;
+	t_map			*map;
 	t_float			min[2];
 	t_float			max[2];
 
@@ -60,7 +60,7 @@ void				map_scale2grid(t_env *env)
 void				map_update_center(t_env *env)
 {
 	t_map_info		*minf;
-	t_map 			*map;
+	t_map			*map;
 
 	minf = &env->map_info;
 	map = minf->map;
