@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 13:34:01 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:14:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define ANIM_H
 
 # include "ft_type.h"
-# include "types.h"
 # include "sdl_m.h"
 # include "entity.h"
 
@@ -32,7 +31,7 @@ enum {
 	ANIM_SKYBOX = 0x02,
 	ANIM_TEXTURE = 0x04,
 	ANIM_LOOP = 0x0100,
-	ANIM_ONCE = 0x0200,
+	ANIM_ONCE = 0x0200
 };
 
 # define ANIM_MASK_TYPE 0xff

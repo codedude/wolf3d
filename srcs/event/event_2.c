@@ -6,20 +6,17 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:09 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 12:48:57 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:55:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "sdl_m.h"
 #include "types.h"
-#include "entity.h"
 #include "event.h"
-#include "raycast.h"
 #include "export_bmp.h"
 #include "camera.h"
 #include "player.h"
-#include "audio.h"
 
 static void	event_kb_poll_down(SDL_Event *event, t_player *player)
 {

@@ -6,15 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 17:39:55 by vparis            #+#    #+#             */
-/*   Updated: 2019/02/04 14:11:51 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 15:04:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_H
 # define ENV_H
 
-# include <stdlib.h>
-# include "libft.h"
 # include "libtpool.h"
 # include "sdl_m.h"
 # include "audio.h"

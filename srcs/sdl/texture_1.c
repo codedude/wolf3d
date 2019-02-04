@@ -6,13 +6,12 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 16:41:50 by vparis            #+#    #+#             */
-/*   Updated: 2019/02/04 13:55:48 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:51:16 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "sdl_m.h"
-#include "types.h"
 #include "parser.h"
 
 int				tex_load(t_tex *tex, char *filename, int n_sprites, int n_cols)

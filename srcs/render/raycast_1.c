@@ -6,13 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:45:12 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/29 20:25:20 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/02/04 14:57:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "libft.h"
 #include "sdl_m.h"
 #include "env.h"

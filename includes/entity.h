@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 15:49:30 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 12:07:36 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:15:23 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "ft_type.h"
 # include "types.h"
-# include "sdl_m.h"
 
 # define DOOR_NS	1
 # define DOOR_EW	0

@@ -6,17 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 13:07:22 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 12:26:07 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:44:51 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "SDL.h"
-#include "SDL_image.h"
 #include "libft.h"
 #include "sdl_m.h"
-#include "env.h"
-#include "parser.h"
 
 SDL_Surface		*sdl_load_image(char *filename)
 {
@@ -49,7 +45,7 @@ static void		fill_pixels(t_tex *tex, SDL_Surface *surf, Uint8 *pixels,
 			p = pixels + (y + i / tex->n_cols * tex->h) * surf->pitch
 			+ (x + i % tex->n_cols * tex->w) * surf->format->BytesPerPixel;
 			tex->pixels[i][x + y * tex->w] =
-					(t_pixel)(p[0] << 16 | p[1] << 8 | p[2]);
+				(t_pixel)(p[0] << 16 | p[1] << 8 | p[2]);
 			++x;
 		}
 		++y;

@@ -6,10 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 16:19:00 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/20 22:23:40 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/02/04 14:17:42 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "ft_type.h"
 #include "types.h"
 #include "entity.h"

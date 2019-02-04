@@ -6,13 +6,14 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:51:38 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 11:01:08 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:52:53 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include "env.h"
 #include "event.h"
+#include "entity.h"
 
 static int		player_collect(t_env *env, t_entity *ent)
 {

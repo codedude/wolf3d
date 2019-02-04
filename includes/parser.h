@@ -6,13 +6,14 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 14:48:58 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 14:22:34 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:18:08 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
+# include "sdl_m.h"
 # include "entity.h"
 
 enum			e_parsing_states {

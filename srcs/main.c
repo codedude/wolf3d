@@ -6,30 +6,18 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/25 15:29:49 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/21 17:15:05 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:26:06 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
 #include "env.h"
 #include "sdl_m.h"
 #include "raycast.h"
-#include "entity.h"
 #include "anim.h"
 #include "event.h"
 
-static void	test(t_env *env)
-{
-	t_anim *anim;
-
-	if (env->objects_nb == 0)
-		return ;
-	anim = anim_new(&env->objects[0], ANIM_TEXTURE | ANIM_LOOP, False, 1);
-	alist_push(&env->anims, anim);
-}
-
-void		draw_interface(t_env *env)
+static void	draw_interface(t_env *env)
 {
 	char	fps[16];
 
@@ -42,7 +30,6 @@ static int	loop(t_env *env)
 {
 	if (render_prepare(env) == ERROR)
 		return (ERROR);
-	test(env);
 	while (compute_event(env) == True)
 	{
 		sdl_get_fps(&env->sdl);

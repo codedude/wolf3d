@@ -6,14 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 15:42:18 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 12:21:13 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:31:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sdl_m.h"
-#include "types.h"
-#include "ft_type.h"
-#include "types.h"
 #include "libft.h"
 #include "audio.h"
 

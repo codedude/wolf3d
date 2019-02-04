@@ -6,18 +6,16 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/20 18:00:41 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 12:13:10 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:29:54 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libft.h"
 #include "ft_math.h"
 #include "sdl_m.h"
 #include "env.h"
 #include "types.h"
 #include "raycast.h"
-#include "event.h"
 #include "parser.h"
 #include "camera.h"
 #include "player.h"

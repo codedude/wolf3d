@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 00:06:46 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 12:45:37 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:56:27 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "types.h"
 #include "entity.h"
 #include "event.h"
+#include "audio.h"
 #include "anim.h"
 #include "camera.h"
 #include "player.h"

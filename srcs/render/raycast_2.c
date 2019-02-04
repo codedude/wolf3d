@@ -6,15 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 15:45:28 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/30 12:53:26 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:57:52 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
 #include "sdl_m.h"
-#include "SDL.h"
 #include "env.h"
 #include "raycast.h"
 #include "types.h"

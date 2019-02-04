@@ -6,12 +6,11 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 13:02:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/24 12:54:03 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:30:16 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "ft_type.h"
 #include "types.h"
 
 t_float		clamp_float(t_float n, t_float min, t_float max)

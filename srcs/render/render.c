@@ -6,15 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:57:36 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/29 16:05:45 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:58:22 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include "libft.h"
 #include "sdl_m.h"
-#include "SDL.h"
 #include "env.h"
 #include "raycast.h"
 #include "types.h"
@@ -31,8 +29,8 @@ static void	render(t_env *env, int start, int end, int step)
 	while (x < end)
 	{
 		infos.map = VEC2_INIT(floorf(cam->pos.x), floorf(cam->pos.y));
-		infos.ray.dir = cam->dir + -cam->plane *
-			((t_float)(x << 1) / env->sdl.canvas_w - 1.0f);
+		infos.ray.dir = cam->dir + -cam->plane
+			* ((t_float)(x << 1) / env->sdl.canvas_w - 1.0f);
 		raycast(&infos, &env->map, env, x);
 		rc_render(env, &infos);
 		x += step;

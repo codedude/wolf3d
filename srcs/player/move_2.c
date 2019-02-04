@@ -6,13 +6,15 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:07 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 12:41:44 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:52:13 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "types.h"
 #include "env.h"
+#include "player.h"
+#include "sdl_m.h"
 #include "event.h"
+#include "types.h"
 
 static t_float	set_accel_dim(t_float controller_v, t_float old_v,
 					int is_grounded)

@@ -6,12 +6,14 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:50:06 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 14:54:47 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/02/04 14:53:08 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include "env.h"
+#include "player.h"
+#include "sdl_m.h"
 #include "event.h"
 
 t_float			float_lerp(t_float from, t_float to, t_float t)

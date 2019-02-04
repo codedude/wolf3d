@@ -6,16 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/01 18:56:20 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/29 20:29:25 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/02/04 14:16:50 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RAYCAST_H
 # define RAYCAST_H
 
-# include <stdio.h>
-# include <stdlib.h>
-# include "libft.h"
 # include "types.h"
 # include "sdl_m.h"
 # include "env.h"

@@ -6,12 +6,13 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:45:59 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/28 14:49:45 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/02/04 14:51:58 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "types.h"
 #include "env.h"
+#include "player.h"
+#include "sdl_m.h"
 #include "event.h"
 
 void		player_jump(t_sdl *sdl, t_cam *cam, t_player *player)

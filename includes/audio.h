@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 21:11:31 by vparis            #+#    #+#             */
-/*   Updated: 2019/01/30 12:21:30 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/04 14:14:48 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define AUDIO_H
 
 # include "sdl_m.h"
-# include "types.h"
-# include "ft_type.h"
 
 # define MUSIC_FOLDER	"data/music/"
 # define SOUND_FOLDER	"data/sound/"
