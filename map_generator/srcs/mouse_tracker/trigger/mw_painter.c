@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mw_painter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/27 00:42:01 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 02:40:25 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/02/05 15:00:19 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,18 @@
 
 static int		remove_wall(t_env *env, t_entity *ent)
 {
+	int		obj_i;
+
 	if (ent->type != ENTITY_VOID)
 	{
 		if (ent == env->inspector.door_edit.selected)
-			env->inspector.door_edit.selected = NULL;
+			door_destroy_selected(env, &env->inspector.door_edit);
+		else if (ent->type == ENTITY_DOOR)
+		{
+			obj_i = ent->e.door->item_id;
+			if (obj_i != -1)
+				env->obj.list[obj_i]->unlock_door = NULL;
+		}
 		entity_destroy(ent, True);
 		return (1);
 	}

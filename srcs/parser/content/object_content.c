@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:07:37 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/30 14:05:27 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/05 15:08:32 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static int		load_object_set(t_entity *ent, t_parser *parser, t_object *obj)
 		|| get_and_skipfdigit(parser, &obj->scale) == ERROR)
 		return (set_parse_error(parser, EOGET));
 	obj->scale = clamp_float(obj->scale, 0.0, 1.0);
+	obj->z = 0.0;
 	ent->tex_id = sp_i;
 	return (SUCCESS);
 }

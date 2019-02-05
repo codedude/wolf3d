@@ -6,7 +6,7 @@
 /*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/16 17:02:08 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/30 14:23:58 by vparis           ###   ########.fr       */
+/*   Updated: 2019/02/05 15:32:20 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,21 @@ static void		init_parser(t_parser *parser, t_sdl *sdl, int conf_fd)
 		parser->p_state = Parse_error;
 }
 
+static void		destroy_objects(t_parser *parser)
+{
+	int			i;
+	t_entity	*ent;
+
+	i = 0;
+	while (i < parser->obj.objects_nb)
+	{
+		ent = &parser->obj.objects[i];
+		free(ent->e.object);
+		i++;
+	}
+	free(parser->obj.objects);
+}
+
 int				parse_map(t_sdl *sdl, t_parser *parser, int conf_fd)
 {
 	static int	(*action_state[])(t_parser *) = {
@@ -59,6 +74,7 @@ int				parse_map(t_sdl *sdl, t_parser *parser, int conf_fd)
 	{
 		destroy_map_data(&parser->map.data,
 			parser->map.width, parser->map.height);
+		destroy_objects(parser);
 		print_parser_errno(parser, "Wolf3d: ");
 		free(parser->base_line);
 		return (ERROR);
