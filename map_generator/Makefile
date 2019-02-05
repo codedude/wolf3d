@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/01/30 15:29:26 by jbulant          ###   ########.fr        #
+#    Updated: 2019/02/05 16:33:35 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-DEBUG			?=	1
+DEBUG			?=	0
 FLAGS_OPT		=
 ifeq ($(DEBUG),0)
 	FLAGS_OPT	=	-O3 -flto
@@ -124,7 +124,7 @@ INSPECT_OE_F	=	create		buttons_f1		buttons_f2
 INSPECT_P_F		=	create		buttons_f		init_selectors
 INSPECT_W_F		=	create		buttons_f		radar
 
-TOOLSET_F		=	toolset		toolset_2		toolset_utils	
+TOOLSET_F		=	toolset		toolset_2		toolset_utils
 
 MTRACK_F	=	mouse_tools		init
 MTRACK_F		+=	$(addprefix trigger/, $(MTRACK_TRIG_F))
