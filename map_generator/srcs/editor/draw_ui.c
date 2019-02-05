@@ -6,7 +6,7 @@
 /*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/01/29 03:06:31 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/02/05 13:16:18 by jbulant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,22 @@ static void			draw_editor(t_env *env)
 	button_draw(&env->sdl, &env->cpick, ed->switch_b[ed->mode]);
 }
 
+static void			draw_cursor(t_env *env)
+{
+	t_canvas	anch;
+
+	if (env->mouse.b1 != Mouse_Press || env->mouse.area != Right_Panel
+	|| env->editor.mode != Object_Edit
+	|| env->mouse.button_index > (t_u32)env->sdl.tex_sprite_nb)
+		return ;
+	anch.size = env->rpan.p[Object_Panel]->elem_anchor.size;
+	anch.size = IVEC2_INIT((int)(anch.size.x * 0.8), (int)(anch.size.y * 0.8));
+	anch.pos = env->mouse.pos - anch.size / 2;
+	draw_tex(&env->sdl, &env->cpick,
+		&env->sdl.tex_sprites[env->mouse.button_index], anch);
+
+}
+
 void				draw_ui(t_env *env, t_sdl *sdl)
 {
 	panel_draw(sdl, &env->cpick, env->rpan.p[env->rpan.type]);
@@ -44,4 +60,5 @@ void				draw_ui(t_env *env, t_sdl *sdl)
 	env->inspector.draw[env->editor.mode](env);
 	draw_mprops(env, &env->map_properties);
 	draw_editor(env);
+	draw_cursor(env);
 }
