@@ -6,7 +6,7 @@
 #    By: vparis <vparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/02 17:37:24 by vparis            #+#    #+#              #
-#    Updated: 2019/02/04 13:51:57 by vparis           ###   ########.fr        #
+#    Updated: 2019/02/05 14:38:22 by vparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ else
 	LDLIBS		+=	-pthread
 endif
 
-DEBUG			?=	1
+DEBUG			?=	0
 FLAGS_OPT		=
 ifeq ($(DEBUG),0)
 	FLAGS_OPT	=	-O3 -flto
@@ -124,10 +124,3 @@ rer:
 	@rm -f $(NAME)
 	@rm -f $(OBJS)
 	make $(NAME)
-
-valg:
-	valgrind --show-leak-kinds=all --leak-resolution=high --track-origins=yes \
-	./$(NAME) data/map/demo.w3d
-
-bench:
-	valgrind --tool=callgrind ./$(NAME) data/map/demo.w3d

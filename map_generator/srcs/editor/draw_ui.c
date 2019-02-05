@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_ui.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbulant <jbulant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vparis <vparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 01:09:43 by jbulant           #+#    #+#             */
-/*   Updated: 2019/02/05 13:16:18 by jbulant          ###   ########.fr       */
+/*   Updated: 2019/02/05 14:37:24 by vparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static void			draw_cursor(t_env *env)
 	anch.pos = env->mouse.pos - anch.size / 2;
 	draw_tex(&env->sdl, &env->cpick,
 		&env->sdl.tex_sprites[env->mouse.button_index], anch);
-
 }
 
 void				draw_ui(t_env *env, t_sdl *sdl)
