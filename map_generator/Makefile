@@ -46,7 +46,7 @@ LDLIBS		+=	-L$(LIBFTD) -L$(SDLLIBD) -L$(LIBTPOOLD) \
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
 	SDLLIBD		=	$(HOME)/.brew/lib
-	SDLINCD		=	$(HOME)/.brew/include/SDL2
+	SDLINCD		=	/opt/homebrew/Cellar/sdl2/2.32.4/
 else
 	SDLLIBD		=	/usr/lib/x86_64-linux-gnu
 	SDLINCD		=	/usr/include/SDL2

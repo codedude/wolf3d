@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "ft_math.h"
-#include "sdl_m.h"
-#include "env.h"
-#include "types.h"
-#include "raycast.h"
-#include "parser.h"
 #include "camera.h"
+#include "entity.h"
+#include "env.h"
+#include "ft_math.h"
+#include "parser.h"
 #include "player.h"
+#include "raycast.h"
+#include "sdl_m.h"
+#include "types.h"
+#include <stdlib.h>
 
-static void	init_player(t_player *player)
-{
+static void init_player(t_player *player) {
 	player->axis_state = Axis_None;
 	player->velocity = VEC2_ZERO;
 	player->dash_time = 0.0f;
@@ -34,10 +34,8 @@ static void	init_player(t_player *player)
 	player->inventory = NULL;
 }
 
-static void	init_cam(t_cam *cam, t_sdl *sdl, t_map *map)
-{
-	cam->pos = VEC2_INIT((t_float)map->spawn.x,
-		(t_float)map->spawn.y) + 0.5f;
+static void init_cam(t_cam *cam, t_sdl *sdl, t_map *map) {
+	cam->pos = VEC2_INIT((t_float)map->spawn.x, (t_float)map->spawn.y) + 0.5f;
 	cam->z = 40.0f / 100.0f;
 	cam->z_default = cam->z;
 	cam->z_pos = cam->z_default;
@@ -52,8 +50,7 @@ static void	init_cam(t_cam *cam, t_sdl *sdl, t_map *map)
 	cam->color_filter = NULL;
 }
 
-int			wolf_init(t_env *env, char *filename)
-{
+int wolf_init(t_env *env, char *filename) {
 	if (load_map(env, &env->map, filename) == ERROR)
 		return (ERROR);
 	env->map.skybox = entity_new(0, 0, 0);
@@ -63,14 +60,12 @@ int			wolf_init(t_env *env, char *filename)
 	return (SUCCESS);
 }
 
-void		wolf_destroy(t_env *env, t_map *map)
-{
-	int	i;
+void wolf_destroy(t_env *env, t_map *map) {
+	int i;
 
-	destroy_map_data(&map->data, map->width, map->height);
+	map_destroy(map);
 	i = 0;
-	while (i < env->objects_nb)
-	{
+	while (i < env->objects_nb) {
 		free(env->objects[i].e.brick);
 		++i;
 	}

@@ -17,11 +17,11 @@
 #include "raycast.h"
 #include "list.h"
 
-static void		prepare_object_x_and_opti(t_env *env, t_object *obj,
-					t_float obj_x)
+static void prepare_object_x_and_opti(t_env *env, t_object *obj,
+									  t_float obj_x)
 {
-	int		half_width;
-	int		x;
+	int half_width;
+	int x;
 
 	half_width = (int)obj->size.x;
 	half_width = half_width & 0x01 ? (half_width - 1) / 2 : half_width / 2;
@@ -39,13 +39,11 @@ static void		prepare_object_x_and_opti(t_env *env, t_object *obj,
 	obj->y_offset = obj->z > 0 ? obj->y_offset : 0;
 }
 
-static void		prepare_object_y(t_env *env, t_object *obj, t_vec2 old_size)
+static void prepare_object_y(t_env *env, t_object *obj, t_vec2 old_size)
 {
-	obj->y_start = (int)((env->sdl.half_canvas_h - obj->size.y / 2.0f)
-		- ((env->sdl.half_canvas_h - env->cam.z) / obj->z_buffer)
-		+ env->cam.height);
+	obj->y_start = (int)((env->sdl.half_canvas_h - obj->size.y / 2.0f) - ((env->sdl.half_canvas_h - env->cam.z) / obj->z_buffer) + env->cam.height);
 	if (obj->scale != 1.0f)
-		obj->y_start += (old_size.y - obj->size.y) / 2.0f;
+		obj->y_start += (int)((old_size.y - obj->size.y) / 2.0f);
 	obj->y_end = obj->y_start + (int)obj->size.y;
 	if (obj->z > 0.0f)
 	{
@@ -57,11 +55,11 @@ static void		prepare_object_y(t_env *env, t_object *obj, t_vec2 old_size)
 		obj->y_start -= obj->y_offset;
 }
 
-t_bool			prepare_object(t_env *env, int i, t_vec2 obj_dir,
-					t_float obj_x)
+t_bool prepare_object(t_env *env, int i, t_vec2 obj_dir,
+					  t_float obj_x)
 {
-	t_object	*obj;
-	t_vec2		old_size;
+	t_object *obj;
+	t_vec2 old_size;
 
 	obj = env->objects[i].e.object;
 	if (obj->collectable == -1)

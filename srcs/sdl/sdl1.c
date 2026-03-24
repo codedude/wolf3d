@@ -10,52 +10,51 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "SDL.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_video.h"
 #include "libft.h"
 #include "sdl_m.h"
-#include "audio.h"
+#include <stdlib.h>
 
-static int		sdl_init2(t_sdl *sdl, const char *title, int width,
-					int height)
-{
-	if ((sdl->window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED,
-		SDL_WINDOWPOS_UNDEFINED, width, height,
-		SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI)) == NULL)
-	{
+static int sdl_init2(t_sdl *sdl, const char *title) {
+	if ((sdl->window = SDL_CreateWindow(
+	         title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	         sdl->width * sdl->scale, sdl->height * sdl->scale,
+	         SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI |
+	             SDL_WINDOW_BORDERLESS)) == NULL) {
 		ft_putstr_fd("Window could not be created ! SDL_Error : ", 2);
 		ft_putendl(SDL_GetError());
 		return (ERROR);
 	}
-	if (sdl_create_screen(sdl, width, height) == ERROR)
+	if (sdl_create_screen(sdl) == ERROR)
 		return (ERROR);
-	if (tex_load_all(sdl) == ERROR)
-	{
+	if (tex_load_all(sdl) == ERROR) {
 		ft_putstr_fd("Can't init textures and sprites\n", 2);
 		return (ERROR);
 	}
 	return (SUCCESS);
 }
 
-int				sdl_init(t_sdl *sdl, const char *title, int width,
-					int height)
-{
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
-	{
+int sdl_init(t_sdl *sdl, const char *title, int width, int height, int scale) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		ft_putstr_fd("SDL could not initialize ! SDL_Error : ", 2);
 		ft_putendl(SDL_GetError());
 		return (ERROR);
 	}
-	if (sdl_init2(sdl, title, width, height) == ERROR)
+	if (scale < 1 || scale > 6) {
+		return (ERROR);
+	}
+	sdl->width = width;
+	sdl->height = height;
+	sdl->scale = scale;
+	if (sdl_init2(sdl, title) == ERROR)
 		return (ERROR);
 	sdl->fps = 60;
 	return (SUCCESS);
 }
 
-int				sdl_reset(t_sdl *sdl)
-{
-	if (sdl->z_buffer != NULL)
-	{
+int sdl_reset(t_sdl *sdl) {
+	if (sdl->z_buffer != NULL) {
 		free(sdl->z_buffer);
 		sdl->z_buffer = NULL;
 	}
@@ -65,19 +64,17 @@ int				sdl_reset(t_sdl *sdl)
 	return (SUCCESS);
 }
 
-int				sdl_destroy(t_sdl *sdl)
-{
+int sdl_destroy(t_sdl *sdl) {
 	sdl_reset(sdl);
 	SDL_DestroyWindow(sdl->window);
-	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+	SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	SDL_Quit();
 	return (SUCCESS);
 }
 
-void			sdl_print_infos(t_sdl *sdl)
-{
-	SDL_version	compiled;
-	SDL_version	linked;
+void sdl_print_infos(t_sdl *sdl) {
+	SDL_version compiled;
+	SDL_version linked;
 
 	SDL_VERSION(&compiled);
 	SDL_GetVersion(&linked);
@@ -94,10 +91,9 @@ void			sdl_print_infos(t_sdl *sdl)
 	ft_putchar('.');
 	ft_putnbr(linked.patch);
 	ft_putchar('\n');
-	if (sdl->window != NULL)
-	{
+	if (sdl->window != NULL) {
 		ft_putstr("Pixel format of the window : ");
 		ft_putendl(
-			SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(sdl->window)));
+		    SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(sdl->window)));
 	}
 }

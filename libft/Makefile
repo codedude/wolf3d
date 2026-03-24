@@ -11,14 +11,8 @@
 # **************************************************************************** #
 
 NAME		= libft.a
-CC			= clang
-
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Darwin)
-	AR		= ar
-else
-	AR		= llvm-ar
-endif
+CC			= /opt/homebrew/Cellar/llvm/22.1.1/bin/clang
+AR			= /opt/homebrew/Cellar/llvm/22.1.1/bin/llvm-ar
 
 DEBUG			?=	1
 FLAGS_OPT		=

@@ -1,0 +1,5 @@
+CompileFlags:
+    CompilationDatabase: ./build
+    Add: [-std=c23, -Wall]
+InlayHints:
+  Enabled: No

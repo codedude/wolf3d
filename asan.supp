@@ -1,0 +1,5 @@
+leak:libSDL2
+leak:AppKit
+leak:libsystem_pthread
+leak:libdispatch
+leak:CoreFoundation
